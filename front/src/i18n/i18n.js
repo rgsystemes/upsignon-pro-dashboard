@@ -17,8 +17,15 @@ class I18n {
     }
   }
 
-  t(key) {
-    return I18n.translations[key];
+  t(key, options) {
+    let translation = I18n.translations[key];
+    if (options) {
+      Object.keys(options).forEach((optionKey) => {
+        const regex = new RegExp(`\\$${optionKey}`, 'g');
+        translation = translation.replace(regex, options[optionKey]);
+      });
+    }
+    return translation;
   }
 }
 

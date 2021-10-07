@@ -1,0 +1,20 @@
+.tag:before {
+  content: '';
+  display: inline-block;
+  border-radius: 5px;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+.positiveWeak:before {
+  background: red;
+}
+.positiveMedium:before {
+  background: orange;
+}
+.positiveStrong:before {
+  background: green;
+}
+.positiveReused:before {
+  background: red;
+}
