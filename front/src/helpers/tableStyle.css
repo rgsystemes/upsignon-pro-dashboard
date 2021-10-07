@@ -1,0 +1,44 @@
+/* CSS reset fro tables */
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #eee;
+  border-bottom: 2px solid rgb(0, 171, 169);
+}
+
+/* My Style */
+td,
+th {
+  padding: 0.5rem;
+  text-align: left;
+  color: #999;
+  border: 1px solid #eee;
+  border-collapse: collapse;
+}
+
+tbody tr:hover {
+  background: #f4f4f4;
+}
+tbody tr:hover td {
+  color: #555;
+}
+
+th {
+  background-color: rgb(0, 171, 169);
+  color: white;
+}

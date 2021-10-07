@@ -1,4 +1,5 @@
 import './App.css';
+import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
 import { Overview } from './pages/Overview';
 import { Settings } from './pages/Settings';

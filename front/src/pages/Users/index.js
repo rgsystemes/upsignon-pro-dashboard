@@ -22,9 +22,24 @@ class Users extends React.Component {
       <div>
         <h1>{i18n.t('menu_users')}</h1>
         {this.state.isLoading && <div>{i18n.t('loading')}</div>}
-        {this.state.users.map((u) => {
-          return <div>{u.email}</div>;
-        })}
+        <table>
+          <thead>
+            <tr>
+              <th>{i18n.t('user_email')}</th>
+              <th>{i18n.t('user_data_length')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.users.map((u) => {
+              return (
+                <tr key={u.user_id}>
+                  <td>{u.email}</td>
+                  <td>{`${Math.round(u.data_length / 1000)}ko`}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
     );
   }

@@ -3,6 +3,8 @@ const translations = {
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
   loading: 'Chargement des données...',
+  user_email: 'Email',
+  user_data_length: 'Taille',
 };
 
 export default translations;
