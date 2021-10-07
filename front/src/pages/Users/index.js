@@ -19,21 +19,18 @@ class Users extends React.Component {
       this.setState({ isLoading: false });
     }
   }
-  async deleteUser(userId) {
-    this.setState({ isLoading: true });
-    try {
-      await fetchTemplate(`/api/delete-user/${userId}`, 'POST', null);
-      await this.loadUsers();
-    } catch (e) {
-      console.error(e);
-      this.setState({ isLoading: false });
-    }
-  }
 
-  showDeleteWarning(userId, userEmail) {
+  async deleteUserWithWarning(userId, userEmail) {
     const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
     if (confirmation) {
-      this.deleteUser(userId);
+      this.setState({ isLoading: true });
+      try {
+        await fetchTemplate(`/api/delete-user/${userId}`, 'POST', null);
+        await this.loadUsers();
+      } catch (e) {
+        console.error(e);
+        this.setState({ isLoading: false });
+      }
     }
   }
 
@@ -80,8 +77,8 @@ class Users extends React.Component {
           <tbody>
             {this.state.users.map((u) => {
               return (
-                <React.Fragment>
-                  <tr key={u.user_id}>
+                <React.Fragment key={u.user_id}>
+                  <tr>
                     <td>{u.email}</td>
                     <td>
                       <div>{`${Math.round(u.data_length / 1000)}ko`}</div>
@@ -122,15 +119,17 @@ class Users extends React.Component {
                     <td>
                       <div
                         className="action"
-                        onClick={() => this.showDeleteWarning(u.user_id, u.email)}
+                        onClick={() => this.deleteUserWithWarning(u.user_id, u.email)}
                       >
                         {i18n.t('user_action_delete')}
                       </div>
                     </td>
                   </tr>
                   {u.devices && (
-                    <tr colspan={6}>
-                      <UserDevices devices={u.devices} />
+                    <tr className="detailContainer">
+                      <td colSpan={6}>
+                        <UserDevices devices={u.devices} email={u.email} />
+                      </td>
                     </tr>
                   )}
                 </React.Fragment>

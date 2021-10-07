@@ -1,0 +1,9 @@
+.unauthorizedDevice:before {
+  content: '';
+  display: inline-block;
+  border-radius: 5px;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  background: red;
+}

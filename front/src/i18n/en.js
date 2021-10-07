@@ -20,6 +20,22 @@ const translations = {
   user_action_delete: 'Delete',
   user_delete_warning:
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
+  devices_for_user: 'Devices of $email',
+  device_name: 'Device name',
+  device_app_version: 'App version',
+  device_type: 'Type',
+  device_status: 'Status',
+  device_last_session: 'Last session',
+  device_actions: 'Actions',
+  device_delete: 'Delete',
+  device_revoke: 'Revoke',
+  device_authorize: 'Authorize',
+  device_delete_warning:
+    'This will definitively delete this device and its history.\n\nYou can use the Revoke option to no longer authorize connections from this device while keeping its history.\n\nContinue the deletion?',
+  device_revoke_warning:
+    'This device will no longer be authorized but will stay in the list.\n\nRevoke?',
+  device_authorize_warning:
+    'This device will be authorized without the user needing to validate his email address.\n\nMake sure this request originates from a legitimate user!\n\nAuthorize?',
 };
 
 export default translations;
