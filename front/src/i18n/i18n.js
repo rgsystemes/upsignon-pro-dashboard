@@ -8,8 +8,8 @@ class I18n {
   }
 
   constructor() {
-    const languages = ["en", "fr"];
-    const lang = navigator.language.split("-")[0];
+    const languages = ['en', 'fr'];
+    const lang = navigator.language.split('-')[0];
     if (languages.includes(lang)) {
       I18n.translations = require(`./${lang}.js`).default;
     } else {
