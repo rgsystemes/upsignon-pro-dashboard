@@ -7,13 +7,11 @@ class UserDevices extends React.Component {
   deleteDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_delete_warning'));
     if (confirmation) {
-      if (confirmation) {
-        try {
-          await fetchTemplate(`/api/delete-device/${deviceId}`, 'POST', null);
-          await this.props.reloadDevices();
-        } catch (e) {
-          console.error(e);
-        }
+      try {
+        await fetchTemplate(`/api/delete-device/${deviceId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
       }
     }
   };
@@ -31,13 +29,35 @@ class UserDevices extends React.Component {
   authorizeDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_authorize_warning'));
     if (confirmation) {
-      if (confirmation) {
-        try {
-          await fetchTemplate(`/api/authorize-device/${deviceId}`, 'POST', null);
-          await this.props.reloadDevices();
-        } catch (e) {
-          console.error(e);
-        }
+      try {
+        await fetchTemplate(`/api/authorize-device/${deviceId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  deletePwdResetReqWithWarning = async (pwdResetId) => {
+    const confirmation = window.confirm(i18n.t('password_reset_request_delete_warning'));
+    if (confirmation) {
+      try {
+        await fetchTemplate(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  grantPwdResetReqWithWarning = async (pwdResetId) => {
+    const confirmation = window.confirm(i18n.t('password_reset_request_delete_warning'));
+    if (confirmation) {
+      try {
+        await fetchTemplate(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
       }
     }
   };
@@ -49,7 +69,7 @@ class UserDevices extends React.Component {
         {passwordResetRequests.length > 0 && (
           <div>
             <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
-            <table>
+            <table className="passwordResetRequestTable">
               <thead>
                 <th>{i18n.t('device_name')}</th>
                 <th>{i18n.t('password_reset_request_status')}</th>
@@ -57,9 +77,8 @@ class UserDevices extends React.Component {
               </thead>
               <tbody>
                 {passwordResetRequests.map((d) => {
-                  const isPendingAdminCheck = d.pwd_reset_status === 'PENDING_ADMIN_CHECK';
-                  const expTime = new Date(d.reset_token_expiration_date);
-                  const isExpired = !!d.reset_token_expiration_date
+                  const expTime = new Date(d.pwd_reset_token_expiration_date);
+                  const isExpired = !!d.pwd_reset_token_expiration_date
                     ? expTime < new Date().getTime()
                     : false;
                   return (
@@ -67,17 +86,29 @@ class UserDevices extends React.Component {
                       <td>{d.device_name}</td>
                       <td>
                         <div>{d.pwd_reset_status}</div>
-                        <div>
-                          {isExpired
-                            ? i18n.t('password_reset_request_expired')
-                            : i18n.t('password_reset_request_valid_until', {
-                                date: expTime.toLocaleString(),
-                              })}
-                        </div>
+                        {d.pwd_reset_token_expiration_date && (
+                          <div>
+                            {isExpired
+                              ? i18n.t('password_reset_request_expired')
+                              : i18n.t('password_reset_request_valid_until', {
+                                  date: expTime.toLocaleString(),
+                                })}
+                          </div>
+                        )}
                       </td>
                       <td>
-                        <div className="action">{i18n.t('password_reset_request_delete')}</div>
-                        <div className="action">{i18n.t('password_reset_request_grant')}</div>
+                        <div
+                          className="action"
+                          onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
+                        >
+                          {i18n.t('password_reset_request_delete')}
+                        </div>
+                        <div
+                          className="action"
+                          onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
+                        >
+                          {i18n.t('password_reset_request_grant')}
+                        </div>
                       </td>
                     </tr>
                   );

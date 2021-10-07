@@ -41,6 +41,10 @@ const translations = {
   password_reset_request_expired: 'Token expiré',
   password_reset_request_valid_until: "Email envoyé. Jeton valide jusqu'au $date.",
   password_reset_request_grant: 'Accorder',
+  password_reset_request_delete_warning:
+    'Voulez-vous supprimer cette demande de réinitialisation de mot de passe ?',
+  password_reset_request_grant_warning:
+    "Assurez-vous que la requête a bien été faite par l'utilisateur lui-même.\n\nAccorder ?",
 };
 
 export default translations;
