@@ -18,7 +18,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   border: 1px solid #eee;
-  border-bottom: 2px solid rgb(0, 171, 169);
+  border-bottom: 3px solid rgb(0, 171, 169);
 }
 
 /* My Style */
@@ -28,6 +28,7 @@ th {
   text-align: left;
   color: #999;
   border: 1px solid #eee;
+  border-bottom-color: rgb(0, 171, 169);
   border-collapse: collapse;
 }
 

@@ -8,7 +8,7 @@ class Users extends React.Component {
     users: [],
     isLoading: true,
   };
-  async componentDidMount() {
+  async loadUsers() {
     try {
       const users = await fetchTemplate('/api/users', 'GET', null);
       this.setState({ users });
@@ -18,6 +18,29 @@ class Users extends React.Component {
       this.setState({ isLoading: false });
     }
   }
+  async deleteUser(userId) {
+    this.setState({ isLoading: true });
+    try {
+      await fetchTemplate(`/api/delete-user/${userId}`, 'POST', null);
+      await this.loadUsers();
+    } catch (e) {
+      console.error(e);
+      // TODO show toaster
+      this.setState({ isLoading: false });
+    }
+  }
+
+  showDeleteWarning(userId, userEmail) {
+    const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
+    if (confirmation) {
+      this.deleteUser(userId);
+    }
+  }
+
+  componentDidMount() {
+    this.loadUsers();
+  }
+
   render() {
     return (
       <div>
@@ -31,6 +54,7 @@ class Users extends React.Component {
               <th>{i18n.t('user_nb_devices')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_nb_codes_and_accounts')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
+              <th>{i18n.t('user_actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -65,6 +89,14 @@ class Users extends React.Component {
                       {i18n.t('user_passwords_reused', {
                         nb: u.nb_accounts_with_duplicate_password || 0,
                       })}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      className="action"
+                      onClick={() => this.showDeleteWarning(u.user_id, u.email)}
+                    >
+                      {i18n.t('user_action_delete')}
                     </div>
                   </td>
                 </tr>

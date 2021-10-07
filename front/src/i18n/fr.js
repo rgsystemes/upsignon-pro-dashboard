@@ -16,6 +16,10 @@ const translations = {
   user_passwords_medium: '$nb moyens',
   user_passwords_strong: '$nb forts',
   user_passwords_reused: 'dont $nb réutilisés',
+  user_actions: 'Actions',
+  user_action_delete: 'Supprimer',
+  user_delete_warning:
+    'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
 };
 
 export default translations;

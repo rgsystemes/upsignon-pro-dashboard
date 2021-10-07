@@ -18,3 +18,9 @@
 .positiveReused:before {
   background: red;
 }
+
+.action {
+  text-decoration: underline;
+  cursor: pointer;
+  color: rgb(0, 171, 169);
+}
