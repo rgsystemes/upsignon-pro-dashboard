@@ -8,7 +8,7 @@ function Menu(props) {
       <div className="logo">UpSignOn</div>
       {pages.map((p) => {
         return (
-          <a href={p.href} className={`navItem ${p.isCurrent ? 'current' : ''}`}>
+          <a key={p.key} href={p.href} className={`navItem ${p.isCurrent ? 'current' : ''}`}>
             {i18n.t(p.translationKey)}
           </a>
         );
