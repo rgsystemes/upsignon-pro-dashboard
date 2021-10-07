@@ -1,4 +1,5 @@
 const translations = {
+  actions: 'Actions',
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
@@ -16,7 +17,6 @@ const translations = {
   user_passwords_medium: '$nb moyens',
   user_passwords_strong: '$nb forts',
   user_passwords_reused: 'dont $nb réutilisés',
-  user_actions: 'Actions',
   user_action_delete: 'Supprimer',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
@@ -26,7 +26,6 @@ const translations = {
   device_type: 'Type',
   device_status: 'Statut',
   device_last_session: 'Dernière session',
-  device_actions: 'Actions',
   device_delete: 'Supprimer',
   device_deactivate: 'Désactiver',
   device_authorize: 'Autoriser',
@@ -36,6 +35,12 @@ const translations = {
     'Cet appareil ne sera plus autorisé mais restera dans la liste.\n\nDésactiver ?',
   device_authorize_warning:
     "Cet appareil sera autorisé sans que l'utilisateur n'ait besoin de valider son adresse email.\n\nAssurez-vous que la demande provienne bien d'un utilisateur légitime !\n\nAutoriser l'appareil ?",
+  password_reset_requests: 'Demandes de réinitialisation de mot de passe',
+  password_reset_request_status: 'Statut',
+  password_reset_request_delete: 'Supprimer',
+  password_reset_request_expired: 'Token expiré',
+  password_reset_request_valid_until: "Email envoyé. Jeton valide jusqu'au $date.",
+  password_reset_request_grant: 'Accorder',
 };
 
 export default translations;

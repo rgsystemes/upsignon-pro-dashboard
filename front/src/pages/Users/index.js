@@ -71,7 +71,7 @@ class Users extends React.Component {
               <th>{i18n.t('user_nb_devices')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_nb_codes_and_accounts')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
-              <th>{i18n.t('user_actions')}</th>
+              <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
           <tbody>

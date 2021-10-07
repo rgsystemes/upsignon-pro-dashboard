@@ -43,11 +43,50 @@ class UserDevices extends React.Component {
   };
 
   render() {
+    const passwordResetRequests = this.props.devices.filter((d) => d.pwd_reset_id);
     return (
       <div style={{ margin: '0 20px 20px 20px' }}>
-        <h5 style={{ margin: 0, lineHeight: '20px' }}>
-          {i18n.t('devices_for_user', { email: this.props.email })}
-        </h5>
+        {passwordResetRequests.length > 0 && (
+          <div>
+            <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
+            <table>
+              <thead>
+                <th>{i18n.t('device_name')}</th>
+                <th>{i18n.t('password_reset_request_status')}</th>
+                <th>{i18n.t('actions')}</th>
+              </thead>
+              <tbody>
+                {passwordResetRequests.map((d) => {
+                  const isPendingAdminCheck = d.pwd_reset_status === 'PENDING_ADMIN_CHECK';
+                  const expTime = new Date(d.reset_token_expiration_date);
+                  const isExpired = !!d.reset_token_expiration_date
+                    ? expTime < new Date().getTime()
+                    : false;
+                  return (
+                    <tr>
+                      <td>{d.device_name}</td>
+                      <td>
+                        <div>{d.pwd_reset_status}</div>
+                        <div>
+                          {isExpired
+                            ? i18n.t('password_reset_request_expired')
+                            : i18n.t('password_reset_request_valid_until', {
+                                date: expTime.toLocaleString(),
+                              })}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="action">{i18n.t('password_reset_request_delete')}</div>
+                        <div className="action">{i18n.t('password_reset_request_grant')}</div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <h5 className="detailsTitle">{i18n.t('devices_for_user', { email: this.props.email })}</h5>
         <table>
           <thead>
             <tr>
@@ -56,7 +95,7 @@ class UserDevices extends React.Component {
               <th>{i18n.t('device_type')}</th>
               <th>{i18n.t('device_status')}</th>
               <th>{i18n.t('device_last_session')}</th>
-              <th>{i18n.t('device_actions')}</th>
+              <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
           <tbody>

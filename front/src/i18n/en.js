@@ -1,4 +1,5 @@
 const translations = {
+  actions: 'Actions',
   menu_overview: 'Overview',
   menu_users: 'Users',
   menu_settings: 'Settings',
@@ -16,7 +17,6 @@ const translations = {
   user_passwords_medium: '$nb medium',
   user_passwords_strong: '$nb strong',
   user_passwords_reused: 'of which $nb reused',
-  user_actions: 'Actions',
   user_action_delete: 'Delete',
   user_delete_warning:
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
@@ -26,7 +26,6 @@ const translations = {
   device_type: 'Type',
   device_status: 'Status',
   device_last_session: 'Last session',
-  device_actions: 'Actions',
   device_delete: 'Delete',
   device_deactivate: 'Deactivate',
   device_authorize: 'Authorize',
@@ -36,6 +35,12 @@ const translations = {
     'This device will no longer be authorized but will stay in the list.\n\nDeactivate?',
   device_authorize_warning:
     'This device will be authorized without the user needing to validate his email address.\n\nMake sure this request originates from a legitimate user!\n\nAuthorize?',
+  password_reset_requests: 'Password reset requests',
+  password_reset_request_status: 'Status',
+  password_reset_request_delete: 'Delete',
+  password_reset_request_expired: 'Token has expired',
+  password_reset_request_valid_until: 'Email sent. Token is valid until $date.',
+  password_reset_request_grant: 'Grant',
 };
 
 export default translations;
