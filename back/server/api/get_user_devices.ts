@@ -22,6 +22,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
     LEFT JOIN password_reset_request AS reset
       ON reset.device_id=ud.id
     WHERE user_id=$1
+    ORDER BY ud.created_at DESC
     `,
       [userId],
     );

@@ -9,7 +9,7 @@ class Users extends React.Component {
     users: [],
     isLoading: true,
   };
-  async loadUsers() {
+  loadUsers = async () => {
     try {
       const users = await fetchTemplate('/api/users', 'GET', null);
       this.setState({ users });
@@ -18,9 +18,9 @@ class Users extends React.Component {
     } finally {
       this.setState({ isLoading: false });
     }
-  }
+  };
 
-  async deleteUserWithWarning(userId, userEmail) {
+  deleteUserWithWarning = async (userId, userEmail) => {
     const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
     if (confirmation) {
       this.setState({ isLoading: true });
@@ -32,9 +32,9 @@ class Users extends React.Component {
         this.setState({ isLoading: false });
       }
     }
-  }
+  };
 
-  async showUserDevices(userId) {
+  loadUserDevices = async (userId) => {
     try {
       const devices = await fetchTemplate(`/api/user-devices/${userId}`, 'GET', null);
       this.setState((s) => {
@@ -52,7 +52,7 @@ class Users extends React.Component {
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
   componentDidMount() {
     this.loadUsers();
@@ -87,7 +87,7 @@ class Users extends React.Component {
                     <td>
                       <div
                         className={u.nb_devices > 0 && 'action'}
-                        onClick={() => this.showUserDevices(u.user_id)}
+                        onClick={() => this.loadUserDevices(u.user_id)}
                       >
                         {i18n.t('user_nb_devices_value', { nb: u.nb_devices || 0 })}
                       </div>
@@ -128,7 +128,11 @@ class Users extends React.Component {
                   {u.devices && (
                     <tr className="detailContainer">
                       <td colSpan={6}>
-                        <UserDevices devices={u.devices} email={u.email} />
+                        <UserDevices
+                          devices={u.devices}
+                          email={u.email}
+                          reloadDevices={() => this.loadUserDevices(u.user_id)}
+                        />
                       </td>
                     </tr>
                   )}

@@ -28,12 +28,12 @@ const translations = {
   device_last_session: 'Last session',
   device_actions: 'Actions',
   device_delete: 'Delete',
-  device_revoke: 'Revoke',
+  device_deactivate: 'Deactivate',
   device_authorize: 'Authorize',
   device_delete_warning:
-    'This will definitively delete this device and its history.\n\nYou can use the Revoke option to no longer authorize connections from this device while keeping its history.\n\nContinue the deletion?',
-  device_revoke_warning:
-    'This device will no longer be authorized but will stay in the list.\n\nRevoke?',
+    'This will definitively delete this device and its history.\n\nYou can use the Deactivate option to no longer authorize connections from this device while keeping its history.\n\nContinue the deletion?',
+  device_deactivate_warning:
+    'This device will no longer be authorized but will stay in the list.\n\nDeactivate?',
   device_authorize_warning:
     'This device will be authorized without the user needing to validate his email address.\n\nMake sure this request originates from a legitimate user!\n\nAuthorize?',
 };

@@ -1,23 +1,46 @@
 import React from 'react';
+import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
 
 class UserDevices extends React.Component {
-  deleteDeviceWithWarning(deviceId) {
+  deleteDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_delete_warning'));
     if (confirmation) {
+      if (confirmation) {
+        try {
+          await fetchTemplate(`/api/delete-device/${deviceId}`, 'POST', null);
+          await this.props.reloadDevices();
+        } catch (e) {
+          console.error(e);
+        }
+      }
     }
-  }
-  revokeDeviceWithWarning(deviceId) {
-    const confirmation = window.confirm(i18n.t('device_revoke_warning'));
+  };
+  deactivateDeviceWithWarning = async (deviceId) => {
+    const confirmation = window.confirm(i18n.t('device_deactivate_warning'));
     if (confirmation) {
+      try {
+        await fetchTemplate(`/api/deactivate-device/${deviceId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
+      }
     }
-  }
-  authorizeDeviceWithWarning(deviceId) {
+  };
+  authorizeDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_authorize_warning'));
     if (confirmation) {
+      if (confirmation) {
+        try {
+          await fetchTemplate(`/api/authorize-device/${deviceId}`, 'POST', null);
+          await this.props.reloadDevices();
+        } catch (e) {
+          console.error(e);
+        }
+      }
     }
-  }
+  };
 
   render() {
     return (
@@ -39,6 +62,7 @@ class UserDevices extends React.Component {
           <tbody>
             {this.props.devices.map((d) => {
               const isAuthorized = d.authorization_status === 'AUTHORIZED';
+              const isRevokedByUser = d.authorization_status === 'REVOKED_BY_USER';
               return (
                 <tr key={d.id}>
                   <td>{d.device_name}</td>
@@ -61,11 +85,14 @@ class UserDevices extends React.Component {
                       {i18n.t('device_delete')}
                     </div>
                     {isAuthorized && (
-                      <div className="action" onClick={() => this.revokeDeviceWithWarning(d.id)}>
-                        {i18n.t('device_revoke')}
+                      <div
+                        className="action"
+                        onClick={() => this.deactivateDeviceWithWarning(d.id)}
+                      >
+                        {i18n.t('device_deactivate')}
                       </div>
                     )}
-                    {!isAuthorized && (
+                    {!isAuthorized && !isRevokedByUser && (
                       <div className="action" onClick={() => this.authorizeDeviceWithWarning(d.id)}>
                         {i18n.t('device_authorize')}
                       </div>

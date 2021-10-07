@@ -28,14 +28,14 @@ const translations = {
   device_last_session: 'Dernière session',
   device_actions: 'Actions',
   device_delete: 'Supprimer',
-  device_revoke: 'Révoquer',
+  device_deactivate: 'Désactiver',
   device_authorize: 'Autoriser',
   device_delete_warning:
-    "Ceci supprimera définitivement cet appareil et son historique.\n\nVous pouvez utiliser l'option Révoquer pour ne plus autoriser les connexions à partir de cet appareil tout en gardant son historique.\n\nContinuer la suppression ?",
-  device_revoke_warning:
-    'Cet appareil ne sera plus autorisé mais restera dans la liste.\n\nRévoquer ?',
+    "Ceci supprimera définitivement cet appareil et son historique.\n\nVous pouvez utiliser l'option Désactiver pour ne plus autoriser les connexions à partir de cet appareil tout en gardant son historique.\n\nContinuer la suppression ?",
+  device_deactivate_warning:
+    'Cet appareil ne sera plus autorisé mais restera dans la liste.\n\nDésactiver ?',
   device_authorize_warning:
-    "Cet appareil sera autorisé sans que l'utilisateur n'ait besoin de valider son adresse email.\n\nAssurez-vous que la demande provient bien d'un utilisateur légitime !\n\nAutoriser l'appareil ?",
+    "Cet appareil sera autorisé sans que l'utilisateur n'ait besoin de valider son adresse email.\n\nAssurez-vous que la demande provienne bien d'un utilisateur légitime !\n\nAutoriser l'appareil ?",
 };
 
 export default translations;

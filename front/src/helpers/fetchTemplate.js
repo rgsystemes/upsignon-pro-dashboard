@@ -11,6 +11,7 @@ export async function fetchTemplate(route, method, body) {
   if (!res.ok) {
     throw new Error(res.statusText);
   }
-  const content = await res.json();
-  return content;
+  const content = await res.text();
+  if (!content) return;
+  return JSON.parse(content);
 }
