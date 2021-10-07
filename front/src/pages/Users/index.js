@@ -27,7 +27,7 @@ class Users extends React.Component {
           <thead>
             <tr>
               <th>{i18n.t('user_email')}</th>
-              <th>{i18n.t('user_data_length')}</th>
+              <th>{i18n.t('user_data')}</th>
               <th>{i18n.t('user_nb_devices')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_nb_codes_and_accounts')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
@@ -38,7 +38,10 @@ class Users extends React.Component {
               return (
                 <tr key={u.user_id}>
                   <td>{u.email}</td>
-                  <td>{`${Math.round(u.data_length / 1000)}ko`}</td>
+                  <td>
+                    <div>{`${Math.round(u.data_length / 1000)}ko`}</div>
+                    <div>{new Date(u.updated_at).toLocaleString()}</div>
+                  </td>
                   <td>{i18n.t('user_nb_devices_value', { nb: u.nb_devices || 0 })}</td>
                   <td>
                     <div>{i18n.t('user_nb_codes_value', { nb: u.nb_codes || 0 })}</div>

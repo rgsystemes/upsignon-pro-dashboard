@@ -4,7 +4,7 @@ const translations = {
   menu_settings: 'Paramètres',
   loading: 'Chargement des données...',
   user_email: 'Email',
-  user_data_length: 'Taille',
+  user_data: 'Données',
   user_nb_devices: "Nb d'appareils",
   user_nb_devices_value: '$nb appareils',
   user_nb_codes_and_accounts: 'Nb de comptes et codes',
