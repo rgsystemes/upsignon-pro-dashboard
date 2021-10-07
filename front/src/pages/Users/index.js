@@ -1,4 +1,5 @@
 import React from 'react';
+import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
 class Users extends React.Component {
@@ -8,7 +9,8 @@ class Users extends React.Component {
   };
   async componentDidMount() {
     try {
-      // TODO
+      const users = await fetchTemplate('/api/users', 'GET', null);
+      this.setState({ users });
     } catch (e) {
       console.error(e);
     } finally {
@@ -20,6 +22,9 @@ class Users extends React.Component {
       <div>
         <h1>{i18n.t('menu_users')}</h1>
         {this.state.isLoading && <div>{i18n.t('loading')}</div>}
+        {this.state.users.map((u) => {
+          return <div>{u.email}</div>;
+        })}
       </div>
     );
   }

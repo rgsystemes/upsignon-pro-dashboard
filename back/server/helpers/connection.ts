@@ -1,5 +1,5 @@
-import { Pool } from "pg";
-import env from "./env";
+import { Pool } from 'pg';
+import env from './env';
 
 // @ts-ignore
 const pool = new Pool({
@@ -12,12 +12,12 @@ const pool = new Pool({
 
 const query = (
   text: string,
-  params?: Array<any>
+  params?: Array<any>,
 ): Promise<{
-  rows: any[],
-  fields: { name: string }[],
-  rowCount: number,
-  command: string,
+  rows: any[];
+  fields: { name: string }[];
+  rowCount: number;
+  command: string;
 }> => pool.query(text, params);
 
 const gracefulShutdown = (): Promise<void> => pool.end();
