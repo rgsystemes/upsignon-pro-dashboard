@@ -1,9 +1,9 @@
-import { i18n } from "../../i18n/i18n";
+import { i18n } from '../../i18n/i18n';
 
 function Settings() {
   return (
     <div>
-      <h1>{i18n.t("menu_settings")}</h1>
+      <h1>{i18n.t('menu_settings')}</h1>
     </div>
   );
 }

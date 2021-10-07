@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "strict": true,
+    "rootDir": "server",
+    "outDir": "compiledServer",
+    "sourceMap": true,
+    "removeComments": true,
+    "build": true
+  },
+  "compileOnSave": true
+}

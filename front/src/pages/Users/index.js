@@ -1,6 +1,7 @@
+import React from "react";
 import { i18n } from "../../i18n/i18n";
 
-class Users {
+class Users extends React.Component {
   state = {
     users: [],
     isLoading: true,
