@@ -45,6 +45,12 @@ const translations = {
     'Voulez-vous supprimer cette demande de réinitialisation de mot de passe ?',
   password_reset_request_grant_warning:
     "Assurez-vous que la requête a bien été faite par l'utilisateur lui-même.\n\nAccorder ?",
+  settings_security: 'Paramètres de sécurité',
+  settings_reset_pwd_admin_check:
+    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur :",
+  settings_change: 'Changer',
+  yes: 'OUI',
+  no: 'NON',
 };
 
 export default translations;

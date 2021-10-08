@@ -4,3 +4,14 @@
   align-items: stretch;
   height: 100vh;
 }
+
+/* actions */
+.action {
+  text-decoration: underline;
+  cursor: pointer;
+  color: rgb(0, 171, 169);
+}
+.action:hover {
+  color: rgb(0, 136, 134);
+  font-style: italic;
+}

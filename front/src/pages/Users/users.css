@@ -18,13 +18,3 @@
 .positiveReused:before {
   background: red;
 }
-
-.action {
-  text-decoration: underline;
-  cursor: pointer;
-  color: rgb(0, 171, 169);
-}
-.action:hover {
-  color: rgb(0, 136, 134);
-  font-style: italic;
-}

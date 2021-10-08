@@ -44,6 +44,12 @@ const translations = {
   password_reset_request_delete_warning: 'Do you wish to delete this password reset request?',
   password_reset_request_grant_warning:
     'Please make sure the request was made by the user himself.\n\nGrant?',
+  settings_security: 'Security settings',
+  settings_reset_pwd_admin_check:
+    'To reset his password, a user must obtain a validation from an administrator:',
+  settings_change: 'Change',
+  yes: 'YES',
+  no: 'NO',
 };
 
 export default translations;
