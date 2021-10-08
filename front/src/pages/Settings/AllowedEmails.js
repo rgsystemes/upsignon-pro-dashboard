@@ -62,9 +62,11 @@ class AllowedEmails extends React.Component {
   render() {
     return (
       <div style={{ marginTop: 50 }}>
-        <h3>{i18n.t('settings_allowed_emails')}</h3>
+        <h2>{i18n.t('settings_allowed_emails')}</h2>
         <div>{i18n.t('settings_allowed_emails_pattern')}</div>
-        <div style={{ marginTop: 20 }}>{i18n.t('settings_allowed_emails_new')}</div>
+        <div style={{ marginTop: 20, fontWeight: 'bold' }}>
+          {i18n.t('settings_allowed_emails_new')}
+        </div>
         <div
           style={{
             display: 'flex',

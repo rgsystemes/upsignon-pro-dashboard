@@ -77,3 +77,18 @@ td input {
   background: none;
   font-size: 16px;
 }
+
+/* Table for alignment purposes only */
+.invisibleTable,
+.invisibleTable td,
+.invisibleTable th {
+  border: 0;
+  padding: 0.1rem 0;
+}
+
+.invisibleTable td input {
+  border-width: 1px;
+  border-style: solid;
+  border-color: grey;
+  border-radius: 2px;
+}

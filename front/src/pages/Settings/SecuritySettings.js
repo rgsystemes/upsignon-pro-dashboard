@@ -36,7 +36,7 @@ class SecuritySettings extends React.Component {
   render() {
     return (
       <div>
-        <h3>{i18n.t('settings_security')}</h3>
+        <h2>{i18n.t('settings_security')}</h2>
         <span>
           <span>{i18n.t('settings_reset_pwd_admin_check')}</span>
           {this.state.settingPwdResetSkipAdminCheck === true && (

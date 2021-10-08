@@ -1,9 +1,10 @@
 const translations = {
+  yes: 'OUI',
+  no: 'NON',
   actions: 'Actions',
   delete: 'Supprimer',
   add: 'Ajouter',
   validate: 'Valider',
-  cancel: 'Annuler',
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
@@ -50,8 +51,6 @@ const translations = {
   settings_reset_pwd_admin_check:
     "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur :",
   settings_change: 'Changer',
-  yes: 'OUI',
-  no: 'NON',
   settings_allowed_emails: 'Adresses email autorisées',
   settings_allowed_emails_pattern:
     "Vous pouvez saisir des adresses email entières ou utiliser la syntaxe *@domaine.fr pour autoriser toutes les adresses d'un domaine.",
@@ -59,6 +58,14 @@ const translations = {
   settings_allowed_emails_new: "Nouveau modèle d'adresse email",
   settings_allowed_emails_delete_warning:
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
+  settings_urls: 'Sites web pré-renseignés',
+  settings_urls_explanation:
+    "Les sites que vous renseignez ici seront proposés aux utilisateurs pour simplifier l'enregistrement de leurs mots de passe.",
+  settings_urls_new: 'Nouveau site web',
+  settings_urls_name: 'Nom du site',
+  settings_urls_signin_url: 'URL de signin',
+  settings_urls_password_change_url: 'URL de changement de mot de passe',
+  settings_urls_delete_warning: 'Êtes-vous sûr ?',
 };
 
 export default translations;

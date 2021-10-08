@@ -1,9 +1,10 @@
 const translations = {
+  yes: 'YES',
+  no: 'NO',
   actions: 'Actions',
   delete: 'Delete',
   add: 'Add',
   validate: 'Validate',
-  cancel: 'Cancel',
   menu_overview: 'Overview',
   menu_users: 'Users',
   menu_settings: 'Settings',
@@ -49,8 +50,6 @@ const translations = {
   settings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator:',
   settings_change: 'Change',
-  yes: 'YES',
-  no: 'NO',
   settings_allowed_emails: 'Authorized email addresses',
   settings_allowed_emails_pattern:
     'You can enter entire email addresses or use the syntax *@domain.com to allow all addresses of a domain.',
@@ -58,6 +57,14 @@ const translations = {
   settings_allowed_emails_new: 'New email address pattern',
   settings_allowed_emails_delete_warning:
     'This will not delete safes for users matching this email address pattern.\n\nDelete ?',
+  settings_urls: 'Prefilled websites',
+  settings_urls_explanation:
+    'The websites you enter here will be offered to users to simplify the registration of their passwords.',
+  settings_urls_new: 'New website',
+  settings_urls_name: 'Site name',
+  settings_urls_signin_url: 'Signin URL',
+  settings_urls_password_change_url: 'Password change URL',
+  settings_urls_delete_warning: 'Are your sure?',
 };
 
 export default translations;

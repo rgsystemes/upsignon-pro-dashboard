@@ -24,3 +24,8 @@
   color: rgb(0, 136, 134);
   font-style: italic;
 }
+
+/* inputs */
+input::placeholder {
+  color: lightgrey;
+}
