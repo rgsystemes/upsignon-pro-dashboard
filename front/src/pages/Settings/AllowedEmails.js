@@ -5,6 +5,7 @@ import { i18n } from '../../i18n/i18n';
 class AllowedEmails extends React.Component {
   state = {
     allowedEmails: [],
+    isEditing: false,
     editingEmailId: null,
     updatedPattern: null,
   };
@@ -32,7 +33,7 @@ class AllowedEmails extends React.Component {
         console.error(e);
       }
     }
-    this.setState({ editingEmailId: null, updatedPattern: null });
+    this.setState({ isEditing: false, editingEmailId: null, updatedPattern: null });
   };
   insertAllowedEmail = async () => {
     try {
@@ -60,7 +61,7 @@ class AllowedEmails extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div style={{ marginTop: 50 }}>
         <h3>{i18n.t('settings_allowed_emails')}</h3>
         <div>{i18n.t('settings_allowed_emails_pattern')}</div>
         <div style={{ marginTop: 20 }}>{i18n.t('settings_allowed_emails_new')}</div>
@@ -92,18 +93,33 @@ class AllowedEmails extends React.Component {
             </thead>
             <tbody>
               {this.state.allowedEmails.map((ae) => {
-                return (
-                  <tr key={ae.id}>
-                    {this.state.editingEmailId !== ae.id ? (
+                if (this.state.editingEmailId !== ae.id || !this.state.isEditing) {
+                  return (
+                    <tr key={ae.id}>
                       <td
                         style={{ cursor: 'pointer' }}
                         onClick={() =>
-                          this.setState({ editingEmailId: ae.id, updatedPattern: ae.pattern })
+                          this.setState((s) => {
+                            return {
+                              isEditing: true,
+                              editingEmailId: ae.id,
+                              updatedPattern: ae.pattern,
+                            };
+                          })
                         }
                       >
                         {ae.pattern}
                       </td>
-                    ) : (
+                      <td>
+                        <div className="action" onClick={() => this.deleteAllowedEmail(ae.id)}>
+                          {i18n.t('delete')}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                } else {
+                  return (
+                    <tr key={`editing_${ae.id}`}>
                       <td colSpan={2}>
                         <div
                           style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
@@ -115,32 +131,25 @@ class AllowedEmails extends React.Component {
                             onChange={(ev) => {
                               this.setState({ updatedPattern: ev.target.value });
                             }}
+                            onBlur={(ev) => {
+                              // do make isEditing false but do not prevent onClick on validate
+                              setTimeout(() => {
+                                this.setState({ isEditing: false });
+                              }, 150);
+                            }}
                           />
-                          <span style={{ marginLeft: 20 }}>
-                            <div className="action" onClick={this.submitAllowedEmailEdition}>
-                              {i18n.t('validate')}
-                            </div>
-                            <div
-                              className="action"
-                              onClick={() =>
-                                this.setState({ editingEmailId: null, updatedPattern: null })
-                              }
-                            >
-                              {i18n.t('cancel')}
-                            </div>
+                          <span
+                            style={{ marginLeft: 20 }}
+                            className="action"
+                            onClick={() => this.submitAllowedEmailEdition()}
+                          >
+                            {i18n.t('validate')}
                           </span>
                         </div>
                       </td>
-                    )}
-                    {this.state.editingEmailId !== ae.id && (
-                      <td>
-                        <div className="action" onClick={() => this.deleteAllowedEmail(ae.id)}>
-                          {i18n.t('delete')}
-                        </div>
-                      </td>
-                    )}
-                  </tr>
-                );
+                    </tr>
+                  );
+                }
               })}
             </tbody>
           </table>
