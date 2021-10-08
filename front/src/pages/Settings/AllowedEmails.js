@@ -6,8 +6,9 @@ class AllowedEmails extends React.Component {
   state = {
     allowedEmails: [],
     editingEmailId: null,
-    newPattern: null,
+    updatedPattern: null,
   };
+  newInputRef = null;
 
   fetchAllowedEmails = async () => {
     try {
@@ -20,21 +21,25 @@ class AllowedEmails extends React.Component {
     }
   };
   submitAllowedEmailEdition = async () => {
-    if (this.state.newPattern !== null) {
+    if (this.state.updatedPattern !== null) {
       try {
         await fetchTemplate('/api/update-allowed-email', 'POST', {
           allowedEmailId: this.state.editingEmailId,
-          newPattern: this.state.newPattern,
+          updatedPattern: this.state.updatedPattern,
         });
         await this.fetchAllowedEmails();
       } catch (e) {
         console.error(e);
       }
     }
-    this.setState({ editingEmailId: null, newPattern: null });
+    this.setState({ editingEmailId: null, updatedPattern: null });
   };
-  insertAllowedEmail = async (key, newValue) => {
+  insertAllowedEmail = async () => {
     try {
+      const newPattern = this.newInputRef.value;
+      await fetchTemplate('/api/insert-allowed-email', 'POST', { newPattern });
+      await this.fetchAllowedEmails();
+      this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
     }
@@ -58,8 +63,24 @@ class AllowedEmails extends React.Component {
       <div>
         <h3>{i18n.t('settings_allowed_emails')}</h3>
         <div>{i18n.t('settings_allowed_emails_pattern')}</div>
-        <div className="action" style={{ marginBottom: 20 }} onClick={() => {}}>
-          {i18n.t('settings_allowed_emails_add')}
+        <div style={{ marginTop: 20 }}>{i18n.t('settings_allowed_emails_new')}</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 20,
+          }}
+        >
+          <input
+            placeholder="*@domain.com"
+            ref={(r) => {
+              this.newInputRef = r;
+            }}
+          />
+          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertAllowedEmail}>
+            {i18n.t('add')}
+          </div>
         </div>
         {this.state.allowedEmails.length > 0 && (
           <table>
@@ -77,7 +98,7 @@ class AllowedEmails extends React.Component {
                       <td
                         style={{ cursor: 'pointer' }}
                         onClick={() =>
-                          this.setState({ editingEmailId: ae.id, newPattern: ae.pattern })
+                          this.setState({ editingEmailId: ae.id, updatedPattern: ae.pattern })
                         }
                       >
                         {ae.pattern}
@@ -90,9 +111,9 @@ class AllowedEmails extends React.Component {
                           <input
                             autoFocus
                             placeholder="*@domain.com"
-                            value={this.state.newPattern}
+                            value={this.state.updatedPattern}
                             onChange={(ev) => {
-                              this.setState({ newPattern: ev.target.value });
+                              this.setState({ updatedPattern: ev.target.value });
                             }}
                           />
                           <span style={{ marginLeft: 20 }}>
@@ -102,7 +123,7 @@ class AllowedEmails extends React.Component {
                             <div
                               className="action"
                               onClick={() =>
-                                this.setState({ editingEmailId: null, newPattern: null })
+                                this.setState({ editingEmailId: null, updatedPattern: null })
                               }
                             >
                               {i18n.t('cancel')}

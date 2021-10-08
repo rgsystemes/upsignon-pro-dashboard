@@ -1,6 +1,7 @@
 const translations = {
   actions: 'Actions',
   delete: 'Supprimer',
+  add: 'Ajouter',
   validate: 'Valider',
   cancel: 'Annuler',
   menu_overview: "Vue d'ensemble",
@@ -55,7 +56,7 @@ const translations = {
   settings_allowed_emails_pattern:
     "Vous pouvez saisir des adresses email entières ou utiliser la syntaxe *@domaine.fr pour autoriser toutes les adresses d'un domaine.",
   settings_allowed_emails_email_pattern: 'Email',
-  settings_allowed_emails_add: 'Ajouter une nouvelle adresse email',
+  settings_allowed_emails_new: "Nouveau modèle d'adresse email",
   settings_allowed_emails_delete_warning:
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
 };

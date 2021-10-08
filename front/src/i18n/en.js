@@ -1,6 +1,7 @@
 const translations = {
   actions: 'Actions',
   delete: 'Delete',
+  add: 'Add',
   validate: 'Validate',
   cancel: 'Cancel',
   menu_overview: 'Overview',
@@ -54,7 +55,7 @@ const translations = {
   settings_allowed_emails_pattern:
     'You can enter entire email addresses or use the syntax *@domain.com to allow all addresses of a domain.',
   settings_allowed_emails_email_pattern: 'Email',
-  settings_allowed_emails_add: 'Add a new email address',
+  settings_allowed_emails_new: 'New email address pattern',
   settings_allowed_emails_delete_warning:
     'This will not delete safes for users matching this email address pattern.\n\nDelete ?',
 };

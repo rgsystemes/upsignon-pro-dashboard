@@ -10,6 +10,7 @@ import { get_settings } from './get_settings';
 import { get_users } from './get_users';
 import { get_user_devices } from './get_user_devices';
 import { grant_pwd_reset_request } from './grant_pwd_reset_request';
+import { insert_allowed_email } from './insert_allowed_email';
 import { update_allowed_email } from './update_allowed_email';
 import { update_setting } from './update_setting';
 
@@ -28,3 +29,4 @@ apiRouter.post('/setting', update_setting);
 apiRouter.get('/allowed-emails', get_allowed_emails);
 apiRouter.post('/delete-allowed-email/:id', delete_allowed_email);
 apiRouter.post('/update-allowed-email', update_allowed_email);
+apiRouter.post('/insert-allowed-email', insert_allowed_email);
