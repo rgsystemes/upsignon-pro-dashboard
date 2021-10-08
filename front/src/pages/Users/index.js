@@ -60,7 +60,7 @@ class Users extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="page">
         <h1>{i18n.t('menu_users')}</h1>
         {this.state.isLoading && <div>{i18n.t('loading')}</div>}
         <table>

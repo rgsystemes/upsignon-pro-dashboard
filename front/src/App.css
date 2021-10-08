@@ -5,6 +5,15 @@
   height: 100vh;
 }
 
+/* Pages */
+.page {
+  flex: 1;
+  height: 100%;
+  overflow: scroll;
+  padding-bottom: 200px;
+  box-sizing: border-box;
+}
+
 /* actions */
 .action {
   text-decoration: underline;
