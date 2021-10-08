@@ -121,7 +121,7 @@ class Users extends React.Component {
                         className="action"
                         onClick={() => this.deleteUserWithWarning(u.user_id, u.email)}
                       >
-                        {i18n.t('user_action_delete')}
+                        {i18n.t('delete')}
                       </div>
                     </td>
                   </tr>

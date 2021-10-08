@@ -101,7 +101,7 @@ class UserDevices extends React.Component {
                           className="action"
                           onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
                         >
-                          {i18n.t('password_reset_request_delete')}
+                          {i18n.t('delete')}
                         </div>
                         <div
                           className="action"
@@ -152,7 +152,7 @@ class UserDevices extends React.Component {
                   <td>{new Date(d.last_session).toLocaleString()}</td>
                   <td>
                     <div className="action" onClick={() => this.deleteDeviceWithWarning(d.id)}>
-                      {i18n.t('device_delete')}
+                      {i18n.t('delete')}
                     </div>
                     {isAuthorized && (
                       <div

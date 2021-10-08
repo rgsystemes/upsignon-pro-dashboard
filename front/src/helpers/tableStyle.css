@@ -66,3 +66,14 @@ table tr.detailContainer,
 table tr.detailContainer > td {
   border-top-color: #eee;
 }
+
+/* Editable cell */
+td input {
+  height: 100%;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  border-bottom: 1px solid rgb(0, 171, 169);
+  background: none;
+  font-size: 16px;
+}

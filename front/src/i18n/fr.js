@@ -1,5 +1,8 @@
 const translations = {
   actions: 'Actions',
+  delete: 'Supprimer',
+  validate: 'Valider',
+  cancel: 'Annuler',
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
@@ -17,7 +20,6 @@ const translations = {
   user_passwords_medium: '$nb moyens',
   user_passwords_strong: '$nb forts',
   user_passwords_reused: 'dont $nb réutilisés',
-  user_action_delete: 'Supprimer',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
   devices_for_user: 'Appareils de $email',
@@ -26,7 +28,6 @@ const translations = {
   device_type: 'Type',
   device_status: 'Statut',
   device_last_session: 'Dernière session',
-  device_delete: 'Supprimer',
   device_deactivate: 'Désactiver',
   device_authorize: 'Autoriser',
   device_delete_warning:
@@ -37,7 +38,6 @@ const translations = {
     "Cet appareil sera autorisé sans que l'utilisateur n'ait besoin de valider son adresse email.\n\nAssurez-vous que la demande provienne bien d'un utilisateur légitime !\n\nAutoriser l'appareil ?",
   password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   password_reset_request_status: 'Statut',
-  password_reset_request_delete: 'Supprimer',
   password_reset_request_expired: 'Token expiré',
   password_reset_request_valid_until: "Email envoyé. Jeton valide jusqu'au $date.",
   password_reset_request_grant: 'Accorder',
@@ -51,6 +51,13 @@ const translations = {
   settings_change: 'Changer',
   yes: 'OUI',
   no: 'NON',
+  settings_allowed_emails: 'Adresses email autorisées',
+  settings_allowed_emails_pattern:
+    "Vous pouvez saisir des adresses email entières ou utiliser la syntaxe *@domaine.fr pour autoriser toutes les adresses d'un domaine.",
+  settings_allowed_emails_email_pattern: 'Email',
+  settings_allowed_emails_add: 'Ajouter une nouvelle adresse email',
+  settings_allowed_emails_delete_warning:
+    "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
 };
 
 export default translations;
