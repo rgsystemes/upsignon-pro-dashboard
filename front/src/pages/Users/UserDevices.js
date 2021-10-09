@@ -74,7 +74,7 @@ class UserDevices extends React.Component {
                 <tr>
                   <th>{i18n.t('device_name')}</th>
                   <th>{i18n.t('password_reset_request_status')}</th>
-                  <th>{i18n.t('password_reset_request_shared_with')}</th>
+                  <th>{i18n.t('device_shared_with')}</th>
                   <th>{i18n.t('actions')}</th>
                 </tr>
               </thead>
@@ -138,6 +138,7 @@ class UserDevices extends React.Component {
               <th>{i18n.t('device_type')}</th>
               <th>{i18n.t('device_status')}</th>
               <th>{i18n.t('device_last_session')}</th>
+              <th>{i18n.t('device_shared_with')}</th>
               <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
@@ -162,6 +163,15 @@ class UserDevices extends React.Component {
                     )}
                   </td>
                   <td>{new Date(d.last_session).toLocaleString()}</td>
+                  {!!d.shared_with ? (
+                    <td>
+                      {d.shared_with.split(';').map((email) => (
+                        <div key={email}>{email}</div>
+                      ))}
+                    </td>
+                  ) : (
+                    <td></td>
+                  )}
                   <td>
                     <div className="action" onClick={() => this.deleteDeviceWithWarning(d.id)}>
                       {i18n.t('delete')}

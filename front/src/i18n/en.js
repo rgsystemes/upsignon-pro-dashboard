@@ -39,11 +39,11 @@ const translations = {
     'This device will no longer be authorized but will stay in the list.\n\nDeactivate?',
   device_authorize_warning:
     'This device will be authorized without the user needing to validate his email address.\n\nMake sure this request originates from a legitimate user!\n\nAuthorize?',
+  device_shared_with: 'Device shared with',
   password_reset_requests: 'Password reset requests',
   password_reset_request_status: 'Status',
   password_reset_request_expired: 'Token has expired',
   password_reset_request_valid_until: 'Email sent. Token is valid until $date.',
-  password_reset_request_shared_with: 'Device shared with',
   password_reset_request_grant: 'Grant',
   password_reset_request_delete_warning: 'Do you wish to delete this password reset request?',
   password_reset_request_grant_warning:
