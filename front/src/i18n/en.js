@@ -8,6 +8,7 @@ const translations = {
   menu_overview: 'Overview',
   menu_users: 'Users',
   menu_settings: 'Settings',
+  menu_shared_devices: 'Shared devices',
   loading: 'Loading data...',
   user_email: 'Email',
   user_data: 'Data',
@@ -56,7 +57,7 @@ const translations = {
   settings_allowed_emails_email_pattern: 'Email',
   settings_allowed_emails_new: 'New email address pattern',
   settings_allowed_emails_delete_warning:
-    'This will not delete safes for users matching this email address pattern.\n\nDelete ?',
+    'This will not delete the safes for users matching this email address template.\n\nDelete ?',
   settings_urls: 'Prefilled websites',
   settings_urls_explanation:
     'The websites you enter here will be offered to users to simplify the registration of their passwords.',
@@ -65,6 +66,15 @@ const translations = {
   settings_urls_signin_url: 'Signin URL',
   settings_urls_password_change_url: 'Password change URL',
   settings_urls_delete_warning: 'Are your sure?',
+  shared_devices_explanation:
+    'This is the list of devices where at least two users have authorized their PRO space.',
+  shared_devices_uid: 'Device unique id',
+  shared_devices_user_email: 'Email',
+  shared_devices_created_at: 'Add date',
+  shared_devices_name: 'Device name',
+  shared_devices_type: 'Device type',
+  shared_devices_status: 'Status',
+  shared_devices_last_session: 'Last session',
 };
 
 export default translations;

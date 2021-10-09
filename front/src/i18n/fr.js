@@ -8,6 +8,7 @@ const translations = {
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
+  menu_shared_devices: 'Appareils partagés',
   loading: 'Chargement des données...',
   user_email: 'Email',
   user_data: 'Données',
@@ -66,6 +67,15 @@ const translations = {
   settings_urls_signin_url: 'URL de signin',
   settings_urls_password_change_url: 'URL de changement de mot de passe',
   settings_urls_delete_warning: 'Êtes-vous sûr ?',
+  shared_devices_explanation:
+    'Voici la liste des appareils sur lesquels au moins deux utilisateurs ont autorisé leur espace PRO.',
+  shared_devices_uid: "Identifiant unique de l'appareil",
+  shared_devices_user_email: 'Email',
+  shared_devices_created_at: "Date d'ajout",
+  shared_devices_name: "Nom de l'appareil",
+  shared_devices_type: "Type d'appareil",
+  shared_devices_status: 'Statut',
+  shared_devices_last_session: 'Dernière session',
 };
 
 export default translations;

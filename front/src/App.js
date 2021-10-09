@@ -3,6 +3,7 @@ import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
 import { Overview } from './pages/Overview';
 import { Settings } from './pages/Settings';
+import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
   if (path.startsWith('/users')) {
     pageContent = <Users />;
     currentPage = 'users';
+  } else if (path.startsWith('/shared_devices')) {
+    pageContent = <SharedDevices />;
+    currentPage = 'shared_devices';
   } else if (path.startsWith('/settings')) {
     pageContent = <Settings />;
     currentPage = 'settings';
@@ -31,6 +35,12 @@ function App() {
       href: '/users/',
       translationKey: 'menu_users',
       isCurrent: currentPage === 'users',
+    },
+    {
+      key: 'shared_devices',
+      href: '/shared_devices/',
+      translationKey: 'menu_shared_devices',
+      isCurrent: currentPage === 'shared_devices',
     },
     {
       key: 'settings',
