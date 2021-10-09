@@ -9,6 +9,10 @@ nav {
   padding: 16px;
   text-decoration: none;
   color: black;
+  border-bottom: 1px solid #eee;
+}
+.navItem:first-of-type {
+  border-top: 1px solid #eee;
 }
 .navItem:hover,
 .navItem.current:hover {
@@ -22,4 +26,11 @@ nav {
 
 .logo {
   padding: 16px 16px 48px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo svg {
+  width: 40px;
+  margin-bottom: 5px;
 }
