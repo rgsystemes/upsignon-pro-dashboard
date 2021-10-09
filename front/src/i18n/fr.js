@@ -9,6 +9,7 @@ const translations = {
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
   menu_shared_devices: 'Appareils partagés',
+  menu_shared_accounts: 'Comptes partagés',
   loading: 'Chargement des données...',
   user_email: 'Email',
   user_data: 'Données',
@@ -77,6 +78,20 @@ const translations = {
   shared_devices_type: "Type d'appareil",
   shared_devices_status: 'Statut',
   shared_devices_last_session: 'Dernière session',
+  shared_account_name: 'Nom',
+  shared_account_type: 'Type',
+  shared_account_url: 'URL',
+  shared_account_login: 'Login',
+  shared_account_users: 'Utilisateurs',
+  shared_account_user_creation_date: 'Depuis',
+  shared_account_user_is_manager: 'Gestionnaire',
+  shared_account_user_actions: 'Actions utilisateur',
+  shared_account_actions: 'Actions sur le compte',
+  shared_account_user_delete: "Supprimer l'utilisateur",
+  shared_account_user_delete_warning:
+    '$accountName ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
+  shared_account_last_user_warning:
+    "IL S'AGIT DU DERNIER UTILISATEUR AYANT ACCÈS À CE COMPTE. LE MOT DE PASSE SERA PERDU.",
 };
 
 export default translations;

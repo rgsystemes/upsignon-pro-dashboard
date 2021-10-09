@@ -9,6 +9,7 @@ const translations = {
   menu_users: 'Users',
   menu_settings: 'Settings',
   menu_shared_devices: 'Shared devices',
+  menu_shared_accounts: 'Shared accounts',
   loading: 'Loading data...',
   user_email: 'Email',
   user_data: 'Data',
@@ -76,6 +77,20 @@ const translations = {
   shared_devices_type: 'Device type',
   shared_devices_status: 'Status',
   shared_devices_last_session: 'Last session',
+  shared_account_name: 'Name',
+  shared_account_type: 'Type',
+  shared_account_url: 'URL',
+  shared_account_login: 'Login',
+  shared_account_users: 'Users',
+  shared_account_user_creation_date: 'Since',
+  shared_account_user_is_manager: 'Manager',
+  shared_account_user_actions: 'User actions',
+  shared_account_actions: 'Account actions',
+  shared_account_user_delete: 'Delete user',
+  shared_account_user_delete_warning:
+    '$accountName will no longer be shared with $user.\n\nAre you sure?',
+  shared_account_last_user_warning:
+    'THIS IS THE LAST USER WITH ACCESS TO THIS ACCOUNT. THE PASSWORD WILL BE LOST.',
 };
 
 export default translations;

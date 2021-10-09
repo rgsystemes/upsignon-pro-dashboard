@@ -3,6 +3,7 @@ import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
 import { Overview } from './pages/Overview';
 import { Settings } from './pages/Settings';
+import { SharedAccounts } from './pages/SharedAccounts';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 
@@ -18,6 +19,9 @@ function App() {
   } else if (path.startsWith('/shared_devices')) {
     pageContent = <SharedDevices />;
     currentPage = 'shared_devices';
+  } else if (path.startsWith('/shared_accounts')) {
+    pageContent = <SharedAccounts />;
+    currentPage = 'shared_accounts';
   } else if (path.startsWith('/settings')) {
     pageContent = <Settings />;
     currentPage = 'settings';
@@ -41,6 +45,12 @@ function App() {
       href: '/shared_devices/',
       translationKey: 'menu_shared_devices',
       isCurrent: currentPage === 'shared_devices',
+    },
+    {
+      key: 'shared_accounts',
+      href: '/shared_accounts/',
+      translationKey: 'menu_shared_accounts',
+      isCurrent: currentPage === 'shared_accounts',
     },
     {
       key: 'settings',

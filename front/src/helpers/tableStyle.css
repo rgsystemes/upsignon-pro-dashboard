@@ -68,7 +68,7 @@ table tr.detailContainer > td {
 }
 
 /* Editable cell */
-td input {
+td input:not([type='checkbox']) {
   height: 100%;
   border: 0;
   outline: none;
