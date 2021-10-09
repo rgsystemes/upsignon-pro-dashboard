@@ -71,10 +71,12 @@ class UserDevices extends React.Component {
             <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
             <table style={{ marginBottom: 20 }}>
               <thead>
-                <th>{i18n.t('device_name')}</th>
-                <th>{i18n.t('password_reset_request_status')}</th>
-                <th>{i18n.t('password_reset_request_shared_with')}</th>
-                <th>{i18n.t('actions')}</th>
+                <tr>
+                  <th>{i18n.t('device_name')}</th>
+                  <th>{i18n.t('password_reset_request_status')}</th>
+                  <th>{i18n.t('password_reset_request_shared_with')}</th>
+                  <th>{i18n.t('actions')}</th>
+                </tr>
               </thead>
               <tbody>
                 {passwordResetRequests.map((d) => {
@@ -83,7 +85,7 @@ class UserDevices extends React.Component {
                     ? expTime < new Date().getTime()
                     : false;
                   return (
-                    <tr>
+                    <tr key={d.pwd_reset_id}>
                       <td>{d.device_name}</td>
                       <td>
                         <div>{d.pwd_reset_status}</div>
@@ -100,7 +102,7 @@ class UserDevices extends React.Component {
                       {!!d.shared_with ? (
                         <td className="warningCell">
                           {d.shared_with.split(';').map((email) => (
-                            <div>{email}</div>
+                            <div key={email}>{email}</div>
                           ))}
                         </td>
                       ) : (
