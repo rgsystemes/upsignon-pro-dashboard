@@ -18,3 +18,8 @@
 .positiveReused:before {
   background: red;
 }
+
+.warningCell {
+  background: orange;
+  color: white;
+}

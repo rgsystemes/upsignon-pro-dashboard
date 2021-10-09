@@ -43,6 +43,7 @@ const translations = {
   password_reset_request_status: 'Statut',
   password_reset_request_expired: 'Token expiré',
   password_reset_request_valid_until: "Email envoyé. Jeton valide jusqu'au $date.",
+  password_reset_request_shared_with: 'Appareil partagé avec',
   password_reset_request_grant: 'Accorder',
   password_reset_request_delete_warning:
     'Voulez-vous supprimer cette demande de réinitialisation de mot de passe ?',

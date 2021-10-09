@@ -12,10 +12,3 @@
   margin: 0;
   line-height: 20px;
 }
-
-.passwordResetRequestTable {
-  margin-bottom: 20px;
-}
-.passwordResetRequestTable th {
-  background-color: orange;
-}

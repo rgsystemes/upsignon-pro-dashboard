@@ -43,6 +43,7 @@ const translations = {
   password_reset_request_status: 'Status',
   password_reset_request_expired: 'Token has expired',
   password_reset_request_valid_until: 'Email sent. Token is valid until $date.',
+  password_reset_request_shared_with: 'Device shared with',
   password_reset_request_grant: 'Grant',
   password_reset_request_delete_warning: 'Do you wish to delete this password reset request?',
   password_reset_request_grant_warning:

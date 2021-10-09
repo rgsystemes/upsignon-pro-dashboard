@@ -69,10 +69,11 @@ class UserDevices extends React.Component {
         {passwordResetRequests.length > 0 && (
           <div>
             <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
-            <table className="passwordResetRequestTable">
+            <table style={{ marginBottom: 20 }}>
               <thead>
                 <th>{i18n.t('device_name')}</th>
                 <th>{i18n.t('password_reset_request_status')}</th>
+                <th>{i18n.t('password_reset_request_shared_with')}</th>
                 <th>{i18n.t('actions')}</th>
               </thead>
               <tbody>
@@ -96,6 +97,15 @@ class UserDevices extends React.Component {
                           </div>
                         )}
                       </td>
+                      {!!d.shared_with ? (
+                        <td className="warningCell">
+                          {d.shared_with.split(';').map((email) => (
+                            <div>{email}</div>
+                          ))}
+                        </td>
+                      ) : (
+                        <td></td>
+                      )}
                       <td>
                         <div
                           className="action"
