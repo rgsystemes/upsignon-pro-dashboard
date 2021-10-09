@@ -80,14 +80,13 @@ const translations = {
   shared_devices_last_session: 'Dernière session',
   shared_account_name: 'Nom',
   shared_account_type: 'Type',
-  shared_account_url: 'URL',
-  shared_account_login: 'Login',
+  shared_account_url: 'URL & login',
   shared_account_users: 'Utilisateurs',
   shared_account_user_creation_date: 'Depuis',
   shared_account_user_is_manager: 'Gestionnaire',
   shared_account_user_actions: 'Actions utilisateur',
   shared_account_actions: 'Actions sur le compte',
-  shared_account_user_delete: "Supprimer l'utilisateur",
+  shared_account_user_delete: 'Supprimer du partage',
   shared_account_user_delete_warning:
     '$accountName ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
   shared_account_last_user_warning:

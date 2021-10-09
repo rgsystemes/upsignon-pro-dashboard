@@ -104,7 +104,6 @@ class SharedAccounts extends React.Component {
               <th>{i18n.t('shared_account_name')}</th>
               <th>{i18n.t('shared_account_type')}</th>
               <th>{i18n.t('shared_account_url')}</th>
-              <th>{i18n.t('shared_account_login')}</th>
               <th>{i18n.t('shared_account_users')}</th>
               <th>{i18n.t('shared_account_user_creation_date')}</th>
               <th>{i18n.t('shared_account_user_is_manager')}</th>
@@ -120,8 +119,10 @@ class SharedAccounts extends React.Component {
                     <tr>
                       <td>{s.name}</td>
                       <td>{s.type}</td>
-                      <td>{s.url}</td>
-                      <td>{s.login}</td>
+                      <td>
+                        <div>{s.url}</div>
+                        <div>{s.login}</div>
+                      </td>
                       <td className="warningCell"></td>
                       <td></td>
                       <td></td>
@@ -143,8 +144,12 @@ class SharedAccounts extends React.Component {
                       <tr key={u.sharedAccountUserId}>
                         {i === 0 && <td rowSpan={s.users.length}>{s.name}</td>}
                         {i === 0 && <td rowSpan={s.users.length}>{s.type}</td>}
-                        {i === 0 && <td rowSpan={s.users.length}>{s.url}</td>}
-                        {i === 0 && <td rowSpan={s.users.length}>{s.login}</td>}
+                        {i === 0 && (
+                          <td rowSpan={s.users.length}>
+                            <div>{s.url}</div>
+                            <div>{s.login}</div>
+                          </td>
+                        )}
                         <td>{u.email}</td>
                         <td>{new Date(u.createdAt).toLocaleDateString()}</td>
                         <td>
