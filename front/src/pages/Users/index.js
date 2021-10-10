@@ -1,18 +1,42 @@
 import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
 import { UserDevices } from './UserDevices';
 import './users.css';
 
+const maxRenderedItems = 50;
+
 class Users extends React.Component {
   state = {
+    userCount: 0,
     users: [],
     isLoading: true,
+    limit: maxRenderedItems,
+    pageIndex: 1,
+  };
+  getCurrentQueryParameters = () => {
+    const queryParamsArray = window.location.search
+      .replace(/^\?/, '')
+      .split('&')
+      .map((p) => p.split('='));
+    const queryParams = {};
+    queryParamsArray.forEach((qp) => {
+      if (qp.length === 2) queryParams[qp[0]] = qp[1];
+    });
+    return queryParams;
   };
   loadUsers = async () => {
     try {
-      const users = await fetchTemplate('/api/users', 'GET', null);
-      this.setState({ users });
+      const queryParams = this.getCurrentQueryParameters();
+      const limit = parseInt(queryParams.limit) || maxRenderedItems;
+      const pageIndex = parseInt(queryParams.pageIndex) || 1;
+      const { users, userCount } = await fetchTemplate(
+        `/api/users?pageIndex=${pageIndex}&limit=${limit}`,
+        'GET',
+        null,
+      );
+      this.setState({ users, userCount, limit, pageIndex });
     } catch (e) {
       console.error(e);
     } finally {
@@ -58,11 +82,21 @@ class Users extends React.Component {
     this.loadUsers();
   }
 
+  goToPageIndex = (p) => {
+    window.location.href = `/users/?limit=${this.state.limit}&pageIndex=${p}`;
+  };
+
   render() {
     return (
       <div className="page">
         <h1>{i18n.t('menu_users')}</h1>
         {this.state.isLoading && <div>{i18n.t('loading')}</div>}
+        <PaginationBar
+          pageIndex={this.state.pageIndex}
+          limit={this.state.limit}
+          totalCount={this.state.userCount}
+          onClick={this.goToPageIndex}
+        />
         <table>
           <thead>
             <tr>
@@ -141,6 +175,12 @@ class Users extends React.Component {
             })}
           </tbody>
         </table>
+        <PaginationBar
+          pageIndex={this.state.pageIndex}
+          limit={this.state.limit}
+          totalCount={this.state.userCount}
+          onClick={this.goToPageIndex}
+        />
       </div>
     );
   }

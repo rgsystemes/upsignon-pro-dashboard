@@ -4,6 +4,7 @@ const translations = {
   actions: 'Actions',
   delete: 'Supprimer',
   add: 'Ajouter',
+  pagination_pages: 'pages',
   validate: 'Valider',
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',

@@ -2,7 +2,15 @@ import { db } from '../helpers/connection';
 
 export const get_users = async (req: any, res: any): Promise<void> => {
   try {
-    const usersRequest = await db.query(`
+    const countUsersReq = await db.query('SELECT COUNT(id) FROM users');
+    const userCount = parseInt(countUsersReq.rows[0].count);
+
+    let pageIndex = parseInt(req.query.pageIndex) || 0;
+    const limit = parseInt(req.query.limit) || 50;
+    if (pageIndex * limit >= userCount) pageIndex = 0;
+
+    const usersRequest = await db.query(
+      `
     SELECT
       u.id AS user_id,
       u.email AS email,
@@ -17,13 +25,19 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_strong  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_strong,
       (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
     FROM users AS u
-    `);
+    ORDER BY u.email
+    LIMIT $1
+    OFFSET $2
+    `,
+      [limit, pageIndex * limit],
+    );
     const users = usersRequest.rows.map((u) => ({
       ...u,
       nb_devices: parseInt(u.nb_devices),
       nb_shared_items: parseInt(u.nb_shared_items),
     }));
-    res.status(200).send(users);
+
+    res.status(200).send({ users, userCount });
   } catch (e) {
     console.error(e);
     res.status(400).end();
