@@ -12,10 +12,10 @@ export const get_shared_devices = async (req: any, res: any): Promise<void> => {
       ud.created_at AS created_at,
       u.email AS email,
       (SELECT date FROM usage_logs WHERE device_id=ud.id ORDER BY date DESC LIMIT 1) AS last_session
-      FROM user_devices AS ud
+    FROM user_devices AS ud
       INNER JOIN users AS u ON u.id=ud.user_id
-      INNER JOIN user_devices AS udbis ON ud.device_unique_id=udbis.device_unique_id AND ud.id!=udbis.id
-      ORDER BY ud.device_unique_id
+    WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
+    ORDER BY ud.device_unique_id
   `);
     res.status(200).send(dbRes.rows);
   } catch (e) {
