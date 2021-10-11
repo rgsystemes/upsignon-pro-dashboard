@@ -90,8 +90,7 @@ const translations = {
   shared_account_users: 'Utilisateurs',
   shared_account_user_creation_date: 'Depuis',
   shared_account_user_is_manager: 'Gestionnaire',
-  shared_account_user_actions: 'Actions utilisateur',
-  shared_account_actions: 'Actions sur le compte',
+  shared_account_user_actions: 'Actions',
   shared_account_user_delete: 'Supprimer du partage',
   shared_account_user_delete_warning:
     '$accountName ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
@@ -99,6 +98,8 @@ const translations = {
     "IL S'AGIT DU DERNIER UTILISATEUR AYANT ACCÈS À CE COMPTE. LE MOT DE PASSE SERA PERDU.",
   shared_account_search: "Rechercher par adresse email d'utilisateur",
   shared_account_unit_name: 'Comptes partagés',
+  shared_account_manager_note:
+    "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
 };
 
 export default translations;

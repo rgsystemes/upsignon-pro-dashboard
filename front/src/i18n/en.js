@@ -89,8 +89,7 @@ const translations = {
   shared_account_users: 'Users',
   shared_account_user_creation_date: 'Since',
   shared_account_user_is_manager: 'Manager',
-  shared_account_user_actions: 'User actions',
-  shared_account_actions: 'Account actions',
+  shared_account_user_actions: 'Actions',
   shared_account_user_delete: 'Delete from sharing',
   shared_account_user_delete_warning:
     '$accountName will no longer be shared with $user.\n\nAre you sure?',
@@ -98,6 +97,8 @@ const translations = {
     'THIS IS THE LAST USER WITH ACCESS TO THIS ACCOUNT. THE PASSWORD WILL BE LOST.',
   shared_account_search: 'Search by user email address',
   shared_account_unit_name: 'Shared accounts',
+  shared_account_manager_note:
+    "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
 };
 
 export default translations;

@@ -133,6 +133,7 @@ class SharedAccounts extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_shared_accounts')}</h1>
+        <p>{i18n.t('shared_account_manager_note')}</p>
         <div>
           <div>{i18n.t('shared_account_search')}</div>
           <input
@@ -159,7 +160,6 @@ class SharedAccounts extends React.Component {
               <th>{i18n.t('shared_account_user_creation_date')}</th>
               <th>{i18n.t('shared_account_user_is_manager')}</th>
               <th>{i18n.t('shared_account_user_actions')}</th>
-              <th>{i18n.t('shared_account_actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -175,7 +175,6 @@ class SharedAccounts extends React.Component {
                         <div>{s.login}</div>
                       </td>
                       <td className="warningCell"></td>
-                      <td></td>
                       <td></td>
                       <td></td>
                       <td>
@@ -222,21 +221,22 @@ class SharedAccounts extends React.Component {
                           </div>
                         </td>
                         <td>
-                          <div
-                            className="action"
-                            onClick={() =>
-                              this.unshareWithUser(
-                                u.shared_account_user_id,
-                                s.name,
-                                u.email,
-                                s.users.length === 1,
-                              )
-                            }
-                          >
-                            {i18n.t('shared_account_user_delete')}
-                          </div>
+                          {!isLastManager && (
+                            <div
+                              className="action"
+                              onClick={() =>
+                                this.unshareWithUser(
+                                  u.shared_account_user_id,
+                                  s.name,
+                                  u.email,
+                                  s.users.length === 1,
+                                )
+                              }
+                            >
+                              {i18n.t('shared_account_user_delete')}
+                            </div>
+                          )}
                         </td>
-                        {i === 0 && <td rowSpan={s.users.length}></td>}
                       </tr>
                     );
                   })}
