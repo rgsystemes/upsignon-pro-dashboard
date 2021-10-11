@@ -80,6 +80,17 @@ class SharedDevices extends React.Component {
               );
             })}
           </tbody>
+          <thead>
+            <tr>
+              <th style={{ maxWidth: 150 }}>{i18n.t('shared_devices_uid')}</th>
+              <th>{i18n.t('shared_devices_user_email')}</th>
+              <th>{i18n.t('shared_devices_created_at')}</th>
+              <th>{i18n.t('shared_devices_name')}</th>
+              <th>{i18n.t('shared_devices_type')}</th>
+              <th>{i18n.t('shared_devices_status')}</th>
+              <th>{i18n.t('shared_devices_last_session')}</th>
+            </tr>
+          </thead>
         </table>
       </div>
     );

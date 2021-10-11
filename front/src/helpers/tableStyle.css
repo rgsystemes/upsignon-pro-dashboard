@@ -21,20 +21,17 @@ table {
 }
 
 /* My Style */
-table {
-  border-bottom: 3px solid rgb(0, 171, 169);
-}
 td,
 th {
   padding: 0.5rem;
   text-align: left;
   color: #555;
-  border-width: 2px 1px 0 1px;
-  border-style: solid;
-  border-left-color: #eee;
-  border-right-color: #eee;
-  border-top-color: rgb(0, 171, 169);
   border-collapse: collapse;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+}
+td {
+  border-bottom: 1px solid rgb(0, 171, 169);
 }
 
 tbody tr:hover:not(.detailContainer) {
@@ -50,7 +47,11 @@ th {
 }
 
 /* Details */
+.detailContainer {
+  background-color: rgb(0, 171, 169, 0.1);
+}
 table tr.detailContainer table {
+  background-color: white;
   border-bottom-width: 1px;
   border-bottom-color: #eee;
 }

@@ -244,6 +244,16 @@ class SharedAccounts extends React.Component {
               );
             })}
           </tbody>
+          <thead>
+            <tr>
+              <th>{i18n.t('shared_account_name')}</th>
+              <th>{i18n.t('shared_account_url')}</th>
+              <th>{i18n.t('shared_account_users')}</th>
+              <th>{i18n.t('shared_account_user_creation_date')}</th>
+              <th>{i18n.t('shared_account_user_is_manager')}</th>
+              <th>{i18n.t('shared_account_user_actions')}</th>
+            </tr>
+          </thead>
         </table>
         <PaginationBar
           pageIndex={this.state.pageIndex}

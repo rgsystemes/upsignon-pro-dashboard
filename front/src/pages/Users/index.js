@@ -210,6 +210,16 @@ class Users extends React.Component {
               );
             })}
           </tbody>
+          <thead>
+            <tr>
+              <th>{i18n.t('user_email')}</th>
+              <th>{i18n.t('user_data')}</th>
+              <th>{i18n.t('user_nb_devices')}</th>
+              <th style={{ width: 150 }}>{i18n.t('user_nb_codes_and_accounts')}</th>
+              <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
+              <th>{i18n.t('actions')}</th>
+            </tr>
+          </thead>
         </table>
         <PaginationBar
           pageIndex={this.state.pageIndex}
