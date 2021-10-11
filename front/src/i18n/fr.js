@@ -104,6 +104,9 @@ const translations = {
   stats_weak_pwd: 'Nombre de mots de passe faibles',
   stats_medium_pwd: 'Nombre de mots de passe moyens',
   stats_strong_pwd: 'Nombre de mots de passe forts',
+  stats_nb_users: "Nombre d'utilisateurs",
+  stats_nb_shared_accounts: 'Nombre de comptes partagés',
+  stats_nb_shared_devices: "Nombre d'appareils partagés",
 };
 
 export default translations;

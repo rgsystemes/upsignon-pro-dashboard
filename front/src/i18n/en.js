@@ -103,6 +103,9 @@ const translations = {
   stats_weak_pwd: 'Number of weak passwords',
   stats_medium_pwd: 'Number of medium passwords',
   stats_strong_pwd: 'Number of strong passwords',
+  stats_nb_users: 'Number of users',
+  stats_nb_shared_accounts: 'Number of shared accounts',
+  stats_nb_shared_devices: 'Number of shared devices',
 };
 
 export default translations;

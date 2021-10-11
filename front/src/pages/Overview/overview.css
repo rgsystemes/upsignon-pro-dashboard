@@ -8,24 +8,28 @@
   height: 80px;
   width: 120px;
   border-radius: 5px;
-  background-color: grey;
-  color: white;
+  background-color: lightgrey;
+  color: black;
 }
 
 .weakPwd {
   background-color: red;
+  color: white;
 }
 
 .mediumPwd {
   background-color: orange;
+  color: white;
 }
 
 .strongPwd {
   background-color: green;
+  color: white;
 }
 
 .duplicatePwd {
   background-color: red;
+  color: white;
 }
 
 .statTitle {
