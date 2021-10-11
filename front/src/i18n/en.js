@@ -38,6 +38,7 @@ const translations = {
   device_status: 'Status',
   device_last_session: 'Last session',
   device_deactivate: 'Deactivate',
+  device_deactive_all: 'Deactivate all users\non this devices',
   device_authorize: 'Authorize',
   device_delete_warning:
     'This will definitively delete this device and its history.\n\nYou can use the Deactivate option to no longer authorize connections from this device while keeping its history.\n\nContinue the deletion?',

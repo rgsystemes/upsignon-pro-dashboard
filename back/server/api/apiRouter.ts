@@ -1,6 +1,7 @@
 import express from 'express';
 import { authorize_device } from './authorize_device';
 import { deactivate_device } from './deactivate_device';
+import { deactivate_device_all_users } from './deactivate_device_all_users';
 import { delete_allowed_email } from './delete_allowed_email';
 import { delete_device } from './delete_device';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
@@ -30,6 +31,7 @@ apiRouter.post('/delete-user/:userId', delete_user);
 apiRouter.get('/user-devices/:userId', get_user_devices);
 apiRouter.post('/delete-device/:deviceId', delete_device);
 apiRouter.post('/deactivate-device/:deviceId', deactivate_device);
+apiRouter.post('/deactivate-device-all-users/:deviceId', deactivate_device_all_users);
 apiRouter.post('/authorize-device/:deviceId', authorize_device);
 apiRouter.post('/delete-pwd-reset-request/:requestId', delete_pwd_reset_request);
 apiRouter.post('/grant-pwd-reset-request/:requestId', grant_pwd_reset_request);

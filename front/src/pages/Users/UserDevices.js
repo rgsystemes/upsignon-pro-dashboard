@@ -26,6 +26,17 @@ class UserDevices extends React.Component {
       }
     }
   };
+  deactivateAllUsersForDevice = async (deviceId) => {
+    const confirmation = window.confirm(i18n.t('device_deactivate_warning'));
+    if (confirmation) {
+      try {
+        await fetchTemplate(`/api/deactivate-device-all-users/${deviceId}`, 'POST', null);
+        await this.props.reloadDevices();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
   authorizeDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_authorize_warning'));
     if (confirmation) {
@@ -168,6 +179,12 @@ class UserDevices extends React.Component {
                       {d.shared_with.split(';').map((email) => (
                         <div key={email}>{email}</div>
                       ))}
+                      <div
+                        className="action"
+                        onClick={() => this.deactivateAllUsersForDevice(d.id)}
+                      >
+                        {i18n.t('device_deactive_all')}
+                      </div>
                     </td>
                   ) : (
                     <td></td>
