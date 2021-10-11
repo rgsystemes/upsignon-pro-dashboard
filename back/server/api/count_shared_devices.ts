@@ -4,7 +4,7 @@ export const count_shared_devices = async (req: any, res: any): Promise<void> =>
   try {
     const dbRes = await db.query(`
     SELECT
-      COUNT(ud.id) AS count
+      COUNT(DISTINCT ud.device_unique_id) as count
     FROM user_devices AS ud
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
   `);

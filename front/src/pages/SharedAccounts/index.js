@@ -13,6 +13,16 @@ class SharedAccounts extends React.Component {
     sharedAccounts: [],
     limit: maxRenderedItems,
     pageIndex: 1,
+    count: 0,
+  };
+
+  getCount = async () => {
+    try {
+      const count = await fetchTemplate('/api/count-shared-accounts', 'GET', null);
+      this.setState({ count });
+    } catch (e) {
+      console.error(e);
+    }
   };
   getCurrentQueryParameters = () => {
     const queryParamsArray = window.location.search
@@ -136,6 +146,7 @@ class SharedAccounts extends React.Component {
 
   componentDidMount() {
     this.getSharedAccounts();
+    this.getCount();
   }
   render() {
     const searchInputStyle = { width: 200 };
@@ -148,7 +159,7 @@ class SharedAccounts extends React.Component {
     }
     return (
       <div className="page">
-        <h1>{i18n.t('menu_shared_accounts')}</h1>
+        <h1>{`${i18n.t('menu_shared_accounts')} - ${this.state.count}`}</h1>
         <p>{i18n.t('shared_account_manager_note')}</p>
         <div>
           <div>{i18n.t('shared_account_search')}</div>

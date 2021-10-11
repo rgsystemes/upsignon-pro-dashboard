@@ -7,7 +7,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
         SUM(nb_weak) AS nb_weak,
         SUM(nb_medium) AS nb_medium,
         SUM(nb_strong) AS nb_strong,
-        SUM(nb_duplicates) AS nb_duplicates,
+        SUM(nb_duplicates) AS nb_duplicates
       FROM (
         SELECT
           (SELECT nb_accounts_weak FROM data_stats WHERE user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_weak,
