@@ -29,6 +29,8 @@ const translations = {
   user_passwords_reused: 'of which $nb reused',
   user_delete_warning:
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
+  user_sorting:
+    'Users are sorted by descending number of reused passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
   devices_for_user: 'Devices of $email',
   device_name: 'Device name',
   device_app_version: 'App version',

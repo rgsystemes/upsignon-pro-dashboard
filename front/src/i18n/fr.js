@@ -29,6 +29,8 @@ const translations = {
   user_passwords_reused: 'dont $nb réutilisés',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
+  user_sorting:
+    'Les utilisateurs sont triés par nombre décroissant de mots de passe réutilisés, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
   devices_for_user: 'Appareils de $email',
   device_name: "Nom de l'appareil",
   device_app_version: "Version de l'app",

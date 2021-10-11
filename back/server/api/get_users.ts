@@ -29,8 +29,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     }
 
     const usersRequest = await db.query(
-      `
-    SELECT
+      `SELECT
       u.id AS user_id,
       u.email AS email,
       length(u.encrypted_data) AS data_length,
@@ -45,7 +44,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
     FROM users AS u
     ${isSearching ? 'WHERE u.email LIKE $3' : ''}
-    ORDER BY u.email
+    ORDER BY nb_accounts_with_duplicate_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC
     LIMIT $1
     OFFSET $2
     `,

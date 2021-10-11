@@ -115,6 +115,7 @@ class Users extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_users')}</h1>
+        <p>{i18n.t('user_sorting')}</p>
         <div>
           <div>{i18n.t('user_search')}</div>
           <input
