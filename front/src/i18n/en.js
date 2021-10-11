@@ -99,6 +99,10 @@ const translations = {
   shared_account_unit_name: 'Shared accounts',
   shared_account_manager_note:
     "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
+  stats_duplicate_pwd: 'Number of duplicate passwords',
+  stats_weak_pwd: 'Number of weak passwords',
+  stats_medium_pwd: 'Number of medium passwords',
+  stats_strong_pwd: 'Number of strong passwords',
 };
 
 export default translations;

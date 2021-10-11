@@ -100,6 +100,10 @@ const translations = {
   shared_account_unit_name: 'Comptes partagés',
   shared_account_manager_note:
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
+  stats_duplicate_pwd: 'Nombre de mots de passe dupliqués',
+  stats_weak_pwd: 'Nombre de mots de passe faibles',
+  stats_medium_pwd: 'Nombre de mots de passe moyens',
+  stats_strong_pwd: 'Nombre de mots de passe forts',
 };
 
 export default translations;

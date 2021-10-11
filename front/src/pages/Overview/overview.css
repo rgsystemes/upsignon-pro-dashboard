@@ -1,0 +1,38 @@
+.card {
+  margin: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  width: 120px;
+  border-radius: 5px;
+  background-color: grey;
+  color: white;
+}
+
+.weakPwd {
+  background-color: red;
+}
+
+.mediumPwd {
+  background-color: orange;
+}
+
+.strongPwd {
+  background-color: green;
+}
+
+.duplicatePwd {
+  background-color: red;
+}
+
+.statTitle {
+  text-align: center;
+  margin-bottom: 10px;
+}
+.statNumber {
+  font-size: 25px;
+  font-weight: bold;
+}
