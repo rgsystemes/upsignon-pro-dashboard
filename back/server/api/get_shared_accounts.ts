@@ -16,6 +16,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       FROM shared_accounts AS sa
       LEFT JOIN shared_account_users AS sau ON sau.shared_account_id=sa.id
       LEFT JOIN users AS u ON sau.user_id=u.id
+      ORDER BY sa.name
     `);
     res.status(200).send(dbRes.rows);
   } catch (e) {

@@ -15,6 +15,7 @@ export const get_shared_devices = async (req: any, res: any): Promise<void> => {
       FROM user_devices AS ud
       INNER JOIN users AS u ON u.id=ud.user_id
       INNER JOIN user_devices AS udbis ON ud.device_unique_id=udbis.device_unique_id AND ud.id!=udbis.id
+      ORDER BY ud.device_unique_id
   `);
     res.status(200).send(dbRes.rows);
   } catch (e) {
