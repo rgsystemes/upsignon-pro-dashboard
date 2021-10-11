@@ -46,6 +46,7 @@ class Overview extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_overview')}</h1>
+        <p>{i18n.t('suggestion')}</p>
 
         <div style={{ display: 'flex' }}>
           <div className={`card ${this.state.nb_accounts_duplicates > 0 ? 'duplicatePwd' : ''}`}>

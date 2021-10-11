@@ -1,4 +1,6 @@
 const translations = {
+  suggestion:
+    "Please don't hesitate to send us all your feedbacks and suggestions at contact@upsignon.eu",
   yes: 'YES',
   no: 'NO',
   actions: 'Actions',
