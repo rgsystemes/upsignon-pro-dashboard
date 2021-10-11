@@ -85,7 +85,7 @@ const translations = {
   shared_devices_last_session: 'Last session',
   shared_account_name: 'Name',
   shared_account_type: 'Type',
-  shared_account_url: 'URL & login',
+  shared_account_url: 'Type, URL & login',
   shared_account_users: 'Users',
   shared_account_user_creation_date: 'Since',
   shared_account_user_is_manager: 'Manager',
@@ -96,6 +96,8 @@ const translations = {
     '$accountName will no longer be shared with $user.\n\nAre you sure?',
   shared_account_last_user_warning:
     'THIS IS THE LAST USER WITH ACCESS TO THIS ACCOUNT. THE PASSWORD WILL BE LOST.',
+  shared_account_search: 'Search by user email address',
+  shared_account_unit_name: 'Shared accounts',
 };
 
 export default translations;

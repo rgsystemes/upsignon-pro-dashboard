@@ -1,47 +1,45 @@
 import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
 
+const maxRenderedItems = 50;
+
 class SharedAccounts extends React.Component {
+  searchInput = null;
   state = {
+    sharedAccountsCount: 0,
     sharedAccounts: [],
+    limit: maxRenderedItems,
+    pageIndex: 1,
+  };
+  getCurrentQueryParameters = () => {
+    const queryParamsArray = window.location.search
+      .replace(/^\?/, '')
+      .split('&')
+      .map((p) => p.split('='));
+    const queryParams = {};
+    queryParamsArray.forEach((qp) => {
+      if (qp.length === 2) queryParams[qp[0]] = qp[1];
+    });
+    return queryParams;
   };
   getSharedAccounts = async () => {
     try {
-      const accounts = await fetchTemplate('/api/shared-accounts', 'GET', null);
-      const sharedAccountGroups = {};
-      accounts.forEach((s) => {
-        if (!sharedAccountGroups[s.id]) {
-          sharedAccountGroups[s.id] = {
-            id: s.id,
-            url: s.url,
-            name: s.name,
-            login: s.login,
-            type: s.type,
-            users: [],
-          };
-        }
-        if (s.email) {
-          sharedAccountGroups[s.id].users.push({
-            email: s.email,
-            isManager: s.is_manager,
-            createdAt: s.created_at,
-            sharedAccountUserId: s.shared_account_user_id,
-          });
-        }
+      const queryParams = this.getCurrentQueryParameters();
+      const limit = parseInt(queryParams.limit) || maxRenderedItems;
+      const pageIndex = parseInt(queryParams.pageIndex) || 1;
+      const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
+        `/api/shared-accounts?pageIndex=${pageIndex}&limit=${limit}`,
+        'GET',
+        null,
+      );
+      this.setState({
+        sharedAccounts,
+        sharedAccountsCount,
+        limit,
+        pageIndex,
       });
-      const sharedAccounts = Object.values(sharedAccountGroups).map((sa) => {
-        return {
-          ...sa,
-          users: sa.users.sort((u1, u2) => {
-            if (u1.createdAt < u2.createdAt) return -1;
-            if (u1.createdAt > u2.createdAt) return 1;
-            if (u1.email < u2.email) return -1;
-            return 1;
-          }),
-        };
-      });
-      this.setState({ sharedAccounts });
     } catch (e) {
       console.error(e);
     }
@@ -91,18 +89,71 @@ class SharedAccounts extends React.Component {
     }
   };
 
+  onSearch = async (ev) => {
+    const searchText = ev.target.value;
+    // if search is emptied, reload all
+    if (!searchText) {
+      return this.getSharedAccounts();
+    }
+    try {
+      const limit = 50;
+      const pageIndex = 1;
+      const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
+        `/api/shared-accounts?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}`,
+        'GET',
+        null,
+      );
+      this.setState({
+        sharedAccounts,
+        sharedAccountsCount,
+        limit,
+        pageIndex,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  goToPageIndex = (p) => {
+    window.location.href = `/shared_accounts/?limit=${this.state.limit}&pageIndex=${p}`;
+  };
+
   componentDidMount() {
     this.getSharedAccounts();
   }
   render() {
+    const searchInputStyle = { width: 200 };
+    if (this.state.sharedAccounts.length === 0 && !!this.searchInput?.value) {
+      searchInputStyle.backgroundColor = 'red';
+      searchInputStyle.color = 'white';
+    } else if (this.state.sharedAccounts.length === 1 && !!this.searchInput?.value) {
+      searchInputStyle.backgroundColor = 'green';
+      searchInputStyle.color = 'white';
+    }
     return (
       <div className="page">
         <h1>{i18n.t('menu_shared_accounts')}</h1>
+        <div>
+          <div>{i18n.t('shared_account_search')}</div>
+          <input
+            ref={(r) => (this.searchInput = r)}
+            type="search"
+            style={searchInputStyle}
+            placeholder="email@domain.com"
+            onChange={this.onSearch}
+          />
+        </div>
+        <PaginationBar
+          pageIndex={this.state.pageIndex}
+          limit={this.state.limit}
+          totalCount={this.state.sharedAccountsCount}
+          onClick={this.goToPageIndex}
+          itemUnitName={i18n.t('shared_account_unit_name')}
+        />
         <table>
           <thead>
             <tr>
               <th>{i18n.t('shared_account_name')}</th>
-              <th>{i18n.t('shared_account_type')}</th>
               <th>{i18n.t('shared_account_url')}</th>
               <th>{i18n.t('shared_account_users')}</th>
               <th>{i18n.t('shared_account_user_creation_date')}</th>
@@ -118,8 +169,8 @@ class SharedAccounts extends React.Component {
                   {s.users.length === 0 && (
                     <tr>
                       <td>{s.name}</td>
-                      <td>{s.type}</td>
                       <td>
+                        <div>{s.type}</div>
                         <div>{s.url}</div>
                         <div>{s.login}</div>
                       </td>
@@ -136,32 +187,33 @@ class SharedAccounts extends React.Component {
                   )}
                   {s.users.map((u, i) => {
                     const isLastManager =
-                      u.isManager &&
+                      u.is_manager &&
                       s.users.filter(
-                        (a) => a.isManager && a.sharedAccountUserId !== u.sharedAccountUserId,
+                        (a) =>
+                          a.is_manager && a.shared_account_user_id !== u.shared_account_user_id,
                       ).length === 0;
                     return (
-                      <tr key={u.sharedAccountUserId}>
+                      <tr key={u.shared_account_user_id}>
                         {i === 0 && <td rowSpan={s.users.length}>{s.name}</td>}
-                        {i === 0 && <td rowSpan={s.users.length}>{s.type}</td>}
                         {i === 0 && (
                           <td rowSpan={s.users.length}>
+                            <div>{s.type}</div>
                             <div>{s.url}</div>
                             <div>{s.login}</div>
                           </td>
                         )}
                         <td>{u.email}</td>
-                        <td>{new Date(u.createdAt).toLocaleDateString()}</td>
+                        <td>{new Date(u.created_at).toLocaleDateString()}</td>
                         <td>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
                             <input
                               type="checkbox"
-                              checked={u.isManager}
+                              checked={u.is_manager}
                               disabled={isLastManager}
                               onChange={() => {
                                 this.toggleManagerRightsForUser(
-                                  u.sharedAccountUserId,
-                                  !u.isManager,
+                                  u.shared_account_user_id,
+                                  !u.is_manager,
                                   s.name,
                                   u.email,
                                 );
@@ -174,7 +226,7 @@ class SharedAccounts extends React.Component {
                             className="action"
                             onClick={() =>
                               this.unshareWithUser(
-                                u.sharedAccountUserId,
+                                u.shared_account_user_id,
                                 s.name,
                                 u.email,
                                 s.users.length === 1,
@@ -193,6 +245,13 @@ class SharedAccounts extends React.Component {
             })}
           </tbody>
         </table>
+        <PaginationBar
+          pageIndex={this.state.pageIndex}
+          limit={this.state.limit}
+          totalCount={this.state.sharedAccountsCount}
+          onClick={this.goToPageIndex}
+          itemUnitName={i18n.t('shared_account_unit_name')}
+        />
       </div>
     );
   }
