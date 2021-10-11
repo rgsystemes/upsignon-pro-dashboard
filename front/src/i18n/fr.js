@@ -109,6 +109,13 @@ const translations = {
   stats_nb_users: "Nombre d'utilisateurs",
   stats_nb_shared_accounts: 'Nombre de comptes partagés',
   stats_nb_shared_devices: "Nombre d'appareils partagés",
+  extracts: 'Extractions',
+  extract_emails_text: 'Récupérer la liste des emails des utilisateurs :',
+  extract_emails_duplicates: 'ayant des mots de passe dupliqués',
+  extract_emails_weak: 'ayant des mots de passe faibles',
+  extract_emails_medium: 'ayant des mots de passe moyens',
+  extract_emails_long_unused: "n'ayant pas utilisé UpSignOn récemment",
+  extract_emails_shared_device: 'qui partagent un de leurs appareils',
 };
 
 export default translations;
