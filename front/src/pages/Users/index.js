@@ -8,10 +8,11 @@ import './users.css';
 const maxRenderedItems = 50;
 
 class Users extends React.Component {
+  searchInput = null;
+
   state = {
     userCount: 0,
     users: [],
-    isLoading: true,
     limit: maxRenderedItems,
     pageIndex: 1,
   };
@@ -39,21 +40,17 @@ class Users extends React.Component {
       this.setState({ users, userCount, limit, pageIndex });
     } catch (e) {
       console.error(e);
-    } finally {
-      this.setState({ isLoading: false });
     }
   };
 
   deleteUserWithWarning = async (userId, userEmail) => {
     const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
     if (confirmation) {
-      this.setState({ isLoading: true });
       try {
         await fetchTemplate(`/api/delete-user/${userId}`, 'POST', null);
         await this.loadUsers();
       } catch (e) {
         console.error(e);
-        this.setState({ isLoading: false });
       }
     }
   };
@@ -86,16 +83,54 @@ class Users extends React.Component {
     window.location.href = `/users/?limit=${this.state.limit}&pageIndex=${p}`;
   };
 
+  onSearch = async (ev) => {
+    const searchText = ev.target.value;
+    // if search is emptied, reload all
+    if (!searchText) {
+      return this.loadUsers();
+    }
+    try {
+      const limit = 50;
+      const pageIndex = 1;
+      const { users, userCount } = await fetchTemplate(
+        `/api/users?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}`,
+        'GET',
+        null,
+      );
+      this.setState({ users, userCount, limit, pageIndex });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   render() {
+    const searchInputStyle = { width: 200 };
+    if (this.state.users.length === 0 && !!this.searchInput?.value) {
+      searchInputStyle.backgroundColor = 'red';
+      searchInputStyle.color = 'white';
+    } else if (this.state.users.length === 1 && !!this.searchInput?.value) {
+      searchInputStyle.backgroundColor = 'green';
+      searchInputStyle.color = 'white';
+    }
     return (
       <div className="page">
         <h1>{i18n.t('menu_users')}</h1>
-        {this.state.isLoading && <div>{i18n.t('loading')}</div>}
+        <div>
+          <div>{i18n.t('user_search')}</div>
+          <input
+            ref={(r) => (this.searchInput = r)}
+            type="search"
+            style={searchInputStyle}
+            placeholder="email@domain.com"
+            onChange={this.onSearch}
+          />
+        </div>
         <PaginationBar
           pageIndex={this.state.pageIndex}
           limit={this.state.limit}
           totalCount={this.state.userCount}
           onClick={this.goToPageIndex}
+          itemUnitName={i18n.t('user_unit_name')}
         />
         <table>
           <thead>
@@ -180,6 +215,7 @@ class Users extends React.Component {
           limit={this.state.limit}
           totalCount={this.state.userCount}
           onClick={this.goToPageIndex}
+          itemUnitName={i18n.t('user_unit_name')}
         />
       </div>
     );

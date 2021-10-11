@@ -2,12 +2,31 @@ import { db } from '../helpers/connection';
 
 export const get_users = async (req: any, res: any): Promise<void> => {
   try {
-    const countUsersReq = await db.query('SELECT COUNT(id) FROM users');
-    const userCount = parseInt(countUsersReq.rows[0].count);
+    const search = req.query.search;
+    const isSearching = !!search;
 
-    let pageIndex = parseInt(req.query.pageIndex) || 0;
+    // COUNT USERS
+    let userCount;
+    if (isSearching) {
+      const countUsersReq = await db.query('SELECT COUNT(id) FROM users WHERE email LIKE $1', [
+        search + '%',
+      ]);
+      userCount = parseInt(countUsersReq.rows[0].count);
+    } else {
+      const countUsersReq = await db.query('SELECT COUNT(id) FROM users');
+      userCount = parseInt(countUsersReq.rows[0].count);
+    }
+
+    // GET USERS
+    const pageIndex = parseInt(req.query.pageIndex) || 1;
+    let pageOffset = pageIndex - 1;
     const limit = parseInt(req.query.limit) || 50;
-    if (pageIndex * limit >= userCount) pageIndex = 0;
+    if (pageOffset * limit >= userCount) pageOffset = 0;
+
+    const queryInputs: string[] = [limit.toString(), (pageOffset * limit).toString()];
+    if (isSearching) {
+      queryInputs.push(search + '%');
+    }
 
     const usersRequest = await db.query(
       `
@@ -25,11 +44,12 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_strong  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_strong,
       (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
     FROM users AS u
+    ${isSearching ? 'WHERE u.email LIKE $3' : ''}
     ORDER BY u.email
     LIMIT $1
     OFFSET $2
     `,
-      [limit, pageIndex * limit],
+      queryInputs,
     );
     const users = usersRequest.rows.map((u) => ({
       ...u,

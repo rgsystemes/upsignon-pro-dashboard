@@ -9,7 +9,7 @@ class PaginationBar extends React.Component {
     startIndex: null,
   };
   render() {
-    const { pageIndex, onClick, totalCount, limit } = this.props;
+    const { pageIndex, onClick, totalCount, limit, itemUnitName } = this.props;
 
     const nbPages = Math.ceil(totalCount / limit);
     const currentIndex = pageIndex <= nbPages ? pageIndex : nbPages;
@@ -62,7 +62,7 @@ class PaginationBar extends React.Component {
             </div>
           )}
         </div>
-        <div>{`/ ${nbPages} ${i18n.t('pagination_pages')}`}</div>
+        <div>{`/ ${nbPages} ${i18n.t('pagination_pages')} - ${totalCount} ${itemUnitName}`}</div>
       </div>
     );
   }
