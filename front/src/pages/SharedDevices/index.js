@@ -2,12 +2,14 @@ import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
+// Props = setIsLoading
 class SharedDevices extends React.Component {
   state = {
     sharedDevices: [],
   };
   getSharedDevices = async () => {
     try {
+      this.props.setIsLoading(true);
       const devices = await fetchTemplate('/api/shared-devices', 'GET', null);
       const deviceGroups = {};
       devices.forEach((d) => {
@@ -22,6 +24,8 @@ class SharedDevices extends React.Component {
       this.setState({ sharedDevices });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   componentDidMount() {

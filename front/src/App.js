@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import './App.css';
+import { Loader } from './helpers/loader';
 import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
 import { Overview } from './pages/Overview';
@@ -8,22 +10,23 @@ import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const path = window.location.pathname;
 
-  let pageContent = <Overview />;
+  let pageContent = <Overview setIsLoading={setIsLoading} />;
   let currentPage = 'overview';
 
   if (path.startsWith('/users')) {
-    pageContent = <Users />;
+    pageContent = <Users setIsLoading={setIsLoading} />;
     currentPage = 'users';
   } else if (path.startsWith('/shared_devices')) {
-    pageContent = <SharedDevices />;
+    pageContent = <SharedDevices setIsLoading={setIsLoading} />;
     currentPage = 'shared_devices';
   } else if (path.startsWith('/shared_accounts')) {
-    pageContent = <SharedAccounts />;
+    pageContent = <SharedAccounts setIsLoading={setIsLoading} />;
     currentPage = 'shared_accounts';
   } else if (path.startsWith('/settings')) {
-    pageContent = <Settings />;
+    pageContent = <Settings setIsLoading={setIsLoading} />;
     currentPage = 'settings';
   }
 
@@ -63,6 +66,17 @@ function App() {
     <div className="App">
       <Menu pages={pages} />
       {pageContent}
+      <div
+        style={{
+          position: 'absolute',
+          right: 30,
+          top: 0,
+          zIndex: 10,
+          display: isLoading ? 'initial' : 'none',
+        }}
+      >
+        <Loader />
+      </div>
     </div>
   );
 }

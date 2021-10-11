@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
+// Props : setIsLoading
 class AllowedEmails extends React.Component {
   state = {
     allowedEmails: [],
@@ -24,6 +25,7 @@ class AllowedEmails extends React.Component {
   submitAllowedEmailEdition = async () => {
     if (this.state.updatedPattern !== null) {
       try {
+        this.props.setIsLoading(true);
         await fetchTemplate('/api/update-allowed-email', 'POST', {
           allowedEmailId: this.state.editingEmailId,
           updatedPattern: this.state.updatedPattern,
@@ -31,28 +33,36 @@ class AllowedEmails extends React.Component {
         await this.fetchAllowedEmails();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.props.setIsLoading(false);
       }
     }
     this.setState({ isEditing: false, editingEmailId: null, updatedPattern: null });
   };
   insertAllowedEmail = async () => {
     try {
+      this.props.setIsLoading(true);
       const newPattern = this.newInputRef.value;
       await fetchTemplate('/api/insert-allowed-email', 'POST', { newPattern });
       await this.fetchAllowedEmails();
       this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   deleteAllowedEmail = async (id) => {
     const confirmation = window.confirm(i18n.t('settings_allowed_emails_delete_warning'));
     if (confirmation) {
       try {
+        this.props.setIsLoading(true);
         await fetchTemplate(`/api/delete-allowed-email/${id}`, 'POST', null);
         await this.fetchAllowedEmails();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.props.setIsLoading(false);
       }
     }
   };

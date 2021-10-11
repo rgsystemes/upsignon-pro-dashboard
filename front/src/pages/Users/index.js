@@ -7,6 +7,7 @@ import './users.css';
 
 const maxRenderedItems = 50;
 
+// Props = setIsLoading
 class Users extends React.Component {
   searchInput = null;
 
@@ -29,6 +30,7 @@ class Users extends React.Component {
   };
   loadUsers = async () => {
     try {
+      this.props.setIsLoading(true);
       const queryParams = this.getCurrentQueryParameters();
       const limit = parseInt(queryParams.limit) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex) || 1;
@@ -40,6 +42,8 @@ class Users extends React.Component {
       this.setState({ users, userCount, limit, pageIndex });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
@@ -47,16 +51,20 @@ class Users extends React.Component {
     const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
     if (confirmation) {
       try {
+        this.props.setIsLoading(true);
         await fetchTemplate(`/api/delete-user/${userId}`, 'POST', null);
         await this.loadUsers();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.props.setIsLoading(false);
       }
     }
   };
 
   loadUserDevices = async (userId) => {
     try {
+      this.props.setIsLoading(true);
       const devices = await fetchTemplate(`/api/user-devices/${userId}`, 'GET', null);
       this.setState((s) => {
         return {
@@ -72,6 +80,8 @@ class Users extends React.Component {
       });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
@@ -90,6 +100,7 @@ class Users extends React.Component {
       return this.loadUsers();
     }
     try {
+      this.props.setIsLoading(true);
       const limit = 50;
       const pageIndex = 1;
       const { users, userCount } = await fetchTemplate(
@@ -100,6 +111,8 @@ class Users extends React.Component {
       this.setState({ users, userCount, limit, pageIndex });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
@@ -199,6 +212,7 @@ class Users extends React.Component {
                     <tr className="detailContainer">
                       <td colSpan={6}>
                         <UserDevices
+                          setIsLoading={this.props.setIsLoading}
                           devices={u.devices}
                           email={u.email}
                           reloadDevices={() => this.loadUserDevices(u.user_id)}

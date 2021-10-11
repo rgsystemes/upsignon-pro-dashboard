@@ -6,6 +6,7 @@ const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
 const passwordChangeUrlPlaceholder = 'https://service.com/account-setting';
 
+// Props = setIsLoading
 class Urls extends React.Component {
   state = {
     urls: [],
@@ -24,14 +25,18 @@ class Urls extends React.Component {
   };
   submitUrlEdition = async (id, valObject) => {
     try {
+      this.props.setIsLoading(true);
       await fetchTemplate('/api/update-url', 'POST', { id, ...valObject });
       await this.fetchUrls();
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   insertUrl = async () => {
     try {
+      this.props.setIsLoading(true);
       const displayedName = this.nameInput.value;
       const signinUrl = this.signinUrlInput.value;
       const passwordChangeUrl = this.passwordChangeUrlInput.value;
@@ -52,16 +57,21 @@ class Urls extends React.Component {
       this.passwordChangeUrlInput.value = null;
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   deleteUrl = async (id) => {
     const confirmation = window.confirm(i18n.t('settings_urls_delete_warning'));
     if (confirmation) {
       try {
+        this.props.setIsLoading(true);
         await fetchTemplate(`/api/delete-url/${id}`, 'POST', null);
         await this.fetchUrls();
       } catch (e) {
         console.error(e);
+      } finally {
+        this.props.setIsLoading(false);
       }
     }
   };

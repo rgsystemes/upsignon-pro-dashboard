@@ -5,6 +5,7 @@ import { i18n } from '../../i18n/i18n';
 
 const maxRenderedItems = 50;
 
+// PROPS = setIsLoading
 class SharedAccounts extends React.Component {
   searchInput = null;
   state = {
@@ -26,6 +27,7 @@ class SharedAccounts extends React.Component {
   };
   getSharedAccounts = async () => {
     try {
+      this.props.setIsLoading(true);
       const queryParams = this.getCurrentQueryParameters();
       const limit = parseInt(queryParams.limit) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex) || 1;
@@ -42,20 +44,26 @@ class SharedAccounts extends React.Component {
       });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
   deleteSharedAccount = async (accountId) => {
     try {
+      this.props.setIsLoading(true);
       await fetchTemplate(`/api/delete-shared-account/${accountId}`, 'POST', null);
       await this.getSharedAccounts();
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
   unshareWithUser = async (sharedAccountUserId, accountName, user, isLastUser) => {
     try {
+      this.props.setIsLoading(true);
       const confirmation = window.confirm(
         i18n.t('shared_account_user_delete_warning', { accountName, user }),
       );
@@ -68,6 +76,8 @@ class SharedAccounts extends React.Component {
       await this.getSharedAccounts();
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
@@ -79,6 +89,7 @@ class SharedAccounts extends React.Component {
     isLastManager,
   ) => {
     try {
+      this.props.setIsLoading(true);
       await fetchTemplate(`/api/update-shared-account-manager`, 'POST', {
         sharedAccountUserId,
         willBeManager,
@@ -86,6 +97,8 @@ class SharedAccounts extends React.Component {
       await this.getSharedAccounts();
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 
@@ -96,6 +109,7 @@ class SharedAccounts extends React.Component {
       return this.getSharedAccounts();
     }
     try {
+      this.props.setIsLoading(true);
       const limit = 50;
       const pageIndex = 1;
       const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
@@ -111,6 +125,8 @@ class SharedAccounts extends React.Component {
       });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
 

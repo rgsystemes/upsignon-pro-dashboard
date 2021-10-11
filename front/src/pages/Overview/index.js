@@ -3,6 +3,7 @@ import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 import './overview.css';
 
+// Props = setIsLoading
 class Overview extends React.Component {
   state = {
     nb_accounts_weak: 0,
@@ -15,6 +16,7 @@ class Overview extends React.Component {
   };
   fetchStats = async () => {
     try {
+      this.props.setIsLoading(true);
       const stats = await Promise.all([
         fetchTemplate('/api/get-password-stats', 'GET', null),
         fetchTemplate('/api/count-shared-accounts', 'GET', null),
@@ -33,6 +35,8 @@ class Overview extends React.Component {
       });
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   componentDidMount() {

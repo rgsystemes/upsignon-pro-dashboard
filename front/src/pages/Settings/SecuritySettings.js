@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
+// Props = setIsLoading
 class SecuritySettings extends React.Component {
   state = {
     settingPwdResetSkipAdminCheck: null,
@@ -19,6 +20,7 @@ class SecuritySettings extends React.Component {
   };
   updateSettings = async (key, newValue) => {
     try {
+      this.props.setIsLoading(true);
       if (key === 'settingPwdResetSkipAdminCheck') {
         await fetchTemplate('/api/setting', 'POST', {
           key: 'DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN',
@@ -28,6 +30,8 @@ class SecuritySettings extends React.Component {
       }
     } catch (e) {
       console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   componentDidMount() {
