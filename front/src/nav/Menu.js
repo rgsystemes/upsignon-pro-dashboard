@@ -1,4 +1,3 @@
-import { i18n } from '../i18n/i18n';
 import './Menu.css';
 
 function Menu(props) {
@@ -24,7 +23,7 @@ function Menu(props) {
       {pages.map((p) => {
         return (
           <a key={p.key} href={p.href} className={`navItem ${p.isCurrent ? 'current' : ''}`}>
-            {i18n.t(p.translationKey)}
+            {p.title}
           </a>
         );
       })}

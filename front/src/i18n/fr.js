@@ -14,6 +14,7 @@ const translations = {
   menu_shared_devices: 'Appareils partagés',
   menu_shared_accounts: 'Comptes partagés',
   loading: 'Chargement des données...',
+  total: 'Total $count',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
   user_email: 'Email',

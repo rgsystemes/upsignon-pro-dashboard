@@ -8,38 +8,12 @@ import { SecurityChart } from './SecurityChart';
 // Props = setIsLoading
 class Overview extends React.Component {
   state = {
-    nb_users: 0,
-    nb_shared_accounts: 0,
-    nb_shared_devices: 0,
     extracts_duplicates: null,
     extracts_weak: null,
     extracts_medium: null,
     extracts_long_unused: null,
     extracts_shared_device: null,
   };
-  fetchStats = async () => {
-    try {
-      this.props.setIsLoading(true);
-      const stats = await Promise.all([
-        fetchTemplate('/api/count-shared-accounts', 'GET', null),
-        fetchTemplate('/api/count-shared-devices', 'GET', null),
-        fetchTemplate('/api/count-users', 'GET', null),
-      ]);
-
-      this.setState({
-        nb_shared_accounts: stats[0],
-        nb_shared_devices: stats[1],
-        nb_users: stats[2],
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.props.setIsLoading(false);
-    }
-  };
-  componentDidMount() {
-    this.fetchStats();
-  }
 
   extractDuplicates = async () => {
     try {

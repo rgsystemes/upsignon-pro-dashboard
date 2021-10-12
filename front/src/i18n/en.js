@@ -14,6 +14,7 @@ const translations = {
   menu_shared_devices: 'Shared devices',
   menu_shared_accounts: 'Shared accounts',
   loading: 'Loading data...',
+  total: 'Total $count',
   user_search: 'Search a user',
   user_unit_name: 'users',
   user_email: 'Email',

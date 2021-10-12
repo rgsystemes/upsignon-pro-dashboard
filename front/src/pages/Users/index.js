@@ -7,7 +7,7 @@ import './users.css';
 
 const maxRenderedItems = 50;
 
-// Props = setIsLoading
+// Props = setIsLoading, totalCount
 class Users extends React.Component {
   searchInput = null;
 
@@ -16,15 +16,6 @@ class Users extends React.Component {
     users: [],
     limit: maxRenderedItems,
     pageIndex: 1,
-    totalCount: 0,
-  };
-  getTotalCount = async () => {
-    try {
-      const totalCount = await fetchTemplate('/api/count-users', 'GET', null);
-      this.setState({ totalCount });
-    } catch (e) {
-      console.error(e);
-    }
   };
   getCurrentQueryParameters = () => {
     const queryParamsArray = window.location.search
@@ -96,7 +87,6 @@ class Users extends React.Component {
 
   componentDidMount() {
     this.loadUsers();
-    this.getTotalCount();
   }
 
   goToPageIndex = (p) => {
@@ -137,7 +127,7 @@ class Users extends React.Component {
     }
     return (
       <div className="page">
-        <h1>{`${i18n.t('menu_users')} - ${this.state.totalCount}`}</h1>
+        <h1>{`${i18n.t('menu_users')} - ${i18n.t('total', { count: this.props.totalCount })}`}</h1>
         <p>{i18n.t('user_sorting')}</p>
         <div>
           <div>{i18n.t('user_search')}</div>

@@ -6,15 +6,6 @@ import { i18n } from '../../i18n/i18n';
 class SharedDevices extends React.Component {
   state = {
     sharedDevices: [],
-    count: 0,
-  };
-  getCount = async () => {
-    try {
-      const count = await fetchTemplate('/api/count-shared-devices', 'GET', null);
-      this.setState({ count });
-    } catch (e) {
-      console.error(e);
-    }
   };
   getSharedDevices = async () => {
     try {
@@ -39,12 +30,13 @@ class SharedDevices extends React.Component {
   };
   componentDidMount() {
     this.getSharedDevices();
-    this.getCount();
   }
   render() {
     return (
       <div className="page">
-        <h1>{`${i18n.t('menu_shared_devices')} - ${this.state.count}`}</h1>
+        <h1>{`${i18n.t('menu_shared_devices')} - ${i18n.t('total', {
+          count: this.props.totalCount,
+        })}`}</h1>
         <div style={{ marginBottom: 20 }}>{i18n.t('shared_devices_explanation')}</div>
         <table>
           <thead>
