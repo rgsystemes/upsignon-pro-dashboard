@@ -2,7 +2,7 @@ import { db } from '../helpers/connection';
 
 export const extract_emails_for_long_unused = async (req: any, res: any): Promise<void> => {
   try {
-    const nbDays = parseInt(req.query.days);
+    const nbDays = parseInt(req.query.days) || 15;
     const dbRes = await db.query(`
     SELECT
       email,
