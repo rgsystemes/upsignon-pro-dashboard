@@ -104,10 +104,6 @@ const translations = {
   shared_account_unit_name: 'Comptes partagés',
   shared_account_manager_note:
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
-  stats_duplicate_pwd: 'Nombre de mots de passe dupliqués',
-  stats_weak_pwd: 'Nombre de mots de passe faibles',
-  stats_medium_pwd: 'Nombre de mots de passe moyens',
-  stats_strong_pwd: 'Nombre de mots de passe forts',
   stats_nb_users: "Nombre d'utilisateurs",
   stats_nb_shared_accounts: 'Nombre de comptes partagés',
   stats_nb_shared_devices: "Nombre d'appareils partagés",
@@ -119,6 +115,12 @@ const translations = {
   extract_emails_medium: 'ayant des mots de passe moyens',
   extract_emails_long_unused: "n'ayant pas utilisé UpSignOn récemment",
   extract_emails_shared_device: 'qui partagent un de leurs appareils',
+  chart_title: 'Évolution de la force des mots de passe',
+  chart_weak_pwd: 'Mdps faibles',
+  chart_medium_pwd: 'Mdps moyens',
+  chart_strong_pwd: 'Mdps forts',
+  chart_duplicate_pwd: 'Mdps dupliqués',
+  chart_nb_accounts: 'Nb total de comptes',
 };
 
 export default translations;

@@ -103,10 +103,6 @@ const translations = {
   shared_account_unit_name: 'Shared accounts',
   shared_account_manager_note:
     "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
-  stats_duplicate_pwd: 'Number of duplicate passwords',
-  stats_weak_pwd: 'Number of weak passwords',
-  stats_medium_pwd: 'Number of medium passwords',
-  stats_strong_pwd: 'Number of strong passwords',
   stats_nb_users: 'Number of users',
   stats_nb_shared_accounts: 'Number of shared accounts',
   stats_nb_shared_devices: 'Number of shared devices',
@@ -118,6 +114,12 @@ const translations = {
   extract_emails_medium: 'who have medium passwords',
   extract_emails_long_unused: 'who have not used UpSignOn recently',
   extract_emails_shared_device: 'who share one of their devices',
+  chart_title: 'Passwords strength evolution',
+  chart_weak_pwd: 'Weak pwds',
+  chart_medium_pwd: 'Medium pwds',
+  chart_strong_pwd: 'Strong pwds',
+  chart_duplicate_pwd: 'Duplicate pwds',
+  chart_nb_accounts: 'Total nb of accounts',
 };
 
 export default translations;
