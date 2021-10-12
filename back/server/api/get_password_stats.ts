@@ -13,21 +13,6 @@ const getDaysArray = (startDay: string, endDay: string): string[] => {
 
 export const get_password_stats = async (req: any, res: any): Promise<void> => {
   try {
-    // const dbRes = await db.query(
-    //   `SELECT
-    //     SUM(nb_weak) AS nb_weak,
-    //     SUM(nb_medium) AS nb_medium,
-    //     SUM(nb_strong) AS nb_strong,
-    //     SUM(nb_duplicates) AS nb_duplicates
-    //   FROM (
-    //     SELECT
-    //       (SELECT nb_accounts_weak FROM data_stats WHERE user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_weak,
-    //       (SELECT nb_accounts_medium FROM data_stats WHERE user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_medium,
-    //       (SELECT nb_accounts_strong FROM data_stats WHERE user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_strong,
-    //       (SELECT nb_accounts_with_duplicate_password FROM data_stats WHERE user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_duplicates
-    //     FROM users AS u
-    //   ) AS stats`,
-    // );
     // Clean data_stats to make there is at most one line per user per day
     await db.query(
       "DELETE FROM data_stats as ds1 USING data_stats as ds2 WHERE ds1.user_id=ds2.user_id AND date_trunc('day',ds1.date)=date_trunc('day', ds2.date) AND ds1.date<ds2.date;",
