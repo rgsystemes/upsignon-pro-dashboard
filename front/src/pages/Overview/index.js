@@ -79,20 +79,7 @@ class Overview extends React.Component {
         <PendingPasswordResetRequests setIsLoading={this.props.setIsLoading} />
         <h2>{i18n.t('chart_title')}</h2>
         <SecurityChart />
-        <div style={{ display: 'flex' }}>
-          <div className="card">
-            <div className="statTitle">{i18n.t('stats_nb_users')}</div>
-            <div className="statNumber">{this.state.nb_users}</div>
-          </div>
-          <div className="card">
-            <div className="statTitle">{i18n.t('stats_nb_shared_accounts')}</div>
-            <div className="statNumber">{this.state.nb_shared_accounts}</div>
-          </div>
-          <div className="card">
-            <div className="statTitle">{i18n.t('stats_nb_shared_devices')}</div>
-            <div className="statNumber">{this.state.nb_shared_devices}</div>
-          </div>
-        </div>
+
         <h2>{i18n.t('extracts')}</h2>
         <a
           className="extractAction"

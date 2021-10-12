@@ -104,9 +104,6 @@ const translations = {
   shared_account_unit_name: 'Shared accounts',
   shared_account_manager_note:
     "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
-  stats_nb_users: 'Number of users',
-  stats_nb_shared_accounts: 'Number of shared accounts',
-  stats_nb_shared_devices: 'Number of shared devices',
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
   extract_emails_text: 'Get the list of emails of users:',

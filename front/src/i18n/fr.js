@@ -105,9 +105,6 @@ const translations = {
   shared_account_unit_name: 'Comptes partagés',
   shared_account_manager_note:
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
-  stats_nb_users: "Nombre d'utilisateurs",
-  stats_nb_shared_accounts: 'Nombre de comptes partagés',
-  stats_nb_shared_devices: "Nombre d'appareils partagés",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
   extract_emails_text: 'Récupérer la liste des emails des utilisateurs :',
