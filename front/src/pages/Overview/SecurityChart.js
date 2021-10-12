@@ -33,7 +33,7 @@ class SecurityChart extends React.Component {
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           width={500}
-          height={400}
+          height={350}
           data={this.state.stats}
           margin={{
             top: 10,
