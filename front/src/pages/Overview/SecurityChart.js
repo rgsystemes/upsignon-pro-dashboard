@@ -78,6 +78,8 @@ class SecurityChart extends React.Component {
             stackId="2"
             stroke="black"
             fill="black"
+            dot={false}
+            isAnimationActive={false}
           />
           <Line
             type="monotone"
@@ -86,6 +88,10 @@ class SecurityChart extends React.Component {
             stackId="3"
             stroke="black"
             fill="black"
+            dot={false}
+            legendType="none"
+            strokeWidth={0}
+            isAnimationActive={false}
           />
         </ComposedChart>
       </ResponsiveContainer>
