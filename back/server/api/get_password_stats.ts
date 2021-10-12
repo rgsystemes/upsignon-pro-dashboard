@@ -87,7 +87,6 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
     });
 
     const result = Object.values(chartDataObjet);
-    console.log(result);
     res.status(200).send(result);
   } catch (e) {
     console.error(e);
