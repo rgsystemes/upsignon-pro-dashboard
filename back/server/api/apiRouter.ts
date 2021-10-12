@@ -20,6 +20,7 @@ import { extract_emails_for_shared_device } from './extract_emails_for_shared_de
 import { extract_emails_for_weak_passwords } from './extract_emails_for_weak_passwords';
 import { get_allowed_emails } from './get_allowed_emails';
 import { get_password_stats } from './get_password_stats';
+import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
 import { get_settings } from './get_settings';
 import { get_shared_accounts } from './get_shared_accounts';
 import { get_shared_devices } from './get_shared_devices';
@@ -53,6 +54,7 @@ apiRouter.post('/deactivate-device-all-users/:deviceId', deactivate_device_all_u
 apiRouter.get('/count-shared-devices', count_shared_devices);
 
 // Password reset requests
+apiRouter.get('/get-pending-password-reset-requests', get_pending_password_reset_requests);
 apiRouter.post('/delete-pwd-reset-request/:requestId', delete_pwd_reset_request);
 apiRouter.post('/grant-pwd-reset-request/:requestId', grant_pwd_reset_request);
 

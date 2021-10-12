@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 import './overview.css';
+import { PendingPasswordResetRequests } from './PendingPasswordResetRequests';
 
 // Props = setIsLoading
 class Overview extends React.Component {
@@ -142,6 +143,7 @@ class Overview extends React.Component {
             <div className="statNumber">{this.state.nb_shared_devices}</div>
           </div>
         </div>
+        <PendingPasswordResetRequests setIsLoading={this.props.setIsLoading} />
         <h2>{i18n.t('extracts')}</h2>
         <a
           className="extractAction"

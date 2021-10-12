@@ -78,7 +78,7 @@ class UserDevices extends React.Component {
   };
 
   grantPwdResetReqWithWarning = async (pwdResetId) => {
-    const confirmation = window.confirm(i18n.t('password_reset_request_delete_warning'));
+    const confirmation = window.confirm(i18n.t('password_reset_request_grant_warning'));
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
@@ -102,6 +102,7 @@ class UserDevices extends React.Component {
             <table style={{ marginBottom: 20 }}>
               <thead>
                 <tr>
+                  <th>{i18n.t('password_reset_request_date')}</th>
                   <th>{i18n.t('device_name')}</th>
                   <th>{i18n.t('password_reset_request_status')}</th>
                   <th>{i18n.t('device_shared_with')}</th>
@@ -116,6 +117,7 @@ class UserDevices extends React.Component {
                     : false;
                   return (
                     <tr key={d.pwd_reset_id}>
+                      <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
                       <td>{d.device_name}</td>
                       <td>
                         <div>{d.pwd_reset_status}</div>
