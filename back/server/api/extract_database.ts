@@ -24,6 +24,7 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
+    ORDER BY u.email ASC, ud.created_at DESC
   `);
 
     let csvContent = '';
