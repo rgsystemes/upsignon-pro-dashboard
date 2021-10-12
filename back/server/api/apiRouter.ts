@@ -12,6 +12,7 @@ import { delete_shared_account } from './delete_shared_account';
 import { delete_shared_account_user } from './delete_shared_account_user';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
+import { extract_database } from './extract_database';
 import { extract_emails_for_duplicate_passwords } from './extract_emails_for_duplicate_passwords';
 import { extract_emails_for_long_unused } from './extract_emails_for_long_unused';
 import { extract_emails_for_medium_passwords } from './extract_emails_for_medium_passwords';
@@ -66,6 +67,7 @@ apiRouter.post('/update-shared-account-manager', update_shared_account_manager);
 apiRouter.get('/get-password-stats', get_password_stats);
 
 // Extracts
+apiRouter.get('/extract-database', extract_database);
 apiRouter.get('/extract-emails-for-duplicate-passwords', extract_emails_for_duplicate_passwords);
 apiRouter.get('/extract-emails-for-weak-passwords', extract_emails_for_weak_passwords);
 apiRouter.get('/extract-emails-for-medium-passwords', extract_emails_for_medium_passwords);

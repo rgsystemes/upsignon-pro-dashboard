@@ -109,6 +109,7 @@ const translations = {
   stats_nb_shared_accounts: 'Number of shared accounts',
   stats_nb_shared_devices: 'Number of shared devices',
   extracts: 'Extracts',
+  extract_database: 'Download all stats into csv file',
   extract_emails_text: 'Get the list of emails of users:',
   extract_emails_duplicates: 'who have duplicate passwords',
   extract_emails_weak: 'who have weak passwords',

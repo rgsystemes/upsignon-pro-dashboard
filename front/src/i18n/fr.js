@@ -110,6 +110,7 @@ const translations = {
   stats_nb_shared_accounts: 'Nombre de comptes partagés',
   stats_nb_shared_devices: "Nombre d'appareils partagés",
   extracts: 'Extractions',
+  extract_database: 'Télécharger toutes les stats au format csv',
   extract_emails_text: 'Récupérer la liste des emails des utilisateurs :',
   extract_emails_duplicates: 'ayant des mots de passe dupliqués',
   extract_emails_weak: 'ayant des mots de passe faibles',

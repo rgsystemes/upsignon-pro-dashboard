@@ -143,6 +143,15 @@ class Overview extends React.Component {
           </div>
         </div>
         <h2>{i18n.t('extracts')}</h2>
+        <a
+          className="extractAction"
+          style={{ marginBottom: 20 }}
+          href={`${
+            process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : ''
+          }/api/extract-database`}
+        >
+          {i18n.t('extract_database')}
+        </a>
         <div>{i18n.t('extract_emails_text')}</div>
         <ul>
           <li>
