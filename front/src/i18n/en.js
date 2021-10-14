@@ -112,12 +112,14 @@ const translations = {
   extract_emails_medium: 'who have medium passwords',
   extract_emails_long_unused: 'who have not used UpSignOn recently',
   extract_emails_shared_device: 'who share one of their devices',
-  chart_title: 'Passwords strength evolution',
+  chart_security_title: 'Passwords strength evolution',
   chart_weak_pwd: 'Weak pwds',
   chart_medium_pwd: 'Medium pwds',
   chart_strong_pwd: 'Strong pwds',
   chart_duplicate_pwd: 'Duplicate pwds',
   chart_nb_accounts: 'Total nb of accounts',
+  chart_usage_title: 'UpSignOn usage',
+  chart_nb_users: 'Nb of users',
 };
 
 export default translations;

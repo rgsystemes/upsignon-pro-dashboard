@@ -113,12 +113,14 @@ const translations = {
   extract_emails_medium: 'ayant des mots de passe moyens',
   extract_emails_long_unused: "n'ayant pas utilisé UpSignOn récemment",
   extract_emails_shared_device: 'qui partagent un de leurs appareils',
-  chart_title: 'Évolution de la force des mots de passe',
+  chart_security_title: 'Évolution de la force des mots de passe',
   chart_weak_pwd: 'Mdps faibles',
   chart_medium_pwd: 'Mdps moyens',
   chart_strong_pwd: 'Mdps forts',
   chart_duplicate_pwd: 'Mdps dupliqués',
   chart_nb_accounts: 'Nb total de comptes',
+  chart_usage_title: "Utilisation d'UpSignOn",
+  chart_nb_users: "Nb d'utilisateurs",
 };
 
 export default translations;

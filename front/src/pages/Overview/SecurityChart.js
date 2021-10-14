@@ -20,7 +20,12 @@ class SecurityChart extends React.Component {
   fetchStats = async () => {
     try {
       const stats = await fetchTemplate('/api/get-password-stats', 'GET', null);
-      this.setState({ stats });
+      this.setState({
+        stats: stats.map((s) => ({
+          ...s,
+          day: new Date(s.day).toLocaleDateString().replace(/\/\d\d\d\d$/, ''),
+        })),
+      });
     } catch (e) {
       console.error(e);
     }
@@ -44,7 +49,7 @@ class SecurityChart extends React.Component {
         >
           <CartesianGrid strokeDasharray="3 10" />
           <XAxis dataKey="day" />
-          <YAxis />
+          <YAxis allowDecimals={false} />
           <Tooltip />
           <Legend verticalAlign="top" />
           <Area

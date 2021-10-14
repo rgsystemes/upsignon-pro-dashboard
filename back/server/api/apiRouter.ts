@@ -25,6 +25,7 @@ import { get_settings } from './get_settings';
 import { get_shared_accounts } from './get_shared_accounts';
 import { get_shared_devices } from './get_shared_devices';
 import { get_urls } from './get_urls';
+import { get_usage_stats } from './get_usage_stats';
 import { get_users } from './get_users';
 import { get_user_devices } from './get_user_devices';
 import { grant_pwd_reset_request } from './grant_pwd_reset_request';
@@ -67,6 +68,7 @@ apiRouter.post('/update-shared-account-manager', update_shared_account_manager);
 
 // Stats
 apiRouter.get('/get-password-stats', get_password_stats);
+apiRouter.get('/get-usage-stats', get_usage_stats);
 
 // Extracts
 apiRouter.get('/extract-database', extract_database);
