@@ -12,3 +12,19 @@
 li {
   margin-bottom: 10px;
 }
+
+/* Toggler */
+.toggler {
+  border-radius: 5px;
+  border: 1px solid rgb(44, 83, 132);
+  display: inline-flex;
+}
+.toggler div {
+  padding: 5px 10px;
+  color: rgb(44, 83, 132);
+  cursor: pointer;
+}
+.toggler .current {
+  background-color: rgb(44, 83, 132);
+  color: white;
+}
