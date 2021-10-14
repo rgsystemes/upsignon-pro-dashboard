@@ -118,7 +118,7 @@ const translations = {
   chart_strong_pwd: 'Strong pwds',
   chart_duplicate_pwd: 'Duplicate pwds',
   chart_nb_accounts: 'Total nb of accounts',
-  chart_usage_title: 'UpSignOn usage',
+  chart_usage_title: 'Number of PRO spaces',
   chart_nb_users: 'Nb of users',
 };
 

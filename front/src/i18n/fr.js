@@ -119,7 +119,7 @@ const translations = {
   chart_strong_pwd: 'Mdps forts',
   chart_duplicate_pwd: 'Mdps dupliqués',
   chart_nb_accounts: 'Nb total de comptes',
-  chart_usage_title: "Utilisation d'UpSignOn",
+  chart_usage_title: "Nombre d'espaces PRO",
   chart_nb_users: "Nb d'utilisateurs",
 };
 

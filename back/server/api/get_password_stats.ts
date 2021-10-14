@@ -1,15 +1,5 @@
 import { db } from '../helpers/connection';
-
-const getDaysArray = (startDay: string, endDay: string): string[] => {
-  const current = new Date(startDay);
-  const end = new Date(endDay);
-  const res = [current.toLocaleDateString()];
-  while (current.getTime() < end.getTime()) {
-    current.setDate(current.getDate() + 1);
-    res.push(current.toLocaleDateString());
-  }
-  return res;
-};
+import { getDaysArray } from '../helpers/dateArray';
 
 export const get_password_stats = async (req: any, res: any): Promise<void> => {
   try {
@@ -33,7 +23,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
       if (!chartDataPerUserPerDay[r.userId]) {
         chartDataPerUserPerDay[r.userId] = {};
       }
-      chartDataPerUserPerDay[r.userId][new Date(r.day).toLocaleDateString()] = r;
+      chartDataPerUserPerDay[r.userId][new Date(r.day).toISOString()] = r;
     });
 
     // Then get the continuous list of days

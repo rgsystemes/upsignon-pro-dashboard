@@ -23,7 +23,7 @@ class SecurityChart extends React.Component {
       this.setState({
         stats: stats.map((s) => ({
           ...s,
-          day: new Date(s.day).toLocaleDateString().replace(/\/\d\d\d\d$/, ''),
+          day: new Date(s.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
         })),
       });
     } catch (e) {

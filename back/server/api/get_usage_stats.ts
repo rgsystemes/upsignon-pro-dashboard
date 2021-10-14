@@ -1,15 +1,5 @@
 import { db } from '../helpers/connection';
-
-const getDaysArray = (startDay: string, endDay: string): Date[] => {
-  const current = new Date(startDay);
-  const end = new Date(endDay);
-  const res = [new Date(current)];
-  while (current.getTime() < end.getTime()) {
-    current.setDate(current.getDate() + 1);
-    res.push(new Date(current));
-  }
-  return res;
-};
+import { getDaysArray } from '../helpers/dateArray';
 
 export const get_usage_stats = async (req: any, res: any): Promise<void> => {
   try {
@@ -22,13 +12,13 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
 
     let lastStatIndex = 0;
     let lastNbUsers = 0;
-    const usageStats = days.map((d: Date) => {
+    const usageStats = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
-      if (row && new Date(row.day).getTime() === d.getTime()) {
+      if (row && new Date(row.day).toISOString() === d) {
         lastNbUsers += parseInt(row.nb_users);
         lastStatIndex++;
       }
-      return { day: d.toISOString(), nbUsers: lastNbUsers };
+      return { day: d, nbUsers: lastNbUsers };
     });
 
     res.status(200).send(usageStats);
