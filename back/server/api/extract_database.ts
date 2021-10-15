@@ -33,7 +33,8 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
       csvContent += dbRes.rows.map((r) => Object.values(r).join(';')).join('\n');
     }
     res.header('Content-Type', 'text/csv');
-    res.attachment('upsignon-pro-stats.csv');
+    const d = new Date().toISOString().split('T')[0];
+    res.attachment(`upsignon-pro-stats-${d}.csv`);
     res.send(csvContent);
   } catch (e) {
     console.error(e);
