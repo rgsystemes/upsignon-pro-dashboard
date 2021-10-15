@@ -12,12 +12,9 @@ class Overview extends React.Component {
       <div className="page">
         <h1>{i18n.t('menu_overview')}</h1>
         <p>{i18n.t('suggestion')}</p>
+
         <PendingPasswordResetRequests setIsLoading={this.props.setIsLoading} />
-
-        <h2>{i18n.t('chart_security_title')}</h2>
         <SecurityChart />
-
-        <h2>{i18n.t('chart_usage_title')}</h2>
         <UsageChart />
         <Extracts isLoading={this.props.isLoading} setIsLoading={this.props.setIsLoading} />
       </div>

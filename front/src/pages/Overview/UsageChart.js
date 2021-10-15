@@ -34,35 +34,38 @@ class UsageChart extends React.Component {
   }
   render() {
     return (
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart
-          width={500}
-          height={350}
-          data={this.state.stats}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 10" />
-          <XAxis dataKey="day" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Legend verticalAlign="top" />
-          <Area
-            type="monotone"
-            dataKey="nbUsers"
-            name={i18n.t('chart_nb_users')}
-            stackId="2"
-            stroke="#82ca9d"
-            fill="#82ca9d"
-            dot={false}
-            isAnimationActive={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+      <React.Fragment>
+        <h2>{i18n.t('chart_usage_title')}</h2>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            width={500}
+            height={350}
+            data={this.state.stats}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 10" />
+            <XAxis dataKey="day" />
+            <YAxis allowDecimals={false} />
+            <Tooltip />
+            <Legend verticalAlign="top" />
+            <Area
+              type="monotone"
+              dataKey="nbUsers"
+              name={i18n.t('chart_nb_users')}
+              stackId="2"
+              stroke="#82ca9d"
+              fill="#82ca9d"
+              dot={false}
+              isAnimationActive={false}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </React.Fragment>
     );
   }
 }

@@ -82,6 +82,7 @@ class SecurityChart extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <h2>{i18n.t('chart_security_title')}</h2>
         <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 20 }}>
           <Toggler
             choices={[
