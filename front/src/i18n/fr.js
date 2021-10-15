@@ -114,7 +114,7 @@ const translations = {
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',
   extract_emails_weak: 'ayant au moins $n mots de passe faibles',
   extract_emails_medium: 'ayant au moins $n mots de passe moyens',
-  extract_emails_long_unused: "qui n'ont pas utilisé UpSignOn depuis au moins $n days",
+  extract_emails_long_unused: "qui n'ont pas utilisé UpSignOn depuis au moins $n jours",
   extract_emails_shared_device: 'qui partagent au moins un de leurs appareils',
   extract_emails: 'Récupérer les emails',
   copy_to_pasteboard: 'Copier',
