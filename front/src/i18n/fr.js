@@ -144,6 +144,11 @@ const translations = {
   openid_clientid: "Identifiant de l'application ",
   openid_clientid_browsers: 'Identifiant pour les extensions de navigateur',
   link_to_communicate: 'Lien à communiquer',
+  server_maintenance: 'Maintenace des serveurs',
+  pro_server_status: 'Statut du serveur UpSignOn PRO',
+  pro_server_running: "En cours d'exécution",
+  pro_server_stopped: 'Arrêté (ou bien mal configuré dans la page paramètres)',
+  pro_server_unknown_status: 'Inconnu (configurez son URL dans la page paramètres)',
 };
 
 export default translations;

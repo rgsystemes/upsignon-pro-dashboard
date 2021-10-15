@@ -4,6 +4,7 @@ import { PendingPasswordResetRequests } from './PendingPasswordResetRequests';
 import { SecurityChart } from './SecurityChart';
 import { UsageChart } from './UsageChart';
 import { Extracts } from './Extracts';
+import { ServerStatus } from './ServerStatus';
 
 // Props = setIsLoading
 class Overview extends React.Component {
@@ -12,7 +13,7 @@ class Overview extends React.Component {
       <div className="page">
         <h1>{i18n.t('menu_overview')}</h1>
         <p>{i18n.t('suggestion')}</p>
-
+        <ServerStatus />
         <PendingPasswordResetRequests setIsLoading={this.props.setIsLoading} />
         <SecurityChart />
         <UsageChart />
