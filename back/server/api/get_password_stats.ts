@@ -39,7 +39,6 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
 
     // Then get the continuous list of days
     const days = getDaysArray(start, end).map((d) => d);
-    console.log(days);
 
     // Init chart data object
     const chartDataObjet: any = {};

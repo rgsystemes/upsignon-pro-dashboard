@@ -53,7 +53,6 @@ class SecurityChart extends React.Component {
         'GET',
         null,
       );
-      console.log(stats);
       this.rawStats = stats;
       this.showStats();
     } catch (e) {
