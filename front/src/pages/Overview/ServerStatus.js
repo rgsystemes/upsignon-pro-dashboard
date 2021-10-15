@@ -11,6 +11,7 @@ export class ServerStatus extends React.Component {
     try {
       const settings = await fetchTemplate('/api/settings', 'GET', null);
       if (settings.PRO_SERVER_URL_CONFIG) {
+        // GET STATUS
         try {
           const response = await fetch(`${settings.PRO_SERVER_URL_CONFIG.url}/config`, {
             method: 'GET',
@@ -39,18 +40,16 @@ export class ServerStatus extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <h2>{i18n.t('server_maintenance')}</h2>
         <div>
-          <span style={{ marginRight: 20 }}>{i18n.t('pro_server_status')}</span>
           {this.state.proServerStatus === 'FETCHING' && <span className="fetchingStatus">...</span>}
           {this.state.proServerStatus === 'UNKNOWN' && (
             <span className="fetchingStatus">{i18n.t('pro_server_unknown_status')}</span>
           )}
           {this.state.proServerStatus === 'RUNNING' && (
-            <span className="runningStatus">{i18n.t('pro_server_running')}</span>
+            <span className="runningStatus">{i18n.t('pro_server_status_running')}</span>
           )}
           {this.state.proServerStatus === 'STOPPED' && (
-            <span className="stoppedStatus">{i18n.t('pro_server_stopped')}</span>
+            <span className="stoppedStatus">{i18n.t('pro_server_status_stopped')}</span>
           )}
         </div>
       </React.Fragment>

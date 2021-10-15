@@ -143,11 +143,11 @@ const translations = {
   openid_clientid: 'App identifier',
   openid_clientid_browsers: 'Browser extensions identifier',
   link_to_communicate: 'Link to communicate',
-  server_maintenance: 'Maintenance of the servers',
-  pro_server_status: 'UpSignOn PRO server status',
-  pro_server_running: 'Running',
-  pro_server_stopped: 'Stopped (or maybe badly configured in the settings page)',
-  pro_server_unknown_status: 'Unknown (configure its URL in the settings page)',
+  pro_server_status_running: 'The UpSignOn PRO server is running',
+  pro_server_status_stopped:
+    'The UpSignOn PRO server is stopped (or maybe misconfigured in the settings page)',
+  pro_server_unknown_status:
+    'To display the status of the UpSignOn PRO server here, configure its URL in the settings page.',
 };
 
 export default translations;
