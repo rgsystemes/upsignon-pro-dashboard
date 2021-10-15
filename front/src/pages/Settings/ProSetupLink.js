@@ -1,36 +1,36 @@
 import React from 'react';
+import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
 export class ProSetupLink extends React.Component {
   state = {
-    proServerUrl: '',
-    oidcAuthority: null,
-    oidcClientId: null,
-    oidcClientIdForAddons: null,
+    proServerUrlConfig: null,
     isEditing: false,
   };
-  fetchSetupUrlComponents = () => {
+  fetchSetupUrlComponents = async () => {
     try {
-      const { proServerUrl, oidcAuthority, oidcClientId, oidcClientIdForAddons } = {
-        proServerUrl: '',
-      };
-      if (!proServerUrl) {
-        this.setState({ isEditing: true });
+      const settings = await fetchTemplate('/api/settings');
+      if (settings.PRO_SERVER_URL_CONFIG) {
+        this.setState({ proServerUrlConfig: settings.PRO_SERVER_URL_CONFIG });
       } else {
-        this.setState({ proServerUrl, oidcAuthority, oidcClientId, oidcClientIdForAddons });
+        this.setState({ isEditing: true });
       }
     } catch (e) {
       console.error(e);
+      this.setState({ isEditing: true });
     }
   };
   componentDidMount() {
     this.fetchSetupUrlComponents();
   }
 
-  submitNewProServerUrl = async (url) => {
+  submitNewProServerUrl = async () => {
     try {
-      //TODO
-      this.fetchSetupUrlComponents();
+      await fetchTemplate('/api/setting', 'POST', {
+        key: 'PRO_SERVER_URL_CONFIG',
+        value: JSON.stringify(this.state.proServerUrlConfig),
+      });
+      this.setState({ isEditing: false });
     } catch (e) {
       console.error(e);
     }
@@ -46,20 +46,30 @@ export class ProSetupLink extends React.Component {
             <input
               style={{
                 width: `${Math.max(
-                  this.state.proServerUrl.length || proServerUrlPlaceholder.length || 0,
+                  this.state.proServerUrlConfig?.url.length || proServerUrlPlaceholder.length,
                   15,
                 )}ch`,
               }}
               placeholder={proServerUrlPlaceholder}
               type="text"
-              value={this.state.proServerUrl}
+              value={this.state.proServerUrlConfig?.url || ''}
               onChange={(ev) => {
-                this.setState({ proServerUrl: ev.target.value });
+                this.setState((s) => ({
+                  proServerUrlConfig: {
+                    ...s.proServerUrlConfig,
+                    url: ev.target.value,
+                  },
+                }));
               }}
             />
           ) : (
-            <a className="link" href={this.state.proServerUrl} target="_blank" rel="noreferrer">
-              {this.state.proServerUrl}
+            <a
+              className="link"
+              href={this.state.proServerUrlConfig?.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {this.state.proServerUrlConfig?.url}
             </a>
           )}
           {this.state.isEditing ? (
