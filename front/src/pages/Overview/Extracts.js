@@ -180,8 +180,15 @@ class Extracts extends React.Component {
           <div
             style={{ cursor: 'pointer', textDecoration: 'underline' }}
             onClick={() => {
-              this.emailExtractRef.select();
-              // TODO
+              navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
+                if (result.state === 'granted' || result.state === 'prompt') {
+                  this.emailExtractRef.style.backgroundColor = '#ccc';
+                  navigator.clipboard.writeText(this.state.extractedEmails);
+                  setTimeout(() => {
+                    this.emailExtractRef.style.backgroundColor = 'initial';
+                  }, 250);
+                }
+              });
             }}
           >
             {i18n.t('copy_to_pasteboard')}
@@ -195,6 +202,7 @@ class Extracts extends React.Component {
               padding: 10,
               marginTop: 10,
               marginRight: 10,
+              flex: 1,
               maxHeight: 200,
               textOverflow: 'ellipsis',
             }}
