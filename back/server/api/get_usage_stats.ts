@@ -8,13 +8,13 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
     );
 
     // Then get the continuous list of days
-    const days = getDaysArray(rawStats.rows[0].day, rawStats.rows[rawStats.rowCount - 1].day);
+    const days = getDaysArray(rawStats.rows[0].day, new Date().toISOString());
 
     let lastStatIndex = 0;
     let lastNbUsers = 0;
     const usageStats = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
-      if (row && new Date(row.day).toISOString() === d) {
+      if (row && row.day.toISOString() === d) {
         lastNbUsers += parseInt(row.nb_users);
         lastStatIndex++;
       }

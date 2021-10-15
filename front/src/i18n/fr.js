@@ -119,8 +119,13 @@ const translations = {
   chart_strong_pwd: 'Mdps forts',
   chart_duplicate_pwd: 'Mdps dupliqués',
   chart_nb_accounts: 'Nb total de comptes',
+  chart_type_nb: 'Nb',
+  chart_type_pctg: 'Pctg',
+  chart_start_date: 'Date de début',
+  chart_end_date: 'Date de fin',
   chart_usage_title: "Nombre d'espaces PRO",
   chart_nb_users: "Nb d'utilisateurs",
+  chart_today_button: "Aujourd'hui",
 };
 
 export default translations;

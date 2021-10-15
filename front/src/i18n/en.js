@@ -118,8 +118,13 @@ const translations = {
   chart_strong_pwd: 'Strong pwds',
   chart_duplicate_pwd: 'Duplicate pwds',
   chart_nb_accounts: 'Total nb of accounts',
+  chart_type_nb: 'Nb',
+  chart_type_pctg: 'Pctg',
+  chart_start_date: 'Start date',
+  chart_end_date: 'End date',
   chart_usage_title: 'Number of PRO spaces',
   chart_nb_users: 'Nb of users',
+  chart_today_button: 'Today',
 };
 
 export default translations;

@@ -12,10 +12,15 @@ import {
 } from 'recharts';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { getLocaleDateFormat, getDateBack1Month } from '../../helpers/dateHelper';
 
 class SecurityChart extends React.Component {
   rawStats = [];
   usePctg = false;
+  startDate = getDateBack1Month();
+  endDate = new Date();
 
   state = {
     stats: [],
@@ -43,7 +48,12 @@ class SecurityChart extends React.Component {
   };
   fetchStats = async () => {
     try {
-      const stats = await fetchTemplate('/api/get-password-stats', 'GET', null);
+      const stats = await fetchTemplate(
+        `/api/get-password-stats?start=${this.startDate.toISOString()}&end=${this.endDate.toISOString()}`,
+        'GET',
+        null,
+      );
+      console.log(stats);
       this.rawStats = stats;
       this.showStats();
     } catch (e) {
@@ -57,15 +67,49 @@ class SecurityChart extends React.Component {
     this.usePctg = usePctg;
     this.showStats();
   };
+  updateStartDate = (newStartDate) => {
+    if (this.startDate.getTime() !== newStartDate.getTime()) {
+      this.startDate = newStartDate;
+      this.fetchStats();
+    }
+  };
+  updateEndDate = (newEndDate) => {
+    if (this.endDate.getTime() !== newEndDate.getTime()) {
+      this.endDate = newEndDate;
+      this.fetchStats();
+    }
+  };
   render() {
     return (
       <React.Fragment>
-        <div className="toggler">
-          <div className={this.usePctg ? '' : 'current'} onClick={() => this.togglePctg(false)}>
-            Nb
+        <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 20 }}>
+          <div className="toggler">
+            <div className={this.usePctg ? '' : 'current'} onClick={() => this.togglePctg(false)}>
+              {i18n.t('chart_type_nb')}
+            </div>
+            <div className={this.usePctg ? 'current' : ''} onClick={() => this.togglePctg(true)}>
+              {i18n.t('chart_type_pctg')}
+            </div>
           </div>
-          <div className={this.usePctg ? 'current' : ''} onClick={() => this.togglePctg(true)}>
-            Pctg
+          <div style={{ marginLeft: 20 }}>
+            <div>{i18n.t('chart_start_date')}</div>
+            <DatePicker
+              selected={this.startDate}
+              onChange={this.updateStartDate}
+              allowSameDay={false}
+              dateFormat={getLocaleDateFormat()}
+              maxDate={new Date()}
+            />
+          </div>
+          <div style={{ marginLeft: 20 }}>
+            <div>{i18n.t('chart_end_date')}</div>
+            <DatePicker
+              selected={this.endDate}
+              onChange={this.updateEndDate}
+              dateFormat={getLocaleDateFormat()}
+              maxDate={new Date()}
+              todayButton={<div>{i18n.t('chart_today_button')}</div>}
+            />
           </div>
         </div>
         <ResponsiveContainer width="100%" height="100%">

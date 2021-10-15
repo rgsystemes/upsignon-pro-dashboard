@@ -3,12 +3,23 @@ import { getDaysArray } from '../helpers/dateArray';
 
 export const get_password_stats = async (req: any, res: any): Promise<void> => {
   try {
+    const { start, end } = req.query;
+
+    // security check
+    if (typeof start !== 'string' || typeof end !== 'string') {
+      return res.status(400).end();
+    }
+
+    const startDay = start;
+    const endDay = end;
+
     // Clean data_stats to make there is at most one line per user per day
     await db.query(
       "DELETE FROM data_stats as ds1 USING data_stats as ds2 WHERE ds1.user_id=ds2.user_id AND date_trunc('day',ds1.date)=date_trunc('day', ds2.date) AND ds1.date<ds2.date;",
     );
     const rawStats = await db.query(
-      "SELECT user_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_duplicate_password FROM data_stats ORDER BY day ASC",
+      "SELECT user_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_duplicate_password FROM data_stats WHERE date BETWEEN $1 AND $2 ORDER BY day ASC",
+      [startDay, endDay],
     );
 
     /*
@@ -20,14 +31,15 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
      */
     const chartDataPerUserPerDay: any = {};
     rawStats.rows.forEach((r) => {
-      if (!chartDataPerUserPerDay[r.userId]) {
-        chartDataPerUserPerDay[r.userId] = {};
+      if (!chartDataPerUserPerDay[r.user_id]) {
+        chartDataPerUserPerDay[r.user_id] = {};
       }
-      chartDataPerUserPerDay[r.userId][new Date(r.day).toISOString()] = r;
+      chartDataPerUserPerDay[r.user_id][r.day.toISOString()] = r;
     });
 
     // Then get the continuous list of days
-    const days = getDaysArray(rawStats.rows[0].day, rawStats.rows[rawStats.rowCount - 1].day);
+    const days = getDaysArray(start, end).map((d) => d);
+    console.log(days);
 
     // Init chart data object
     const chartDataObjet: any = {};
