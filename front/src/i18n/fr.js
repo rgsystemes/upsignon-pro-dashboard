@@ -128,6 +128,12 @@ const translations = {
   chart_usage_title: "Nombre d'espaces PRO",
   chart_nb_users: "Nb d'utilisateurs",
   chart_today_button: "Aujourd'hui",
+  useful_links: 'Liens utiles',
+  install_doc_server_pro: "Documentation d'installation du serveur UpSignOn PRO",
+  install_doc_server_pro_dashboard: "Documentation d'installation du dashboard UpSignOn PRO",
+  install_doc_browser_extension: "Documentation d'installation des extensions de navigateur",
+  windows_app_download_link: "Téléchargement de l'application pour Windows 10",
+  to_unzip: "ajoutez l'extension .zip pour le dézipper",
 };
 
 export default translations;
