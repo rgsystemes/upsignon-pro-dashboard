@@ -10,8 +10,8 @@
   flex: 1;
   height: 100%;
   overflow: scroll;
-  padding-bottom: 200px;
   box-sizing: border-box;
+  padding: 0 20px 200px 20px;
 }
 
 /* actions */
