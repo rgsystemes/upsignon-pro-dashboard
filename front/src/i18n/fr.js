@@ -3,6 +3,7 @@ const translations = {
     "N'hésitez pas à nous envoyer toutes vos remarques et suggestions à contact@upsignon.eu.",
   yes: 'OUI',
   no: 'NON',
+  edit: 'Modifier',
   actions: 'Actions',
   delete: 'Supprimer',
   add: 'Ajouter',
@@ -134,6 +135,8 @@ const translations = {
   install_doc_browser_extension: "Documentation d'installation des extensions de navigateur",
   windows_app_download_link: "Téléchargement de l'application pour Windows 10",
   to_unzip: "ajoutez l'extension .zip pour le dézipper",
+  setup_link: "Lien de configuration de l'application",
+  pro_server_url: 'URL de votre serveur UpSignOn PRO',
 };
 
 export default translations;

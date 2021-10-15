@@ -1,6 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { AllowedEmails } from './AllowedEmails';
+import { ProSetupLink } from './ProSetupLink';
 import { SecuritySettings } from './SecuritySettings';
 import './settings.css';
 import { Urls } from './Urls';
@@ -53,6 +54,7 @@ class Settings extends React.Component {
             {` (${i18n.t('to_unzip')})`}
           </li>
         </ul>
+        <ProSetupLink />
         <SecuritySettings setIsLoading={this.props.setIsLoading} />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
         <Urls setIsLoading={this.props.setIsLoading} />
