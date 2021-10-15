@@ -6,12 +6,15 @@ export class ProSetupLink extends React.Component {
   state = {
     proServerUrlConfig: null,
     isEditing: false,
+    showOpenId: false,
   };
   fetchSetupUrlComponents = async () => {
     try {
       const settings = await fetchTemplate('/api/settings');
       if (settings.PRO_SERVER_URL_CONFIG) {
-        this.setState({ proServerUrlConfig: settings.PRO_SERVER_URL_CONFIG });
+        this.setState({
+          proServerUrlConfig: settings.PRO_SERVER_URL_CONFIG,
+        });
       } else {
         this.setState({ isEditing: true });
       }
@@ -28,9 +31,14 @@ export class ProSetupLink extends React.Component {
     try {
       await fetchTemplate('/api/setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
-        value: JSON.stringify(this.state.proServerUrlConfig),
+        value: JSON.stringify({
+          url: this.state.proServerUrlConfig.url.trim(),
+          oidcAuthority: this.state.proServerUrlConfig.oidcAuthority?.trim(),
+          oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
+          oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
+        }),
       });
-      this.setState({ isEditing: false });
+      this.setState({ isEditing: false, showOpenId: false });
     } catch (e) {
       console.error(e);
     }
@@ -40,7 +48,7 @@ export class ProSetupLink extends React.Component {
     return (
       <div>
         <h2>{i18n.t('setup_link')}</h2>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', marginBottom: 10 }}>
           <div style={{ marginRight: 20 }}>{i18n.t('pro_server_url')}</div>
           {this.state.isEditing ? (
             <input
@@ -86,6 +94,67 @@ export class ProSetupLink extends React.Component {
             </div>
           )}
         </div>
+        <div>
+          {i18n.t('openid_unfold')}{' '}
+          {this.state.showOpenId ? (
+            <span className="action" onClick={() => this.setState({ showOpenId: false })}>
+              {i18n.t('hide')}
+            </span>
+          ) : (
+            <span className="action" onClick={() => this.setState({ showOpenId: true })}>
+              {i18n.t('see')}
+            </span>
+          )}
+        </div>
+        {this.state.showOpenId && (
+          <div style={{ border: '1px solid #aaa', borderRadius: 3, padding: 10, marginTop: 5 }}>
+            <div style={{ display: 'flex', marginBottom: 10 }}>
+              <div>{i18n.t('openid_authority')}</div>
+              <input
+                style={{ marginLeft: 10, width: 200 }}
+                type="text"
+                value={this.state.proServerUrlConfig?.oidcAuthority || ''}
+                onChange={(ev) => {
+                  this.setState((s) => ({
+                    proServerUrlConfig: { ...s.proServerUrlConfig, oidcAuthority: ev.target.value },
+                  }));
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', marginBottom: 10 }}>
+              <div>{i18n.t('openid_clientid')}</div>
+              <input
+                style={{ marginLeft: 10, width: 200 }}
+                type="text"
+                value={this.state.proServerUrlConfig?.oidcClientId || ''}
+                onChange={(ev) => {
+                  this.setState((s) => ({
+                    proServerUrlConfig: { ...s.proServerUrlConfig, oidcClientId: ev.target.value },
+                  }));
+                }}
+              />
+            </div>
+            <div style={{ display: 'flex', marginBottom: 10 }}>
+              <div>{i18n.t('openid_clientid_browsers')}</div>
+              <input
+                style={{ marginLeft: 10, width: 200 }}
+                type="text"
+                value={this.state.proServerUrlConfig?.oidcClientIdForAddons || ''}
+                onChange={(ev) => {
+                  this.setState((s) => ({
+                    proServerUrlConfig: {
+                      ...s.proServerUrlConfig,
+                      oidcClientIdForAddons: ev.target.value,
+                    },
+                  }));
+                }}
+              />
+            </div>
+            <div className="action" onClick={this.submitNewProServerUrl}>
+              {i18n.t('validate')}
+            </div>
+          </div>
+        )}
       </div>
     );
   }

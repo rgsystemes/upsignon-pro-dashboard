@@ -4,6 +4,8 @@ const translations = {
   yes: 'YES',
   no: 'NO',
   edit: 'Edit',
+  see: 'See',
+  hide: 'Hide',
   actions: 'Actions',
   delete: 'Delete',
   add: 'Add',
@@ -136,6 +138,10 @@ const translations = {
   to_unzip: 'add the .zip extension to unzip it',
   setup_link: 'Application setup link',
   pro_server_url: 'URL of your UpSignOn PRO server',
+  openid_unfold: 'Special cas of OpenId (optionnal and not recommended)',
+  openid_authority: 'OpenId server URL',
+  openid_clientid: 'App identifier',
+  openid_clientid_browsers: 'Browser extensions identifier',
 };
 
 export default translations;
