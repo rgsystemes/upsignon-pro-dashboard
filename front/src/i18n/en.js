@@ -142,6 +142,7 @@ const translations = {
   openid_authority: 'OpenId server URL',
   openid_clientid: 'App identifier',
   openid_clientid_browsers: 'Browser extensions identifier',
+  link_to_communicate: 'Link to communicate',
 };
 
 export default translations;

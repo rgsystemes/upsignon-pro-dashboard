@@ -143,6 +143,7 @@ const translations = {
   openid_authority: 'URL du serveur OpenId',
   openid_clientid: "Identifiant de l'application ",
   openid_clientid_browsers: 'Identifiant pour les extensions de navigateur',
+  link_to_communicate: 'Lien à communiquer',
 };
 
 export default translations;
