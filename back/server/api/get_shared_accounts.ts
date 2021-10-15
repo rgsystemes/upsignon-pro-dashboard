@@ -16,16 +16,16 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       WHERE u.email LIKE $1`,
         [search + '%'],
       );
-      sharedAccountsCount = parseInt(countReq.rows[0].count);
+      sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     } else {
       const countReq = await db.query('SELECT COUNT(id) FROM shared_accounts');
-      sharedAccountsCount = parseInt(countReq.rows[0].count);
+      sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     }
 
     // GET SHARED ACCOUNTS
-    const pageIndex = parseInt(req.query.pageIndex) || 1;
+    const pageIndex = parseInt(req.query.pageIndex, 10) || 1;
     let pageOffset = pageIndex - 1;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = parseInt(req.query.limit, 10) || 50;
     if (pageOffset * limit >= sharedAccountsCount) pageOffset = 0;
 
     const queryInputs: string[] = [limit.toString(), (pageOffset * limit).toString()];

@@ -15,7 +15,7 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
     const usageStats = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
       if (row && row.day.toISOString() === d) {
-        lastNbUsers += parseInt(row.nb_users);
+        lastNbUsers += parseInt(row.nb_users, 10);
         lastStatIndex++;
       }
       return { day: d, nbUsers: lastNbUsers };

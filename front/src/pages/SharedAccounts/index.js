@@ -30,8 +30,8 @@ class SharedAccounts extends React.Component {
     try {
       this.props.setIsLoading(true);
       const queryParams = this.getCurrentQueryParameters();
-      const limit = parseInt(queryParams.limit) || maxRenderedItems;
-      const pageIndex = parseInt(queryParams.pageIndex) || 1;
+      const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
+      const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
       const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
         `/api/shared-accounts?pageIndex=${pageIndex}&limit=${limit}`,
         'GET',

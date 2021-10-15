@@ -11,16 +11,16 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       const countUsersReq = await db.query('SELECT COUNT(id) FROM users WHERE email LIKE $1', [
         search + '%',
       ]);
-      userCount = parseInt(countUsersReq.rows[0].count);
+      userCount = parseInt(countUsersReq.rows[0].count, 10);
     } else {
       const countUsersReq = await db.query('SELECT COUNT(id) FROM users');
-      userCount = parseInt(countUsersReq.rows[0].count);
+      userCount = parseInt(countUsersReq.rows[0].count, 10);
     }
 
     // GET USERS
-    const pageIndex = parseInt(req.query.pageIndex) || 1;
+    const pageIndex = parseInt(req.query.pageIndex, 10) || 1;
     let pageOffset = pageIndex - 1;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = parseInt(req.query.limit, 10) || 50;
     if (pageOffset * limit >= userCount) pageOffset = 0;
 
     const queryInputs: string[] = [limit.toString(), (pageOffset * limit).toString()];
@@ -52,8 +52,8 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     );
     const users = usersRequest.rows.map((u) => ({
       ...u,
-      nb_devices: parseInt(u.nb_devices),
-      nb_shared_items: parseInt(u.nb_shared_items),
+      nb_devices: parseInt(u.nb_devices, 10),
+      nb_shared_items: parseInt(u.nb_shared_items, 10),
     }));
 
     res.status(200).send({ users, userCount });

@@ -32,8 +32,8 @@ class Users extends React.Component {
     try {
       this.props.setIsLoading(true);
       const queryParams = this.getCurrentQueryParameters();
-      const limit = parseInt(queryParams.limit) || maxRenderedItems;
-      const pageIndex = parseInt(queryParams.pageIndex) || 1;
+      const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
+      const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
       const { users, userCount } = await fetchTemplate(
         `/api/users?pageIndex=${pageIndex}&limit=${limit}`,
         'GET',
