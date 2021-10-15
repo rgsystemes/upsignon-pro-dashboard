@@ -15,6 +15,7 @@ import { i18n } from '../../i18n/i18n';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { getLocaleDateFormat, getDateBack1Month } from '../../helpers/dateHelper';
+import { Toggler } from '../../helpers/Toggler';
 
 class SecurityChart extends React.Component {
   rawStats = [];
@@ -82,14 +83,13 @@ class SecurityChart extends React.Component {
     return (
       <React.Fragment>
         <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 20 }}>
-          <div className="toggler">
-            <div className={this.usePctg ? '' : 'current'} onClick={() => this.togglePctg(false)}>
-              {i18n.t('chart_type_nb')}
-            </div>
-            <div className={this.usePctg ? 'current' : ''} onClick={() => this.togglePctg(true)}>
-              {i18n.t('chart_type_pctg')}
-            </div>
-          </div>
+          <Toggler
+            choices={[
+              { key: 'nb', title: i18n.t('chart_type_nb'), isCurrent: !this.usePctg },
+              { key: 'pctg', title: i18n.t('chart_type_pctg'), isCurrent: this.usePctg },
+            ]}
+            onSelect={(choice) => this.togglePctg(choice === 'pctg')}
+          />
           <div style={{ marginLeft: 20 }}>
             <div>{i18n.t('chart_start_date')}</div>
             <DatePicker
