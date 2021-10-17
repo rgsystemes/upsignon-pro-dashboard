@@ -194,7 +194,7 @@ class UserDevices extends React.Component {
                       <div>{new Date(d.revocation_date).toLocaleString()}</div>
                     )}
                   </td>
-                  <td>{new Date(d.last_session).toLocaleString()}</td>
+                  <td>{d.last_session && new Date(d.last_session).toLocaleString()}</td>
                   {!!d.shared_with ? (
                     <td>
                       {d.shared_with.split(';').map((email) => (
