@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { EditableCell } from '../../helpers/EditableCell';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
@@ -133,7 +134,7 @@ class Urls extends React.Component {
                   <tr key={url.id}>
                     <EditableCell
                       value={url.displayed_name}
-                      placeholde={namePlaceholder}
+                      placeholder={namePlaceholder}
                       onChange={(newVal) => {
                         if (!newVal) return;
                         this.submitUrlEdition(url.id, { displayedName: newVal });
@@ -141,14 +142,14 @@ class Urls extends React.Component {
                     />
                     <EditableCell
                       value={url.signin_url}
-                      placeholde={signinUrlPlaceholder}
+                      placeholder={signinUrlPlaceholder}
                       onChange={(newVal) => {
                         this.submitUrlEdition(url.id, { signinUrl: newVal });
                       }}
                     />
                     <EditableCell
                       value={url.password_change_url}
-                      placeholde={passwordChangeUrlPlaceholder}
+                      placeholder={passwordChangeUrlPlaceholder}
                       onChange={(newVal) => {
                         this.submitUrlEdition(url.id, { passwordChangeUrl: newVal });
                       }}
@@ -182,56 +183,6 @@ function InputWithLabel(props) {
         <input name={labelFor} ref={handleRef} style={{ width: 300 }} placeholder={placeholder} />
       </td>
     </tr>
-  );
-}
-
-function EditableCell(props) {
-  const { value, onChange, placeholder } = props;
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentValue, setCurrentValue] = useState('');
-
-  if (isEditing) {
-    return (
-      <td>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <input
-            style={{ width: `${Math.max(currentValue?.length || placeholder?.length || 0, 15)}ch` }}
-            value={currentValue}
-            onChange={(ev) => {
-              setCurrentValue(ev.target.value);
-            }}
-            autoFocus
-            placeholder={placeholder}
-            onBlur={(ev) => {
-              // do make isEditing false but do not prevent onClick on validate
-              setTimeout(() => {
-                setIsEditing(false);
-              }, 150);
-            }}
-          />
-          <span
-            style={{ marginLeft: 10 }}
-            className="action"
-            onClick={() => {
-              onChange(currentValue);
-            }}
-          >
-            {i18n.t('validate')}
-          </span>
-        </div>
-      </td>
-    );
-  }
-  return (
-    <td
-      style={{ cursor: 'pointer' }}
-      onClick={() => {
-        setIsEditing(true);
-        setCurrentValue(value);
-      }}
-    >
-      {value}
-    </td>
   );
 }
 

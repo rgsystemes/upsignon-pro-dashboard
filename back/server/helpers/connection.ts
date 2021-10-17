@@ -22,7 +22,22 @@ const query = (
 
 const gracefulShutdown = (): Promise<void> => pool.end();
 
+const transaction = async (doQueries: (dbClient: any) => Promise<void>) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await doQueries(client);
+    await client.query('COMMIT');
+  } catch (e) {
+    await client.query('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+};
+
 export const db = {
   query,
+  transaction,
   gracefulShutdown,
 };

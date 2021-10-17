@@ -1,4 +1,5 @@
 import React from 'react';
+import { EditableCell } from '../../helpers/EditableCell';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
@@ -116,6 +117,32 @@ class Users extends React.Component {
     }
   };
 
+  onChangeEmail = async (userId, oldEmail, newEmail) => {
+    if (oldEmail !== newEmail) {
+      const confirmation = window.confirm(
+        i18n.t('user_change_email_confirm', { oldEmail, newEmail }),
+      );
+      if (confirmation) {
+        try {
+          await fetchTemplate('/api/update-user-email', 'POST', { userId, oldEmail, newEmail });
+          this.setState((s) => ({
+            ...s,
+            users: s.users.map((u) => {
+              if (u.user_id === userId) {
+                return { ...u, email: newEmail };
+              } else {
+                return u;
+              }
+            }),
+          }));
+        } catch (e) {
+          console.error(e);
+          window.alert(i18n.t('user_email_already_used', { email: newEmail }));
+        }
+      }
+    }
+  };
+
   render() {
     const searchInputStyle = { width: 200 };
     if (this.state.users.length === 0 && !!this.searchInput?.value) {
@@ -162,7 +189,14 @@ class Users extends React.Component {
               return (
                 <React.Fragment key={u.user_id}>
                   <tr>
-                    <td>{u.email}</td>
+                    <EditableCell
+                      value={u.email}
+                      placeholder="email@domain.fr"
+                      onChange={(newEmail) => {
+                        if (!newEmail) return;
+                        this.onChangeEmail(u.user_id, u.email, newEmail);
+                      }}
+                    />
                     <td>
                       <div>{`${Math.round(u.data_length / 1000)}ko`}</div>
                       <div>{new Date(u.updated_at).toLocaleString()}</div>

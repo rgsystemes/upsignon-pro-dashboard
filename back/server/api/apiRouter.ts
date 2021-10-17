@@ -35,6 +35,7 @@ import { update_allowed_email } from './update_allowed_email';
 import { update_setting } from './update_setting';
 import { update_shared_account_manager } from './update_shared_account_manager';
 import { update_url } from './update_url';
+import { update_user_email } from './update_user_email';
 
 export const apiRouter = express.Router();
 
@@ -42,6 +43,7 @@ export const apiRouter = express.Router();
 apiRouter.get('/users', get_users);
 apiRouter.get('/count-users', count_users);
 apiRouter.post('/delete-user/:userId', delete_user);
+apiRouter.post('/update-user-email', update_user_email);
 
 // Devices
 apiRouter.get('/user-devices/:userId', get_user_devices);

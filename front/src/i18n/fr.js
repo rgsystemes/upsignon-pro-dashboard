@@ -37,6 +37,10 @@ const translations = {
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
   user_sorting:
     'Les utilisateurs sont triés par nombre décroissant de mots de passe réutilisés, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
+  user_change_email_confirm:
+    "Êtes-vous sûr de vouloir changer l'adresse email de cet utilisateur de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
+  user_email_already_used:
+    'ERREUR\n$email est déjà utilisé ou a déjà été utilisé par un autre utilisateur.',
   devices_for_user: 'Appareils de $email',
   device_name: "Nom de l'appareil",
   device_app_version: "Version de l'app",

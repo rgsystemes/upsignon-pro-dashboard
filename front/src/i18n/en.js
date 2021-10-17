@@ -37,6 +37,10 @@ const translations = {
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
   user_sorting:
     'Users are sorted by descending number of reused passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
+  user_change_email_confirm:
+    "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
+  user_email_already_used:
+    'ERROR\n$email is already used or has already been used by another user.',
   devices_for_user: 'Devices of $email',
   device_name: 'Device name',
   device_app_version: 'App version',
