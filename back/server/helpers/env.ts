@@ -12,6 +12,7 @@ const {
   EMAIL_PORT,
   EMAIL_USER,
   EMAIL_PASS,
+  SESSION_SECRET,
 } = process.env;
 
 export default {
@@ -28,4 +29,5 @@ export default {
   EMAIL_PORT: EMAIL_PORT ? Number.parseInt(EMAIL_PORT, 10) : 587,
   EMAIL_USER,
   EMAIL_PASS,
+  SESSION_SECRET,
 };
