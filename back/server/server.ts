@@ -9,6 +9,7 @@ import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
 import SessionStore from './helpers/sessionStore';
+import { loginRouter } from './login/loginRouter';
 
 const app = express();
 
@@ -46,19 +47,25 @@ app.use((req, res, next) => {
   }
 
   // Check Auth
+  const isLoginRoute = req.url.startsWith('/login');
   // @ts-ignore
-  if (!req.session?.adminId) {
+  if (!req.session?.adminEmail && !isLoginRoute) {
     try {
-      res.status(401).sendFile('./helpers/loginPage.html', {
-        root: path.join(__dirname, '../server'),
-        dotfiles: 'deny',
-      });
+      if (req.method !== 'GET') {
+        res.status(401).end();
+      } else {
+        res.status(401).sendFile('./login/loginPage.html', {
+          root: path.join(__dirname, '../server'),
+          dotfiles: 'deny',
+        });
+      }
     } catch (e) {
       console.error(e);
       res.status(404).end();
     }
+  } else {
+    next();
   }
-  next();
 });
 
 app.use('/', express.static('../front/build'));
@@ -66,6 +73,7 @@ app.use('/users/', express.static('../front/build'));
 app.use('/settings/', express.static('../front/build'));
 
 app.use('/api/', apiRouter);
+app.use('/login/', loginRouter);
 
 if (module === require.main) {
   startServer(app, () => {});

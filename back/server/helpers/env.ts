@@ -13,6 +13,7 @@ const {
   EMAIL_USER,
   EMAIL_PASS,
   SESSION_SECRET,
+  SERVER_URL,
 } = process.env;
 
 export default {
@@ -30,4 +31,5 @@ export default {
   EMAIL_USER,
   EMAIL_PASS,
   SESSION_SECRET,
+  SERVER_URL,
 };
