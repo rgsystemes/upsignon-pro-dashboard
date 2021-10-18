@@ -9,6 +9,7 @@ const translations = {
   actions: 'Actions',
   delete: 'Delete',
   add: 'Add',
+  disconnect: 'Disconnect',
   pagination_pages: 'pages',
   validate: 'Validate',
   menu_overview: 'Overview',

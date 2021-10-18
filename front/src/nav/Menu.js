@@ -1,4 +1,6 @@
 import './Menu.css';
+import { i18n } from '../i18n/i18n';
+import { fetchTemplate } from '../helpers/fetchTemplate';
 
 function Menu(props) {
   const { pages } = props;
@@ -27,6 +29,21 @@ function Menu(props) {
           </a>
         );
       })}
+      <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
+        <div
+          className="action"
+          onClick={async () => {
+            try {
+              await fetchTemplate('/api/disconnect', 'POST', null);
+            } catch (e) {
+            } finally {
+              window.location.href = '/';
+            }
+          }}
+        >
+          {i18n.t('disconnect')}
+        </div>
+      </div>
     </nav>
   );
 }

@@ -47,7 +47,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       if (res.rowCount === 0) {
         return cb();
       }
-      return cb(null, JSON.parse(res.rows[0].session_data));
+      return cb(null, res.rows[0].session_data);
     } catch (e) {
       cb(e);
     }

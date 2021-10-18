@@ -13,6 +13,7 @@ import { delete_shared_account } from './delete_shared_account';
 import { delete_shared_account_user } from './delete_shared_account_user';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
+import { disconnect } from './disconnect';
 import { extract_database } from './extract_database';
 import { extract_emails_for_duplicate_passwords } from './extract_emails_for_duplicate_passwords';
 import { extract_emails_for_long_unused } from './extract_emails_for_long_unused';
@@ -97,6 +98,7 @@ apiRouter.post('/insert-allowed-email', insert_allowed_email);
 apiRouter.get('/admins', get_admins);
 apiRouter.post('/delete-admin/:id', delete_admin);
 apiRouter.post('/insert-admin', insert_admin);
+apiRouter.post('/disconnect', disconnect);
 
 // Urls
 apiRouter.get('/urls', get_urls);

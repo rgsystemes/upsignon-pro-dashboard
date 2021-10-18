@@ -211,9 +211,9 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
         [userId, connectionToken],
       );
     } catch {}
-    if (!dbRes || dbRes.rowCount !== 1) return res.status(401).send('CONNECTION ERROR'); // TODO ERROR PAGE
+    if (!dbRes || dbRes.rowCount !== 1) return res.status(401).send('CONNECTION ERROR');
     if (isTokenExpired(dbRes.rows[0].token_created_at))
-      return res.status(401).send('CONNECTION ERROR'); // TODO ERROR PAGE
+      return res.status(401).send('CONNECTION ERROR');
     await db.query('UPDATE admins SET token=null, token_created_at=null WHERE id=$1 ', [userId]);
 
     req.session.adminEmail = dbRes.rows[0].email;
