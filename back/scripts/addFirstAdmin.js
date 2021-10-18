@@ -2,8 +2,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../..', '.env') });
 
-const { db } = require('../compiledServer/helpers/connection');
-const { v4 } = require('uuid');
+const { inviteNewAdmin } = require('../compiledServer/helpers/inviteNewAdmin');
 
 const email = process.argv[2];
 if (!email) {
@@ -13,9 +12,9 @@ if (!email) {
   return process.exit(1);
 }
 
-db.query('INSERT INTO admins (id, email) VALUES ($1, $2)', [v4(), email])
+inviteNewAdmin(email)
   .then(() => {
-    console.log(`Added  ${email} as admin.`);
+    console.log(`Added  ${email} as admin and sent email.`);
     process.exit(0);
   })
   .catch((e) => {

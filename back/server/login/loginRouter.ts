@@ -21,12 +21,6 @@ const buttonConfigs = {
     generalConfigVersion: CONFIG_VERSION,
     disableAccountCreation: true,
   },
-  invitation: {
-    fields: [{ type: 'email', key: 'email1', mandatory: true }],
-    forceFormDisplay: false,
-    generalConfigVersion: CONFIG_VERSION,
-    disableAccountCreation: true,
-  },
 };
 
 /* HELPERS */
@@ -65,7 +59,7 @@ loginRouter.get('/config', async (req, res) => {
     return res.status(200).json(config);
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
 
@@ -120,7 +114,7 @@ loginRouter.post('/connect', async (req, res) => {
     res.status(200).json({ connectionToken, redirectionUri });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
 
@@ -138,7 +132,7 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
     if ((!login || !password) && !connectionToken) return res.status(400).end();
     if (!!login && !!password && !!connectionToken) return res.status(400).end();
 
-    let userId;
+    let adminId;
     let userData;
     if (!!login && !!password) {
       let dbRes;
@@ -150,22 +144,17 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
       if (!dbRes || dbRes.rowCount === 0) return res.status(401).end();
       const isPasswordOK = await passwordIsOk(password, dbRes.rows[0].password_hash);
       if (!isPasswordOK) return res.status(401).end();
-      userId = dbRes.rows[0].id;
+      adminId = dbRes.rows[0].id;
       userData = [{ type: 'email', key: 'email1', value: { address: login, isValidated: true } }];
     } else {
-      const [id, token] = connectionToken.split(':');
-      if (!id || !token) return res.status(401).end();
-      let currentRes;
-      try {
-        currentRes = await db.query(
-          'SELECT email, token_expires_at FROM admins WHERE id=$1 AND token=$2',
-          [id, token],
-        );
-      } catch {}
+      const currentRes = await db.query(
+        'SELECT id, email, token_expires_at FROM admins WHERE token=$1',
+        [connectionToken],
+      );
       if (!currentRes || currentRes.rowCount === 0) return res.status(401).end();
       if (isTokenExpired(currentRes.rows[0].token_expires_at)) return res.status(401).end();
-      await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1', [id]);
-      userId = id;
+      adminId = currentRes.rows[0].id;
+      await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1', [adminId]);
       userData = [
         {
           type: 'email',
@@ -175,11 +164,11 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
       ];
     }
     const hash = await hashPassword(newPassword);
-    await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [hash, userId]);
-    res.status(200).json({ userId, userData });
+    await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [hash, adminId]);
+    res.status(200).json({ userId: adminId, userData });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
 
@@ -208,7 +197,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
 
@@ -231,7 +220,7 @@ loginRouter.post('/update-password', async (req, res) => {
     }
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
 
@@ -263,6 +252,6 @@ loginRouter.post('/delete-account-and-data', async (req, res) => {
     res.status(200).json({ deletionStatus: 'DONE' });
   } catch (e) {
     console.error(e);
-    res.status(500).end();
+    res.status(444).end();
   }
 });
