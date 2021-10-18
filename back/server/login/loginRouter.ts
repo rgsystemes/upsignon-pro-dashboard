@@ -15,10 +15,17 @@ const config = {
 };
 
 const buttonConfigs = {
-  connect: {
+  signin: {
     fields: [{ type: 'email', key: 'email1', mandatory: true }],
     forceFormDisplay: false,
     generalConfigVersion: CONFIG_VERSION,
+    disableAccountCreation: true,
+  },
+  invitation: {
+    fields: [{ type: 'email', key: 'email1', mandatory: true }],
+    forceFormDisplay: false,
+    generalConfigVersion: CONFIG_VERSION,
+    disableAccountCreation: true,
   },
 };
 
@@ -116,31 +123,7 @@ loginRouter.post('/connect', async (req, res) => {
 });
 
 loginRouter.post('/create-account', async (req, res) => {
-  try {
-    const password = req.body.password;
-    if (!password) return res.status(400).end();
-
-    const data = req.body.data || [];
-    const emailObject = data.find((d: any) => d.key === 'email1');
-    const emailValue = emailObject?.value?.address;
-    if (!emailValue) return res.status(403).json({ message: "L'adresse email est vide." });
-    const authorizedAdmin = await db.query(
-      'SELECT id FROM admins WHERE email=$1 AND password_hash is null',
-      [emailValue],
-    );
-
-    if (authorizedAdmin.rowCount === 0) {
-      return res.status(403).json({ message: "Cet email n'est pas autorisé." });
-    }
-    const id = authorizedAdmin.rows[0].id;
-
-    const hash = await hashPassword(password);
-    await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [hash, id]);
-    res.status(200).json({ userId: id });
-  } catch (e) {
-    console.error(e);
-    res.status(500).end();
-  }
+  return res.status(403).json({ message: 'Account creation is forbidden' });
 });
 
 loginRouter.post('/export-account', async (req: any, res: any) => {
@@ -270,7 +253,12 @@ loginRouter.post('/delete-account-and-data', async (req, res) => {
     if (!dbRes || dbRes.rowCount === 0) return res.status(200).json({ deletionStatus: 'DONE' });
     const isOk: boolean = await passwordIsOk(password, dbRes.rows[0].password_hash);
     if (!isOk) return res.status(401).end();
-    await db.query('DELETE FROM admins WHERE id=$1', [id]);
+    const deletedAdmin = await db.query('DELETE FROM admins WHERE id=$1 RETURNING email', [id]);
+    deletedAdmin.rows.forEach(async (a) => {
+      await db.query(`DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1`, [
+        a.email,
+      ]);
+    });
     res.status(200).json({ deletionStatus: 'DONE' });
   } catch (e) {
     console.error(e);
