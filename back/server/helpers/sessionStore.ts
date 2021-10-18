@@ -13,7 +13,7 @@ export default class PostgreSQLStore extends expressSession.Store {
   createTable = async (): Promise<void> => {
     try {
       await db.query(
-        'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data VARCHAR NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
+        'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data JSON NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
       );
     } catch (e) {
       console.error(e);

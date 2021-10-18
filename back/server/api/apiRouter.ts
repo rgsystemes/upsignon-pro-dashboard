@@ -5,6 +5,7 @@ import { count_shared_devices } from './count_shared_devices';
 import { count_users } from './count_users';
 import { deactivate_device } from './deactivate_device';
 import { deactivate_device_all_users } from './deactivate_device_all_users';
+import { delete_admin } from './delete_admin';
 import { delete_allowed_email } from './delete_allowed_email';
 import { delete_device } from './delete_device';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
@@ -18,6 +19,7 @@ import { extract_emails_for_long_unused } from './extract_emails_for_long_unused
 import { extract_emails_for_medium_passwords } from './extract_emails_for_medium_passwords';
 import { extract_emails_for_shared_device } from './extract_emails_for_shared_device';
 import { extract_emails_for_weak_passwords } from './extract_emails_for_weak_passwords';
+import { get_admins } from './get_admins';
 import { get_allowed_emails } from './get_allowed_emails';
 import { get_password_stats } from './get_password_stats';
 import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
@@ -29,6 +31,7 @@ import { get_usage_stats } from './get_usage_stats';
 import { get_users } from './get_users';
 import { get_user_devices } from './get_user_devices';
 import { grant_pwd_reset_request } from './grant_pwd_reset_request';
+import { insert_admin } from './insert_admin';
 import { insert_allowed_email } from './insert_allowed_email';
 import { insert_url } from './insert_url';
 import { update_allowed_email } from './update_allowed_email';
@@ -89,6 +92,11 @@ apiRouter.get('/allowed-emails', get_allowed_emails);
 apiRouter.post('/delete-allowed-email/:id', delete_allowed_email);
 apiRouter.post('/update-allowed-email', update_allowed_email);
 apiRouter.post('/insert-allowed-email', insert_allowed_email);
+
+// Admins
+apiRouter.get('/admins', get_admins);
+apiRouter.post('/delete-admin/:id', delete_admin);
+apiRouter.post('/insert-admin', insert_admin);
 
 // Urls
 apiRouter.get('/urls', get_urls);

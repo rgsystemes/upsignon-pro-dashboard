@@ -1,5 +1,6 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
+import { Admins } from './Admins';
 import { AllowedEmails } from './AllowedEmails';
 import { ProSetupLink } from './ProSetupLink';
 import { SecuritySettings } from './SecuritySettings';
@@ -56,6 +57,7 @@ class Settings extends React.Component {
         </ul>
         <ProSetupLink />
         <SecuritySettings setIsLoading={this.props.setIsLoading} />
+        <Admins setIsLoading={this.props.setIsLoading} />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
         <Urls setIsLoading={this.props.setIsLoading} />
       </div>

@@ -40,7 +40,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  logInfo(req.method, req.url);
+  // @ts-ignore
+  const adminEmail = req.session?.adminEmail;
+  logInfo(adminEmail || 'unconnected user', req.method, req.url);
   if (!env.IS_PRODUCTION) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -48,8 +50,7 @@ app.use((req, res, next) => {
 
   // Check Auth
   const isLoginRoute = req.url.startsWith('/login');
-  // @ts-ignore
-  if (!req.session?.adminEmail && !isLoginRoute) {
+  if (!adminEmail && !isLoginRoute && env.IS_PRODUCTION) {
     try {
       if (req.method !== 'GET') {
         res.status(401).end();
