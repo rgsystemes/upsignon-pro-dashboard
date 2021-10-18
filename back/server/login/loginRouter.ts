@@ -40,8 +40,7 @@ const passwordIsOk = async (password: string, passwordHash: string): Promise<boo
 };
 
 const isTokenExpired = (created_at: Date) => {
-  const expirationTime = 60 * 1000; // 1 minute
-  return created_at.getTime() < new Date().getTime() - expirationTime;
+  return created_at.getTime() < new Date().getTime();
 };
 
 const checkPassword = async (userId: string, password: string): Promise<boolean> => {
@@ -97,10 +96,13 @@ loginRouter.post('/connect', async (req, res) => {
     if (!isOk) return res.status(401).end();
 
     const connectionToken = uuidv4();
+    const expiresAt = new Date();
+    const ttl = 30000; // 30 seconds
+    expiresAt.setTime(expiresAt.getTime() + ttl);
     try {
-      await db.query('UPDATE admins SET token=$1, token_created_at=$2 WHERE id=$3', [
+      await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
         connectionToken,
-        new Date(),
+        expiresAt,
         id,
       ]);
     } catch {
@@ -156,14 +158,13 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
       let currentRes;
       try {
         currentRes = await db.query(
-          'SELECT email, token_created_at FROM admins WHERE id=$1 AND token=$2',
+          'SELECT email, token_expires_at FROM admins WHERE id=$1 AND token=$2',
           [id, token],
         );
       } catch {}
       if (!currentRes || currentRes.rowCount === 0) return res.status(401).end();
-      // do not check for token expired during the export step.
-      // if(isTokenExpired(currentRes.rows[0].token_created_at)) return res.status(401).end();
-      await db.query('UPDATE admins SET token=null, token_created_at=null WHERE id=$1', [id]);
+      if (isTokenExpired(currentRes.rows[0].token_expires_at)) return res.status(401).end();
+      await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1', [id]);
       userId = id;
       userData = [
         {
@@ -190,14 +191,14 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     let dbRes;
     try {
       dbRes = await db.query(
-        'SELECT email, token_created_at FROM admins WHERE id=$1 AND token=$2',
+        'SELECT email, token_expires_at FROM admins WHERE id=$1 AND token=$2',
         [userId, connectionToken],
       );
     } catch {}
     if (!dbRes || dbRes.rowCount !== 1) return res.status(401).send('CONNECTION ERROR');
-    if (isTokenExpired(dbRes.rows[0].token_created_at))
+    if (isTokenExpired(dbRes.rows[0].token_expires_at))
       return res.status(401).send('CONNECTION ERROR');
-    await db.query('UPDATE admins SET token=null, token_created_at=null WHERE id=$1 ', [userId]);
+    await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
     req.session.adminEmail = dbRes.rows[0].email;
     if (env.IS_PRODUCTION) {
