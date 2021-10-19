@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const delete_allowed_email = async (req: any, res: any): Promise<void> => {
   try {
@@ -6,7 +7,7 @@ export const delete_allowed_email = async (req: any, res: any): Promise<void> =>
     await db.query(`DELETE FROM allowed_emails WHERE id=$1`, [allowedEmailId]);
     res.status(200).end();
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

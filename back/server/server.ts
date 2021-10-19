@@ -4,7 +4,7 @@ require('dotenv').config({ path: path.join(__dirname, '../..', '.env') });
 
 import express from 'express';
 import { startServer } from './helpers/serverProcess';
-import { logInfo } from './helpers/logger';
+import { logError, logInfo } from './helpers/logger';
 import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
@@ -60,7 +60,7 @@ app.use((req, res, next) => {
         });
       }
     } catch (e) {
-      console.error(e);
+      logError(e);
       res.status(404).end();
     }
   } else {

@@ -3,5 +3,5 @@ export const logInfo = (...m: any[]): void => {
 };
 
 export const logError = (...m: any[]): void => {
-  console.error(new Date().toISOString().split('.')[0], ...m);
+  logError(new Date().toISOString().split('.')[0], ...m);
 };

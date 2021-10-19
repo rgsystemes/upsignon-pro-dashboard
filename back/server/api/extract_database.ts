@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const extract_database = async (req: any, res: any): Promise<void> => {
   try {
@@ -37,7 +38,7 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
     res.attachment(`upsignon-pro-stats-${d}.csv`);
     res.send(csvContent);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

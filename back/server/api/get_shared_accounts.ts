@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const get_shared_accounts = async (req: any, res: any): Promise<void> => {
   try {
@@ -75,7 +76,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
     );
     res.status(200).send({ sharedAccounts: dbRes.rows, sharedAccountsCount });
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

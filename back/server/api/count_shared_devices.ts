@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const count_shared_devices = async (req: any, res: any): Promise<void> => {
   try {
@@ -10,7 +11,7 @@ export const count_shared_devices = async (req: any, res: any): Promise<void> =>
   `);
     res.status(200).send(dbRes.rows[0].count);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

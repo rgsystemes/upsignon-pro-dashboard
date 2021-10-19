@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { db } from '../helpers/connection';
 import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
+import { logError } from '../helpers/logger';
 
 export const loginRouter = express.Router();
 
@@ -58,7 +59,7 @@ loginRouter.get('/config', async (req, res) => {
   try {
     return res.status(200).json(config);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });
@@ -73,7 +74,7 @@ loginRouter.get('/button-config', async (req, res) => {
     }
     return res.status(200).json(buttonConfig);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(404).end();
   }
 });
@@ -113,7 +114,7 @@ loginRouter.post('/connect', async (req, res) => {
     }
     res.status(200).json({ connectionToken, redirectionUri });
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });
@@ -167,7 +168,7 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
     await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [hash, adminId]);
     res.status(200).json({ userId: adminId, userData });
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });
@@ -196,7 +197,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
       res.redirect(303, `${req.protocol}://${req.headers.host}`);
     }
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });
@@ -219,7 +220,7 @@ loginRouter.post('/update-password', async (req, res) => {
       return res.status(401).end();
     }
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });
@@ -251,7 +252,7 @@ loginRouter.post('/delete-account-and-data', async (req, res) => {
     });
     res.status(200).json({ deletionStatus: 'DONE' });
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(444).end();
   }
 });

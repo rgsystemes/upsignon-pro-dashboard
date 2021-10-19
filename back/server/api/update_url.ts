@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const update_url = async (req: any, res: any): Promise<void> => {
   try {
@@ -18,7 +19,7 @@ export const update_url = async (req: any, res: any): Promise<void> => {
     }
     res.status(200).end();
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

@@ -1,5 +1,6 @@
 import { db } from '../helpers/connection';
 import { getDaysArray } from '../helpers/dateArray';
+import { logError } from '../helpers/logger';
 
 export const get_usage_stats = async (req: any, res: any): Promise<void> => {
   try {
@@ -23,7 +24,7 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
 
     res.status(200).send(usageStats);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

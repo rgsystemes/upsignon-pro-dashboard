@@ -1,5 +1,6 @@
 import { db } from './connection';
 import expressSession from 'express-session';
+import { logError } from './logger';
 
 const oneHour = 3600; // seconds
 
@@ -16,7 +17,7 @@ export default class PostgreSQLStore extends expressSession.Store {
         'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data JSON NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
       );
     } catch (e) {
-      console.error(e);
+      logError(e);
       throw e;
     }
   };

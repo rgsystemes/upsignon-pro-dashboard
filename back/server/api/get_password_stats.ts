@@ -1,5 +1,6 @@
 import { db } from '../helpers/connection';
 import { getDaysArray } from '../helpers/dateArray';
+import { logError } from '../helpers/logger';
 
 export const get_password_stats = async (req: any, res: any): Promise<void> => {
   try {
@@ -75,7 +76,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
     const result = Object.values(chartDataObjet);
     res.status(200).send(result);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

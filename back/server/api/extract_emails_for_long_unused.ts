@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const extract_emails_for_long_unused = async (req: any, res: any): Promise<void> => {
   try {
@@ -18,7 +19,7 @@ export const extract_emails_for_long_unused = async (req: any, res: any): Promis
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

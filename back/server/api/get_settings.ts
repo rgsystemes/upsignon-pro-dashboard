@@ -1,4 +1,5 @@
 import { db } from '../helpers/connection';
+import { logError } from '../helpers/logger';
 
 export const get_settings = async (req: any, res: any): Promise<void> => {
   try {
@@ -9,7 +10,7 @@ export const get_settings = async (req: any, res: any): Promise<void> => {
     });
     res.status(200).send(settingsRes);
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };

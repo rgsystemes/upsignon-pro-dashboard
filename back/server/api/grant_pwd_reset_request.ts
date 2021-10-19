@@ -2,6 +2,7 @@ import { v4 } from 'uuid';
 import nodemailer from 'nodemailer';
 import { db } from '../helpers/connection';
 import env from '../helpers/env';
+import { logError } from '../helpers/logger';
 
 export const grant_pwd_reset_request = async (req: any, res: any): Promise<void> => {
   try {
@@ -46,7 +47,7 @@ export const grant_pwd_reset_request = async (req: any, res: any): Promise<void>
     });
     res.status(200).end();
   } catch (e) {
-    console.error(e);
+    logError(e);
     res.status(400).end();
   }
 };
