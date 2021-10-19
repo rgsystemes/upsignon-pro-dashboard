@@ -42,20 +42,20 @@ class App extends React.Component {
     this.setState({ isLoading });
   };
   render() {
-    const path = window.location.pathname;
+    let path = window.location.href.replace(process.env.PUBLIC_URL, '');
 
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
     let currentPage = 'overview';
 
-    if (path.startsWith(process.env.PUBLIC_URL + '/users')) {
+    if (path.startsWith('/users')) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith(process.env.PUBLIC_URL + '/shared_devices')) {
+    } else if (path.startsWith('/shared_devices')) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
-    } else if (path.startsWith(process.env.PUBLIC_URL + '/shared_accounts')) {
+    } else if (path.startsWith('/shared_accounts')) {
       pageContent = (
         <SharedAccounts
           setIsLoading={this.setIsLoading}
@@ -63,7 +63,7 @@ class App extends React.Component {
         />
       );
       currentPage = 'shared_accounts';
-    } else if (path.startsWith(process.env.PUBLIC_URL + '/settings')) {
+    } else if (path.startsWith('/settings')) {
       pageContent = <Settings setIsLoading={this.setIsLoading} />;
       currentPage = 'settings';
     }
