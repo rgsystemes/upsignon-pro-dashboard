@@ -70,6 +70,8 @@ app.use((req, res, next) => {
 
 app.use('/', express.static('../front/build'));
 app.use('/users/', express.static('../front/build'));
+app.use('/shared_devices/', express.static('../front/build'));
+app.use('/shared_accounts/', express.static('../front/build'));
 app.use('/settings/', express.static('../front/build'));
 
 app.use('/api/', apiRouter);
