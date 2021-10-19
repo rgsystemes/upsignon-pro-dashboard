@@ -21,28 +21,25 @@ export default class PostgreSQLStore extends expressSession.Store {
     }
   };
 
-  getTimestampSeconds = (date?: Date | number): number => {
-    if (!date) {
-      return Math.floor(Date.now() / 1000);
-    }
-    return Math.floor(new Date(date).getTime() / 1000);
+  getExpireDate = (maxAgeMillis?: number): Date => {
+    const expireDate = new Date();
+    expireDate.setTime(expireDate.getTime() + (maxAgeMillis || 3600000));
+    return expireDate;
   };
 
   dbCleanup = async (): Promise<void> => {
-    const now = this.getTimestampSeconds();
     try {
-      await db.query('DELETE FROM admin_sessions WHERE to_timestamp($1) > expiration_time', [now]);
+      await db.query('DELETE FROM admin_sessions WHERE current_timestamp(0) > expiration_time');
     } catch (e) {}
   };
   get = async (
     sid: string,
     cb: (err?: any, session?: expressSession.SessionData | null) => void,
   ): Promise<void> => {
-    const now = this.getTimestampSeconds();
     try {
       const res = await db.query(
-        'SELECT session_data FROM admin_sessions WHERE session_id = $1::text AND to_timestamp($2) <= expiration_time',
-        [sid, now],
+        'SELECT session_data FROM admin_sessions WHERE session_id = $1::text AND current_timestamp(0) <= expiration_time',
+        [sid],
       );
       if (res.rowCount === 0) {
         return cb();
@@ -55,16 +52,15 @@ export default class PostgreSQLStore extends expressSession.Store {
 
   set = async (
     sid: string,
-    session: expressSession.Session,
+    sessionData: expressSession.Session,
     cb?: (err?: any) => void,
   ): Promise<void> => {
-    const maxAge = session.cookie.maxAge ? Math.floor(session.cookie.maxAge / 1000) : oneHour;
-    const now = this.getTimestampSeconds();
-    const expiration_time = now + maxAge;
+    const expires: Date =
+      sessionData.cookie.expires || this.getExpireDate(sessionData.cookie.maxAge);
     try {
       await db.query(
         'INSERT INTO admin_sessions (session_id, session_data, expiration_time) VALUES ($1, $2, to_timestamp($3)) ON CONFLICT (session_id) DO UPDATE SET session_data=$2, expiration_time=to_timestamp($3)',
-        [sid, JSON.stringify(session), expiration_time],
+        [sid, JSON.stringify(sessionData), expires],
       );
       if (cb) cb();
     } catch (e) {
@@ -91,23 +87,19 @@ export default class PostgreSQLStore extends expressSession.Store {
 
   touch = async (
     sid: string,
-    session: expressSession.Session,
+    sessionData: expressSession.Session,
     cb?: (err?: any) => void,
   ): Promise<void> => {
-    if (session && session.cookie && session.cookie.expires) {
-      const now = this.getTimestampSeconds();
-      const cookieExpires = this.getTimestampSeconds(session.cookie.expires);
-      try {
-        await db.query(
-          'UPDATE admin_sessions SET expiration_time=to_timestamp($1) WHERE session_id = $2 AND to_timestamp($3) <= expiration_time',
-          [cookieExpires, sid, now],
-        );
-        if (cb) cb();
-      } catch (e) {
-        if (cb) cb(e);
-      }
-    } else {
+    const expires: Date =
+      sessionData.cookie.expires || this.getExpireDate(sessionData.cookie.maxAge);
+    try {
+      await db.query(
+        'UPDATE admin_sessions SET expiration_time=to_timestamp($1) WHERE session_id = $2',
+        [expires, sid],
+      );
       if (cb) cb();
+    } catch (e) {
+      if (cb) cb(e);
     }
   };
 }

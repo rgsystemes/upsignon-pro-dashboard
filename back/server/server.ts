@@ -16,7 +16,6 @@ const app = express();
 app.disable('x-powered-by');
 
 // Configure sessions
-app.set('trust proxy', 1);
 app.use(
   expressSession({
     cookie: {
