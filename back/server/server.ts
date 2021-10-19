@@ -21,7 +21,7 @@ app.use(
     cookie: {
       path: '/',
       httpOnly: true,
-      secure: env.IS_PRODUCTION,
+      secure: false, //env.IS_PRODUCTION,
       maxAge: 3600000, // one hour
       sameSite: 'strict',
     },
@@ -41,6 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
+  console.log('adminEmail', adminEmail);
   logInfo(adminEmail || 'unconnected user', req.method, req.url);
   if (!env.IS_PRODUCTION) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
   // Check Auth
   const isLoginRoute = req.url.startsWith('/login');
   if (!adminEmail && !isLoginRoute) {
+    console.log('Authentication KO');
     try {
       if (req.method !== 'GET') {
         res.status(401).end();
@@ -64,6 +66,7 @@ app.use((req, res, next) => {
       res.status(404).end();
     }
   } else {
+    console.log('Authentication OK');
     next();
   }
 });
