@@ -64,7 +64,7 @@ export default class PostgreSQLStore extends expressSession.Store {
     try {
       await db.query(
         'INSERT INTO admin_sessions (session_id, session_data, expiration_time) VALUES ($1, $2, to_timestamp($3)) ON CONFLICT (session_id) DO UPDATE SET session_data=$2, expiration_time=to_timestamp($3)',
-        [sid, JSON.stringify(sessionData), expires],
+        [sid, JSON.stringify(sessionData), Math.trunc(expires.getTime() / 1000)],
       );
       if (cb) cb();
     } catch (e) {
@@ -102,7 +102,7 @@ export default class PostgreSQLStore extends expressSession.Store {
     try {
       await db.query(
         'UPDATE admin_sessions SET expiration_time=to_timestamp($1) WHERE session_id = $2',
-        [expires, sid],
+        [Math.trunc(expires.getTime() / 1000), sid],
       );
       if (cb) cb();
     } catch (e) {
