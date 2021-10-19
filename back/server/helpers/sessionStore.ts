@@ -32,7 +32,7 @@ export default class PostgreSQLStore extends expressSession.Store {
     try {
       await db.query('DELETE FROM admin_sessions WHERE current_timestamp(0) > expiration_time');
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'dbCleanup', e);
     }
   };
   get = async (
@@ -49,7 +49,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       }
       return cb(null, res.rows[0].session_data);
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'get', e);
       cb(e);
     }
   };
@@ -68,7 +68,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       );
       if (cb) cb();
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'set', e);
       if (cb) cb(e);
     }
   };
@@ -77,7 +77,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       await db.query('DELETE FROM admin_sessions WHERE session_id = $1', [sid]);
       if (cb) cb();
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'destroy', e);
       if (cb) cb(e);
     }
   };
@@ -87,7 +87,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       await db.query('TRUNCATE admin_sessions');
       if (cb) cb();
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'clear', e);
       if (cb) cb(e);
     }
   };
@@ -106,7 +106,7 @@ export default class PostgreSQLStore extends expressSession.Store {
       );
       if (cb) cb();
     } catch (e) {
-      logError(e);
+      logError('sessionStore', 'touch', e);
       if (cb) cb(e);
     }
   };
