@@ -14,7 +14,7 @@ export const startServer = (app: any, then: any): void => {
     };
     const server = https.createServer(options, app).listen(env.SERVER_PORT, () => {
       logInfo(
-        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} server listening`,
+        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} HTTPS server listening`,
         server.address(),
       );
       then();
@@ -24,7 +24,7 @@ export const startServer = (app: any, then: any): void => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const server = app.listen(env.SERVER_PORT, () => {
       logInfo(
-        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} server listening`,
+        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} HTTP server listening`,
         server.address(),
       );
     });
