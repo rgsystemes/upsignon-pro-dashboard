@@ -15,6 +15,17 @@ If you have a proxy to filter outgoing connections, configure it:
   - do not forget to change SESSION_SECRET to a random string: use the command below to generate one
     `openssl rand -hex 30`
 - `./update.sh` (this takes about 2 minutes)
-- `node ./back/scripts/addFirstAdmin.js <email@domain.com>`
+
+- Send the url of this server to contact@upsignon.eu with this message
+  `Voici l'url de notre serveur d'administration pour ajout dans votre base de données partenaires. <YOUR URL>`
+
+  - This URL will not be requested by us. It is required to allow you to connect to your dashboard with UpSignOn.
 
 Then configure nginx.
+
+Then add yourself as administrator.
+
+- `node ./back/scripts/addFirstAdmin.js <your-email@domain.com>`
+  You will receive an email (if everything is well configured) that invites you to connect to your dashboard using UpSignOn.
+  So you will need to have UpSignOn installed on you computer first, with your PRO space setup.
+  Then enjoy the power and simplicity of our connection system by using the link you received by email.
