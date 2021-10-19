@@ -7,4 +7,4 @@ cd ../back
 yarn install
 yarn build-server
 cd ..
-pm2 start dashboard.config.js
+pm2 start ./back/dashboard.pm2config.js
