@@ -1,4 +1,4 @@
-git pull origin origin production --ff-only
+git pull origin production --ff-only
 mkdir logs
 cd front
 yarn install
