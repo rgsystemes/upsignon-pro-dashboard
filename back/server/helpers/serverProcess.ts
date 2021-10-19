@@ -6,8 +6,6 @@ import { logInfo } from './logger';
 
 export const startServer = (app: any, then: any): void => {
   if (env.SSL_CERTIFICATE_KEY_PATH && env.SSL_CERTIFICATE_CRT_PATH) {
-    // Set express trust-proxy so that secure sessions cookies can work
-    app.set('trust proxy', 1);
     const options = {
       key: fs.readFileSync(env.SSL_CERTIFICATE_KEY_PATH),
       cert: fs.readFileSync(env.SSL_CERTIFICATE_CRT_PATH),

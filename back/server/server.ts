@@ -13,6 +13,8 @@ import { loginRouter } from './login/loginRouter';
 
 const app = express();
 
+// Set express trust-proxy so that secure sessions cookies can work
+app.set('trust proxy', 1);
 app.disable('x-powered-by');
 
 // Configure sessions
@@ -21,7 +23,7 @@ app.use(
     cookie: {
       path: '/',
       httpOnly: true,
-      secure: false, //env.IS_PRODUCTION,
+      secure: env.IS_PRODUCTION,
       maxAge: 3600000, // one hour
       sameSite: 'strict',
     },
