@@ -24,7 +24,11 @@ function Menu(props) {
       </div>
       {pages.map((p) => {
         return (
-          <a key={p.key} href={p.href} className={`navItem ${p.isCurrent ? 'current' : ''}`}>
+          <a
+            key={p.key}
+            href={process.env.PUBLIC_URL + p.href}
+            className={`navItem ${p.isCurrent ? 'current' : ''}`}
+          >
             {p.title}
           </a>
         );
@@ -37,7 +41,7 @@ function Menu(props) {
               await fetchTemplate('/api/disconnect', 'POST', null);
             } catch (e) {
             } finally {
-              window.location.href = '/';
+              window.location.href = process.env.PUBLIC_URL + '/';
             }
           }}
         >

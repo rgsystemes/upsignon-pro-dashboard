@@ -132,7 +132,7 @@ class SharedAccounts extends React.Component {
   };
 
   goToPageIndex = (p) => {
-    window.location.href = `/shared_accounts/?limit=${this.state.limit}&pageIndex=${p}`;
+    window.location.href = `${process.env.PUBLIC_URL}/shared_accounts/?limit=${this.state.limit}&pageIndex=${p}`;
   };
 
   componentDidMount() {

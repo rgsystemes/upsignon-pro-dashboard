@@ -2,6 +2,7 @@
   "name": "upsignon-pro-dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "react": "^17.0.2",
     "react-datepicker": "^4.2.1",

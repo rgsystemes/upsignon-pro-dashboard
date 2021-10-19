@@ -89,7 +89,9 @@ class Extracts extends React.Component {
           className="extractAction"
           style={{ marginBottom: 20 }}
           href={`${
-            process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : ''
+            process.env.NODE_ENV === 'development'
+              ? 'http://localhost:3001'
+              : process.env.PUBLIC_URL
           }/api/extract-database`}
         >
           {i18n.t('extract_database')}

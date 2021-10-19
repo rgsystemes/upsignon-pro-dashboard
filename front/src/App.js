@@ -47,15 +47,15 @@ class App extends React.Component {
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
     let currentPage = 'overview';
 
-    if (path.startsWith('/users')) {
+    if (path.startsWith(process.env.PUBLIC_URL + '/users')) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith('/shared_devices')) {
+    } else if (path.startsWith(process.env.PUBLIC_URL + '/shared_devices')) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
-    } else if (path.startsWith('/shared_accounts')) {
+    } else if (path.startsWith(process.env.PUBLIC_URL + '/shared_accounts')) {
       pageContent = (
         <SharedAccounts
           setIsLoading={this.setIsLoading}
@@ -63,7 +63,7 @@ class App extends React.Component {
         />
       );
       currentPage = 'shared_accounts';
-    } else if (path.startsWith('/settings')) {
+    } else if (path.startsWith(process.env.PUBLIC_URL + '/settings')) {
       pageContent = <Settings setIsLoading={this.setIsLoading} />;
       currentPage = 'settings';
     }

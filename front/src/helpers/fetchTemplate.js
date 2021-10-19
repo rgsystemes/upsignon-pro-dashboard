@@ -4,7 +4,9 @@ export async function fetchTemplate(route, method, body) {
     'Content-Type': 'application/json',
   });
   const res = await fetch(
-    `${process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : ''}${route}`,
+    `${
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.PUBLIC_URL
+    }${route}`,
     {
       method,
       body: bodyText,
