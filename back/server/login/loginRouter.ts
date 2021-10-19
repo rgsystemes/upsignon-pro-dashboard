@@ -33,8 +33,8 @@ const passwordIsOk = async (password: string, passwordHash: string): Promise<boo
   return await bcrypt.compare(password, passwordHash);
 };
 
-const isTokenExpired = (created_at: Date) => {
-  return created_at.getTime() < new Date().getTime();
+const isTokenExpired = (expired_at: Date) => {
+  return expired_at.getTime() < new Date().getTime();
 };
 
 const checkPassword = async (userId: string, password: string): Promise<boolean> => {
