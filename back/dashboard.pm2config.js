@@ -6,7 +6,7 @@ module.exports = {
   apps: [
     {
       name: 'upsignon-pro-dashboard',
-      script: './back/compiledServer/server.js',
+      script: './compiledServer/server.js',
       instances: 1,
       exec_model: 'fork',
       error_file: '../logs/server-error.log',
