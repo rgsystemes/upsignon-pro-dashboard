@@ -7,7 +7,7 @@ If you have a proxy to filter outgoing connections, configure it:
 - for git
 - for yarn
 
-- `git pull origin production --ff-only`
+- `git clone --branch production https://github.com/UpSignOn/upsignon-pro-dashboard.git`
 - `cp dot-env-example .env`
 - edit .env file with your own environment variables
   - do not forget to change SESSION_SECRET to a random string: use the command below to generate one
