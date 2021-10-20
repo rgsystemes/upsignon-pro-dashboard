@@ -23,6 +23,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
       [startDay, endDay],
     );
 
+    console.log(rawStats);
     /*
      * First get chartDataPerUserPerDay = {
      *  [userId]: {
@@ -69,7 +70,8 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
         chartDataObjet[d].nbAccountsStrong += lastKnownStats?.nb_accounts_strong || 0;
         chartDataObjet[d].nbAccountsMedium += lastKnownStats?.nb_accounts_medium || 0;
         chartDataObjet[d].nbAccountsWeak += lastKnownStats?.nb_accounts_weak || 0;
-        chartDataObjet[d].nbDuplicatePasswords += lastKnownStats?.nb_accounts_duplicates || 0;
+        chartDataObjet[d].nbDuplicatePasswords +=
+          lastKnownStats?.nb_accounts_with_duplicate_password || 0;
       });
     });
 

@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
   // Check Auth
   const isLoginRoute = req.url.startsWith('/login');
-  if (!adminEmail && !isLoginRoute) {
+  if (env.IS_PRODUCTION && !adminEmail && !isLoginRoute) {
     try {
       if (req.method !== 'GET') {
         res.status(401).end();
