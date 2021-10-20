@@ -3,7 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const get_users = async (req: any, res: any): Promise<void> => {
   try {
-    const search = req.query.search;
+    let search = req.query.search;
+    if (typeof search !== 'string') return res.status(401).end();
+    search = search.toLowerCase();
     const isSearching = !!search;
 
     // COUNT USERS
