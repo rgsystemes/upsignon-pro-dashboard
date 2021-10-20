@@ -134,7 +134,6 @@ const translations = {
   chart_duplicate_pwd: 'Mdps dupliqués',
   chart_nb_accounts: 'Nb total de comptes',
   chart_type_nb: 'Nb',
-  chart_type_pctg: 'Pctg',
   chart_start_date: 'Date de début',
   chart_end_date: 'Date de fin',
   chart_usage_title: "Nombre d'espaces PRO",

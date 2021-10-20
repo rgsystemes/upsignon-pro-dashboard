@@ -133,7 +133,6 @@ const translations = {
   chart_duplicate_pwd: 'Duplicate pwds',
   chart_nb_accounts: 'Total nb of accounts',
   chart_type_nb: 'Nb',
-  chart_type_pctg: 'Pctg',
   chart_start_date: 'Start date',
   chart_end_date: 'End date',
   chart_usage_title: 'Number of PRO spaces',

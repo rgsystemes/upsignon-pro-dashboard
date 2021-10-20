@@ -87,7 +87,7 @@ class SecurityChart extends React.Component {
           <Toggler
             choices={[
               { key: 'nb', title: i18n.t('chart_type_nb'), isCurrent: !this.usePctg },
-              { key: 'pctg', title: i18n.t('chart_type_pctg'), isCurrent: this.usePctg },
+              { key: 'pctg', title: '%', isCurrent: this.usePctg },
             ]}
             onSelect={(choice) => this.togglePctg(choice === 'pctg')}
           />
