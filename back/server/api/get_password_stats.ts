@@ -68,7 +68,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
         chartDataObjet[d].nbAccountsStrong += lastKnownStats?.nb_accounts_strong || 0;
         chartDataObjet[d].nbAccountsMedium += lastKnownStats?.nb_accounts_medium || 0;
         chartDataObjet[d].nbAccountsWeak += lastKnownStats?.nb_accounts_weak || 0;
-        chartDataObjet[d].nbAccounts +=
+        chartDataObjet[d].nbAccounts =
           chartDataObjet[d].nbAccountsStrong +
           chartDataObjet[d].nbAccountsMedium +
           chartDataObjet[d].nbAccountsWeak; // do not use nb_accounts because it is errored
