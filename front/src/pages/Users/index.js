@@ -219,16 +219,21 @@ class Users extends React.Component {
                       </div>
                     </td>
                     <td>
-                      <div className={`tag ${u.nb_accounts_weak > 0 && 'positiveWeak'}`}>
-                        {i18n.t('user_passwords_weak', { nb: u.nb_accounts_weak || 0 })}
+                      <div className={`tag ${u.nb_accounts_strong > 0 && 'positiveStrong'}`}>
+                        {i18n.t('user_passwords_strong', { nb: u.nb_accounts_strong || 0 })}
                       </div>
                       <div className={`tag ${u.nb_accounts_medium > 0 && 'positiveMedium'}`}>
                         {i18n.t('user_passwords_medium', { nb: u.nb_accounts_medium || 0 })}
                       </div>
-                      <div className={`tag ${u.nb_accounts_strong > 0 && 'positiveStrong'}`}>
-                        {i18n.t('user_passwords_strong', { nb: u.nb_accounts_strong || 0 })}
+                      <div className={`tag ${u.nb_accounts_weak > 0 && 'positiveWeak'}`}>
+                        {i18n.t('user_passwords_weak', { nb: u.nb_accounts_weak || 0 })}
                       </div>
-                      <div className={`tag ${u.nb_accounts_reused > 0 && 'positiveReused'}`}>
+                      <div
+                        style={{ borderTop: '1px solid #eee' }}
+                        className={`tag ${
+                          u.nb_accounts_with_duplicate_password > 0 && 'positiveReused'
+                        }`}
+                      >
                         {i18n.t('user_passwords_duplicated', {
                           nb: u.nb_accounts_with_duplicate_password || 0,
                         })}
