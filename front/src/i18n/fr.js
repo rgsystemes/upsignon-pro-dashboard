@@ -33,11 +33,11 @@ const translations = {
   user_passwords_weak: '$nb faibles',
   user_passwords_medium: '$nb moyens',
   user_passwords_strong: '$nb forts',
-  user_passwords_reused: 'dont $nb réutilisés',
+  user_passwords_duplicated: 'dont $nb dupliqués',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
   user_sorting:
-    'Les utilisateurs sont triés par nombre décroissant de mots de passe réutilisés, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
+    'Les utilisateurs sont triés par nombre décroissant de mots de passe dupliqués, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
   user_change_email_confirm:
     "Êtes-vous sûr de vouloir changer l'adresse email de cet utilisateur de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
   user_email_already_used:

@@ -33,11 +33,11 @@ const translations = {
   user_passwords_weak: '$nb weak',
   user_passwords_medium: '$nb medium',
   user_passwords_strong: '$nb strong',
-  user_passwords_reused: 'of which $nb reused',
+  user_passwords_duplicated: 'of which $nb duplicated',
   user_delete_warning:
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
   user_sorting:
-    'Users are sorted by descending number of reused passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
+    'Users are sorted by descending number of duplicated passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
   user_change_email_confirm:
     "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
   user_email_already_used:

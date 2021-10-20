@@ -228,7 +228,7 @@ class Users extends React.Component {
                         {i18n.t('user_passwords_strong', { nb: u.nb_accounts_strong || 0 })}
                       </div>
                       <div className={`tag ${u.nb_accounts_reused > 0 && 'positiveReused'}`}>
-                        {i18n.t('user_passwords_reused', {
+                        {i18n.t('user_passwords_duplicated', {
                           nb: u.nb_accounts_with_duplicate_password || 0,
                         })}
                       </div>
