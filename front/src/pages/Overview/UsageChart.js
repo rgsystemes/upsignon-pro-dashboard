@@ -36,7 +36,7 @@ class UsageChart extends React.Component {
     return (
       <React.Fragment>
         <h2>{i18n.t('chart_usage_title')}</h2>
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={400}>
           <AreaChart
             width={500}
             height={350}
