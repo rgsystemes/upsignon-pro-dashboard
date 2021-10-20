@@ -34,17 +34,11 @@ class SecurityChart extends React.Component {
         return {
           ...s,
           day: new Date(s.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
-          nbAccountsWeak: this.usePctg
-            ? Math.round((s.nbAccountsWeak / sum) * 100)
-            : s.nbAccountsWeak,
-          nbAccountsMedium: this.usePctg
-            ? Math.round((s.nbAccountsMedium / sum) * 100)
-            : s.nbAccountsMedium,
-          nbAccountsStrong: this.usePctg
-            ? Math.round((s.nbAccountsStrong / sum) * 100)
-            : s.nbAccountsStrong,
+          nbAccountsWeak: this.usePctg ? (s.nbAccountsWeak / sum) * 100 : s.nbAccountsWeak,
+          nbAccountsMedium: this.usePctg ? (s.nbAccountsMedium / sum) * 100 : s.nbAccountsMedium,
+          nbAccountsStrong: this.usePctg ? (s.nbAccountsStrong / sum) * 100 : s.nbAccountsStrong,
           nbDuplicatePasswords: this.usePctg
-            ? Math.round((s.nbDuplicatePasswords / sum) * 100)
+            ? (s.nbDuplicatePasswords / sum) * 100
             : s.nbDuplicatePasswords,
         };
       }),
@@ -138,15 +132,16 @@ class SecurityChart extends React.Component {
             <Tooltip
               formatter={(value, name) => {
                 if (!this.usePctg) return value;
+                const roundedValue = Math.round(value * 10) / 10;
                 if (
                   name === i18n.t('chart_weak_pwd') ||
                   name === i18n.t('chart_medium_pwd') ||
                   name === i18n.t('chart_strong_pwd') ||
                   name === i18n.t('chart_duplicate_pwd')
                 ) {
-                  return value + '%';
+                  return roundedValue + '%';
                 }
-                return value;
+                return roundedValue;
               }}
             />
             <Legend verticalAlign="top" />
