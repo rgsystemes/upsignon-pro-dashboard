@@ -43,6 +43,9 @@ class SecurityChart extends React.Component {
           nbAccountsStrong: this.usePctg
             ? Math.round((s.nbAccountsStrong / sum) * 100)
             : s.nbAccountsStrong,
+          nbDuplicatePasswords: this.usePctg
+            ? Math.round((s.nbDuplicatePasswords / sum) * 100)
+            : s.nbDuplicatePasswords,
         };
       }),
     });
@@ -130,6 +133,7 @@ class SecurityChart extends React.Component {
               allowDecimals={false}
               unit={this.usePctg ? '%' : 0}
               domain={this.usePctg ? [0, 100] : [0, 'auto']}
+              allowDataOverflow
             />
             <Tooltip
               formatter={(value, name) => {
@@ -137,7 +141,8 @@ class SecurityChart extends React.Component {
                 if (
                   name === i18n.t('chart_weak_pwd') ||
                   name === i18n.t('chart_medium_pwd') ||
-                  name === i18n.t('chart_strong_pwd')
+                  name === i18n.t('chart_strong_pwd') ||
+                  name === i18n.t('chart_duplicate_pwd')
                 ) {
                   return value + '%';
                 }
