@@ -10,7 +10,7 @@ export const inviteNewAdmin = async (email: string): Promise<void> => {
   const ttl = 24 * 3600 * 1000; // one day
   tokenExpiresAt.setTime(tokenExpiresAt.getTime() + ttl);
   await db.query(
-    `INSERT INTO admins (id, email, token, token_expires_at) VALUES ($1, $2, $3, $4) ON CONFLICT (email) DO UPDATE SET token=$3, token_expires_at=$4`,
+    `INSERT INTO admins (id, email, token, token_expires_at) VALUES ($1, lower($2), $3, $4) ON CONFLICT (email) DO UPDATE SET token=$3, token_expires_at=$4`,
     [newId, email, token, tokenExpiresAt],
   );
 

@@ -9,10 +9,10 @@ export const update_url = async (req: any, res: any): Promise<void> => {
       await db.query(`UPDATE url_list SET displayed_name=$1 WHERE id=$2`, [displayedName, id]);
     }
     if (signinUrl != null) {
-      await db.query(`UPDATE url_list SET signin_url=$1 WHERE id=$2`, [signinUrl, id]);
+      await db.query(`UPDATE url_list SET signin_url=lower($1) WHERE id=$2`, [signinUrl, id]);
     }
     if (passwordChangeUrl != null) {
-      await db.query(`UPDATE url_list SET password_change_url=$1 WHERE id=$2`, [
+      await db.query(`UPDATE url_list SET password_change_url=lower($1) WHERE id=$2`, [
         passwordChangeUrl,
         id,
       ]);

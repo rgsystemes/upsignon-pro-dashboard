@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const update_allowed_email = async (req: any, res: any): Promise<void> => {
   try {
-    await db.query(`UPDATE allowed_emails SET pattern=$1 WHERE id=$2`, [
+    await db.query(`UPDATE allowed_emails SET pattern=lower($1) WHERE id=$2`, [
       req.body.updatedPattern,
       req.body.allowedEmailId,
     ]);

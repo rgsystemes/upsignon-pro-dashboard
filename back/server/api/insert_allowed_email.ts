@@ -3,7 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const insert_allowed_email = async (req: any, res: any): Promise<void> => {
   try {
-    await db.query(`INSERT INTO allowed_emails (pattern) VALUES ($1)`, [req.body.newPattern]);
+    await db.query(`INSERT INTO allowed_emails (pattern) VALUES (lower($1))`, [
+      req.body.newPattern,
+    ]);
     res.status(200).end();
   } catch (e) {
     logError(e);
