@@ -10,6 +10,7 @@ import { SharedAccounts } from './pages/SharedAccounts';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
+import { frontServerUrl } from './helpers/env';
 
 class App extends React.Component {
   state = {
@@ -42,7 +43,7 @@ class App extends React.Component {
     this.setState({ isLoading });
   };
   render() {
-    let path = window.location.href.replace(process.env.PUBLIC_URL, '');
+    let path = window.location.href.replace(frontServerUrl, '');
 
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
     let currentPage = 'overview';

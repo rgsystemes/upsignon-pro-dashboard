@@ -1,5 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
+import { frontServerUrl } from '../../helpers/env';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
@@ -91,7 +92,7 @@ class Users extends React.Component {
   }
 
   goToPageIndex = (p) => {
-    window.location.href = `${process.env.PUBLIC_URL}/users/?limit=${this.state.limit}&pageIndex=${p}`;
+    window.location.href = `${frontServerUrl}/users/?limit=${this.state.limit}&pageIndex=${p}`;
   };
 
   onSearch = async (ev) => {

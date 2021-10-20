@@ -2,6 +2,7 @@ import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 import './Extracts.css';
+import { backServerUrl } from '../../helpers/env';
 
 // Props = setIsLoading
 class Extracts extends React.Component {
@@ -88,11 +89,7 @@ class Extracts extends React.Component {
         <a
           className="extractAction"
           style={{ marginBottom: 20 }}
-          href={`${
-            process.env.NODE_ENV === 'development'
-              ? 'http://localhost:3001'
-              : process.env.PUBLIC_URL
-          }/api/extract-database`}
+          href={`${backServerUrl}/api/extract-database`}
         >
           {i18n.t('extract_database')}
         </a>
