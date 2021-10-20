@@ -23,7 +23,6 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
       [startDay, endDay],
     );
 
-    console.log(rawStats);
     /*
      * First get chartDataPerUserPerDay = {
      *  [userId]: {
@@ -65,11 +64,14 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
         if (userStats[d]) {
           lastKnownStats = userStats[d];
         }
-        chartDataObjet[d].nbAccounts += lastKnownStats?.nb_accounts || 0;
         chartDataObjet[d].nbCodes += lastKnownStats?.nb_codes || 0;
         chartDataObjet[d].nbAccountsStrong += lastKnownStats?.nb_accounts_strong || 0;
         chartDataObjet[d].nbAccountsMedium += lastKnownStats?.nb_accounts_medium || 0;
         chartDataObjet[d].nbAccountsWeak += lastKnownStats?.nb_accounts_weak || 0;
+        chartDataObjet[d].nbAccounts +=
+          chartDataObjet[d].nbAccountsStrong +
+          chartDataObjet[d].nbAccountsMedium +
+          chartDataObjet[d].nbAccountsWeak; // do not use nb_accounts because it is errored
         chartDataObjet[d].nbDuplicatePasswords +=
           lastKnownStats?.nb_accounts_with_duplicate_password || 0;
       });
