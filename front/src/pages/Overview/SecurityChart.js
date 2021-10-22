@@ -20,6 +20,7 @@ import { Toggler } from '../../helpers/Toggler';
 class SecurityChart extends React.Component {
   rawStats = [];
   usePctg = false;
+  useEntropy = false;
   startDate = getDateBack1Month();
   endDate = new Date();
 
@@ -30,16 +31,23 @@ class SecurityChart extends React.Component {
   showStats = () => {
     this.setState({
       stats: this.rawStats.map((s) => {
-        const sum = s.nbAccountsWeak + s.nbAccountsMedium + s.nbAccountsStrong;
+        const sum = s.nbAccounts;
         return {
           ...s,
           day: new Date(s.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
+          nbAccounts: s.nbAccounts,
+          nbAccountsWithNoPassword: this.usePctg
+            ? (s.nbAccountsWithNoPassword / sum) * 100
+            : s.nbAccountsWithNoPassword,
           nbAccountsWeak: this.usePctg ? (s.nbAccountsWeak / sum) * 100 : s.nbAccountsWeak,
           nbAccountsMedium: this.usePctg ? (s.nbAccountsMedium / sum) * 100 : s.nbAccountsMedium,
           nbAccountsStrong: this.usePctg ? (s.nbAccountsStrong / sum) * 100 : s.nbAccountsStrong,
           nbDuplicatePasswords: this.usePctg
             ? (s.nbDuplicatePasswords / sum) * 100
             : s.nbDuplicatePasswords,
+          nbAccountsRed: this.usePctg ? (s.nbAccountsRed / sum) * 100 : s.nbAccountsRed,
+          nbAccountsOrange: this.usePctg ? (s.nbAccountsOrange / sum) * 100 : s.nbAccountsOrange,
+          nbAccountsGreen: this.usePctg ? (s.nbAccountsGreen / sum) * 100 : s.nbAccountsGreen,
         };
       }),
     });
@@ -64,6 +72,10 @@ class SecurityChart extends React.Component {
     this.usePctg = usePctg;
     this.showStats();
   };
+  toggleEntropy = (useEntropy) => {
+    this.useEntropy = useEntropy;
+    this.showStats();
+  };
   updateStartDate = (newStartDate) => {
     if (this.startDate.getTime() !== newStartDate.getTime()) {
       this.startDate = newStartDate;
@@ -81,6 +93,14 @@ class SecurityChart extends React.Component {
       <React.Fragment>
         <h2>{i18n.t('chart_security_title')}</h2>
         <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 20 }}>
+          <Toggler
+            choices={[
+              { key: 'color', title: i18n.t('chart_type_color'), isCurrent: !this.useEntropy },
+              { key: 'entropy', title: i18n.t('chart_type_entropy'), isCurrent: this.useEntropy },
+            ]}
+            onSelect={(choice) => this.toggleEntropy(choice === 'entropy')}
+          />
+          <div style={{ width: 20 }} />
           <Toggler
             choices={[
               { key: 'nb', title: i18n.t('chart_type_nb'), isCurrent: !this.usePctg },
@@ -147,24 +167,32 @@ class SecurityChart extends React.Component {
             <Legend verticalAlign="top" />
             <Area
               type="monotone"
-              dataKey="nbAccountsWeak"
-              name={i18n.t('chart_weak_pwd')}
+              dataKey="nbAccountsWithNoPassword"
+              name={i18n.t('chart_no_pwd')}
+              stackId="1"
+              stroke="grey"
+              fill="grey"
+            />
+            <Area
+              type="monotone"
+              dataKey={this.useEntropy ? 'nbAccountsWeak' : 'nbAccountsRed'}
+              name={this.useEntropy ? i18n.t('chart_weak_pwd') : i18n.t('chart_red_pwd')}
               stackId="1"
               stroke="red"
               fill="red"
             />
             <Area
               type="monotone"
-              dataKey="nbAccountsMedium"
-              name={i18n.t('chart_medium_pwd')}
+              dataKey={this.useEntropy ? 'nbAccountsMedium' : 'nbAccountsOrange'}
+              name={this.useEntropy ? i18n.t('chart_medium_pwd') : i18n.t('chart_orange_pwd')}
               stackId="1"
               stroke="#ffc658"
               fill="#ffc658"
             />
             <Area
               type="monotone"
-              dataKey="nbAccountsStrong"
-              name={i18n.t('chart_strong_pwd')}
+              dataKey={this.useEntropy ? 'nbAccountsStrong' : 'nbAccountsGreen'}
+              name={this.useEntropy ? i18n.t('chart_strong_pwd') : i18n.t('chart_green_pwd')}
               stackId="1"
               stroke="#82ca9d"
               fill="#82ca9d"
