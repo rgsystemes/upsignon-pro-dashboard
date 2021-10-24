@@ -28,8 +28,7 @@ export const inviteNewAdmin = async (email: string): Promise<void> => {
   }
   // @ts-ignore
   const transporter = nodemailer.createTransport(transportOptions);
-
-  const baseUrl = encodeURIComponent(process.env.SERVER_URL + '/login');
+  const baseUrl = encodeURIComponent(process.env.SERVER_URL?.replace(/\/$/, '') + '/login');
   const encodedToken = encodeURIComponent(token);
   const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 

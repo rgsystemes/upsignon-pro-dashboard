@@ -31,5 +31,5 @@ export default {
   EMAIL_USER,
   EMAIL_PASS,
   SESSION_SECRET,
-  SERVER_URL,
+  SERVER_URL: SERVER_URL?.replace(/\/$/, ''),
 };
