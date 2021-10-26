@@ -186,7 +186,7 @@ class SharedAccounts extends React.Component {
             {this.state.sharedAccounts.map((s) => {
               return (
                 <React.Fragment key={s.id}>
-                  {s.users.length === 0 && (
+                  {s.users?.length === 0 && (
                     <tr>
                       <td>{s.name}</td>
                       <td>
@@ -204,18 +204,18 @@ class SharedAccounts extends React.Component {
                       </td>
                     </tr>
                   )}
-                  {s.users.map((u, i) => {
+                  {s.users?.map((u, i) => {
                     const isLastManager =
                       u.is_manager &&
-                      s.users.filter(
+                      s.users?.filter(
                         (a) =>
                           a.is_manager && a.shared_account_user_id !== u.shared_account_user_id,
                       ).length === 0;
                     return (
                       <tr key={u.shared_account_user_id}>
-                        {i === 0 && <td rowSpan={s.users.length}>{s.name}</td>}
+                        {i === 0 && <td rowSpan={s.users?.length}>{s.name}</td>}
                         {i === 0 && (
-                          <td rowSpan={s.users.length}>
+                          <td rowSpan={s.users?.length}>
                             <div>{s.type}</div>
                             <div>{s.url}</div>
                             <div>{s.login}</div>
@@ -249,7 +249,7 @@ class SharedAccounts extends React.Component {
                                   u.shared_account_user_id,
                                   s.name,
                                   u.email,
-                                  s.users.length === 1,
+                                  s.users?.length === 1,
                                 )
                               }
                             >
