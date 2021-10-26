@@ -40,6 +40,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// serve static files here (before the logger)
+app.use('/', express.static('../front/build'));
+
 app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
@@ -70,15 +73,24 @@ app.use((req, res, next) => {
   }
 });
 
-app.use('/', express.static('../front/build'));
-app.use('/users/', express.static('../front/build'));
-app.use('/shared_devices/', express.static('../front/build'));
-app.use('/shared_accounts/', express.static('../front/build'));
-app.use('/settings/', express.static('../front/build'));
-
-app.use('/api/', apiRouter);
 app.use('/login/', loginRouter);
 
+// GROUP ROUTING
+
+app.use('/:group/', express.static('../front/build'));
+app.use('/:group/users/', express.static('../front/build'));
+app.use('/:group/shared_devices/', express.static('../front/build'));
+app.use('/:group/shared_accounts/', express.static('../front/build'));
+app.use('/:group/settings/', express.static('../front/build'));
+
+app.use('/:group/api/', (req, res, next) => {
+  // @ts-ignore
+  req.upsignonProGroup = req.params.group;
+  req.url = req.url.replace(`/${req.params.group}/`, '');
+  return apiRouter(req, res, next);
+});
+
+// START
 if (module === require.main) {
   startServer(app, () => {});
 }

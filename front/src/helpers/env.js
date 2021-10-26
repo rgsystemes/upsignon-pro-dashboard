@@ -7,4 +7,7 @@ let backServerUrl =
 frontServerUrl.replace(/\/$/, '');
 backServerUrl.replace(/\/$/, '');
 
+const group = window.location.href.replace(frontServerUrl, '').split('/')[1];
+frontServerUrl += '/' + group;
+backServerUrl += '/' + group; // TODO could be refactored to apiServerUrl with added /api at the end
 export { frontServerUrl, backServerUrl };
