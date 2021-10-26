@@ -86,6 +86,20 @@ class Users extends React.Component {
       this.props.setIsLoading(false);
     }
   };
+  closeUserDevices = async (userId) => {
+    this.setState((s) => {
+      return {
+        ...s,
+        users: s.users.map((u) => {
+          if (u.user_id === userId) {
+            return { ...u, devices: undefined };
+          } else {
+            return u;
+          }
+        }),
+      };
+    });
+  };
 
   componentDidMount() {
     this.loadUsers();
@@ -277,6 +291,7 @@ class Users extends React.Component {
                           devices={u.devices}
                           email={u.email}
                           reloadDevices={() => this.loadUserDevices(u.user_id)}
+                          close={() => this.closeUserDevices(u.user_id)}
                         />
                       </td>
                     </tr>

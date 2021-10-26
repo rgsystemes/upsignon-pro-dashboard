@@ -3,7 +3,7 @@ import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
 
-// PROPS = setIsLoading, devices, email, reloadDevices
+// PROPS = setIsLoading, devices, email, reloadDevices, close
 class UserDevices extends React.Component {
   deleteDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_delete_warning'));
@@ -95,7 +95,13 @@ class UserDevices extends React.Component {
   render() {
     const passwordResetRequests = this.props.devices.filter((d) => d.pwd_reset_id);
     return (
-      <div style={{ margin: '0 20px 20px 20px' }}>
+      <div style={{ margin: '0 20px 20px 20px', position: 'relative' }}>
+        <div
+          style={{ position: 'absolute', top: 0, left: -20, cursor: 'pointer' }}
+          onClick={this.props.close}
+        >
+          X
+        </div>
         {passwordResetRequests.length > 0 && (
           <div>
             <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
