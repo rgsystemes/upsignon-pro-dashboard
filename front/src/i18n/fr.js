@@ -33,6 +33,9 @@ const translations = {
   user_passwords_weak: '$nb faibles',
   user_passwords_medium: '$nb moyens',
   user_passwords_strong: '$nb forts',
+  user_passwords_red: '$nb rouges',
+  user_passwords_orange: '$nb oranges',
+  user_passwords_green: '$nb verts',
   user_passwords_duplicated: 'dont $nb dupliqués',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',

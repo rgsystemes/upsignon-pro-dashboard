@@ -219,14 +219,35 @@ class Users extends React.Component {
                       </div>
                     </td>
                     <td>
-                      <div className={`tag ${u.nb_accounts_strong > 0 && 'positiveStrong'}`}>
-                        {i18n.t('user_passwords_strong', { nb: u.nb_accounts_strong || 0 })}
-                      </div>
-                      <div className={`tag ${u.nb_accounts_medium > 0 && 'positiveMedium'}`}>
-                        {i18n.t('user_passwords_medium', { nb: u.nb_accounts_medium || 0 })}
-                      </div>
-                      <div className={`tag ${u.nb_accounts_weak > 0 && 'positiveWeak'}`}>
-                        {i18n.t('user_passwords_weak', { nb: u.nb_accounts_weak || 0 })}
+                      <div style={{ display: 'flex', flexWrap: 'nowrap', flexDirection: 'row' }}>
+                        <div
+                          style={{
+                            paddingRight: 10,
+                            borderRight: '1px solid #eee',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          <div className={`tag ${u.nb_accounts_strong > 0 && 'positiveStrong'}`}>
+                            {i18n.t('user_passwords_strong', { nb: u.nb_accounts_strong || 0 })}
+                          </div>
+                          <div className={`tag ${u.nb_accounts_medium > 0 && 'positiveMedium'}`}>
+                            {i18n.t('user_passwords_medium', { nb: u.nb_accounts_medium || 0 })}
+                          </div>
+                          <div className={`tag ${u.nb_accounts_weak > 0 && 'positiveWeak'}`}>
+                            {i18n.t('user_passwords_weak', { nb: u.nb_accounts_weak || 0 })}
+                          </div>
+                        </div>
+                        <div style={{ paddingLeft: 10, whiteSpace: 'nowrap' }}>
+                          <div className={`tag ${u.nb_accounts_green > 0 && 'positiveStrong'}`}>
+                            {i18n.t('user_passwords_green', { nb: u.nb_accounts_green || 0 })}
+                          </div>
+                          <div className={`tag ${u.nb_accounts_orange > 0 && 'positiveMedium'}`}>
+                            {i18n.t('user_passwords_orange', { nb: u.nb_accounts_orange || 0 })}
+                          </div>
+                          <div className={`tag ${u.nb_accounts_red > 0 && 'positiveWeak'}`}>
+                            {i18n.t('user_passwords_red', { nb: u.nb_accounts_red || 0 })}
+                          </div>
+                        </div>
                       </div>
                       <div
                         style={{ borderTop: '1px solid #eee' }}
