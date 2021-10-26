@@ -186,7 +186,7 @@ class SharedAccounts extends React.Component {
             {this.state.sharedAccounts.map((s) => {
               return (
                 <React.Fragment key={s.id}>
-                  {s.users?.length === 0 && (
+                  {(s.users == null || s.users.length === 0) && (
                     <tr>
                       <td>{s.name}</td>
                       <td>
