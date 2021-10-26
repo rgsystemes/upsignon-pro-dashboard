@@ -203,6 +203,7 @@ export class ProSetupLink extends React.Component {
           <a
             href={this.proSetupLink}
             className="link"
+            target="_blank"
             style={{
               margin: 20,
               borderRadius: 10,
@@ -215,6 +216,7 @@ export class ProSetupLink extends React.Component {
               alignItems: 'center',
               boxShadow: '0 0 3px #eee',
             }}
+            rel="noreferrer"
           >
             <div style={{ fontWeight: 'bold', textDecoration: 'none', color: 'black' }}>
               {i18n.t('link_to_communicate')}

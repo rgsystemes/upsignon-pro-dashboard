@@ -49,6 +49,8 @@ class Settings extends React.Component {
             <a
               className="link"
               href="https://app.upsignon.eu/windows-sideloading-gpo/UpSignOn_latest"
+              target="_blank"
+              rel="noreferrer"
             >
               {i18n.t('windows_app_download_link')}
             </a>
