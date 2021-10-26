@@ -10,6 +10,8 @@ import env from './helpers/env';
 import expressSession from 'express-session';
 import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
+import { get_available_groups } from './helpers/get_available_groups';
+import { get_group_id } from './helpers/get_group_id';
 
 const app = express();
 
@@ -57,16 +59,16 @@ app.use((req, res, next) => {
   if (env.IS_PRODUCTION && !adminEmail && !isLoginRoute) {
     try {
       if (req.method !== 'GET') {
-        res.status(401).end();
+        return res.status(401).end();
       } else {
-        res.status(401).sendFile('./login/loginPage.html', {
+        return res.status(401).sendFile('./login/loginPage.html', {
           root: path.join(__dirname, '../server'),
           dotfiles: 'deny',
         });
       }
     } catch (e) {
       logError(e);
-      res.status(404).end();
+      return res.status(404).end();
     }
   } else {
     next();
@@ -74,6 +76,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/login/', loginRouter);
+app.use('/get_available_groups', get_available_groups);
 
 // GROUP ROUTING
 
@@ -83,10 +86,17 @@ app.use('/:group/shared_devices/', express.static('../front/build'));
 app.use('/:group/shared_accounts/', express.static('../front/build'));
 app.use('/:group/settings/', express.static('../front/build'));
 
-app.use('/:group/api/', (req, res, next) => {
-  // @ts-ignore
-  req.upsignonProGroup = req.params.group;
+app.use('/:group/api/', async (req, res, next) => {
   req.url = req.url.replace(`/${req.params.group}/`, '');
+
+  // GROUP AUTHORIZATION
+  // @ts-ignore
+  const groupId = await get_group_id(req.session?.adminEmail, req.params.group);
+  if (env.IS_PRODUCTION && groupId == null) {
+    return res.status(401).end();
+  }
+  // @ts-ignore
+  req.upsignonProGroupId = groupId;
   return apiRouter(req, res, next);
 });
 
