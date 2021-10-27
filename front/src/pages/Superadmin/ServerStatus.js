@@ -12,7 +12,7 @@ export class ServerStatus extends React.Component {
       if (this.props.proServerUrl) {
         // GET STATUS
         try {
-          const response = await fetch(`${this.props.proServerUrl.url}/config`, {
+          const response = await fetch(`${this.props.proServerUrl}/config`, {
             method: 'GET',
             cache: 'no-store',
             mode: 'cors',
@@ -31,9 +31,6 @@ export class ServerStatus extends React.Component {
       console.error(e);
     }
   };
-  componentDidUpdate() {
-    // TODO
-  }
   componentDidMount() {
     this.fetchStatus();
   }

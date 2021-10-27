@@ -5,7 +5,7 @@ import { ServerStatus } from './ServerStatus';
 
 export class ProServerUrl extends React.Component {
   urlInputRef = null;
-
+  serverStatusUrl = null;
   state = {
     proServerUrlConfig: null,
     isEditing: false,
@@ -15,6 +15,7 @@ export class ProServerUrl extends React.Component {
     try {
       const serverUrl = await adminFetchTemplate('/server_url', 'GET');
       if (serverUrl) {
+        this.serverStatusUrl = serverUrl.url;
         this.setState({
           proServerUrlConfig: serverUrl,
           showOpenId: false,
@@ -51,6 +52,7 @@ export class ProServerUrl extends React.Component {
           oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
         }),
       });
+      this.serverStatusUrl = newUrl;
       this.setState({ isEditing: false, showOpenId: false });
     } catch (e) {
       console.error(e);
@@ -62,7 +64,8 @@ export class ProServerUrl extends React.Component {
     return (
       <div>
         <h2>{i18n.t('pro_server')}</h2>
-        <ServerStatus proServerUrl={this.state.proServerUrlConfig?.url} />
+        {/* add key to rebuild the component when url changes so that status is refreshed */}
+        <ServerStatus key={this.serverStatusUrl} proServerUrl={this.serverStatusUrl} />
         <div style={{ display: 'flex', marginBottom: 10 }}>
           <div style={{ marginRight: 20 }}>{i18n.t('pro_server_url')}</div>
           {this.state.isEditing ? (
