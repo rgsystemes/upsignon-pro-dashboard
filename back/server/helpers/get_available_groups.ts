@@ -11,13 +11,13 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
       if (dbRes.rowCount === 0) return res.status(401).end();
       const userGroup = dbRes.rows[0];
       if (!userGroup.is_superadmin) {
-        return res.status(200).send([userGroup]);
+        return res.status(200).send({ groups: [userGroup], isSuperadmin: false });
       }
     }
 
     // superadmin case
     const allGroups = await db.query('SELECT * FROM groups');
-    res.status(200).send(allGroups.rows);
+    res.status(200).send({ groups: allGroups.rows, isSuperadmin: true });
   } catch (e) {
     logError(e);
     res.status(400).end();
