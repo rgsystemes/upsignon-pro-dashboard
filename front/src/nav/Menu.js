@@ -1,7 +1,7 @@
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { fetchTemplate } from '../helpers/fetchTemplate';
-import { frontServerUrl } from '../helpers/env';
+import { frontUrl } from '../helpers/env';
 import { GroupChooser } from './GroupChooser';
 
 function Menu(props) {
@@ -13,7 +13,7 @@ function Menu(props) {
         return (
           <a
             key={p.key}
-            href={frontServerUrl + p.href}
+            href={frontUrl + p.href}
             className={`navItem ${p.isCurrent ? 'current' : ''}`}
           >
             {p.title}
@@ -28,7 +28,7 @@ function Menu(props) {
               await fetchTemplate('/api/disconnect', 'POST', null);
             } catch (e) {
             } finally {
-              window.location.href = frontServerUrl;
+              window.location.href = frontUrl;
             }
           }}
         >

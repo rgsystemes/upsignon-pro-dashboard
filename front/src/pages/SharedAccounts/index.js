@@ -1,7 +1,7 @@
 import React from 'react';
 import { fetchTemplate } from '../../helpers/fetchTemplate';
 import { PaginationBar } from '../../helpers/paginationBar';
-import { frontServerUrl } from '../../helpers/env';
+import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 
 const maxRenderedItems = 50;
@@ -133,7 +133,7 @@ class SharedAccounts extends React.Component {
   };
 
   goToPageIndex = (p) => {
-    window.location.href = `${frontServerUrl}/shared_accounts/?limit=${this.state.limit}&pageIndex=${p}`;
+    window.location.href = `${frontUrl}/shared_accounts/?limit=${this.state.limit}&pageIndex=${p}`;
   };
 
   componentDidMount() {

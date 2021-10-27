@@ -8,6 +8,6 @@ baseFrontUrl.replace(/\/$/, '');
 baseApiServerUrl.replace(/\/$/, '');
 
 const group = window.location.href.replace(baseFrontUrl, '').split('/')[1];
-const frontServerUrl = baseFrontUrl + '/' + group; // todo rename
+const frontUrl = baseFrontUrl + '/' + group;
 const backServerUrl = baseApiServerUrl + '/' + group; // TODO could be refactored to apiServerUrl with added /api at the end
-export { baseFrontUrl, frontServerUrl, backServerUrl, group, baseApiServerUrl };
+export { baseFrontUrl, frontUrl, backServerUrl, group, baseApiServerUrl };
