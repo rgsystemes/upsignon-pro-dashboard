@@ -168,6 +168,13 @@ const translations = {
   pro_server_unknown_status:
     'Pour afficher ici le statut du serveur UpSignOn PRO, configurez son URL dans la page paramètres.',
   sasettings_superadmins: 'Super-Administrateurs',
+  sasettings_groups: 'Groupes',
+  sasettings_group_name: "Nom qui sera affiché dans l'application",
+  sasettings_nb_users: "Nombre d'utilisateurs",
+  sasettings_group_name_change_warning:
+    "NB : les changements de nom de groupe n'affectent que les nouveaux appareils pour l'instant.",
+  sasettings_group_delete_warning:
+    'Êtes-vous sûr de vouloir supprimer ce groupe ?\nToutes les données utilisateurs associées à ce groupe seront définitivement supprimées.\n\nCette action est irréversible !',
 };
 
 export default translations;

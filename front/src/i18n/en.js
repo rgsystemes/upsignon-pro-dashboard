@@ -167,6 +167,13 @@ const translations = {
   pro_server_unknown_status:
     'To display the status of the UpSignOn PRO server here, configure its URL in the settings page.',
   sasettings_superadmins: 'Super-Administrators',
+  sasettings_groups: 'Groups',
+  sasettings_group_name: 'Name that will be displayed in the app',
+  sasettings_nb_users: 'Number of users',
+  sasettings_group_name_change_warning:
+    'Notice: group name changes only affect new devices for now.',
+  sasettings_group_delete_warning:
+    'Are you sure you want to delete this group?\nThis will permanently delete all user data for this group.\n\nThis action is irreversible!',
 };
 
 export default translations;

@@ -5,6 +5,7 @@ import { i18n } from '../../i18n/i18n';
 export class ProSetupLink extends React.Component {
   qrcodeGenerator = null;
   base64Img = null;
+  urlInputRef = null;
 
   state = {
     proServerUrlConfig: null,
@@ -33,10 +34,17 @@ export class ProSetupLink extends React.Component {
 
   submitNewProServerUrl = async () => {
     try {
+      const newUrl = this.state.proServerUrlConfig?.url.trim();
+      if (!newUrl) {
+        this.urlInputRef.style.borderColor = 'red';
+        return;
+      } else {
+        this.urlInputRef.style.borderColor = null;
+      }
       await fetchTemplate('/api/setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
         value: JSON.stringify({
-          url: this.state.proServerUrlConfig.url.trim(),
+          url: newUrl,
           oidcAuthority: this.state.proServerUrlConfig.oidcAuthority?.trim(),
           oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
           oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
@@ -96,6 +104,9 @@ export class ProSetupLink extends React.Component {
           <div style={{ marginRight: 20 }}>{i18n.t('pro_server_url')}</div>
           {this.state.isEditing ? (
             <input
+              ref={(r) => {
+                this.urlInputRef = r;
+              }}
               style={{
                 width: `${Math.max(
                   this.state.proServerUrlConfig?.url.length || proServerUrlPlaceholder.length,

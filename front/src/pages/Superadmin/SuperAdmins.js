@@ -23,6 +23,12 @@ class SuperAdmins extends React.Component {
     try {
       this.props.setIsLoading(true);
       const newEmail = this.newInputRef.value;
+      if (!newEmail) {
+        this.newInputRef.style.borderColor = 'red';
+        return;
+      } else {
+        this.newInputRef.style.borderColor = null;
+      }
       await adminFetchTemplate('/superadmin-api/insert-super-admin', 'POST', { newEmail });
       await this.fetchSuperAdmins();
       this.newInputRef.value = null;

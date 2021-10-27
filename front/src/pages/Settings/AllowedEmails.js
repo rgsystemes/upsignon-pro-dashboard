@@ -43,6 +43,12 @@ class AllowedEmails extends React.Component {
     try {
       this.props.setIsLoading(true);
       const newPattern = this.newInputRef.value;
+      if (!newPattern) {
+        this.newInputRef.style.borderColor = 'red';
+        return;
+      } else {
+        this.newInputRef.style.borderColor = null;
+      }
       await fetchTemplate('/api/insert-allowed-email', 'POST', { newPattern });
       await this.fetchAllowedEmails();
       this.newInputRef.value = null;

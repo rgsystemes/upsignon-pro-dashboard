@@ -2,6 +2,7 @@ import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { SuperAdmins } from './SuperAdmins';
 import './superadmin.css';
+import { Groups } from './Groups';
 
 // Props setIsLoading
 class Superadmin extends React.Component {
@@ -54,6 +55,7 @@ class Superadmin extends React.Component {
           </li>
         </ul>
         <SuperAdmins setIsLoading={this.props.setIsLoading} />
+        <Groups setIsLoading={this.props.setIsLoading} />
       </div>
     );
   }
