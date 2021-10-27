@@ -50,6 +50,9 @@ class App extends React.Component {
       console.error(e);
     }
   };
+  updateMenuGroups = (newGroups) => {
+    this.setState({ groups: newGroups });
+  };
   componentDidMount() {
     this.fetchGroups();
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
@@ -85,7 +88,9 @@ class App extends React.Component {
       pageContent = <Settings setIsLoading={this.setIsLoading} />;
       currentPage = 'settings';
     } else if (path.startsWith('/superadmin')) {
-      pageContent = <Superadmin setIsLoading={this.setIsLoading} />;
+      pageContent = (
+        <Superadmin setIsLoading={this.setIsLoading} updateMenuGroups={this.updateMenuGroups} />
+      );
       currentPage = 'superadmin';
     }
 

@@ -4,7 +4,7 @@ import { SuperAdmins } from './SuperAdmins';
 import './superadmin.css';
 import { Groups } from './Groups';
 
-// Props setIsLoading
+// Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
   render() {
     return (
@@ -55,7 +55,10 @@ class Superadmin extends React.Component {
           </li>
         </ul>
         <SuperAdmins setIsLoading={this.props.setIsLoading} />
-        <Groups setIsLoading={this.props.setIsLoading} />
+        <Groups
+          setIsLoading={this.props.setIsLoading}
+          updateMenuGroups={this.props.updateMenuGroups}
+        />
       </div>
     );
   }

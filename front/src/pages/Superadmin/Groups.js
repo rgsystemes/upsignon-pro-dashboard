@@ -3,7 +3,7 @@ import { EditableCell } from '../../helpers/EditableCell';
 import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
-// Props : setIsLoading
+// Props : setIsLoading, updateMenuGroups
 class Groups extends React.Component {
   state = {
     groups: [],
@@ -15,6 +15,7 @@ class Groups extends React.Component {
     try {
       const groups = await adminFetchTemplate('/superadmin-api/groups', 'GET', null);
       this.setState({ groups });
+      this.props.updateMenuGroups(groups);
     } catch (e) {
       console.error(e);
     }
