@@ -2,11 +2,13 @@ import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { fetchTemplate } from '../helpers/fetchTemplate';
 import { frontServerUrl } from '../helpers/env';
+import { GroupChooser } from './GroupChooser';
 
 function Menu(props) {
   const { pages } = props;
   return (
     <nav>
+      <GroupChooser />
       {pages.map((p) => {
         return (
           <a

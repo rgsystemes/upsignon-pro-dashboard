@@ -1,11 +1,11 @@
-import { backServerUrl } from './env';
+import { backServerUrl, baseApiServerUrl } from './env';
 
-export async function fetchTemplate(route, method, body) {
+export async function fetchTemplate(route, method, body, options) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(`${backServerUrl}${route}`, {
+  const res = await fetch(`${options?.useBaseUrl ? baseApiServerUrl : backServerUrl}${route}`, {
     method,
     body: bodyText,
     cache: 'no-store',

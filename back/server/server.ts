@@ -11,14 +11,13 @@ import expressSession from 'express-session';
 import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
 import { get_available_groups } from './helpers/get_available_groups';
-import { get_group_id } from './helpers/get_group_id';
+import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
 
 const app = express();
 
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
-
 // Configure sessions
 app.use(
   expressSession({
@@ -27,7 +26,7 @@ app.use(
       httpOnly: true,
       secure: env.IS_PRODUCTION,
       maxAge: 3600000, // one hour
-      sameSite: 'strict',
+      sameSite: env.IS_PRODUCTION ? 'strict' : 'lax',
     },
     name: 'upsignon_dashboard_session',
     // @ts-ignore
@@ -38,12 +37,16 @@ app.use(
     store: new SessionStore(),
   }),
 );
+if (!env.IS_PRODUCTION) {
+  app.use((req, res, next) => {
+    // @ts-ignore
+    req.session?.adminEmail = env.DEV_FALLBACK_ADMIN_URL;
+    next();
+  });
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// serve static files here (before the logger)
-app.use('/', express.static('../front/build'));
 
 app.use((req, res, next) => {
   // @ts-ignore
@@ -76,28 +79,26 @@ app.use((req, res, next) => {
 });
 
 app.use('/login/', loginRouter);
-app.use('/get_available_groups', get_available_groups);
+
+app.use('/', express.static('../front/build'));
+app.get('/get_available_groups', get_available_groups);
 
 // GROUP ROUTING
 
-app.use('/:group/', express.static('../front/build'));
-app.use('/:group/users/', express.static('../front/build'));
-app.use('/:group/shared_devices/', express.static('../front/build'));
-app.use('/:group/shared_accounts/', express.static('../front/build'));
-app.use('/:group/settings/', express.static('../front/build'));
+app.use('/:groupId/', express.static('../front/build'));
+app.use('/:groupId/users/', express.static('../front/build'));
+app.use('/:groupId/shared_devices/', express.static('../front/build'));
+app.use('/:groupId/shared_accounts/', express.static('../front/build'));
+app.use('/:groupId/settings/', express.static('../front/build'));
 
-app.use('/:group/api/', async (req, res, next) => {
-  req.url = req.url.replace(`/${req.params.group}/`, '');
-
+app.use('/:groupId/api/', async (req, res, next) => {
   // GROUP AUTHORIZATION
-  // @ts-ignore
-  const groupId = await get_group_id(req.session?.adminEmail, req.params.group);
-  if (env.IS_PRODUCTION && groupId == null) {
-    return res.status(401).end();
+  const isGroupAuthorized = await checkGroupAuthorization(req, res);
+  if (isGroupAuthorized) {
+    return apiRouter(req, res, next);
+  } else {
+    return res.status(401).send({ error: 'bad_group' });
   }
-  // @ts-ignore
-  req.upsignonProGroupId = groupId;
-  return apiRouter(req, res, next);
 });
 
 // START

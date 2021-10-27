@@ -14,6 +14,7 @@ const {
   EMAIL_PASS,
   SESSION_SECRET,
   SERVER_URL,
+  DEV_FALLBACK_ADMIN_URL,
 } = process.env;
 
 export default {
@@ -32,4 +33,5 @@ export default {
   EMAIL_PASS,
   SESSION_SECRET,
   SERVER_URL: SERVER_URL?.replace(/\/$/, ''),
+  DEV_FALLBACK_ADMIN_URL,
 };
