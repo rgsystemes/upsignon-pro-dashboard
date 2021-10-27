@@ -81,6 +81,11 @@ app.use((req, res, next) => {
 app.use('/login/', loginRouter);
 
 app.use('/', express.static('../front/build'));
+app.use('/superadmin', (req, res, next) => {
+  // @ts-ignore
+  if (!req.session?.isSuperadmin) return res.status(401).end();
+  return express.static('../front/build')(req, res, next);
+});
 app.get('/get_available_groups', get_available_groups);
 
 // GROUP ROUTING

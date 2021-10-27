@@ -1,31 +1,15 @@
 import React from 'react';
-import { fetchTemplate } from '../helpers/fetchTemplate';
 import { baseFrontUrl, group } from '../helpers/env';
+import { i18n } from '../i18n/i18n';
 
+// Props: groups, isSuperadmin, isSuperadminPage
 class GroupChooser extends React.Component {
   state = {
-    groups: [],
-    isSuperadmin: false,
     showList: false,
   };
-  fetchGroups = async () => {
-    try {
-      const groupsRes = await fetchTemplate('/get_available_groups', 'GET', null, {
-        useBaseUrl: true,
-      });
-      this.setState({ groups: groupsRes.groups, isSuperadmin: groupsRes.isSuperadmin });
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  componentDidMount() {
-    this.fetchGroups();
-  }
+
   toggleGroupList = () => {
     this.setState((s) => ({ ...s, showList: !s.showList }));
-  };
-  selectGroup = (groupId) => {
-    window.location.href = baseFrontUrl + '/' + groupId + '/';
   };
   render() {
     return (
@@ -37,20 +21,15 @@ class GroupChooser extends React.Component {
           overflow: 'visible',
         }}
       >
-        <div
-          style={{
-            textAlign: 'center',
-            borderRadius: 5,
-            padding: '5px 10px',
-            color: 'white',
-            backgroundColor: 'rgb(44, 83, 132)',
-            cursor: 'pointer',
-            width: '100%',
-          }}
-          onClick={this.toggleGroupList}
-        >
-          {this.state.groups.find((g) => g.id == group)?.name}
-        </div>
+        {this.props.isSuperadminPage ? (
+          <div className="currentGroup superadmin" onClick={this.toggleGroupList}>
+            {i18n.t('menu_superadmin')}
+          </div>
+        ) : (
+          <div className="currentGroup" onClick={this.toggleGroupList}>
+            {this.props.groups.find((g) => g.id == group)?.name}
+          </div>
+        )}
         {this.state.showList && (
           <div
             style={{
@@ -63,11 +42,16 @@ class GroupChooser extends React.Component {
               overflow: 'scroll',
             }}
           >
-            {this.state.groups.map((g) => {
+            {this.props.isSuperadmin && (
+              <a className="groupLink superadmin" href={baseFrontUrl + '/superadmin/'}>
+                {i18n.t('menu_superadmin')}
+              </a>
+            )}
+            {this.props.groups.map((g) => {
               return (
-                <div key={g.id} className="group" onClick={() => this.selectGroup(g.id)}>
+                <a key={g.id} className="groupLink" href={baseFrontUrl + '/' + g.id + '/'}>
                   {g.name}
-                </div>
+                </a>
               );
             })}
           </div>

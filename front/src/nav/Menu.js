@@ -1,25 +1,45 @@
+import React from 'react';
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { fetchTemplate } from '../helpers/fetchTemplate';
 import { frontUrl } from '../helpers/env';
 import { GroupChooser } from './GroupChooser';
 
+// PROPS pages, groups, isSuperadmin, isSuperadminPage
 function Menu(props) {
-  const { pages } = props;
+  const { pages, groups, isSuperadmin, isSuperadminPage } = props;
   return (
     <nav>
-      <GroupChooser />
-      {pages.map((p) => {
-        return (
-          <a
-            key={p.key}
-            href={frontUrl + p.href}
-            className={`navItem ${p.isCurrent ? 'current' : ''}`}
-          >
-            {p.title}
-          </a>
-        );
-      })}
+      <GroupChooser
+        groups={groups}
+        isSuperadminPage={isSuperadminPage}
+        isSuperadmin={isSuperadmin}
+      />
+      {isSuperadminPage ? (
+        <React.Fragment>
+          {pages.map((p) => {
+            return (
+              <div key={p.key} className="navItem disabled">
+                {p.title}
+              </div>
+            );
+          })}
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          {pages.map((p) => {
+            return (
+              <a
+                key={p.key}
+                href={frontUrl + p.href}
+                className={`navItem ${p.isCurrent ? 'current' : ''}`}
+              >
+                {p.title}
+              </a>
+            );
+          })}
+        </React.Fragment>
+      )}
       <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
         <div
           className="action"

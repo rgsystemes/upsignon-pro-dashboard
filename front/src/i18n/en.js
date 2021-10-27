@@ -17,6 +17,7 @@ const translations = {
   menu_settings: 'Settings',
   menu_shared_devices: 'Shared devices',
   menu_shared_accounts: 'Shared accounts',
+  menu_superadmin: 'Super-Admin',
   loading: 'Loading data...',
   total: 'Total $count',
   user_search: 'Search a user',

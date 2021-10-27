@@ -10,7 +10,8 @@ import { SharedAccounts } from './pages/SharedAccounts';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
-import { frontUrl } from './helpers/env';
+import { baseFrontUrl, group } from './helpers/env';
+import { Superadmin } from './pages/Superadmin';
 
 class App extends React.Component {
   state = {
@@ -18,6 +19,8 @@ class App extends React.Component {
     nb_users: null,
     nb_shared_accounts: null,
     nb_shared_devices: null,
+    groups: [],
+    isSuperadmin: false,
   };
   fetchStats = async () => {
     try {
@@ -36,27 +39,43 @@ class App extends React.Component {
       console.error(e);
     }
   };
+  fetchGroups = async () => {
+    try {
+      const groupsRes = await fetchTemplate('/get_available_groups', 'GET', null, {
+        useBaseUrl: true,
+      });
+      this.setState({
+        groups: groupsRes.groups,
+        isSuperadmin: groupsRes.isSuperadmin,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   componentDidMount() {
-    this.fetchStats();
+    this.fetchGroups();
+    if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
+      this.fetchStats();
+    }
   }
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
   };
   render() {
-    let path = window.location.href.replace(frontUrl, '');
+    let path = window.location.href.replace(baseFrontUrl, '');
 
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
     let currentPage = 'overview';
 
-    if (path.startsWith('/users')) {
+    if (path.startsWith(`/${group}/users`)) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith('/shared_devices')) {
+    } else if (path.startsWith(`/${group}/shared_devices`)) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
-    } else if (path.startsWith('/shared_accounts')) {
+    } else if (path.startsWith(`/${group}/shared_accounts`)) {
       pageContent = (
         <SharedAccounts
           setIsLoading={this.setIsLoading}
@@ -64,9 +83,12 @@ class App extends React.Component {
         />
       );
       currentPage = 'shared_accounts';
-    } else if (path.startsWith('/settings')) {
+    } else if (path.startsWith(`/${group}/settings`)) {
       pageContent = <Settings setIsLoading={this.setIsLoading} />;
       currentPage = 'settings';
+    } else if (path.startsWith('/superadmin')) {
+      pageContent = <Superadmin setIsLoading={this.setIsLoading} />;
+      currentPage = 'superadmin';
     }
 
     const pages = [
@@ -101,9 +123,15 @@ class App extends React.Component {
         isCurrent: currentPage === 'settings',
       },
     ];
+
     return (
       <div className="App">
-        <Menu pages={pages} />
+        <Menu
+          pages={pages}
+          groups={this.state.groups}
+          isSuperadmin={this.state.isSuperadmin}
+          isSuperadminPage={currentPage === 'superadmin'}
+        />
         {pageContent}
         <div
           style={{
