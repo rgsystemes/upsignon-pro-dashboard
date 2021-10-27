@@ -1,3 +1,28 @@
 .link {
   color: rgb(44, 83, 132);
 }
+
+.button {
+  display: inline-block;
+  border: 1px solid rgb(44, 83, 132);
+  color: rgb(44, 83, 132);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+.button:hover {
+  background-color: rgb(44, 83, 132);
+  color: white;
+}
+.danger-button {
+  display: inline-block;
+  border: 1px solid red;
+  color: red;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+.danger-button:hover {
+  background-color: red;
+  color: white;
+}

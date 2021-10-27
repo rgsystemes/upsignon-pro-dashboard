@@ -12,6 +12,7 @@ const translations = {
   disconnect: 'Déconnexion',
   pagination_pages: 'pages',
   validate: 'Valider',
+  cancel: 'Annuler',
   menu_overview: "Vue d'ensemble",
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
@@ -174,7 +175,8 @@ const translations = {
   sasettings_group_name_change_warning:
     "NB : les changements de nom de groupe n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
-    'Êtes-vous sûr de vouloir supprimer ce groupe ?\nToutes les données utilisateurs associées à ce groupe seront définitivement supprimées.\n\nCette action est irréversible !',
+    'Êtes-vous sûr de vouloir supprimer ce groupe ? Toutes les données utilisateurs associées à ce groupe seront définitivement supprimées. Cette action est irréversible !',
+  sasetting_confirm_group_delete: 'Pour confirmer, saisissez exactement "$name"',
 };
 
 export default translations;

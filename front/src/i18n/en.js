@@ -12,6 +12,7 @@ const translations = {
   disconnect: 'Disconnect',
   pagination_pages: 'pages',
   validate: 'Validate',
+  cancel: 'Cancel',
   menu_overview: 'Overview',
   menu_users: 'Users',
   menu_settings: 'Settings',
@@ -173,7 +174,8 @@ const translations = {
   sasettings_group_name_change_warning:
     'Notice: group name changes only affect new devices for now.',
   sasettings_group_delete_warning:
-    'Are you sure you want to delete this group?\nThis will permanently delete all user data for this group.\n\nThis action is irreversible!',
+    'Are you sure you want to delete this group? This will permanently delete all user data for this group.This action is irreversible!',
+  sasetting_confirm_group_delete: 'To confirm, please type exactly "$name"',
 };
 
 export default translations;

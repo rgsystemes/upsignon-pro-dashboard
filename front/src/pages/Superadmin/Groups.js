@@ -7,6 +7,7 @@ import { i18n } from '../../i18n/i18n';
 class Groups extends React.Component {
   state = {
     groups: [],
+    groupToDeleteId: null,
   };
   newInputRef = null;
 
@@ -52,23 +53,57 @@ class Groups extends React.Component {
     }
   };
   deleteGroup = async (id) => {
-    const confirmation = window.confirm(i18n.t('sasettings_group_delete_warning'));
-    if (confirmation) {
-      try {
-        this.props.setIsLoading(true);
-        await adminFetchTemplate(`/superadmin-api/delete-group/${id}`, 'POST', null);
-        await this.fetchGroups();
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.props.setIsLoading(false);
-      }
+    try {
+      this.props.setIsLoading(true);
+      await adminFetchTemplate(`/superadmin-api/delete-group/${id}`, 'POST', null);
+      await this.fetchGroups();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   componentDidMount() {
     this.fetchGroups();
   }
   render() {
+    const groupToDelete = this.state.groups.find((g) => g.id === this.state.groupToDeleteId);
+    if (groupToDelete) {
+      return (
+        <div style={{ marginTop: 50 }}>
+          <h2>{i18n.t('sasettings_groups')}</h2>
+          <div style={{ border: '5px solid red', padding: 20 }}>
+            <h3>{i18n.t('sasettings_group_delete_warning')}</h3>
+            <div style={{ marginBottom: 10 }}>
+              {i18n.t('sasetting_confirm_group_delete', {
+                name: groupToDelete.name,
+              })}
+            </div>
+            <input ref={(r) => (this.deleteGroupInputRef = r)} />
+            <div
+              className="danger-button"
+              style={{ marginLeft: 20 }}
+              onClick={() => {
+                if (this.deleteGroupInputRef.value === groupToDelete.name) {
+                  this.deleteGroup(groupToDelete.id);
+                } else {
+                  this.deleteGroupInputRef.style.borderColor = 'red';
+                }
+              }}
+            >
+              {i18n.t('validate')}
+            </div>
+            <div
+              className="button"
+              style={{ marginLeft: 20 }}
+              onClick={() => this.setState({ groupToDeleteId: null })}
+            >
+              {i18n.t('cancel')}
+            </div>
+          </div>
+        </div>
+      );
+    }
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('sasettings_groups')}</h2>
@@ -114,7 +149,10 @@ class Groups extends React.Component {
                     />
                     <td>{group.nb_users}</td>
                     <td>
-                      <div className="action" onClick={() => this.deleteGroup(group.id)}>
+                      <div
+                        className="action"
+                        onClick={() => this.setState({ groupToDeleteId: group.id })}
+                      >
                         {i18n.t('delete')}
                       </div>
                     </td>
