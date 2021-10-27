@@ -162,9 +162,8 @@ const translations = {
   openid_clientid: "Identifiant de l'application ",
   openid_clientid_browsers: 'Identifiant pour les extensions de navigateur',
   link_to_communicate: 'Lien à communiquer',
-  pro_server_status_running: "Le serveur UpSignOn PRO est en cours d'exécution",
-  pro_server_status_stopped:
-    'Le serveur UpSignOn PRO est arrêté (ou bien mal configuré dans la page paramètres)',
+  pro_server_status_running: "Serveur en cours d'exécution",
+  pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
   sasettings_superadmins: 'Super-Administrateurs',
   sasettings_groups: 'Groupes',
   sasettings_group_name: "Nom qui sera affiché dans l'application",

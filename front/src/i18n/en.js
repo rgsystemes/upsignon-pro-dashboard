@@ -161,9 +161,8 @@ const translations = {
   openid_clientid: 'App identifier',
   openid_clientid_browsers: 'Browser extensions identifier',
   link_to_communicate: 'Link to communicate',
-  pro_server_status_running: 'The UpSignOn PRO server is running',
-  pro_server_status_stopped:
-    'The UpSignOn PRO server is stopped (or maybe misconfigured in the settings page)',
+  pro_server_status_running: 'Server running.',
+  pro_server_status_stopped: 'Server stopped or misconfigured.',
   sasettings_superadmins: 'Super-Administrators',
   sasettings_groups: 'Groups',
   sasettings_group_name: 'Name that will be displayed in the app',
