@@ -83,7 +83,7 @@ const translations = {
   settings_allowed_emails_new: 'New email address pattern',
   settings_allowed_emails_delete_warning:
     'This will not delete the safes for users matching this email address template.\n\nDelete ?',
-  settings_admins: 'Administrators',
+  settings_admins: 'Administrators of this group',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Added on',
   settings_admin_delete_warning: 'Are you sure you want to revoke this admin?',

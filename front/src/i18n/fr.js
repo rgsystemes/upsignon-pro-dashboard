@@ -84,7 +84,7 @@ const translations = {
   settings_allowed_emails_new: "Nouveau modèle d'adresse email",
   settings_allowed_emails_delete_warning:
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
-  settings_admins: 'Administrateurs',
+  settings_admins: 'Administrateurs de ce groupe',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Ajouté le',
   settings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
