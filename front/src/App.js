@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { fetchTemplate } from './helpers/fetchTemplate';
+import { adminFetchTemplate, fetchTemplate } from './helpers/fetchTemplate';
 import { Loader } from './helpers/loader';
 import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
@@ -41,9 +41,7 @@ class App extends React.Component {
   };
   fetchGroups = async () => {
     try {
-      const groupsRes = await fetchTemplate('/get_available_groups', 'GET', null, {
-        useBaseUrl: true,
-      });
+      const groupsRes = await adminFetchTemplate('/get_available_groups', 'GET', null);
       this.setState({
         groups: groupsRes.groups,
         isSuperadmin: groupsRes.isSuperadmin,

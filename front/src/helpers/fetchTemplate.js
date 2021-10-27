@@ -20,3 +20,7 @@ export async function fetchTemplate(route, method, body, options) {
   if (!content) return;
   return JSON.parse(content);
 }
+
+export function adminFetchTemplate(route, method, body) {
+  return fetchTemplate(route, method, body, { useBaseUrl: true });
+}

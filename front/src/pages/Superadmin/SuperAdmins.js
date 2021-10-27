@@ -1,30 +1,30 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading
-class Admins extends React.Component {
+class SuperAdmins extends React.Component {
   state = {
-    admins: [],
+    superAdmins: [],
   };
   newInputRef = null;
 
-  fetchAdmins = async () => {
+  fetchSuperAdmins = async () => {
     try {
-      const adminEmails = await fetchTemplate('/api/admins', 'GET', null);
+      const adminEmails = await adminFetchTemplate('/superadmin-api/super-admins', 'GET', null);
       this.setState({
-        admins: adminEmails,
+        superAdmins: adminEmails,
       });
     } catch (e) {
       console.error(e);
     }
   };
-  insertAdmin = async () => {
+  insertSuperAdmin = async () => {
     try {
       this.props.setIsLoading(true);
       const newEmail = this.newInputRef.value;
-      await fetchTemplate('/api/insert-admin', 'POST', { newEmail });
-      await this.fetchAdmins();
+      await adminFetchTemplate('/superadmin-api/insert-super-admin', 'POST', { newEmail });
+      await this.fetchSuperAdmins();
       this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
@@ -37,8 +37,8 @@ class Admins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-admin/${id}`, 'POST', null);
-        await this.fetchAdmins();
+        await adminFetchTemplate(`/superadmin-api/delete-super-admin/${id}`, 'POST', null);
+        await this.fetchSuperAdmins();
       } catch (e) {
         console.error(e);
       } finally {
@@ -47,12 +47,12 @@ class Admins extends React.Component {
     }
   };
   componentDidMount() {
-    this.fetchAdmins();
+    this.fetchSuperAdmins();
   }
   render() {
     return (
       <div style={{ marginTop: 50 }}>
-        <h2>{i18n.t('settings_admins')}</h2>
+        <h2>{i18n.t('sasettings_superadmins')}</h2>
         <div
           style={{
             display: 'flex',
@@ -68,11 +68,11 @@ class Admins extends React.Component {
             placeholder="admin.email@domain.com"
             style={{ width: 300 }}
           />
-          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertAdmin}>
+          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertSuperAdmin}>
             {i18n.t('add')}
           </div>
         </div>
-        {this.state.admins.length > 0 && (
+        {this.state.superAdmins.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -82,7 +82,7 @@ class Admins extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.admins.map((admin) => {
+              {this.state.superAdmins.map((admin) => {
                 return (
                   <tr key={admin.id}>
                     <td>{admin.email}</td>
@@ -103,4 +103,4 @@ class Admins extends React.Component {
   }
 }
 
-export { Admins };
+export { SuperAdmins };

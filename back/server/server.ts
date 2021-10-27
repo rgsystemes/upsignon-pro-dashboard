@@ -12,6 +12,7 @@ import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
 import { get_available_groups } from './helpers/get_available_groups';
 import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
+import { suparadminApiRouter } from './superadminapi/superadminApiRouter';
 
 const app = express();
 
@@ -81,15 +82,17 @@ app.use((req, res, next) => {
 app.use('/login/', loginRouter);
 
 app.use('/', express.static('../front/build'));
-app.use('/superadmin', (req, res, next) => {
+app.get('/get_available_groups', get_available_groups);
+
+// SUPERADMIN
+app.use('/superadmin/', (req, res, next) => {
   // @ts-ignore
   if (!req.session?.isSuperadmin) return res.status(401).end();
   return express.static('../front/build')(req, res, next);
 });
-app.get('/get_available_groups', get_available_groups);
+app.use('/superadmin-api/', suparadminApiRouter);
 
 // GROUP ROUTING
-
 app.use('/:groupId/', express.static('../front/build'));
 app.use('/:groupId/users/', express.static('../front/build'));
 app.use('/:groupId/shared_devices/', express.static('../front/build'));

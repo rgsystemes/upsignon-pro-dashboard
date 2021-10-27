@@ -166,6 +166,7 @@ const translations = {
     'The UpSignOn PRO server is stopped (or maybe misconfigured in the settings page)',
   pro_server_unknown_status:
     'To display the status of the UpSignOn PRO server here, configure its URL in the settings page.',
+  sasettings_superadmins: 'Super-Administrators',
 };
 
 export default translations;

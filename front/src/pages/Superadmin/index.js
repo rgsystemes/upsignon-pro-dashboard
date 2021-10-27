@@ -1,5 +1,6 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
+import { SuperAdmins } from './SuperAdmins';
 import './superadmin.css';
 
 // Props setIsLoading
@@ -52,6 +53,7 @@ class Superadmin extends React.Component {
             {` (${i18n.t('to_unzip')})`}
           </li>
         </ul>
+        <SuperAdmins setIsLoading={this.props.setIsLoading} />
       </div>
     );
   }
