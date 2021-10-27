@@ -24,7 +24,6 @@ import { get_admins } from './get_admins';
 import { get_allowed_emails } from './get_allowed_emails';
 import { get_password_stats } from './get_password_stats';
 import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
-import { get_settings } from './get_settings';
 import { get_shared_accounts } from './get_shared_accounts';
 import { get_shared_devices } from './get_shared_devices';
 import { get_urls } from './get_urls';
@@ -36,7 +35,6 @@ import { insert_admin } from './insert_admin';
 import { insert_allowed_email } from './insert_allowed_email';
 import { insert_url } from './insert_url';
 import { update_allowed_email } from './update_allowed_email';
-import { update_setting } from './update_setting';
 import { update_shared_account_manager } from './update_shared_account_manager';
 import { update_url } from './update_url';
 import { update_user_email } from './update_user_email';
@@ -83,10 +81,6 @@ apiRouter.get('/extract-emails-for-weak-passwords', extract_emails_for_weak_pass
 apiRouter.get('/extract-emails-for-medium-passwords', extract_emails_for_medium_passwords);
 apiRouter.get('/extract-emails-for-shared-device', extract_emails_for_shared_device);
 apiRouter.get('/extract-emails-for-long-unused', extract_emails_for_long_unused);
-
-// Settings
-apiRouter.get('/settings', get_settings);
-apiRouter.post('/setting', update_setting);
 
 // Allowed emails
 apiRouter.get('/allowed-emails', get_allowed_emails);

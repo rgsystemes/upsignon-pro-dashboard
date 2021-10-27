@@ -39,12 +39,27 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateGroup = async (groupId, newName) => {
+  updateGroupName = async (groupId, newName) => {
     try {
       this.props.setIsLoading(true);
       await adminFetchTemplate('/superadmin-api/update-group', 'POST', {
         name: newName,
         id: groupId,
+      });
+      await this.fetchGroups();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+  toggleGroupSetting = async (groupId, key, value) => {
+    try {
+      this.props.setIsLoading(true);
+      await adminFetchTemplate('/superadmin-api/update-setting', 'POST', {
+        key,
+        value,
+        groupId: groupId,
       });
       await this.fetchGroups();
     } catch (e) {
@@ -134,6 +149,7 @@ class Groups extends React.Component {
               <tr>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
+                <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
@@ -145,10 +161,30 @@ class Groups extends React.Component {
                       value={group.name}
                       onChange={(newVal) => {
                         if (!newVal) return;
-                        this.updateGroup(group.id, newVal);
+                        this.updateGroupName(group.id, newVal);
                       }}
                     />
                     <td>{group.nb_users}</td>
+                    <td>
+                      {group.disable_manual_pwd_reset_validation === true && (
+                        <span className="unrecommendedParam">{i18n.t('no')}</span>
+                      )}
+                      {group.disable_manual_pwd_reset_validation === false && (
+                        <span className="recommendedParam">{i18n.t('yes')}</span>
+                      )}
+                      <span
+                        className="action"
+                        onClick={() => {
+                          this.toggleGroupSetting(
+                            group.id,
+                            'DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN',
+                            !group.disable_manual_pwd_reset_validation,
+                          );
+                        }}
+                      >
+                        {i18n.t('settings_change')}
+                      </span>
+                    </td>
                     <td>
                       <div
                         className="action"

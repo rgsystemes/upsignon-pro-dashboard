@@ -2,6 +2,24 @@
   color: rgb(44, 83, 132);
 }
 
+.recommendedParam {
+  margin: 0 5px;
+  color: white;
+  background-color: green;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+}
+
+.unrecommendedParam {
+  margin: 0 5px;
+  color: white;
+  background-color: orange;
+  border-radius: 3px;
+  padding: 3px 6px;
+  text-transform: uppercase;
+}
+
 .button {
   display: inline-block;
   border: 1px solid rgb(44, 83, 132);

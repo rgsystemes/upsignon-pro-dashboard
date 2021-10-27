@@ -75,8 +75,6 @@ const translations = {
   password_reset_request_grant_warning:
     "Assurez-vous que la requête a bien été faite par l'utilisateur lui-même.\n\nAccorder ?",
   settings_security: 'Paramètres de sécurité',
-  settings_reset_pwd_admin_check:
-    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur :",
   settings_change: 'Changer',
   settings_allowed_emails: 'Adresses email autorisées',
   settings_allowed_emails_pattern:
@@ -172,6 +170,8 @@ const translations = {
   sasettings_groups: 'Groupes',
   sasettings_group_name: "Nom qui sera affiché dans l'application",
   sasettings_nb_users: "Nombre d'utilisateurs",
+  sasettings_reset_pwd_admin_check:
+    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur :",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de groupe n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

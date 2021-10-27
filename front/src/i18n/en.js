@@ -74,8 +74,6 @@ const translations = {
   password_reset_request_grant_warning:
     'Please make sure the request was made by the user himself.\n\nGrant?',
   settings_security: 'Security settings',
-  settings_reset_pwd_admin_check:
-    'To reset his password, a user must obtain a validation from an administrator:',
   settings_change: 'Change',
   settings_allowed_emails: 'Authorized email addresses',
   settings_allowed_emails_pattern:
@@ -171,6 +169,8 @@ const translations = {
   sasettings_groups: 'Groups',
   sasettings_group_name: 'Name that will be displayed in the app',
   sasettings_nb_users: 'Number of users',
+  sasettings_reset_pwd_admin_check:
+    'To reset his password, a user must obtain a validation from an administrator',
   sasettings_group_name_change_warning:
     'Notice: group name changes only affect new devices for now.',
   sasettings_group_delete_warning:

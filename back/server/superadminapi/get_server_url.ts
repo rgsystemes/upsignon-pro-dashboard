@@ -1,7 +1,7 @@
 import { db } from '../helpers/connection';
 import { logError } from '../helpers/logger';
 
-export const get_settings = async (req: any, res: any): Promise<void> => {
+export const get_server_url = async (req: any, res: any): Promise<void> => {
   try {
     const settingsReq = await db.query('SELECT key, value FROM settings');
     const settingsRes: any = {};
