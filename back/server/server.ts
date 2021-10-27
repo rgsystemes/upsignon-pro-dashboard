@@ -13,6 +13,7 @@ import { loginRouter } from './login/loginRouter';
 import { get_available_groups } from './helpers/get_available_groups';
 import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
 import { suparadminApiRouter } from './superadminapi/superadminApiRouter';
+import { get_server_url } from './helpers/get_server_url';
 
 const app = express();
 
@@ -82,7 +83,10 @@ app.use((req, res, next) => {
 app.use('/login/', loginRouter);
 
 app.use('/', express.static('../front/build'));
+
+// ROUTES THAT ARE AVAILABLE TO ALL ADMINS
 app.get('/get_available_groups', get_available_groups);
+app.get('/server_url', get_server_url);
 
 // SUPERADMIN
 app.use('/superadmin/', (req, res, next) => {

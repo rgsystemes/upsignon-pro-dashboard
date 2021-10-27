@@ -154,6 +154,7 @@ const translations = {
   windows_app_download_link: 'Download of the application for Windows 10',
   to_unzip: 'add the .zip extension to unzip it',
   setup_link: 'Application setup link',
+  pro_server: 'UpSignOn PRO server',
   pro_server_url: 'URL of your UpSignOn PRO server',
   openid_unfold: 'Special cas of OpenId (optionnal and not recommended)',
   openid_authority: 'OpenId server URL',
@@ -163,8 +164,6 @@ const translations = {
   pro_server_status_running: 'The UpSignOn PRO server is running',
   pro_server_status_stopped:
     'The UpSignOn PRO server is stopped (or maybe misconfigured in the settings page)',
-  pro_server_unknown_status:
-    'To display the status of the UpSignOn PRO server here, configure its URL in the settings page.',
   sasettings_superadmins: 'Super-Administrators',
   sasettings_groups: 'Groups',
   sasettings_group_name: 'Name that will be displayed in the app',

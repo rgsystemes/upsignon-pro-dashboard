@@ -3,7 +3,6 @@ import { i18n } from '../../i18n/i18n';
 import { Admins } from './Admins';
 import { AllowedEmails } from './AllowedEmails';
 import { ProSetupLink } from './ProSetupLink';
-import './settings.css';
 import { Urls } from './Urls';
 
 // Props setIsLoading

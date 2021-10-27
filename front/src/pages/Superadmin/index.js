@@ -3,6 +3,7 @@ import { i18n } from '../../i18n/i18n';
 import { SuperAdmins } from './SuperAdmins';
 import './superadmin.css';
 import { Groups } from './Groups';
+import { ProServerUrl } from './ProServerUrl';
 
 // Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
@@ -54,6 +55,7 @@ class Superadmin extends React.Component {
             {` (${i18n.t('to_unzip')})`}
           </li>
         </ul>
+        <ProServerUrl />
         <SuperAdmins setIsLoading={this.props.setIsLoading} />
         <Groups
           setIsLoading={this.props.setIsLoading}
