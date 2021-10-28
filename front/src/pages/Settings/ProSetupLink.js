@@ -1,5 +1,6 @@
 import React from 'react';
 import { adminFetchTemplate } from '../../helpers/fetchTemplate';
+import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 
 export class ProSetupLink extends React.Component {
@@ -34,13 +35,11 @@ export class ProSetupLink extends React.Component {
     const { url, oidcAuthority, oidcClientId, oidcClientIdForAddons } =
       this.state.proServerUrlConfig;
 
-    let link = `https://upsignon.eu/pro-setup?url=${encodeURIComponent(url.trim())}`;
+    let link = `https://upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
     if (oidcAuthority && oidcClientId) {
-      link += `&oidcAuthority=${encodeURIComponent(
-        oidcAuthority.trim(),
-      )}&oidcClientId=${oidcClientId.trim()}`;
+      link += `&oidcAuthority=${encodeURIComponent(oidcAuthority)}&oidcClientId=${oidcClientId}`;
       if (oidcClientIdForAddons) {
-        link += `&oidcClientIdForAddons=${oidcClientIdForAddons.trim()}`;
+        link += `&oidcClientIdForAddons=${oidcClientIdForAddons}`;
       }
     }
     this.proSetupLink = link;

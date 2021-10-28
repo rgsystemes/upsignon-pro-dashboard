@@ -10,7 +10,7 @@ import { SharedAccounts } from './pages/SharedAccounts';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
-import { baseFrontUrl, group } from './helpers/env';
+import { baseFrontUrl, groupId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 
 class App extends React.Component {
@@ -68,15 +68,15 @@ class App extends React.Component {
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
     let currentPage = 'overview';
 
-    if (path.startsWith(`/${group}/users`)) {
+    if (path.startsWith(`/${groupId}/users`)) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith(`/${group}/shared_devices`)) {
+    } else if (path.startsWith(`/${groupId}/shared_devices`)) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
-    } else if (path.startsWith(`/${group}/shared_accounts`)) {
+    } else if (path.startsWith(`/${groupId}/shared_accounts`)) {
       pageContent = (
         <SharedAccounts
           setIsLoading={this.setIsLoading}
@@ -84,7 +84,7 @@ class App extends React.Component {
         />
       );
       currentPage = 'shared_accounts';
-    } else if (path.startsWith(`/${group}/settings`)) {
+    } else if (path.startsWith(`/${groupId}/settings`)) {
       pageContent = <Settings setIsLoading={this.setIsLoading} />;
       currentPage = 'settings';
     } else if (path.startsWith('/superadmin')) {

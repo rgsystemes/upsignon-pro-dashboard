@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseFrontUrl, group } from '../helpers/env';
+import { baseFrontUrl, groupId } from '../helpers/env';
 import { i18n } from '../i18n/i18n';
 
 // Props: groups, isSuperadmin, isSuperadminPage
@@ -27,7 +27,7 @@ class GroupChooser extends React.Component {
           </div>
         ) : (
           <div className="currentGroup" onClick={this.toggleGroupList}>
-            {this.props.groups.find((g) => g.id == group)?.name}
+            {this.props.groups.find((g) => g.id == groupId)?.name}
           </div>
         )}
         {this.state.showList && (

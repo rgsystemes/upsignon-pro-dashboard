@@ -7,7 +7,7 @@ let baseServerUrl =
 baseFrontUrl.replace(/\/$/, '');
 baseServerUrl.replace(/\/$/, '');
 
-const group = window.location.href.replace(baseFrontUrl, '').split('/')[1];
-const frontUrl = baseFrontUrl + '/' + group;
-const serverUrl = baseServerUrl + '/' + group;
-export { baseFrontUrl, frontUrl, serverUrl, group, baseServerUrl };
+const groupId = window.location.href.replace(baseFrontUrl, '').split('/')[1];
+const frontUrl = baseFrontUrl + '/' + groupId;
+const serverUrl = baseServerUrl + '/' + groupId;
+export { baseFrontUrl, frontUrl, serverUrl, groupId, baseServerUrl };
