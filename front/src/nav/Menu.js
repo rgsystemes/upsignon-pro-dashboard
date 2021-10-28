@@ -2,7 +2,7 @@ import React from 'react';
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
-import { frontUrl } from '../helpers/env';
+import { frontUrl, baseFrontUrl } from '../helpers/env';
 import { GroupChooser } from './GroupChooser';
 
 // PROPS pages, groups, isSuperadmin, isSuperadminPage
@@ -48,7 +48,7 @@ function Menu(props) {
               await baseUrlFetch('/disconnect', 'POST', null);
             } catch (e) {
             } finally {
-              window.location.href = frontUrl;
+              window.location.href = baseFrontUrl + '/login.html';
             }
           }}
         >
