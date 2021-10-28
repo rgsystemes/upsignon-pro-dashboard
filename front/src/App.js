@@ -43,6 +43,16 @@ class App extends React.Component {
   fetchGroups = async () => {
     try {
       const groupsRes = await baseUrlFetch('/get_available_groups', 'GET', null);
+      const isGroupInList = groupsRes.groups.some((g) => g.id == groupId);
+      if (groupsRes.isSuperadmin) {
+        if (!groupId || (groupId !== 'superadmin' && !isGroupInList)) {
+          window.location.href = baseFrontUrl + '/superadmin/';
+        }
+      } else {
+        if (!groupId || !isGroupInList) {
+          window.location.href = baseFrontUrl + '/' + groupsRes.groups[0].id + '/';
+        }
+      }
       this.setState({
         groups: groupsRes.groups,
         isSuperadmin: groupsRes.isSuperadmin,

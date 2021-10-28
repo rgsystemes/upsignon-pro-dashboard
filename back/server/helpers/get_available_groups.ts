@@ -13,8 +13,8 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
       if (!userGroup.is_superadmin) {
         return res.status(200).send({ groups: [userGroup], isSuperadmin: false });
       }
+      req.session.isSuperadmin = true;
     }
-
     // superadmin case
     const allGroups = await db.query('SELECT id, name FROM groups');
     res.status(200).send({ groups: allGroups.rows, isSuperadmin: true });

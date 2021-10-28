@@ -109,7 +109,7 @@ app.use('/:groupId/api/', async (req, res, next) => {
   if (isGroupAuthorized) {
     return apiRouter(req, res, next);
   } else {
-    return redirectToDefaultPath(req, res);
+    return res.status(401).end();
   }
 });
 

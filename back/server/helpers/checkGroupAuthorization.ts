@@ -10,6 +10,12 @@ export const checkGroupAuthorization = async (req: any, res: any): Promise<boole
       return true;
     }
 
+    if (req.session?.isSuperadmin && groupId === 'superadmin') {
+      // @ts-ignore
+      req.session?.groupId = groupId;
+      return true;
+    }
+
     if (req.session?.isSuperadmin) {
       const groupExistsRes = await db.query('SELECT id FROM groups WHERE id=$1', [groupId]);
       if (groupExistsRes.rowCount === 0) return false;
