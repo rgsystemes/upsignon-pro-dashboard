@@ -1,6 +1,5 @@
 const translations = {
-  suggestion:
-    "N'hésitez pas à nous envoyer toutes vos remarques et suggestions à contact@upsignon.eu.",
+  suggestion: "N'hésitez pas à nous envoyer toutes vos remarques et suggestions à",
   yes: 'OUI',
   no: 'NON',
   edit: 'Modifier',

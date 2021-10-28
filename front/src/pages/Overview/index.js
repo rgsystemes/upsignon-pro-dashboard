@@ -11,7 +11,9 @@ class Overview extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_overview')}</h1>
-        <p>{i18n.t('suggestion')}</p>
+        <p>
+          {i18n.t('suggestion')} <a href="mailto:contact@upsignon.eu">contact@upsignon.eu</a>
+        </p>
         <PendingPasswordResetRequests setIsLoading={this.props.setIsLoading} />
         <SecurityChart />
         <UsageChart />
