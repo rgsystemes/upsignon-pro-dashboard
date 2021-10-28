@@ -6,8 +6,7 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
     const newEmail = req.body.newEmail;
     if (typeof newEmail !== 'string') return res.status(401).end();
 
-    const groupId = req.session.groupId;
-    await inviteNewAdmin(newEmail, groupId);
+    await inviteNewAdmin(newEmail, req.body.groupId);
 
     res.status(200).end();
   } catch (e) {

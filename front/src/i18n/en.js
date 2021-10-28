@@ -82,10 +82,10 @@ const translations = {
   settings_allowed_emails_new: 'New email address pattern',
   settings_allowed_emails_delete_warning:
     'This will not delete the safes for users matching this email address template.\n\nDelete ?',
-  settings_admins: 'Administrators of this group',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Added on',
-  settings_admin_delete_warning: 'Are you sure you want to revoke this admin?',
+  settings_admin_group: 'Group',
+  sasettings_admin_delete_warning: 'Are you sure you want to revoke this admin?',
   settings_urls: 'Prefilled websites',
   settings_urls_explanation:
     'The websites you enter here will be offered to users to simplify the registration of their passwords.',
@@ -163,12 +163,12 @@ const translations = {
   link_to_communicate: 'Link to communicate',
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
-  sasettings_superadmins: 'Super-Administrators',
+  sasettings_superadmins: 'Administrators',
   sasettings_groups: 'Groups',
   sasettings_group_name: 'Name that will be displayed in the app',
   sasettings_nb_users: 'Number of users',
   sasettings_reset_pwd_admin_check:
-    'To reset his password, a user must obtain a validation from an administrator',
+    'To reset his password, a user must obtain a validation from an administrator of his group',
   sasettings_group_name_change_warning:
     'Notice: group name changes only affect new devices for now.',
   sasettings_group_delete_warning:

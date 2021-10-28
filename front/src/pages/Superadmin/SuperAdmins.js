@@ -2,16 +2,17 @@ import React from 'react';
 import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
-// Props : setIsLoading
+// Props : setIsLoading, groups
 class SuperAdmins extends React.Component {
   state = {
     superAdmins: [],
+    newAdminGroupId: null,
   };
   newInputRef = null;
 
   fetchSuperAdmins = async () => {
     try {
-      const adminEmails = await adminFetchTemplate('/superadmin-api/super-admins', 'GET', null);
+      const adminEmails = await adminFetchTemplate('/superadmin-api/admins', 'GET', null);
       this.setState({
         superAdmins: adminEmails,
       });
@@ -29,9 +30,24 @@ class SuperAdmins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await adminFetchTemplate('/superadmin-api/insert-super-admin', 'POST', { newEmail });
+      await adminFetchTemplate('/superadmin-api/insert-admin', 'POST', {
+        newEmail,
+        groupId: this.state.newAdminGroupId,
+      });
       await this.fetchSuperAdmins();
       this.newInputRef.value = null;
+      this.setState({ newAdminGroupId: null });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+  updateAdminGroup = async (adminId, groupId) => {
+    try {
+      this.props.setIsLoading(true);
+      await adminFetchTemplate('/superadmin-api/update-admin-group', 'POST', { adminId, groupId });
+      await this.fetchSuperAdmins();
     } catch (e) {
       console.error(e);
     } finally {
@@ -39,11 +55,11 @@ class SuperAdmins extends React.Component {
     }
   };
   deleteAdmin = async (id) => {
-    const confirmation = window.confirm(i18n.t('settings_admin_delete_warning'));
+    const confirmation = window.confirm(i18n.t('sasettings_admin_delete_warning'));
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await adminFetchTemplate(`/superadmin-api/delete-super-admin/${id}`, 'POST', null);
+        await adminFetchTemplate(`/superadmin-api/delete-admin/${id}`, 'POST', null);
         await this.fetchSuperAdmins();
       } catch (e) {
         console.error(e);
@@ -72,7 +88,14 @@ class SuperAdmins extends React.Component {
               this.newInputRef = r;
             }}
             placeholder="admin.email@domain.com"
-            style={{ width: 300 }}
+            style={{ width: 300, marginRight: 10 }}
+          />
+          <GroupSelect
+            groups={this.props.groups}
+            currentGroupId={this.state.newAdminGroupId}
+            onChange={(newGroupId) => {
+              this.setState({ newAdminGroupId: newGroupId });
+            }}
           />
           <div className="action" style={{ marginLeft: 10 }} onClick={this.insertSuperAdmin}>
             {i18n.t('add')}
@@ -84,6 +107,7 @@ class SuperAdmins extends React.Component {
               <tr>
                 <th>{i18n.t('settings_admin_email')}</th>
                 <th>{i18n.t('settings_admin_created_at')}</th>
+                <th>{i18n.t('settings_admin_group')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
@@ -93,6 +117,15 @@ class SuperAdmins extends React.Component {
                   <tr key={admin.id}>
                     <td>{admin.email}</td>
                     <td>{new Date(admin.created_at).toLocaleDateString()}</td>
+                    <td>
+                      <GroupSelect
+                        groups={this.props.groups}
+                        currentGroupId={admin.group_id}
+                        onChange={(newGroupId) => {
+                          this.updateAdminGroup(admin.id, newGroupId);
+                        }}
+                      />
+                    </td>
                     <td>
                       <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
                         {i18n.t('delete')}
@@ -110,3 +143,24 @@ class SuperAdmins extends React.Component {
 }
 
 export { SuperAdmins };
+
+const GroupSelect = (props) => {
+  const { groups, currentGroupId, onChange } = props;
+  return (
+    <select
+      value={currentGroupId || ''}
+      onChange={(v) => {
+        onChange(v.target.value);
+      }}
+    >
+      <option value="">{i18n.t('menu_superadmin')}</option>
+      {groups?.map((g) => {
+        return (
+          <option key={g.id} value={g.id}>
+            {g.name}
+          </option>
+        );
+      })}
+    </select>
+  );
+};

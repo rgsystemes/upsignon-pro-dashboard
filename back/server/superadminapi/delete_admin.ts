@@ -7,7 +7,7 @@ export const delete_admin = async (req: any, res: any): Promise<void> => {
     const deletedAdmin = await db.query(`DELETE FROM admins WHERE id=$1 RETURNING email`, [
       adminId,
     ]);
-    // DISCONNECT this user or these users
+    // DISCONNECT
     deletedAdmin.rows.forEach(async (a) => {
       await db.query(`DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1`, [
         a.email,

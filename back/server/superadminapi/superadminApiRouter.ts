@@ -1,13 +1,14 @@
 import express from 'express';
-import { delete_admin } from '../api/delete_admin';
+import { delete_admin } from './delete_admin';
 import { checkIsSuperAdmin } from '../helpers/checkIsSuperAdmin';
 import { delete_group } from './delete_group';
 import { get_groups } from './get_groups';
 import { update_group } from './update_group';
-import { get_superadmins } from './get_superadmins';
+import { get_admins } from './get_admins';
 import { insert_group } from './insert_group';
-import { insert_super_admin } from './insert_super_admin';
+import { insert_admin } from './insert_admin';
 import { update_setting } from './update_setting';
+import { update_admin_group } from './update_admin_group';
 
 export const suparadminApiRouter = express.Router();
 
@@ -19,10 +20,11 @@ suparadminApiRouter.use(async (req, res, next) => {
   next();
 });
 
-// SUPER ADMIN USERS
-suparadminApiRouter.get('/super-admins', get_superadmins);
-suparadminApiRouter.post('/insert-super-admin', insert_super_admin);
-suparadminApiRouter.post('/delete-super-admin/:id', delete_admin);
+// ADMIN USERS
+suparadminApiRouter.get('/admins', get_admins);
+suparadminApiRouter.post('/insert-admin', insert_admin);
+suparadminApiRouter.post('/delete-admin/:id', delete_admin);
+suparadminApiRouter.post('/update-admin-group', update_admin_group);
 
 // GROUPS
 suparadminApiRouter.get('/groups', get_groups);

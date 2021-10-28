@@ -4,19 +4,36 @@ import { SuperAdmins } from './SuperAdmins';
 import './superadmin.css';
 import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
+import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 
 // Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
+  state = {
+    groups: [],
+  };
+  fetchGroups = async () => {
+    try {
+      const groups = await adminFetchTemplate('/superadmin-api/groups', 'GET', null);
+      this.setState({ groups });
+      this.props.updateMenuGroups(groups);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  componentDidMount() {
+    this.fetchGroups();
+  }
   render() {
     return (
       <div className="page">
         <h1>{i18n.t('menu_superadmin')}</h1>
         <ProServerUrl />
-        <SuperAdmins setIsLoading={this.props.setIsLoading} />
         <Groups
           setIsLoading={this.props.setIsLoading}
-          updateMenuGroups={this.props.updateMenuGroups}
+          groups={this.state.groups}
+          fetchGroups={this.fetchGroups}
         />
+        <SuperAdmins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
         <h2>{i18n.t('useful_links')}</h2>
         <ul>
           <li>

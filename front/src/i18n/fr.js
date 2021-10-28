@@ -83,10 +83,10 @@ const translations = {
   settings_allowed_emails_new: "Nouveau modèle d'adresse email",
   settings_allowed_emails_delete_warning:
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
-  settings_admins: 'Administrateurs de ce groupe',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Ajouté le',
-  settings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
+  settings_admin_group: 'Groupe',
+  sasettings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
   settings_urls: 'Sites web pré-renseignés',
   settings_urls_explanation:
     "Les sites que vous renseignez ici seront proposés aux utilisateurs pour simplifier l'enregistrement de leurs mots de passe.",
@@ -164,12 +164,12 @@ const translations = {
   link_to_communicate: 'Lien à communiquer',
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
-  sasettings_superadmins: 'Super-Administrateurs',
+  sasettings_superadmins: 'Administrateurs',
   sasettings_groups: 'Groupes',
   sasettings_group_name: "Nom qui sera affiché dans l'application",
   sasettings_nb_users: "Nombre d'utilisateurs",
   sasettings_reset_pwd_admin_check:
-    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur :",
+    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de son groupe",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de groupe n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

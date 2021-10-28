@@ -3,23 +3,13 @@ import { EditableCell } from '../../helpers/EditableCell';
 import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
-// Props : setIsLoading, updateMenuGroups
+// Props : setIsLoading, groups, fetchGroups
 class Groups extends React.Component {
   state = {
-    groups: [],
     groupToDeleteId: null,
   };
   newInputRef = null;
 
-  fetchGroups = async () => {
-    try {
-      const groups = await adminFetchTemplate('/superadmin-api/groups', 'GET', null);
-      this.setState({ groups });
-      this.props.updateMenuGroups(groups);
-    } catch (e) {
-      console.error(e);
-    }
-  };
   insertGroup = async () => {
     try {
       this.props.setIsLoading(true);
@@ -31,7 +21,7 @@ class Groups extends React.Component {
         this.newInputRef.style.borderColor = null;
       }
       await adminFetchTemplate('/superadmin-api/insert-group', 'POST', { name: newGroup });
-      await this.fetchGroups();
+      await this.props.fetchGroups();
       this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
@@ -46,7 +36,7 @@ class Groups extends React.Component {
         name: newName,
         id: groupId,
       });
-      await this.fetchGroups();
+      await this.props.fetchGroups();
     } catch (e) {
       console.error(e);
     } finally {
@@ -61,7 +51,7 @@ class Groups extends React.Component {
         value,
         groupId: groupId,
       });
-      await this.fetchGroups();
+      await this.props.fetchGroups();
     } catch (e) {
       console.error(e);
     } finally {
@@ -72,18 +62,15 @@ class Groups extends React.Component {
     try {
       this.props.setIsLoading(true);
       await adminFetchTemplate(`/superadmin-api/delete-group/${id}`, 'POST', null);
-      await this.fetchGroups();
+      await this.props.fetchGroups();
     } catch (e) {
       console.error(e);
     } finally {
       this.props.setIsLoading(false);
     }
   };
-  componentDidMount() {
-    this.fetchGroups();
-  }
   render() {
-    const groupToDelete = this.state.groups.find((g) => g.id === this.state.groupToDeleteId);
+    const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
       return (
         <div style={{ marginTop: 50 }}>
@@ -143,7 +130,7 @@ class Groups extends React.Component {
           </div>
         </div>
         <div>{i18n.t('sasettings_group_name_change_warning')}</div>
-        {this.state.groups.length > 0 && (
+        {this.props.groups.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -154,7 +141,7 @@ class Groups extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.groups.map((group) => {
+              {this.props.groups.map((group) => {
                 return (
                   <tr key={group.id}>
                     <EditableCell
