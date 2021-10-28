@@ -1,11 +1,11 @@
-import { serverUrl, baseServerUrl } from './env';
+import { groupServerUrl, baseServerUrl } from './env';
 
 export async function fetchTemplate(route, method, body, options) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(`${options?.useBaseUrl ? baseServerUrl : serverUrl}${route}`, {
+  const res = await fetch(`${options?.useBaseUrl ? baseServerUrl : groupServerUrl}${route}`, {
     method,
     body: bodyText,
     cache: 'no-store',
