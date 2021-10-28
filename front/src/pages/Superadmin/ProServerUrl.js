@@ -34,7 +34,8 @@ export class ProServerUrl extends React.Component {
 
   submitNewProServerUrl = async () => {
     try {
-      const newUrl = this.state.proServerUrlConfig?.url.trim();
+      let newUrl = this.state.proServerUrlConfig?.url.trim();
+      newUrl = newUrl.replace(/\/$/, '');
       if (this.urlInputRef) {
         if (!newUrl) {
           this.urlInputRef.style.borderColor = 'red';
@@ -43,17 +44,19 @@ export class ProServerUrl extends React.Component {
           this.urlInputRef.style.borderColor = null;
         }
       }
+      if (!newUrl) return;
+      const newStateUrl = {
+        url: newUrl,
+        oidcAuthority: this.state.proServerUrlConfig.oidcAuthority?.trim(),
+        oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
+        oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
+      };
       await adminFetchTemplate('/superadmin-api/update-setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
-        value: JSON.stringify({
-          url: newUrl,
-          oidcAuthority: this.state.proServerUrlConfig.oidcAuthority?.trim(),
-          oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
-          oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
-        }),
+        value: JSON.stringify(newStateUrl),
       });
       this.serverStatusUrl = newUrl;
-      this.setState({ isEditing: false, showOpenId: false });
+      this.setState({ isEditing: false, showOpenId: false, proServerUrlConfig: newStateUrl });
     } catch (e) {
       console.error(e);
     }
