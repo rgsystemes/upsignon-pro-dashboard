@@ -1,6 +1,6 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
-import { SuperAdmins } from './SuperAdmins';
+import { Admins } from './Admins';
 import './superadmin.css';
 import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
@@ -33,7 +33,7 @@ class Superadmin extends React.Component {
           groups={this.state.groups}
           fetchGroups={this.fetchGroups}
         />
-        <SuperAdmins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
+        <Admins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
         <h2>{i18n.t('useful_links')}</h2>
         <ul>
           <li>

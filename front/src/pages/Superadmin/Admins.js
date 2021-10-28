@@ -3,18 +3,18 @@ import { adminFetchTemplate } from '../../helpers/fetchTemplate';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading, groups
-class SuperAdmins extends React.Component {
+class Admins extends React.Component {
   state = {
-    superAdmins: [],
+    admins: [],
     newAdminGroupId: null,
   };
   newInputRef = null;
 
-  fetchSuperAdmins = async () => {
+  fetchAdmins = async () => {
     try {
       const adminEmails = await adminFetchTemplate('/superadmin-api/admins', 'GET', null);
       this.setState({
-        superAdmins: adminEmails,
+        admins: adminEmails,
       });
     } catch (e) {
       console.error(e);
@@ -34,7 +34,7 @@ class SuperAdmins extends React.Component {
         newEmail,
         groupId: this.state.newAdminGroupId,
       });
-      await this.fetchSuperAdmins();
+      await this.fetchAdmins();
       this.newInputRef.value = null;
       this.setState({ newAdminGroupId: null });
     } catch (e) {
@@ -47,7 +47,7 @@ class SuperAdmins extends React.Component {
     try {
       this.props.setIsLoading(true);
       await adminFetchTemplate('/superadmin-api/update-admin-group', 'POST', { adminId, groupId });
-      await this.fetchSuperAdmins();
+      await this.fetchAdmins();
     } catch (e) {
       console.error(e);
     } finally {
@@ -60,7 +60,7 @@ class SuperAdmins extends React.Component {
       try {
         this.props.setIsLoading(true);
         await adminFetchTemplate(`/superadmin-api/delete-admin/${id}`, 'POST', null);
-        await this.fetchSuperAdmins();
+        await this.fetchAdmins();
       } catch (e) {
         console.error(e);
       } finally {
@@ -69,7 +69,7 @@ class SuperAdmins extends React.Component {
     }
   };
   componentDidMount() {
-    this.fetchSuperAdmins();
+    this.fetchAdmins();
   }
   render() {
     return (
@@ -101,7 +101,7 @@ class SuperAdmins extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-        {this.state.superAdmins.length > 0 && (
+        {this.state.admins.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -112,7 +112,7 @@ class SuperAdmins extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.superAdmins.map((admin) => {
+              {this.state.admins.map((admin) => {
                 return (
                   <tr key={admin.id}>
                     <td>{admin.email}</td>
@@ -142,7 +142,7 @@ class SuperAdmins extends React.Component {
   }
 }
 
-export { SuperAdmins };
+export { Admins };
 
 const GroupSelect = (props) => {
   const { groups, currentGroupId, onChange } = props;
