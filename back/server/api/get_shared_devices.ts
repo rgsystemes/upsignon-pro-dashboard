@@ -3,7 +3,8 @@ import { logError } from '../helpers/logger';
 
 export const get_shared_devices = async (req: any, res: any): Promise<void> => {
   try {
-    const dbRes = await db.query(`
+    const dbRes = await db.query(
+      `
     SELECT
       ud.device_unique_id AS unique_id,
       ud.device_name AS name,
@@ -16,8 +17,11 @@ export const get_shared_devices = async (req: any, res: any): Promise<void> => {
     FROM user_devices AS ud
       INNER JOIN users AS u ON u.id=ud.user_id
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
+    AND ud.group_id=$1
     ORDER BY ud.device_unique_id
-  `);
+  `,
+      [req.session.groupId],
+    );
     res.status(200).send(dbRes.rows);
   } catch (e) {
     logError(e);

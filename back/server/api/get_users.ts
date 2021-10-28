@@ -26,7 +26,11 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     const limit = parseInt(req.query.limit, 10) || 50;
     if (pageOffset * limit >= userCount) pageOffset = 0;
 
-    const queryInputs: string[] = [limit.toString(), (pageOffset * limit).toString()];
+    const queryInputs: string[] = [
+      limit.toString(),
+      (pageOffset * limit).toString(),
+      req.session.groupId,
+    ];
     if (isSearching) {
       queryInputs.push(search + '%');
     }
@@ -49,7 +53,8 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_green  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_green,
       (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
     FROM users AS u
-    ${isSearching ? 'WHERE u.email LIKE $3' : ''}
+    WHERE u.group_id=$3
+    ${isSearching ? 'AND u.email LIKE $4' : ''}
     ORDER BY nb_accounts_with_duplicate_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC
     LIMIT $1
     OFFSET $2

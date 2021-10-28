@@ -16,12 +16,15 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       FROM shared_accounts AS sa
       LEFT JOIN shared_account_users AS sau ON sau.shared_account_id=sa.id
       LEFT JOIN users AS u ON sau.user_id=u.id
-      WHERE u.email LIKE $1`,
-        [search + '%'],
+      WHERE u.email LIKE $1
+      AND sa.group_id=$2`,
+        [search + '%', req.session.groupId],
       );
       sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     } else {
-      const countReq = await db.query('SELECT COUNT(id) FROM shared_accounts');
+      const countReq = await db.query('SELECT COUNT(id) FROM shared_accounts WHERE group_id=$1', [
+        req.session.groupId,
+      ]);
       sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     }
 
@@ -31,7 +34,11 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
     const limit = parseInt(req.query.limit, 10) || 50;
     if (pageOffset * limit >= sharedAccountsCount) pageOffset = 0;
 
-    const queryInputs: string[] = [limit.toString(), (pageOffset * limit).toString()];
+    const queryInputs: string[] = [
+      limit.toString(),
+      (pageOffset * limit).toString(),
+      req.session.groupId,
+    ];
     if (isSearching) {
       queryInputs.push(search + '%');
     }
@@ -57,15 +64,16 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
           ) AS users_agg
         ) AS users
       FROM shared_accounts AS sa
+      WHERE sa.group_id=$3
       ${
         isSearching
-          ? `WHERE
+          ? `AND
           (SELECT
             COUNT(sau2.id)
             FROM shared_account_users AS sau2
             LEFT JOIN users AS u2 ON sau2.user_id=u2.id
             WHERE
-              u2.email LIKE $3
+              u2.email LIKE $4
               AND sau2.shared_account_id=sa.id
           ) > 0`
           : ''

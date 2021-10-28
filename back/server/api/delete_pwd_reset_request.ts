@@ -4,7 +4,10 @@ import { logError } from '../helpers/logger';
 export const delete_pwd_reset_request = async (req: any, res: any): Promise<void> => {
   try {
     const requestId = req.params.requestId;
-    await db.query(`DELETE FROM password_reset_request WHERE id=$1`, [requestId]);
+    await db.query(`DELETE FROM password_reset_request WHERE id=$1 AND group_id=$2`, [
+      requestId,
+      req.session.groupId,
+    ]);
     res.status(200).end();
   } catch (e) {
     logError(e);

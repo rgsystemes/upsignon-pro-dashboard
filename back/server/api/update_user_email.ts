@@ -13,16 +13,17 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
     }
 
     // check that newEmail is not already in use
-    const checkRes = await db.query('SELECT id, email FROM users WHERE email = lower($1)', [
-      newEmail,
-    ]);
+    const checkRes = await db.query(
+      'SELECT id, email FROM users WHERE email = lower($1) AND group_id=$2',
+      [newEmail, req.session.groupId],
+    );
     if (checkRes.rowCount > 0) {
       return res.status(409).send({ status: 'EMAIL_ALREADY_EXISTS' });
     }
     // check that new email is not an older email of someone else
     const checkRes2 = await db.query(
-      'SELECT user_id FROM changed_emails WHERE old_email = lower($1) AND user_id != $2',
-      [newEmail, userId],
+      'SELECT user_id FROM changed_emails WHERE old_email = lower($1) AND user_id != $2 AND group_id=$3',
+      [newEmail, userId, req.session.groupId],
     );
     if (checkRes2.rowCount > 0) {
       return res.status(409).send({ status: 'EMAIL_ALREADY_EXISTED' });
@@ -32,18 +33,20 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
     await db.transaction(async (dbClient) => {
       // Start by cleaning any previous such change (case when admin is playing with the feature)
       // In most cases, this will do nothing
-      await dbClient.query('DELETE FROM changed_emails WHERE old_email=lower($1)', [oldEmail]);
+      await dbClient.query('DELETE FROM changed_emails WHERE old_email=lower($1) AND group_id=$2', [
+        oldEmail,
+        req.session.groupId,
+      ]);
       // Then insert the new changed Email
       await dbClient.query(
-        'INSERT INTO changed_emails(user_id, old_email, new_email) VALUES($1,lower($2),lower($3))',
-        [userId, oldEmail, newEmail],
+        'INSERT INTO changed_emails(user_id, old_email, new_email, group_id) VALUES($1,lower($2),lower($3), $4)',
+        [userId, oldEmail, newEmail, req.session.groupId],
       );
       // Then update the user current email
-      await dbClient.query('UPDATE users SET email=lower($1) WHERE id=$2 AND email=lower($3)', [
-        newEmail,
-        userId,
-        oldEmail,
-      ]);
+      await dbClient.query(
+        'UPDATE users SET email=lower($1) WHERE id=$2 AND email=lower($3) AND group_id=$4',
+        [newEmail, userId, oldEmail, req.session.groupId],
+      );
     });
 
     res.status(200).end();

@@ -3,7 +3,10 @@ import { logError } from '../helpers/logger';
 
 export const get_urls = async (req: any, res: any): Promise<void> => {
   try {
-    const dbRes = await db.query('SELECT * FROM url_list ORDER BY displayed_name');
+    const dbRes = await db.query(
+      'SELECT * FROM url_list WHERE group_id=$1 ORDER BY displayed_name',
+      [req.session.groupId],
+    );
     res.status(200).send(dbRes.rows);
   } catch (e) {
     logError(e);

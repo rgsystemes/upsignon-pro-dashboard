@@ -15,8 +15,10 @@ export const get_pending_password_reset_requests = async (req: any, res: any): P
     INNER JOIN user_devices AS ud ON reset.device_id=ud.id
     INNER JOIN users AS u ON ud.user_id=u.id
     WHERE reset.status='PENDING_ADMIN_CHECK'
+    AND reset.group_id=$1
     ORDER BY ud.created_at DESC
     `,
+      [req.session.groupId],
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
