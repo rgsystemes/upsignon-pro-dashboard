@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminFetchTemplate } from '../../helpers/fetchTemplate';
+import { baseUrlFetch } from '../../helpers/urlFetch';
 import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 
@@ -13,7 +13,7 @@ export class ProSetupLink extends React.Component {
   };
   fetchSetupUrlComponents = async () => {
     try {
-      const serverUrl = await adminFetchTemplate('/server_url', 'GET');
+      const serverUrl = await baseUrlFetch('/server_url', 'GET');
       if (serverUrl) {
         this.setState({
           proServerUrlConfig: serverUrl,

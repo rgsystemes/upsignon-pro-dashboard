@@ -10,7 +10,7 @@ import {
   Legend,
   Line,
 } from 'recharts';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -54,7 +54,7 @@ class SecurityChart extends React.Component {
   };
   fetchStats = async () => {
     try {
-      const stats = await fetchTemplate(
+      const stats = await groupUrlFetch(
         `/api/get-password-stats?start=${this.startDate.toISOString()}&end=${this.endDate.toISOString()}`,
         'GET',
         null,

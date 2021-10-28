@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 const namePlaceholder = 'Service';
@@ -18,7 +18,7 @@ class Urls extends React.Component {
 
   fetchUrls = async () => {
     try {
-      const urls = await fetchTemplate('/api/urls', 'GET', null);
+      const urls = await groupUrlFetch('/api/urls', 'GET', null);
       this.setState({ urls });
     } catch (e) {
       console.error(e);
@@ -27,7 +27,7 @@ class Urls extends React.Component {
   submitUrlEdition = async (id, valObject) => {
     try {
       this.props.setIsLoading(true);
-      await fetchTemplate('/api/update-url', 'POST', { id, ...valObject });
+      await groupUrlFetch('/api/update-url', 'POST', { id, ...valObject });
       await this.fetchUrls();
     } catch (e) {
       console.error(e);
@@ -47,7 +47,7 @@ class Urls extends React.Component {
       } else {
         this.nameInput.style.borderColor = null;
       }
-      await fetchTemplate('/api/insert-url', 'POST', {
+      await groupUrlFetch('/api/insert-url', 'POST', {
         displayedName,
         signinUrl,
         passwordChangeUrl,
@@ -67,7 +67,7 @@ class Urls extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-url/${id}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-url/${id}`, 'POST', null);
         await this.fetchUrls();
       } catch (e) {
         console.error(e);

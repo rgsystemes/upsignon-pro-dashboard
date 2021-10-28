@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
@@ -33,7 +33,7 @@ class SharedAccounts extends React.Component {
       const queryParams = this.getCurrentQueryParameters();
       const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
-      const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
+      const { sharedAccounts, sharedAccountsCount } = await groupUrlFetch(
         `/api/shared-accounts?pageIndex=${pageIndex}&limit=${limit}`,
         'GET',
         null,
@@ -54,7 +54,7 @@ class SharedAccounts extends React.Component {
   deleteSharedAccount = async (accountId) => {
     try {
       this.props.setIsLoading(true);
-      await fetchTemplate(`/api/delete-shared-account/${accountId}`, 'POST', null);
+      await groupUrlFetch(`/api/delete-shared-account/${accountId}`, 'POST', null);
       await this.getSharedAccounts();
     } catch (e) {
       console.error(e);
@@ -74,7 +74,7 @@ class SharedAccounts extends React.Component {
         const confirmation2 = window.confirm(i18n.t('shared_account_last_user_warning'));
         if (!confirmation2) return;
       }
-      await fetchTemplate(`/api/delete-shared-account-user/${sharedAccountUserId}`, 'POST', null);
+      await groupUrlFetch(`/api/delete-shared-account-user/${sharedAccountUserId}`, 'POST', null);
       await this.getSharedAccounts();
     } catch (e) {
       console.error(e);
@@ -92,7 +92,7 @@ class SharedAccounts extends React.Component {
   ) => {
     try {
       this.props.setIsLoading(true);
-      await fetchTemplate(`/api/update-shared-account-manager`, 'POST', {
+      await groupUrlFetch(`/api/update-shared-account-manager`, 'POST', {
         sharedAccountUserId,
         willBeManager,
       });
@@ -114,7 +114,7 @@ class SharedAccounts extends React.Component {
       this.props.setIsLoading(true);
       const limit = 50;
       const pageIndex = 1;
-      const { sharedAccounts, sharedAccountsCount } = await fetchTemplate(
+      const { sharedAccounts, sharedAccountsCount } = await groupUrlFetch(
         `/api/shared-accounts?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}`,
         'GET',
         null,

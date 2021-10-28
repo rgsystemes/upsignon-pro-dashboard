@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props setIsLoading
@@ -10,7 +10,7 @@ class PendingPasswordResetRequests extends React.Component {
   };
   fetchPendingPasswordResetRequests = async () => {
     try {
-      const res = await fetchTemplate('/api/get-pending-password-reset-requests', 'GET', null);
+      const res = await groupUrlFetch('/api/get-pending-password-reset-requests', 'GET', null);
       this.setState({
         pendingRequests: res,
       });
@@ -27,7 +27,7 @@ class PendingPasswordResetRequests extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPendingPasswordResetRequests();
       } catch (e) {
         console.error(e);
@@ -42,7 +42,7 @@ class PendingPasswordResetRequests extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPendingPasswordResetRequests();
       } catch (e) {
         console.error(e);

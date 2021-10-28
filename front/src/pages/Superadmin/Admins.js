@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminFetchTemplate } from '../../helpers/fetchTemplate';
+import { baseUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading, groups
@@ -12,7 +12,7 @@ class Admins extends React.Component {
 
   fetchAdmins = async () => {
     try {
-      const adminEmails = await adminFetchTemplate('/superadmin-api/admins', 'GET', null);
+      const adminEmails = await baseUrlFetch('/superadmin-api/admins', 'GET', null);
       this.setState({
         admins: adminEmails,
       });
@@ -30,7 +30,7 @@ class Admins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await adminFetchTemplate('/superadmin-api/insert-admin', 'POST', {
+      await baseUrlFetch('/superadmin-api/insert-admin', 'POST', {
         newEmail,
         groupId: this.state.newAdminGroupId,
       });
@@ -46,7 +46,7 @@ class Admins extends React.Component {
   updateAdminGroup = async (adminId, groupId) => {
     try {
       this.props.setIsLoading(true);
-      await adminFetchTemplate('/superadmin-api/update-admin-group', 'POST', { adminId, groupId });
+      await baseUrlFetch('/superadmin-api/update-admin-group', 'POST', { adminId, groupId });
       await this.fetchAdmins();
     } catch (e) {
       console.error(e);
@@ -59,7 +59,7 @@ class Admins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await adminFetchTemplate(`/superadmin-api/delete-admin/${id}`, 'POST', null);
+        await baseUrlFetch(`/superadmin-api/delete-admin/${id}`, 'POST', null);
         await this.fetchAdmins();
       } catch (e) {
         console.error(e);

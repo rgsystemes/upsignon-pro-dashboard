@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Extracts.css';
 import { groupServerUrl } from '../../helpers/env';
@@ -28,7 +28,7 @@ class Extracts extends React.Component {
       const requests = [];
       if (this.state.extractorDuplicateSelect) {
         requests.push(
-          fetchTemplate(
+          groupUrlFetch(
             `/api/extract-emails-for-duplicate-passwords?minDuplicates=${this.state.extractorDuplicateMin}`,
             'GET',
             null,
@@ -37,7 +37,7 @@ class Extracts extends React.Component {
       }
       if (this.state.extractorWeakSelect) {
         requests.push(
-          fetchTemplate(
+          groupUrlFetch(
             `/api/extract-emails-for-weak-passwords?minWeak=${this.state.extractorWeakMin}`,
             'GET',
             null,
@@ -46,7 +46,7 @@ class Extracts extends React.Component {
       }
       if (this.state.extractorMediumSelect) {
         requests.push(
-          fetchTemplate(
+          groupUrlFetch(
             `/api/extract-emails-for-medium-passwords?minMedium=${this.state.extractorMediumMin}`,
             'GET',
             null,
@@ -55,7 +55,7 @@ class Extracts extends React.Component {
       }
       if (this.state.extractorLongUnusedSelect) {
         requests.push(
-          fetchTemplate(
+          groupUrlFetch(
             `/api/extract-emails-for-long-unused?unusedDays=${this.state.extractorUnusedDaysMin}`,
             'GET',
             null,
@@ -63,7 +63,7 @@ class Extracts extends React.Component {
         );
       }
       if (this.state.extractorSharingDeviceSelect) {
-        requests.push(fetchTemplate('/api/extract-emails-for-shared-device', 'GET', null));
+        requests.push(groupUrlFetch('/api/extract-emails-for-shared-device', 'GET', null));
       }
       const emails = await Promise.all(requests);
       const uniqueEmails = [];

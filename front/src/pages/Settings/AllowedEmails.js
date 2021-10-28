@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading
@@ -14,7 +14,7 @@ class AllowedEmails extends React.Component {
 
   fetchAllowedEmails = async () => {
     try {
-      const emails = await fetchTemplate('/api/allowed-emails', 'GET', null);
+      const emails = await groupUrlFetch('/api/allowed-emails', 'GET', null);
       this.setState({
         allowedEmails: emails,
       });
@@ -26,7 +26,7 @@ class AllowedEmails extends React.Component {
     if (this.state.updatedPattern !== null) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate('/api/update-allowed-email', 'POST', {
+        await groupUrlFetch('/api/update-allowed-email', 'POST', {
           allowedEmailId: this.state.editingEmailId,
           updatedPattern: this.state.updatedPattern,
         });
@@ -49,7 +49,7 @@ class AllowedEmails extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await fetchTemplate('/api/insert-allowed-email', 'POST', { newPattern });
+      await groupUrlFetch('/api/insert-allowed-email', 'POST', { newPattern });
       await this.fetchAllowedEmails();
       this.newInputRef.value = null;
     } catch (e) {
@@ -63,7 +63,7 @@ class AllowedEmails extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-allowed-email/${id}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-allowed-email/${id}`, 'POST', null);
         await this.fetchAllowedEmails();
       } catch (e) {
         console.error(e);

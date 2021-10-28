@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { adminFetchTemplate } from '../../helpers/fetchTemplate';
+import { baseUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading, groups, fetchGroups
@@ -20,7 +20,7 @@ class Groups extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await adminFetchTemplate('/superadmin-api/insert-group', 'POST', { name: newGroup });
+      await baseUrlFetch('/superadmin-api/insert-group', 'POST', { name: newGroup });
       await this.props.fetchGroups();
       this.newInputRef.value = null;
     } catch (e) {
@@ -32,7 +32,7 @@ class Groups extends React.Component {
   updateGroupName = async (groupId, newName) => {
     try {
       this.props.setIsLoading(true);
-      await adminFetchTemplate('/superadmin-api/update-group', 'POST', {
+      await baseUrlFetch('/superadmin-api/update-group', 'POST', {
         name: newName,
         id: groupId,
       });
@@ -46,7 +46,7 @@ class Groups extends React.Component {
   toggleGroupSetting = async (groupId, newSettings) => {
     try {
       this.props.setIsLoading(true);
-      await adminFetchTemplate('/superadmin-api/update-group', 'POST', {
+      await baseUrlFetch('/superadmin-api/update-group', 'POST', {
         id: groupId,
         settings: JSON.stringify(newSettings),
       });
@@ -60,7 +60,7 @@ class Groups extends React.Component {
   deleteGroup = async (id) => {
     try {
       this.props.setIsLoading(true);
-      await adminFetchTemplate(`/superadmin-api/delete-group/${id}`, 'POST', null);
+      await baseUrlFetch(`/superadmin-api/delete-group/${id}`, 'POST', null);
       await this.props.fetchGroups();
     } catch (e) {
       console.error(e);

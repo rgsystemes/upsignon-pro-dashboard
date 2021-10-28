@@ -1,11 +1,11 @@
 import { groupServerUrl, baseServerUrl } from './env';
 
-export async function fetchTemplate(route, method, body, options) {
+export async function baseUrlFetch(route, method, body, useGroup) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(`${options?.useBaseUrl ? baseServerUrl : groupServerUrl}${route}`, {
+  const res = await fetch(`${useGroup ? groupServerUrl : baseServerUrl}${route}`, {
     method,
     body: bodyText,
     cache: 'no-store',
@@ -21,6 +21,6 @@ export async function fetchTemplate(route, method, body, options) {
   return JSON.parse(content);
 }
 
-export function adminFetchTemplate(route, method, body) {
-  return fetchTemplate(route, method, body, { useBaseUrl: true });
+export function groupUrlFetch(route, method, body) {
+  return baseUrlFetch(route, method, body, true);
 }

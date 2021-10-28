@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchTemplate } from '../../helpers/fetchTemplate';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
 
@@ -10,7 +10,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-device/${deviceId}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -24,7 +24,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/deactivate-device/${deviceId}`, 'POST', null);
+        await groupUrlFetch(`/api/deactivate-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -38,7 +38,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/deactivate-device-all-users/${deviceId}`, 'POST', null);
+        await groupUrlFetch(`/api/deactivate-device-all-users/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -52,7 +52,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/authorize-device/${deviceId}`, 'POST', null);
+        await groupUrlFetch(`/api/authorize-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -67,7 +67,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -82,7 +82,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await fetchTemplate(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);

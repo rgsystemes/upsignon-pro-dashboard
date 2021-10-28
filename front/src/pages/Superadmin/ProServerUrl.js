@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminFetchTemplate } from '../../helpers/fetchTemplate';
+import { baseUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { ServerStatus } from './ServerStatus';
 
@@ -13,7 +13,7 @@ export class ProServerUrl extends React.Component {
   };
   fetchSetupUrlComponents = async () => {
     try {
-      const serverUrl = await adminFetchTemplate('/server_url', 'GET');
+      const serverUrl = await baseUrlFetch('/server_url', 'GET');
       if (serverUrl) {
         this.serverStatusUrl = serverUrl.url;
         this.setState({
@@ -51,7 +51,7 @@ export class ProServerUrl extends React.Component {
         oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
         oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
       };
-      await adminFetchTemplate('/superadmin-api/update-setting', 'POST', {
+      await baseUrlFetch('/superadmin-api/update-setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
         value: JSON.stringify(newStateUrl),
       });

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { adminFetchTemplate, fetchTemplate } from './helpers/fetchTemplate';
+import { baseUrlFetch, groupUrlFetch } from './helpers/urlFetch';
 import { Loader } from './helpers/loader';
 import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
@@ -26,9 +26,9 @@ class App extends React.Component {
   fetchStats = async () => {
     try {
       const stats = await Promise.all([
-        fetchTemplate('/api/count-shared-accounts', 'GET', null),
-        fetchTemplate('/api/count-shared-devices', 'GET', null),
-        fetchTemplate('/api/count-users', 'GET', null),
+        groupUrlFetch('/api/count-shared-accounts', 'GET', null),
+        groupUrlFetch('/api/count-shared-devices', 'GET', null),
+        groupUrlFetch('/api/count-users', 'GET', null),
       ]);
 
       this.setState({
@@ -42,7 +42,7 @@ class App extends React.Component {
   };
   fetchGroups = async () => {
     try {
-      const groupsRes = await adminFetchTemplate('/get_available_groups', 'GET', null);
+      const groupsRes = await baseUrlFetch('/get_available_groups', 'GET', null);
       this.setState({
         groups: groupsRes.groups,
         isSuperadmin: groupsRes.isSuperadmin,
