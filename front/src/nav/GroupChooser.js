@@ -12,6 +12,8 @@ class GroupChooser extends React.Component {
     this.setState((s) => ({ ...s, showList: !s.showList }));
   };
   render() {
+    // eslint-disable-next-line eqeqeq
+    const currentGroup = this.props.groups.find((g) => g.id == groupId);
     return (
       <div
         style={{
@@ -27,7 +29,7 @@ class GroupChooser extends React.Component {
           </div>
         ) : (
           <div className="currentGroup" onClick={this.toggleGroupList}>
-            {this.props.groups.find((g) => g.id == groupId)?.name}
+            {currentGroup?.name}
           </div>
         )}
         {this.state.showList && (
