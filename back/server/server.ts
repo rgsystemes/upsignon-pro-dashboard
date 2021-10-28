@@ -12,9 +12,10 @@ import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
 import { get_available_groups } from './helpers/get_available_groups';
 import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
-import { suparadminApiRouter } from './superadminapi/superadminApiRouter';
+import { superadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
+import { redirectToDefaultPath } from './helpers/redirectToDefaultPath';
 
 const app = express();
 
@@ -92,10 +93,10 @@ app.get('/server_url', get_server_url);
 // SUPERADMIN
 app.use('/superadmin/', (req, res, next) => {
   // @ts-ignore
-  if (!req.session?.isSuperadmin) return res.status(401).end();
+  if (!req.session?.isSuperadmin) return redirectToDefaultPath(req, res);
   return express.static('../front/build')(req, res, next);
 });
-app.use('/superadmin-api/', suparadminApiRouter);
+app.use('/superadmin-api/', superadminApiRouter);
 app.use('/disconnect/', disconnect);
 
 // GROUP ROUTING
@@ -111,7 +112,7 @@ app.use('/:groupId/api/', async (req, res, next) => {
   if (isGroupAuthorized) {
     return apiRouter(req, res, next);
   } else {
-    return res.status(401).send({ error: 'bad_group' });
+    return redirectToDefaultPath(req, res);
   }
 });
 

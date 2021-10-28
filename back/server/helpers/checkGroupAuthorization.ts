@@ -12,17 +12,9 @@ export const checkGroupAuthorization = async (req: any, res: any): Promise<boole
 
     const adminEmail = req.session?.adminEmail;
 
-    // Check Superadmin
-    const isSuperadminRes = await db.query(
-      'SELECT is_superadmin, group_id FROM admins WHERE admins.email=$1',
-      [adminEmail],
-    );
-    const isSuperadmin = isSuperadminRes.rows[0]?.is_superadmin;
-    // @ts-ignore
-    req.session?.isSuperadmin = isSuperadmin;
-
-    if (isSuperadmin) {
+    if (req.session?.isSuperadmin && !req.session?.groupId) {
       const groupRes = await db.query('SELECT id FROM groups WHERE id=$1', [groupId]);
+      if (groupRes.rowCount === 0) return false;
       // @ts-ignore
       req.session?.groupId = groupRes.rows[0]?.id;
     } else {
@@ -30,11 +22,11 @@ export const checkGroupAuthorization = async (req: any, res: any): Promise<boole
         'SELECT groups.id FROM groups INNER JOIN admins ON admins.group_id=groups.id WHERE admins.email=$1 AND groups.id=$2',
         [adminEmail, groupId],
       );
+      if (groupRes.rowCount === 0) return false;
       // @ts-ignore
       req.session?.groupId = groupRes.rows[0]?.id;
     }
-
-    return req.session?.groupId != null;
+    return true;
   } catch (e) {
     logError(e);
     return false;

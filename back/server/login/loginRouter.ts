@@ -4,6 +4,8 @@ import { db } from '../helpers/connection';
 import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
 import { logError } from '../helpers/logger';
+import { getAuthorizations } from '../helpers/getAuthorizations';
+import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 
 export const loginRouter = express.Router();
 
@@ -191,11 +193,10 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
     req.session.adminEmail = dbRes.rows[0].email;
-    if (env.IS_PRODUCTION) {
-      res.redirect(303, env.SERVER_URL);
-    } else {
-      res.redirect(303, `${req.protocol}://${req.headers.host}`);
-    }
+    const { isSuperadmin, groupId } = await getAuthorizations(req.session.adminEmail);
+    req.session.isSuperadmin = isSuperadmin;
+    req.session.groupId = groupId;
+    redirectToDefaultPath(req, res);
   } catch (e) {
     logError(e);
     res.status(444).end();

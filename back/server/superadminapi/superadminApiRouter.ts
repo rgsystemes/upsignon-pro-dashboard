@@ -10,9 +10,9 @@ import { insert_admin } from './insert_admin';
 import { update_setting } from './update_setting';
 import { update_admin_group } from './update_admin_group';
 
-export const suparadminApiRouter = express.Router();
+export const superadminApiRouter = express.Router();
 
-suparadminApiRouter.use(async (req, res, next) => {
+superadminApiRouter.use(async (req, res, next) => {
   const isSuperadmin = await checkIsSuperAdmin(req, res);
   if (!isSuperadmin) {
     return res.status(401).end();
@@ -21,16 +21,16 @@ suparadminApiRouter.use(async (req, res, next) => {
 });
 
 // ADMIN USERS
-suparadminApiRouter.get('/admins', get_admins);
-suparadminApiRouter.post('/insert-admin', insert_admin);
-suparadminApiRouter.post('/delete-admin/:id', delete_admin);
-suparadminApiRouter.post('/update-admin-group', update_admin_group);
+superadminApiRouter.get('/admins', get_admins);
+superadminApiRouter.post('/insert-admin', insert_admin);
+superadminApiRouter.post('/delete-admin/:id', delete_admin);
+superadminApiRouter.post('/update-admin-group', update_admin_group);
 
 // GROUPS
-suparadminApiRouter.get('/groups', get_groups);
-suparadminApiRouter.post('/insert-group', insert_group);
-suparadminApiRouter.post('/update-group', update_group);
-suparadminApiRouter.post('/delete-group/:id', delete_group);
+superadminApiRouter.get('/groups', get_groups);
+superadminApiRouter.post('/insert-group', insert_group);
+superadminApiRouter.post('/update-group', update_group);
+superadminApiRouter.post('/delete-group/:id', delete_group);
 
 // SETTINGS
-suparadminApiRouter.post('/update-setting', update_setting);
+superadminApiRouter.post('/update-setting', update_setting);
