@@ -184,6 +184,11 @@ class SharedAccounts extends React.Component {
           </thead>
           <tbody>
             {this.state.sharedAccounts.map((s) => {
+              const urlDomain = s.url
+                ?.replace(/^https?:\/\//, '')
+                .split('/')[0]
+                .split('?')[0]
+                .split('#')[0];
               return (
                 <React.Fragment key={s.id}>
                   {(s.users == null || s.users.length === 0) && (
@@ -191,7 +196,9 @@ class SharedAccounts extends React.Component {
                       <td>{s.name}</td>
                       <td>
                         <div>{s.type}</div>
-                        <div>{s.url}</div>
+                        <div style={{ maxWidth: 300, textOverflow: 'clip', overflow: 'hidden' }}>
+                          {urlDomain}
+                        </div>
                         <div>{s.login}</div>
                       </td>
                       <td className="warningCell"></td>
@@ -217,7 +224,7 @@ class SharedAccounts extends React.Component {
                         {i === 0 && (
                           <td rowSpan={s.users?.length}>
                             <div>{s.type}</div>
-                            <div>{s.url}</div>
+                            <div>{urlDomain}</div>
                             <div>{s.login}</div>
                           </td>
                         )}
