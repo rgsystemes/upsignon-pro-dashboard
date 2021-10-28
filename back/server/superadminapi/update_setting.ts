@@ -1,7 +1,7 @@
 import { db } from '../helpers/connection';
 import { logError } from '../helpers/logger';
 
-const allowedKeys = ['DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN', 'PRO_SERVER_URL_CONFIG'];
+const allowedKeys = ['PRO_SERVER_URL_CONFIG'];
 
 export const update_setting = async (req: any, res: any): Promise<void> => {
   try {

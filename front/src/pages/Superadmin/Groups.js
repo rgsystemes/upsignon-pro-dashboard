@@ -43,13 +43,12 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  toggleGroupSetting = async (groupId, key, value) => {
+  toggleGroupSetting = async (groupId, newSettings) => {
     try {
       this.props.setIsLoading(true);
-      await adminFetchTemplate('/superadmin-api/update-setting', 'POST', {
-        key,
-        value,
-        groupId: groupId,
+      await adminFetchTemplate('/superadmin-api/update-group', 'POST', {
+        id: groupId,
+        settings: JSON.stringify(newSettings),
       });
       await this.props.fetchGroups();
     } catch (e) {
@@ -153,20 +152,19 @@ class Groups extends React.Component {
                     />
                     <td>{group.nb_users}</td>
                     <td>
-                      {group.disable_manual_pwd_reset_validation === true && (
-                        <span className="unrecommendedParam">{i18n.t('no')}</span>
-                      )}
-                      {group.disable_manual_pwd_reset_validation === false && (
+                      {group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN ===
+                        true && <span className="unrecommendedParam">{i18n.t('no')}</span>}
+                      {!group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN && (
                         <span className="recommendedParam">{i18n.t('yes')}</span>
                       )}
                       <span
                         className="action"
                         onClick={() => {
-                          this.toggleGroupSetting(
-                            group.id,
-                            'DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN',
-                            !group.disable_manual_pwd_reset_validation,
-                          );
+                          this.toggleGroupSetting(group.id, {
+                            ...group.settings,
+                            DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN:
+                              !group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN,
+                          });
                         }}
                       >
                         {i18n.t('settings_change')}
