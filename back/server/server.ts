@@ -51,6 +51,14 @@ if (!env.IS_PRODUCTION) {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use('/', express.static('../front/build'));
+app.get('/login.html', (req, res) => {
+  res.status(200).sendFile('login.html', {
+    root: path.resolve('../front/build'),
+    dotfiles: 'deny',
+  });
+});
+app.use('/login/', loginRouter);
 
 app.use((req, res, next) => {
   // @ts-ignore
@@ -63,16 +71,9 @@ app.use((req, res, next) => {
 
   // Check Auth
   const isLoginRoute = req.url.startsWith('/login');
-  if (env.IS_PRODUCTION && !adminEmail && !isLoginRoute) {
+  if (!adminEmail && !isLoginRoute) {
     try {
-      if (req.method !== 'GET') {
-        return res.status(401).end();
-      } else {
-        return res.status(401).sendFile('./login/loginPage.html', {
-          root: path.join(__dirname, '../server'),
-          dotfiles: 'deny',
-        });
-      }
+      return res.status(401).end();
     } catch (e) {
       logError(e);
       return res.status(404).end();
@@ -81,10 +82,6 @@ app.use((req, res, next) => {
     next();
   }
 });
-
-app.use('/login/', loginRouter);
-
-app.use('/', express.static('../front/build'));
 
 // ROUTES THAT ARE AVAILABLE TO ALL ADMINS
 app.get('/get_available_groups', get_available_groups);
