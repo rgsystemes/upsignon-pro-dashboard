@@ -21,6 +21,7 @@ class App extends React.Component {
     nb_shared_devices: null,
     groups: [],
     isSuperadmin: false,
+    isReady: false,
   };
   fetchStats = async () => {
     try {
@@ -45,6 +46,7 @@ class App extends React.Component {
       this.setState({
         groups: groupsRes.groups,
         isSuperadmin: groupsRes.isSuperadmin,
+        isReady: true,
       });
     } catch (e) {
       console.error(e);
@@ -53,16 +55,31 @@ class App extends React.Component {
   updateMenuGroups = (newGroups) => {
     this.setState({ groups: newGroups });
   };
-  componentDidMount() {
-    this.fetchGroups();
+  async componentDidMount() {
+    await this.fetchGroups();
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
-      this.fetchStats();
+      await this.fetchStats();
     }
   }
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
   };
   render() {
+    if (!this.state.isReady) {
+      return (
+        <div
+          style={{
+            height: '100vh',
+            width: '100vw',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div>{i18n.t('loading')}</div>
+        </div>
+      );
+    }
     let path = window.location.href.replace(baseFrontUrl, '');
 
     let pageContent = <Overview setIsLoading={this.setIsLoading} />;
