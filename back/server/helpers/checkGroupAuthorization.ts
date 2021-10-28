@@ -10,22 +10,20 @@ export const checkGroupAuthorization = async (req: any, res: any): Promise<boole
       return true;
     }
 
-    const adminEmail = req.session?.adminEmail;
-
-    if (req.session?.isSuperadmin && !req.session?.groupId) {
-      const groupRes = await db.query('SELECT id FROM groups WHERE id=$1', [groupId]);
-      if (groupRes.rowCount === 0) return false;
-      // @ts-ignore
-      req.session?.groupId = groupRes.rows[0]?.id;
+    if (req.session?.isSuperadmin) {
+      const groupExistsRes = await db.query('SELECT id FROM groups WHERE id=$1', [groupId]);
+      if (groupExistsRes.rowCount === 0) return false;
     } else {
-      const groupRes = await db.query(
-        'SELECT groups.id FROM groups INNER JOIN admins ON admins.group_id=groups.id WHERE admins.email=$1 AND groups.id=$2',
-        [adminEmail, groupId],
+      const adminGroupRes = await db.query(
+        'SELECT group_id, is_superadmin FROM admins WHERE email=$1',
+        [req.session?.adminEmail],
       );
-      if (groupRes.rowCount === 0) return false;
-      // @ts-ignore
-      req.session?.groupId = groupRes.rows[0]?.id;
+      if (adminGroupRes.rowCount === 0) return false;
+      if (!adminGroupRes.rows[0]?.is_superadmin && adminGroupRes.rows[0]?.group_id !== groupId)
+        return false;
     }
+    // @ts-ignore
+    req.session?.groupId = groupId;
     return true;
   } catch (e) {
     logError(e);
