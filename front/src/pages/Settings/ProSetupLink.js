@@ -70,6 +70,7 @@ export class ProSetupLink extends React.Component {
     return (
       <div>
         <h2>{i18n.t('setup_link')}</h2>
+        <div>{i18n.t('setup_link_is_group_specific')}</div>
         <a
           href={this.proSetupLink}
           className="link"

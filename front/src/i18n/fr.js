@@ -156,6 +156,7 @@ const translations = {
   to_unzip: "ajoutez l'extension .zip pour le dézipper",
   pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
+  setup_link_is_group_specific: 'Notez que ce lien est spécifique à chaque groupe.',
   pro_server_url: 'URL de votre serveur UpSignOn PRO',
   openid_unfold: "Cas particulier d'OpenId (optionnel et non recommandé)",
   openid_authority: 'URL du serveur OpenId',

@@ -154,6 +154,7 @@ const translations = {
   windows_app_download_link: 'Download of the application for Windows 10',
   to_unzip: 'add the .zip extension to unzip it',
   setup_link: 'Application setup link',
+  setup_link_is_group_specific: 'Notice this link is group specific.',
   pro_server: 'UpSignOn PRO server',
   pro_server_url: 'URL of your UpSignOn PRO server',
   openid_unfold: 'Special cas of OpenId (optionnal and not recommended)',
