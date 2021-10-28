@@ -14,6 +14,7 @@ import { get_available_groups } from './helpers/get_available_groups';
 import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
 import { suparadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
+import { disconnect } from './helpers/disconnect';
 
 const app = express();
 
@@ -95,6 +96,7 @@ app.use('/superadmin/', (req, res, next) => {
   return express.static('../front/build')(req, res, next);
 });
 app.use('/superadmin-api/', suparadminApiRouter);
+app.use('/disconnect/', disconnect);
 
 // GROUP ROUTING
 app.use('/:groupId/', express.static('../front/build'));

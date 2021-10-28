@@ -1,4 +1,4 @@
-import { logError } from '../helpers/logger';
+import { logError } from './logger';
 
 export const disconnect = async (req: any, res: any): Promise<void> => {
   try {

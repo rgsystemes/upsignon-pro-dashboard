@@ -1,7 +1,7 @@
 import React from 'react';
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
-import { fetchTemplate } from '../helpers/fetchTemplate';
+import { adminFetchTemplate } from '../helpers/fetchTemplate';
 import { frontUrl } from '../helpers/env';
 import { GroupChooser } from './GroupChooser';
 
@@ -45,7 +45,7 @@ function Menu(props) {
           className="action"
           onClick={async () => {
             try {
-              await fetchTemplate('/api/disconnect', 'POST', null);
+              await adminFetchTemplate('/disconnect', 'POST', null);
             } catch (e) {
             } finally {
               window.location.href = frontUrl;

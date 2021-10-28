@@ -12,7 +12,6 @@ import { delete_shared_account } from './delete_shared_account';
 import { delete_shared_account_user } from './delete_shared_account_user';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
-import { disconnect } from './disconnect';
 import { extract_database } from './extract_database';
 import { extract_emails_for_duplicate_passwords } from './extract_emails_for_duplicate_passwords';
 import { extract_emails_for_long_unused } from './extract_emails_for_long_unused';
@@ -84,9 +83,6 @@ apiRouter.get('/allowed-emails', get_allowed_emails);
 apiRouter.post('/delete-allowed-email/:id', delete_allowed_email);
 apiRouter.post('/update-allowed-email', update_allowed_email);
 apiRouter.post('/insert-allowed-email', insert_allowed_email);
-
-// Session
-apiRouter.post('/disconnect', disconnect);
 
 // Urls
 apiRouter.get('/urls', get_urls);
