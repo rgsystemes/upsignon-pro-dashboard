@@ -12,13 +12,12 @@ export class ServerStatus extends React.Component {
       if (this.props.proServerUrl) {
         // GET STATUS
         try {
-          const response = await fetch(`${this.props.proServerUrl}/config`, {
+          const response = await fetch(this.props.proServerUrl, {
             method: 'GET',
             cache: 'no-store',
             mode: 'cors',
           });
-          const config = await response.json();
-          if (response.ok && config.displayName) {
+          if (response.ok) {
             this.setState({ proServerStatus: 'RUNNING' });
           } else {
             this.setState({ proServerStatus: 'STOPPED' });
