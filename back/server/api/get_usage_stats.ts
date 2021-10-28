@@ -9,6 +9,8 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
       [req.session.groupId],
     );
 
+    if (rawStats.rowCount === 0) return res.status(200).send([]);
+
     // Then get the continuous list of days
     const days = getDaysArray(rawStats.rows[0].day, new Date().toISOString());
 
