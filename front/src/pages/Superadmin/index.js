@@ -11,6 +11,12 @@ class Superadmin extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_superadmin')}</h1>
+        <ProServerUrl />
+        <SuperAdmins setIsLoading={this.props.setIsLoading} />
+        <Groups
+          setIsLoading={this.props.setIsLoading}
+          updateMenuGroups={this.props.updateMenuGroups}
+        />
         <h2>{i18n.t('useful_links')}</h2>
         <ul>
           <li>
@@ -55,12 +61,6 @@ class Superadmin extends React.Component {
             {` (${i18n.t('to_unzip')})`}
           </li>
         </ul>
-        <ProServerUrl />
-        <SuperAdmins setIsLoading={this.props.setIsLoading} />
-        <Groups
-          setIsLoading={this.props.setIsLoading}
-          updateMenuGroups={this.props.updateMenuGroups}
-        />
       </div>
     );
   }
