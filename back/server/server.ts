@@ -71,18 +71,8 @@ app.use((req, res, next) => {
 });
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
-app.use(
-  [
-    '/',
-    '/superadmin/',
-    '/:groupId/',
-    '/:groupId/users/',
-    '/:groupId/shared_devices/',
-    '/:groupId/shared_accounts/',
-    '/:groupId/settings/',
-  ],
-  express.static('../front/build'),
-);
+app.use('/', express.static('../front/build'));
+
 app.get('/login.html', (req, res) => {
   res.status(200).sendFile('login.html', {
     root: path.resolve('../front/build'),
@@ -116,6 +106,18 @@ app.use('/:groupId/api/', (req, res, next) => {
   req.proxyParamsGroupId = groupId;
   return apiRouter(req, res, next);
 });
+
+app.use(
+  [
+    '/superadmin/',
+    '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
+    '/:groupId/users/',
+    '/:groupId/shared_devices/',
+    '/:groupId/shared_accounts/',
+    '/:groupId/settings/',
+  ],
+  express.static('../front/build'),
+);
 
 // START
 if (module === require.main) {
