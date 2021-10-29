@@ -21,13 +21,20 @@ const translations = {
   menu_superadmin: 'Super-Admin',
   loading: 'Chargement des données...',
   total_count: 'Total $count',
+  user_sort_by_vuln: 'Par vulnérabilité',
+  user_sort_by_time: 'Par dernière session',
+  user_sorting_by_vuln:
+    'Tri par vulnérabilité : Les utilisateurs sont triés par nombre décroissant de mots de passe dupliqués, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
+  user_sorting_by_time:
+    'Tri par dernière session : Les utilisateurs sont triés par date de dernière activité en commeçant par les plus anciennes.',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
   user_email: 'Email',
   user_data: 'Données',
-  user_nb_devices: "Nb d'appareils",
+  user_data_updated_at: 'Modifiées le',
+  user_data_seen_at: 'Consultées le',
+  user_general_stats: 'Stats générales',
   user_nb_devices_value: '$nb appareils',
-  user_nb_codes_and_accounts: 'Nb de comptes et codes',
   user_nb_codes_value: '$nb codes',
   user_nb_accounts_value: '$nb comptes',
   user_nb_shared_items_value: 'dont $nb partagés',
@@ -41,8 +48,6 @@ const translations = {
   user_passwords_duplicated: 'dont $nb dupliqués',
   user_delete_warning:
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
-  user_sorting:
-    'Les utilisateurs sont triés par nombre décroissant de mots de passe dupliqués, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
   user_change_email_confirm:
     "Êtes-vous sûr de vouloir changer l'adresse email de cet utilisateur de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
   user_email_already_used:

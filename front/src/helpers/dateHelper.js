@@ -221,3 +221,10 @@ export function getDateBack1Month() {
   a.setUTCHours(0, 0, 0, 0);
   return a;
 }
+
+export function getDateBack2Weeks() {
+  const a = new Date();
+  a.setDate(a.getDate() - 14);
+  a.setUTCHours(0, 0, 0, 0);
+  return a;
+}

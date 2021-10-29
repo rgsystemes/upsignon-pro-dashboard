@@ -3,10 +3,14 @@ import { logError } from '../helpers/logger';
 
 export const get_users = async (req: any, res: any): Promise<void> => {
   try {
+    // search
     let search = req.query.search;
     if (!!search && typeof search !== 'string') return res.status(401).end();
     search = search?.toLowerCase();
     const isSearching = !!search;
+
+    // sorting
+    const sortingType = parseInt(req.query.sortingType, 10) || 0;
 
     // COUNT USERS
     let userCount;
@@ -20,12 +24,13 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     }
 
-    // GET USERS
+    // pagination
     const pageIndex = parseInt(req.query.pageIndex, 10) || 1;
     let pageOffset = pageIndex - 1;
     const limit = parseInt(req.query.limit, 10) || 50;
     if (pageOffset * limit >= userCount) pageOffset = 0;
 
+    // Users
     const queryInputs: string[] = [
       limit.toString(),
       (pageOffset * limit).toString(),
@@ -51,11 +56,16 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       (SELECT nb_accounts_red  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_red,
       (SELECT nb_accounts_orange  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_orange,
       (SELECT nb_accounts_green  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_green,
-      (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password
+      (SELECT nb_accounts_with_duplicate_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicate_password,
+      (SELECT ul.date FROM usage_logs AS ul INNER JOIN user_devices AS ud ON ud.id=ul.device_id WHERE ul.log_type='SESSION' AND ud.user_id=u.id ORDER BY date DESC LIMIT 1) AS last_session
     FROM users AS u
     WHERE u.group_id=$3
     ${isSearching ? 'AND u.email LIKE $4' : ''}
-    ORDER BY nb_accounts_with_duplicate_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC
+    ${
+      sortingType === 0
+        ? 'ORDER BY nb_accounts_with_duplicate_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
+        : 'ORDER BY last_session ASC, u.email ASC'
+    }
     LIMIT $1
     OFFSET $2
     `,

@@ -21,13 +21,20 @@ const translations = {
   menu_superadmin: 'Super-Admin',
   loading: 'Loading data...',
   total_count: 'Total $count',
+  user_sort_by_vuln: 'By vulnerability',
+  user_sort_by_time: 'By last session',
+  user_sorting:
+    'Sorting by vulnerability: Users are sorted by descending number of duplicated passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
+  user_sorting_by_time:
+    'Sorting by last session: Users are sorted by date of last session, starting with the oldests.',
   user_search: 'Search a user',
   user_unit_name: 'users',
   user_email: 'Email',
   user_data: 'Data',
-  user_nb_devices: 'Nb of devices',
+  user_data_updated_at: 'Updated at',
+  user_data_seen_at: 'Seen at',
+  user_general_stats: 'General stats',
   user_nb_devices_value: '$nb devices',
-  user_nb_codes_and_accounts: 'Nb of web accounts and codes (shared or not)',
   user_nb_codes_value: '$nb codes',
   user_nb_accounts_value: '$nb accounts',
   user_nb_shared_items_value: 'of which $nb shared',
@@ -41,8 +48,6 @@ const translations = {
   user_passwords_duplicated: 'of which $nb duplicated',
   user_delete_warning:
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
-  user_sorting:
-    'Users are sorted by descending number of duplicated passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
   user_change_email_confirm:
     "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
   user_email_already_used:

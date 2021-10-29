@@ -6,6 +6,8 @@ import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
 import { UserDevices } from './UserDevices';
 import './users.css';
+import { Toggler } from '../../helpers/Toggler';
+import { getDateBack1Month, getDateBack2Weeks } from '../../helpers/dateHelper';
 
 const maxRenderedItems = 50;
 
@@ -18,6 +20,7 @@ class Users extends React.Component {
     users: [],
     limit: maxRenderedItems,
     pageIndex: 1,
+    sortingType: 0,
   };
   getCurrentQueryParameters = () => {
     const queryParamsArray = window.location.search
@@ -36,12 +39,13 @@ class Users extends React.Component {
       const queryParams = this.getCurrentQueryParameters();
       const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
+      const sortingType = parseInt(queryParams.sortingType, 10) || 0;
       const { users, userCount } = await groupUrlFetch(
-        `/api/users?pageIndex=${pageIndex}&limit=${limit}`,
+        `/api/users?pageIndex=${pageIndex}&limit=${limit}&sortingType=${sortingType}`,
         'GET',
         null,
       );
-      this.setState({ users, userCount, limit, pageIndex });
+      this.setState({ users, userCount, limit, pageIndex, sortingType });
     } catch (e) {
       console.error(e);
     } finally {
@@ -106,7 +110,12 @@ class Users extends React.Component {
   }
 
   goToPageIndex = (p) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}`;
+    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
+  };
+  toggleSorting = (sortByTime) => {
+    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${
+      this.state.pageIndex
+    }&sortingType=${sortByTime ? 1 : 0}`;
   };
 
   onSearch = async (ev) => {
@@ -120,7 +129,7 @@ class Users extends React.Component {
       const limit = 50;
       const pageIndex = 1;
       const { users, userCount } = await groupUrlFetch(
-        `/api/users?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}`,
+        `/api/users?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}&sortingType=${this.state.sortingType}`,
         'GET',
         null,
       );
@@ -172,15 +181,36 @@ class Users extends React.Component {
         <h1>{`${i18n.t('menu_users')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
-        <p>{i18n.t('user_sorting')}</p>
-        <div>
-          <div>{i18n.t('user_search')}</div>
-          <input
-            ref={(r) => (this.searchInput = r)}
-            type="search"
-            style={searchInputStyle}
-            placeholder="email@domain.com"
-            onChange={this.onSearch}
+        <div style={{ marginBottom: 15 }}>
+          {this.state.sortingType === 0
+            ? i18n.t('user_sorting_by_vuln')
+            : i18n.t('user_sorting_by_time')}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <div>
+            <div>{i18n.t('user_search')}</div>
+            <input
+              ref={(r) => (this.searchInput = r)}
+              type="search"
+              style={searchInputStyle}
+              placeholder="email@domain.com"
+              onChange={this.onSearch}
+            />
+          </div>
+          <Toggler
+            choices={[
+              {
+                key: 'vuln',
+                title: i18n.t('user_sort_by_vuln'),
+                isCurrent: this.state.sortingType === 0,
+              },
+              {
+                key: 'time',
+                title: i18n.t('user_sort_by_time'),
+                isCurrent: this.state.sortingType !== 0,
+              },
+            ]}
+            onSelect={(choice) => this.toggleSorting(choice === 'time')}
           />
         </div>
         <PaginationBar
@@ -195,14 +225,28 @@ class Users extends React.Component {
             <tr>
               <th>{i18n.t('user_email')}</th>
               <th>{i18n.t('user_data')}</th>
-              <th>{i18n.t('user_nb_devices')}</th>
-              <th style={{ width: 150 }}>{i18n.t('user_nb_codes_and_accounts')}</th>
+              <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
               <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
           <tbody>
             {this.state.users.map((u) => {
+              let lastSessionStyle = {};
+              if (this.state.sortingType !== 0) {
+                const isLastSessionOld = new Date(u.last_session) < getDateBack2Weeks();
+                const isLastSessionVeryOld = new Date(u.last_session) < getDateBack1Month();
+                lastSessionStyle = {
+                  fontWeight: 'bold',
+                  backgroundColor: isLastSessionVeryOld
+                    ? 'red'
+                    : isLastSessionOld
+                    ? 'orange'
+                    : 'green',
+                  color: 'white',
+                  padding: '0 3px',
+                };
+              }
               return (
                 <React.Fragment key={u.user_id}>
                   <tr>
@@ -215,8 +259,19 @@ class Users extends React.Component {
                       }}
                     />
                     <td>
-                      <div>{`${Math.round(u.data_length / 1000)}ko`}</div>
-                      <div>{new Date(u.updated_at).toLocaleString()}</div>
+                      <div style={{ fontSize: 12 }}>{`${Math.round(u.data_length / 1000)}ko`}</div>
+                      <div>
+                        {i18n.t('user_data_updated_at')}{' '}
+                        <span style={{ fontSize: 12 }}>
+                          {new Date(u.updated_at).toLocaleString()}
+                        </span>
+                      </div>
+                      <div>
+                        {i18n.t('user_data_seen_at')}{' '}
+                        <span style={{ fontSize: 12, ...lastSessionStyle }}>
+                          {new Date(u.last_session).toLocaleString()}
+                        </span>
+                      </div>
                     </td>
                     <td>
                       <div
@@ -225,8 +280,6 @@ class Users extends React.Component {
                       >
                         {i18n.t('user_nb_devices_value', { nb: u.nb_devices || 0 })}
                       </div>
-                    </td>
-                    <td>
                       <div>{i18n.t('user_nb_codes_value', { nb: u.nb_codes || 0 })}</div>
                       <div>{i18n.t('user_nb_accounts_value', { nb: u.nb_accounts || 0 })}</div>
                       <div>
