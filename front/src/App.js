@@ -43,6 +43,7 @@ class App extends React.Component {
   fetchGroups = async () => {
     try {
       const groupsRes = await baseUrlFetch('/get_available_groups', 'GET', null);
+      // eslint-disable-next-line eqeqeq
       const isGroupInList = groupsRes.groups.some((g) => g.id == groupId);
       if (groupsRes.isSuperadmin) {
         if (!groupId || (groupId !== 'superadmin' && !isGroupInList)) {
@@ -117,6 +118,7 @@ class App extends React.Component {
         <Settings
           setIsLoading={this.setIsLoading}
           isSuperAdmin={this.state.isSuperadmin}
+          // eslint-disable-next-line eqeqeq
           otherGroups={this.state.groups.filter((g) => g.id != groupId)}
         />
       );
