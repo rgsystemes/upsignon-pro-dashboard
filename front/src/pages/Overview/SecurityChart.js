@@ -66,6 +66,10 @@ class SecurityChart extends React.Component {
     }
   };
   componentDidMount() {
+    const savedStartDate = sessionStorage['startDate'];
+    if (savedStartDate) this.startDate = new Date(savedStartDate);
+    const savedEndDate = sessionStorage['endDate'];
+    if (savedEndDate) this.startDate = new Date(savedEndDate);
     this.fetchStats();
   }
   togglePctg = (usePctg) => {
@@ -80,13 +84,21 @@ class SecurityChart extends React.Component {
     if (this.startDate.getTime() !== newStartDate.getTime()) {
       this.startDate = newStartDate;
       this.fetchStats();
+      sessionStorage['startDate'] = newStartDate.toISOString();
     }
   };
   updateEndDate = (newEndDate) => {
     if (this.endDate.getTime() !== newEndDate.getTime()) {
       this.endDate = newEndDate;
       this.fetchStats();
+      sessionStorage['endDate'] = newEndDate.toISOString();
     }
+  };
+  clearDates = () => {
+    sessionStorage.clear();
+    this.startDate = getDateBack1Month();
+    this.endDate = new Date();
+    this.fetchStats();
   };
   render() {
     return (
@@ -127,6 +139,9 @@ class SecurityChart extends React.Component {
               maxDate={new Date()}
               todayButton={<div>{i18n.t('chart_today_button')}</div>}
             />
+          </div>
+          <div className="action" style={{ marginLeft: 10 }} onClick={this.clearDates}>
+            {i18n.t('chart_automatic_dates')}
           </div>
         </div>
         <ResponsiveContainer width="100%" height={400}>

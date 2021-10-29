@@ -145,6 +145,7 @@ const translations = {
   chart_type_entropy: 'Par entropie',
   chart_start_date: 'Date de début',
   chart_end_date: 'Date de fin',
+  chart_automatic_dates: 'Dates auto.',
   chart_usage_title: "Nombre d'espaces PRO",
   chart_nb_users: "Nb d'utilisateurs",
   chart_today_button: "Aujourd'hui",
