@@ -39,3 +39,17 @@ Then add yourself as administrator.
   You will receive an email (if everything is well configured) that invites you to connect to your dashboard using UpSignOn.
   So you will need to have UpSignOn installed on you computer first, with your PRO space setup.
   Then enjoy the power and simplicity of our connection system by using the link you received by email.
+
+# DB transfer
+
+To export
+
+```
+pg_dump -a -T admin_sessions -T admins -T migrations upsignonpro > dump.sql
+```
+
+To import into a new database (where all the migrations have already been performed)
+
+```
+psql -d dbname < dump.sql
+```
