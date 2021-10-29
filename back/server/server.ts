@@ -96,12 +96,7 @@ app.use((req, res, next) => {
   const isLoginRoute = req.url.startsWith('/login');
   // @ts-ignore
   if (!req.session.adminEmail && !isLoginRoute) {
-    try {
-      return res.status(401).end();
-    } catch (e) {
-      logError(e);
-      return res.status(404).end();
-    }
+    return res.status(401).end();
   } else {
     next();
   }
