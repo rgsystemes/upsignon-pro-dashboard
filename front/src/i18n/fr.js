@@ -26,7 +26,7 @@ const translations = {
   user_sorting_by_vuln:
     'Tri par vulnérabilité : Les utilisateurs sont triés par nombre décroissant de mots de passe dupliqués, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
   user_sorting_by_time:
-    'Tri par dernière session : Les utilisateurs sont triés par date de dernière activité en commeçant par les plus anciennes.',
+    'Tri par dernière session : Les utilisateurs sont triés par date de dernière activité en commençant par les plus anciennes.',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
   user_email: 'Email',
