@@ -110,11 +110,11 @@ app.use('/:groupId/api/', (req, res, next) => {
 app.use(
   [
     '/superadmin/',
-    '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
     '/:groupId/users/',
     '/:groupId/shared_devices/',
     '/:groupId/shared_accounts/',
     '/:groupId/settings/',
+    '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
   ],
   express.static('../front/build'),
 );
