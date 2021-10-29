@@ -169,7 +169,9 @@ class Users extends React.Component {
     }
     return (
       <div className="page">
-        <h1>{`${i18n.t('menu_users')} - ${i18n.t('total', { count: this.props.totalCount })}`}</h1>
+        <h1>{`${i18n.t('menu_users')} - ${i18n.t('total_count', {
+          count: this.props.totalCount,
+        })}`}</h1>
         <p>{i18n.t('user_sorting')}</p>
         <div>
           <div>{i18n.t('user_search')}</div>

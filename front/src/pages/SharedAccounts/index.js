@@ -150,7 +150,7 @@ class SharedAccounts extends React.Component {
     }
     return (
       <div className="page">
-        <h1>{`${i18n.t('menu_shared_accounts')} - ${i18n.t('total', {
+        <h1>{`${i18n.t('menu_shared_accounts')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
         <p>{i18n.t('shared_account_manager_note')}</p>

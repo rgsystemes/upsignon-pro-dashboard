@@ -34,7 +34,7 @@ class SharedDevices extends React.Component {
   render() {
     return (
       <div className="page">
-        <h1>{`${i18n.t('menu_shared_devices')} - ${i18n.t('total', {
+        <h1>{`${i18n.t('menu_shared_devices')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
         <div style={{ marginBottom: 20 }}>{i18n.t('shared_devices_explanation')}</div>

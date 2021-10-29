@@ -181,6 +181,12 @@ class Groups extends React.Component {
                   </tr>
                 );
               })}
+              <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
+                <td>{i18n.t('total')}</td>
+                <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
+                <td></td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
         )}
