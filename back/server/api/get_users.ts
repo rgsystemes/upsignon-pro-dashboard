@@ -29,7 +29,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     const queryInputs: string[] = [
       limit.toString(),
       (pageOffset * limit).toString(),
-      req.session.groupId,
+      req.proxyParamsGroupId,
     ];
     if (isSearching) {
       queryInputs.push(search + '%');

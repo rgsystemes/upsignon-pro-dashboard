@@ -9,20 +9,20 @@ export const update_url = async (req: any, res: any): Promise<void> => {
       await db.query(`UPDATE url_list SET displayed_name=$1 WHERE id=$2 AND group_id=$3`, [
         displayedName,
         id,
-        req.session.groupId,
+        req.proxyParamsGroupId,
       ]);
     }
     if (signinUrl != null) {
       await db.query(`UPDATE url_list SET signin_url=lower($1) WHERE id=$2 AND group_id=$3`, [
         signinUrl,
         id,
-        req.session.groupId,
+        req.proxyParamsGroupId,
       ]);
     }
     if (passwordChangeUrl != null) {
       await db.query(
         `UPDATE url_list SET password_change_url=lower($1) WHERE id=$2 AND group_id=$3`,
-        [passwordChangeUrl, id, req.session.groupId],
+        [passwordChangeUrl, id, req.proxyParamsGroupId],
       );
     }
     res.status(200).end();

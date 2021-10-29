@@ -12,7 +12,7 @@ export const extract_emails_for_shared_device = async (req: any, res: any): Prom
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
     AND ud.group_id=$1
   `,
-      [req.session.groupId],
+      [req.proxyParamsGroupId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

@@ -29,7 +29,7 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
     WHERE u.group_id=$1
     ORDER BY u.email ASC, ud.created_at DESC
   `,
-      [req.session.groupId],
+      [req.proxyParamsGroupId],
     );
 
     let csvContent = '';

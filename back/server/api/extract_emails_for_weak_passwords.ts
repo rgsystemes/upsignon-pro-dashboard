@@ -9,7 +9,7 @@ export const extract_emails_for_weak_passwords = async (req: any, res: any): Pro
     WHERE (SELECT nb_accounts_weak FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) >= $1
     AND u.group_id=$2
   `,
-      [nb, req.session.groupId],
+      [nb, req.proxyParamsGroupId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

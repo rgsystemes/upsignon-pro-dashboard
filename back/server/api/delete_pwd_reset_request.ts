@@ -6,7 +6,7 @@ export const delete_pwd_reset_request = async (req: any, res: any): Promise<void
     const requestId = req.params.requestId;
     await db.query(`DELETE FROM password_reset_request WHERE id=$1 AND group_id=$2`, [
       requestId,
-      req.session.groupId,
+      req.proxyParamsGroupId,
     ]);
     res.status(200).end();
   } catch (e) {

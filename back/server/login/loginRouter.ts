@@ -4,8 +4,8 @@ import { db } from '../helpers/connection';
 import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
 import { logError } from '../helpers/logger';
-import { getAuthorizations } from '../helpers/getAuthorizations';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
+import { updateSessionAuthorizations } from '../helpers/updateSessionAuthorizations';
 
 export const loginRouter = express.Router();
 
@@ -192,10 +192,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
       return res.status(401).send('CONNECTION ERROR');
     await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
-    req.session.adminEmail = dbRes.rows[0].email;
-    const { isSuperadmin, groupId } = await getAuthorizations(req.session.adminEmail);
-    req.session.isSuperadmin = isSuperadmin;
-    req.session.groupId = groupId;
+    await updateSessionAuthorizations(req, dbRes.rows[0].email);
     redirectToDefaultPath(req, res);
   } catch (e) {
     logError(e);

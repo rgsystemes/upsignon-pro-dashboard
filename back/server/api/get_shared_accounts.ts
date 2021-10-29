@@ -18,12 +18,12 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       LEFT JOIN users AS u ON sau.user_id=u.id
       WHERE u.email LIKE $1
       AND sa.group_id=$2`,
-        [search + '%', req.session.groupId],
+        [search + '%', req.proxyParamsGroupId],
       );
       sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     } else {
       const countReq = await db.query('SELECT COUNT(id) FROM shared_accounts WHERE group_id=$1', [
-        req.session.groupId,
+        req.proxyParamsGroupId,
       ]);
       sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     }
@@ -37,7 +37,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
     const queryInputs: string[] = [
       limit.toString(),
       (pageOffset * limit).toString(),
-      req.session.groupId,
+      req.proxyParamsGroupId,
     ];
     if (isSearching) {
       queryInputs.push(search + '%');

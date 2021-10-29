@@ -11,18 +11,20 @@ import expressSession from 'express-session';
 import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
 import { get_available_groups } from './helpers/get_available_groups';
-import { checkGroupAuthorization } from './helpers/checkGroupAuthorization';
 import { superadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
-import { redirectToDefaultPath } from './helpers/redirectToDefaultPath';
+import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
 
 const app = express();
 
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
-// Configure sessions
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// SESSIONS
 app.use(
   expressSession({
     cookie: {
@@ -41,17 +43,46 @@ app.use(
     store: new SessionStore(),
   }),
 );
+
+// DEV MODE
 if (!env.IS_PRODUCTION) {
-  app.use((req, res, next) => {
-    // @ts-ignore
-    req.session?.adminEmail = env.DEV_FALLBACK_ADMIN_URL;
-    next();
+  app.use(async (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    try {
+      await updateSessionAuthorizations(
+        req,
+        // @ts-ignore
+        env.DEV_FALLBACK_ADMIN_URL,
+      );
+      next();
+    } catch (e) {
+      res.send(444).end();
+    }
   });
 }
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use('/', express.static('../front/build'));
+// LOGS
+app.use((req, res, next) => {
+  // @ts-ignore
+  const adminEmail = req.session?.adminEmail;
+  logInfo(adminEmail || 'unconnected user', req.method, req.url);
+  next();
+});
+
+// PUBLIC ROUTES WITH NO SESSION NEEDED
+app.use(
+  [
+    '/',
+    '/superadmin/',
+    '/:groupId/',
+    '/:groupId/users/',
+    '/:groupId/shared_devices/',
+    '/:groupId/shared_accounts/',
+    '/:groupId/settings/',
+  ],
+  express.static('../front/build'),
+);
 app.get('/login.html', (req, res) => {
   res.status(200).sendFile('login.html', {
     root: path.resolve('../front/build'),
@@ -60,18 +91,11 @@ app.get('/login.html', (req, res) => {
 });
 app.use('/login/', loginRouter);
 
+// CHECK SESSION VALIDITY
 app.use((req, res, next) => {
-  // @ts-ignore
-  const adminEmail = req.session?.adminEmail;
-  logInfo(adminEmail || 'unconnected user', req.method, req.url);
-  if (!env.IS_PRODUCTION) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  }
-
-  // Check Auth
   const isLoginRoute = req.url.startsWith('/login');
-  if (!adminEmail && !isLoginRoute) {
+  // @ts-ignore
+  if (!req.session.adminEmail && !isLoginRoute) {
     try {
       return res.status(401).end();
     } catch (e) {
@@ -83,34 +107,19 @@ app.use((req, res, next) => {
   }
 });
 
-// ROUTES THAT ARE AVAILABLE TO ALL ADMINS
+// ALL ROUTES BELOW ARE ONLY ACCESSIBLE WITH A VALID SESSION
+
+// ROUTES THAT ARE AVAILABLE TO BOTH GROUP ADMINS AND SUPERADMINS
 app.get('/get_available_groups', get_available_groups);
 app.get('/server_url', get_server_url);
-
-// SUPERADMIN
-app.use('/superadmin/', (req, res, next) => {
-  // @ts-ignore
-  if (!req.session?.isSuperadmin) return redirectToDefaultPath(req, res);
-  return express.static('../front/build')(req, res, next);
-});
-app.use('/superadmin-api/', superadminApiRouter);
 app.use('/disconnect/', disconnect);
 
-// GROUP ROUTING
-app.use('/:groupId/', express.static('../front/build'));
-app.use('/:groupId/users/', express.static('../front/build'));
-app.use('/:groupId/shared_devices/', express.static('../front/build'));
-app.use('/:groupId/shared_accounts/', express.static('../front/build'));
-app.use('/:groupId/settings/', express.static('../front/build'));
-
-app.use('/:groupId/api/', async (req, res, next) => {
-  // GROUP AUTHORIZATION
-  const isGroupAuthorized = await checkGroupAuthorization(req, res);
-  if (isGroupAuthorized) {
-    return apiRouter(req, res, next);
-  } else {
-    return res.status(401).end();
-  }
+app.use('/superadmin-api/', superadminApiRouter);
+app.use('/:groupId/api/', (req, res, next) => {
+  const groupId = req.params.groupId;
+  // @ts-ignore
+  req.proxyParamsGroupId = groupId;
+  return apiRouter(req, res, next);
 });
 
 // START

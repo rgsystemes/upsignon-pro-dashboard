@@ -37,6 +37,17 @@ import { update_user_email } from './update_user_email';
 
 export const apiRouter = express.Router();
 
+apiRouter.use(async (req, res, next) => {
+  if (
+    // @ts-ignore
+    !req.session.isSuperadmin &&
+    // @ts-ignore
+    req.session.groupId != req.proxyParamsGroupId
+  ) {
+    return res.status(401).end();
+  }
+  next();
+});
 // Users
 apiRouter.get('/users', get_users);
 apiRouter.get('/count-users', count_users);

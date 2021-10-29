@@ -6,7 +6,7 @@ export const get_usage_stats = async (req: any, res: any): Promise<void> => {
   try {
     const rawStats = await db.query(
       "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users WHERE group_id=$1 GROUP BY day ORDER BY day ASC",
-      [req.session.groupId],
+      [req.proxyParamsGroupId],
     );
 
     if (rawStats.rowCount === 0) return res.status(200).send([]);

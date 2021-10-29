@@ -18,7 +18,7 @@ export const get_pending_password_reset_requests = async (req: any, res: any): P
     AND reset.group_id=$1
     ORDER BY ud.created_at DESC
     `,
-      [req.session.groupId],
+      [req.proxyParamsGroupId],
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
