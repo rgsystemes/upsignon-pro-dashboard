@@ -1,5 +1,6 @@
 import express from 'express';
 import { authorize_device } from './authorize_device';
+import { copy_urls_from_group } from './copy_urls_from_group';
 import { count_shared_accounts } from './count_shared_accounts';
 import { count_shared_devices } from './count_shared_devices';
 import { count_users } from './count_users';
@@ -100,3 +101,4 @@ apiRouter.get('/urls', get_urls);
 apiRouter.post('/delete-url/:id', delete_url);
 apiRouter.post('/update-url', update_url);
 apiRouter.post('/insert-url', insert_url);
+apiRouter.post('/copy_urls_from_group', copy_urls_from_group);

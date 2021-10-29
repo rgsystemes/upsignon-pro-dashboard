@@ -7,7 +7,7 @@ const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
 const passwordChangeUrlPlaceholder = 'https://service.com/account-setting';
 
-// Props = setIsLoading
+// Props = setIsLoading, isSuperAdmin, otherGroups
 class Urls extends React.Component {
   state = {
     urls: [],
@@ -15,6 +15,7 @@ class Urls extends React.Component {
   nameInput = null;
   signinUrlInput = null;
   passwordChangeUrlInput = null;
+  nbCopiedFromTargetGroup = null;
 
   fetchUrls = async () => {
     try {
@@ -76,6 +77,26 @@ class Urls extends React.Component {
       }
     }
   };
+  copyFromGroup = async (event) => {
+    const groupId = event.target.value;
+    if (!groupId) {
+      this.nbCopiedFromTargetGroup = null;
+      this.forceUpdate();
+      return;
+    }
+    try {
+      this.props.setIsLoading(true);
+      const { nbAdded } = await groupUrlFetch('/api/copy_urls_from_group', 'POST', {
+        fromGroup: groupId,
+      });
+      this.nbCopiedFromTargetGroup = nbAdded;
+      await this.fetchUrls();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
   componentDidMount() {
     this.fetchUrls();
   }
@@ -83,7 +104,27 @@ class Urls extends React.Component {
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('settings_urls')}</h2>
-        <div>{i18n.t('settings_urls_explanation')}</div>
+        <div style={{ marginBottom: 10 }}>{i18n.t('settings_urls_explanation')}</div>
+        {this.props.isSuperAdmin ? (
+          <div>
+            <div>{i18n.t('settings_urls_copy')}</div>
+            <select onChange={this.copyFromGroup}>
+              <option value="">{i18n.t('settings_urls_choose_group')}</option>
+              {this.props.otherGroups.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.name}
+                </option>
+              ))}
+            </select>
+            {this.nbCopiedFromTargetGroup !== null && (
+              <div>
+                {i18n.t('settings_urls_copied_number', { n: this.nbCopiedFromTargetGroup })}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>{i18n.t('settings_urls_copiable')}</div>
+        )}
         <div style={{ marginTop: 20, marginBottom: 20 }}>
           <div style={{ fontWeight: 'bold' }}>{i18n.t('settings_urls_new')}</div>
           <table className="invisibleTable">

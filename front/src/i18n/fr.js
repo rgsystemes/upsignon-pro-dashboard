@@ -90,6 +90,11 @@ const translations = {
   settings_urls: 'Sites web pré-renseignés',
   settings_urls_explanation:
     "Les sites que vous renseignez ici seront proposés aux utilisateurs pour simplifier l'enregistrement de leurs mots de passe.",
+  settings_urls_copiable:
+    "Un super administrateur peut facilement copier la liste d'un autre groupe si besoin.",
+  settings_urls_copy: "Ajouter la liste d'un autre groupe",
+  settings_urls_choose_group: 'Choisir le groupe',
+  settings_urls_copied_number: '$n sites copiés',
   settings_urls_new: 'Nouveau site web',
   settings_urls_name: 'Nom du site',
   settings_urls_signin_url: 'URL de signin',

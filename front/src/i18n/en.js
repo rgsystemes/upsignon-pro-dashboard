@@ -89,6 +89,11 @@ const translations = {
   settings_urls: 'Prefilled websites',
   settings_urls_explanation:
     'The websites you enter here will be offered to users to simplify the registration of their passwords.',
+  settings_urls_copiable:
+    "A super administrator can easily populate this list from another group' list if necessary.",
+  settings_urls_copy: 'Add the list from another group',
+  settings_urls_choose_group: 'Choose the group',
+  settings_urls_copied_number: 'Copied $n websites',
   settings_urls_new: 'New website',
   settings_urls_name: 'Site name',
   settings_urls_signin_url: 'Signin URL',

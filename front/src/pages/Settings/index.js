@@ -4,7 +4,7 @@ import { AllowedEmails } from './AllowedEmails';
 import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
 
-// Props setIsLoading
+// Props setIsLoading, isSuperAdmin, otherGroups
 class Settings extends React.Component {
   render() {
     return (
@@ -12,7 +12,11 @@ class Settings extends React.Component {
         <h1>{i18n.t('menu_settings')}</h1>
         <ProSetupLink />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
-        <Urls setIsLoading={this.props.setIsLoading} />
+        <Urls
+          setIsLoading={this.props.setIsLoading}
+          isSuperAdmin={this.props.isSuperAdmin}
+          otherGroups={this.props.otherGroups}
+        />
       </div>
     );
   }

@@ -113,7 +113,13 @@ class App extends React.Component {
       );
       currentPage = 'shared_accounts';
     } else if (path.startsWith(`/${groupId}/settings`)) {
-      pageContent = <Settings setIsLoading={this.setIsLoading} />;
+      pageContent = (
+        <Settings
+          setIsLoading={this.setIsLoading}
+          isSuperAdmin={this.state.isSuperadmin}
+          otherGroups={this.state.groups.filter((g) => g.id != groupId)}
+        />
+      );
       currentPage = 'settings';
     } else if (path.startsWith('/superadmin')) {
       pageContent = (
