@@ -35,7 +35,7 @@ Then configure nginx.
 
 Then add yourself as administrator.
 
-- `node ./back/scripts/inviteSuperAdmin.js <your-email@domain.com>`
+- `node ./back/scripts/addSuperAdmin.js <your-email@domain.com>`
   You will receive an email (if everything is well configured) that invites you to connect to your dashboard using UpSignOn.
   So you will need to have UpSignOn installed on you computer first, with your PRO space setup.
   Then enjoy the power and simplicity of our connection system by using the link you received by email.
