@@ -23,8 +23,47 @@
   <div style="display:flex; flex-direction: column; align-items: center;">
     <h1>Connexion</h1>
     <div id="UpSignOn"></div>
+    <div style="margin-top: 30px; margin-bottom: 10px;">You can also use this form</div>
+    <label for="email">Email</label>
+    <input name="email" id="email" type="email" style="margin-bottom: 10px;" />
+    <label for="pwd">Password</label>
+    <input name="pwd" id="pwd" type="password" style="margin-bottom: 10px;" />
+    <input type="submit" value="Submit" onClick="submitConnect()" style="cursor: pointer;" />
+    <div id="loginError" style="display:none; color: red;">Incorrect credentials</div>
+    <div id="internetError" style="display:none; color: red;">Internet error</div>
   </div>
 
+  <script type="text/javascript">
+    function submitConnect() {
+      const loginError = document.getElementById("loginError");
+      const internetError = document.getElementById("internetError");
+      loginError.style.display = "none";
+      internetError.style.display = "none";
+      const email = document.getElementById("email").value;
+      const pwd = document.getElementById("pwd").value;
+      if (!email || !pwd) {
+        loginError.style.display = 'block';
+        return;
+      }
+      const baseUrl = window.location.href.replace('/login.html', '');
+      const xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          window.location.href = xhr.responseURL;
+        }
+      }
+      xhr.addEventListener('error', () => {
+        internetError.style.display = "block";
+      });
+      xhr.addEventListener('timeout', () => {
+        internetError.style.display = "block";
+      });
+
+      xhr.open("POST", baseUrl + '/manualConnect', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify({ email, pwd }));
+    };
+  </script>
   <script type="text/javascript">
     "use strict";
     var UpSignOn = (function () {

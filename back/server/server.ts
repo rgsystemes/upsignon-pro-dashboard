@@ -15,6 +15,7 @@ import { superadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
+import { manualConnect } from './login/manualConnect';
 
 const app = express();
 
@@ -79,6 +80,7 @@ app.get('/login.html', (req, res) => {
     dotfiles: 'deny',
   });
 });
+app.post('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 
 // CHECK SESSION VALIDITY
