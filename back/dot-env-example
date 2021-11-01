@@ -17,6 +17,9 @@ SERVER_URL=https://upsignonpro.votre-domaine.fr/admin
 # SESSION SECRET, A RANDOM STRING GENERATE WITH `openssl rand -hex 30`
 SESSION_SECRET=TODO CHOOSE RANDOM STRING OF AT LEAST 20 CHARACTERS
 
+# PROXY CONFIGURATION
+HTTP_PROXY= # keep empty if not applicable
+
 # OPTIONAL LOCAL SSL CONFIGURATION
 # Not necessary if you use a reverse-proxy (Nginx), as described in the documentation
 # Defining these paths will make the nodejs server use HTTPS

@@ -15,6 +15,8 @@ const {
   SESSION_SECRET,
   SERVER_URL,
   DEV_FALLBACK_ADMIN_URL,
+  HTTP_PROXY,
+  EMAIL_ALLOW_INVALID_CERTIFICATE,
 } = process.env;
 
 export default {
@@ -34,4 +36,6 @@ export default {
   SESSION_SECRET,
   SERVER_URL: SERVER_URL?.replace(/\/$/, ''),
   DEV_FALLBACK_ADMIN_URL,
+  HTTP_PROXY,
+  EMAIL_ALLOW_INVALID_CERTIFICATE,
 };
