@@ -1,23 +1,31 @@
-# DO NOT EDIT OR RENAME THIS FILE
-# IN ORDER TO KEEP GIT STATUS CLEAN
-
-DB_USER=db-administrator
+# DATABASE CONFIGURATION
+DB_USER=upsignonpro
 DB_PASS=db-password
 DB_NAME=upsignonpro
 DB_HOST=localhost
 DB_PORT=5432
 
-NODE_ENV=production
-SERVER_PORT=3001
-SERVER_URL=https://domain.com/admin
+# THIS SERVER WILL NEED TO SEND EMAILS TO YOUR USERS
+EMAIL_HOST=smtp.votre-domaine.fr
+EMAIL_PORT=587
+EMAIL_USER=no-reply@votre-domaine.fr
+EMAIL_PASS=password # can be empty
 
+# ADMIN SERVER FULL URL
+SERVER_URL=https://upsignonpro.votre-domaine.fr/admin
+
+# SESSION SECRET, A RANDOM STRING GENERATE WITH `openssl rand -hex 30`
 SESSION_SECRET=TODO CHOOSE RANDOM STRING OF AT LEAST 20 CHARACTERS
 
-EMAIL_HOST=smtp.domain.fr
-EMAIL_PORT=587
-EMAIL_USER=user@domain.fr
-EMAIL_PASS=password
-
-# OPTIONAL local SSL configuration
+# OPTIONAL LOCAL SSL CONFIGURATION
+# Not necessary if you use a reverse-proxy (Nginx), as described in the documentation
+# Defining these paths will make the nodejs server use HTTPS
+#  - Use absolute paths
+#  - File extensions don't matter, .key and .cer or .pem will do
+#  - Do not forget to chmod 400 these files
 SSL_CERTIFICATE_KEY_PATH=
 SSL_CERTIFICATE_CRT_PATH=
+
+# DO NOT CHANGE
+NODE_ENV=production
+SERVER_PORT=3001
