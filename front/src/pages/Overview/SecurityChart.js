@@ -168,12 +168,7 @@ class SecurityChart extends React.Component {
               formatter={(value, name) => {
                 if (!this.usePctg) return value;
                 const roundedValue = Math.round(value * 10) / 10;
-                if (
-                  name === i18n.t('chart_weak_pwd') ||
-                  name === i18n.t('chart_medium_pwd') ||
-                  name === i18n.t('chart_strong_pwd') ||
-                  name === i18n.t('chart_duplicate_pwd')
-                ) {
+                if (name !== i18n.t('chart_nb_accounts')) {
                   return roundedValue + '%';
                 }
                 return roundedValue;
