@@ -81,7 +81,7 @@ export const get_password_stats = async (req: any, res: any): Promise<void> => {
           lastKnownStats?.nb_accounts_with_duplicate_password || 0;
         chartDataObjet[d].nbAccountsGreen += lastKnownStats?.nb_accounts_green || 0;
         chartDataObjet[d].nbAccountsOrange += lastKnownStats?.nb_accounts_orange || 0;
-        chartDataObjet[d].nbAccountsRed += lastKnownStats?.nb_accounts_green || 0;
+        chartDataObjet[d].nbAccountsRed += lastKnownStats?.nb_accounts_red || 0;
       });
     });
 
