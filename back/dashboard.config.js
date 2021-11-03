@@ -15,7 +15,7 @@ module.exports = {
       kill_timeout: 3000,
       source_map_support: true,
       autorestart: true,
-      min_uptime: 500,
+      min_uptime: 1000,
     },
   ],
 };
