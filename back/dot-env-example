@@ -18,7 +18,7 @@ SERVER_URL=https://upsignonpro.votre-domaine.fr/admin
 SESSION_SECRET=TODO CHOOSE RANDOM STRING OF AT LEAST 20 CHARACTERS
 
 # PROXY CONFIGURATION
-HTTP_PROXY= # keep empty if not applicable
+HTTP_PROXY=
 
 # OPTIONAL LOCAL SSL CONFIGURATION
 # Not necessary if you use a reverse-proxy (Nginx), as described in the documentation
