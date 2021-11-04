@@ -56,9 +56,9 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "Admnistration d'UpSignOn",
+      subject: "Administration d'UpSignOn",
       text: `Bonjour,
-  Vous avez été invité à administrer${groupName ? 'le groupe ' + groupName : ''} UpSignOn PRO.
+  Vous avez été invité à administrer${groupName ? ' le groupe' + groupName : ''} UpSignOn PRO.
   Téléchargez l'application UpSignOn sur cet appareil, créez ou importez votre espace PRO, puis cliquez sur ce lien pour devenir administrateur.
 
   ${link}
@@ -71,7 +71,7 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
   <html><body>
   <div>Bonjour,</div>
   <div>Vous avez été invité à administrer${
-    groupName ? 'le groupe ' + groupName : ''
+    groupName ? ' le groupe' + groupName : ''
   } UpSignOn PRO.</div>
   <div>Téléchargez l'application UpSignOn sur cet appareil, créez ou importez votre espace PRO, puis cliquez sur ce lien pour devenir administrateur.</div>
   <br/>
