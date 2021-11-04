@@ -180,7 +180,7 @@ const translations = {
   sasettings_groups: 'Groupes',
   sasettings_groups_explanation:
     "Les groupes sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur groupe. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs groupes.",
-  sasettings_group_name: "Nom qui sera affiché dans l'application",
+  sasettings_group_name: "Nom de l'entreprise",
   sasettings_nb_users: "Nombre d'utilisateurs",
   sasettings_reset_pwd_admin_check:
     "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de son groupe",

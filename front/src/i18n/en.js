@@ -179,7 +179,7 @@ const translations = {
   sasettings_groups: 'Groups',
   sasettings_groups_explanation:
     'Groups are hermetically sealed areas. Users will not be able to share accounts with people outside their group. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several groups.',
-  sasettings_group_name: 'Name that will be displayed in the app',
+  sasettings_group_name: 'Company name',
   sasettings_nb_users: 'Number of users',
   sasettings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator of his group',
