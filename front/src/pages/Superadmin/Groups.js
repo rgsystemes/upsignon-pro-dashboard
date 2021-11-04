@@ -109,6 +109,7 @@ class Groups extends React.Component {
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('sasettings_groups')}</h2>
+        <p>{i18n.t('sasettings_groups_explanation')}</p>
         <div
           style={{
             display: 'flex',
