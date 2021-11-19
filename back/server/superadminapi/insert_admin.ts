@@ -59,11 +59,10 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
       subject: "Administration d'UpSignOn",
       text: `Bonjour,
   Vous avez été invité à administrer${groupName ? ' le groupe' + groupName : ''} UpSignOn PRO.
-  Téléchargez l'application UpSignOn sur cet appareil, créez ou importez votre espace PRO, puis cliquez sur ce lien pour devenir administrateur.
-
-  ${link}
-
-  Attention, ce code expirera le ${expDate} à ${expTime}.
+  1. Téléchargez l'application UpSignOn sur cet appareil (voir https://upsignon.eu/download).
+  2. Créez ou importez votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.
+  3. Cliquez sur ce lien pour devenir administrateur. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+      ${link}
 
   Bonne journée,
   UpSignOn`,
@@ -73,12 +72,12 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
   <div>Vous avez été invité à administrer${
     groupName ? ' le groupe' + groupName : ''
   } UpSignOn PRO.</div>
-  <div>Téléchargez l'application UpSignOn sur cet appareil, créez ou importez votre espace PRO, puis cliquez sur ce lien pour devenir administrateur.</div>
-  <br/>
-  <a href="${link}">${link}</a>
-  <br/>
-  <br/>
-  <div>Attention, ce code expirera le ${expDate} à ${expTime}.</div>
+  <div>1. Téléchargez l'application UpSignOn sur cet appareil (voir <a href="https://upsignon.eu/download">cette page</a>).</div>
+  <div>2. Créez ou importez votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.</div>
+  <div>3. Cliquez sur ce lien pour devenir administrateur. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+    <br/>
+    <a href="${link}">${link}</a>
+  </div>
   <br/>
   <div>Bonne journée,</div>
   <div>UpSignOn</div>
