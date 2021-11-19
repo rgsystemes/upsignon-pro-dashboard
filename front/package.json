@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start-front": "react-scripts start",
-    "build-front": "react-scripts build",
+    "build-front": "react-scripts --openssl-legacy-provider build",
     "test-front": "react-scripts test",
     "eject-front": "react-scripts eject",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
