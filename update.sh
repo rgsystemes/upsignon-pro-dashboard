@@ -1,7 +1,19 @@
 git pull origin production --ff-only
 cd front
 yarn install
-yarn build-front
+npx react-scripts build
+if [ $? -eq 0 ]
+then
+  echo "Front build OK"
+else
+  npx react-scripts --openssl-legacy-provider build
+  if [ $? -eq 0 ]
+  then
+    echo "Front build OK"
+  fi
+fi
+
+
 cd ../back
 yarn install
 yarn build-server
