@@ -107,8 +107,18 @@ class SecurityChart extends React.Component {
         <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 20 }}>
           <Toggler
             choices={[
-              { key: 'color', title: i18n.t('chart_type_color'), isCurrent: !this.useEntropy },
-              { key: 'entropy', title: i18n.t('chart_type_entropy'), isCurrent: this.useEntropy },
+              {
+                key: 'color',
+                title: i18n.t('chart_type_color'),
+                help: i18n.t('chart_type_color_explanation'),
+                isCurrent: !this.useEntropy,
+              },
+              {
+                key: 'entropy',
+                title: i18n.t('chart_type_entropy'),
+                help: i18n.t('chart_type_entropy_explanation'),
+                isCurrent: this.useEntropy,
+              },
             ]}
             onSelect={(choice) => this.toggleEntropy(choice === 'entropy')}
           />

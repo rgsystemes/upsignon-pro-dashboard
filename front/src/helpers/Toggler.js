@@ -1,6 +1,6 @@
 import './Toggler.css';
 
-// PROPS = choices: {key,title,isCurrent}, onSelect: (choice)=>void
+// PROPS = choices: {key,title,help,isCurrent}, onSelect: (choice)=>void
 export function Toggler(p) {
   return (
     <div className="toggler">
@@ -10,6 +10,7 @@ export function Toggler(p) {
             key={c.key}
             className={c.isCurrent ? 'current' : ''}
             onClick={() => p.onSelect(c.key)}
+            title={c.help}
           >
             {c.title}
           </div>

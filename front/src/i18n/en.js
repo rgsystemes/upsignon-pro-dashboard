@@ -151,7 +151,11 @@ const translations = {
   chart_nb_accounts: 'Total nb of accounts',
   chart_type_nb: 'Nb',
   chart_type_color: 'By color',
+  chart_type_color_explanation:
+    'Password strength as displayed in the application, combining the entropy and the number of reuses of each password.',
   chart_type_entropy: 'By entropy',
+  chart_type_entropy_explanation:
+    'Password strength considering only entropy, i.e., not considering the number of reuses of a password. This measure does not represent what the user sees in the application.',
   chart_start_date: 'Start date',
   chart_end_date: 'End date',
   chart_automatic_dates: 'Auto. dates',

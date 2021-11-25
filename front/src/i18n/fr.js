@@ -152,7 +152,11 @@ const translations = {
   chart_nb_accounts: 'Nb total de comptes',
   chart_type_nb: 'Nb',
   chart_type_color: 'Par couleur',
+  chart_type_color_explanation:
+    "Force des mots de passe telle qu'affichée dans l'application, en combinant l'entropie et le nombre de réutilisations de chaque mot de passe.",
   chart_type_entropy: 'Par entropie',
+  chart_type_entropy_explanation:
+    "Force des mots de passe en ne prenant en compte que l'entropie, c'est-à-dire sans tenir compte du nombre de réutilisations d'un mot de passe. Cette mesure ne représente pas ce que voit l'utilisateur dans l'application.",
   chart_start_date: 'Date de début',
   chart_end_date: 'Date de fin',
   chart_automatic_dates: 'Dates auto.',
