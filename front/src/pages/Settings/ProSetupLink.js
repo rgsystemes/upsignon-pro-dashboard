@@ -2,11 +2,13 @@ import React from 'react';
 import { baseUrlFetch } from '../../helpers/urlFetch';
 import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
+import { copyToClipboard } from '../../helpers/clipboard';
 
 export class ProSetupLink extends React.Component {
   qrcodeGenerator = null;
   base64Img = null;
-  urlInputRef = null;
+
+  setupLinRef = null;
 
   state = {
     proServerUrlConfig: null,
@@ -70,10 +72,7 @@ export class ProSetupLink extends React.Component {
       <div>
         <h2>{i18n.t('setup_link')}</h2>
         <div>{i18n.t('setup_link_is_group_specific')}</div>
-        <a
-          href={this.proSetupLink}
-          className="link"
-          target="_blank"
+        <div
           style={{
             margin: 20,
             borderRadius: 10,
@@ -86,25 +85,45 @@ export class ProSetupLink extends React.Component {
             alignItems: 'center',
             boxShadow: '0 0 3px #eee',
           }}
-          rel="noreferrer"
         >
           <div style={{ fontWeight: 'bold', textDecoration: 'none', color: 'black' }}>
             {i18n.t('link_to_communicate')}
+            <span
+              ref
+              className="action"
+              style={{ marginLeft: 20 }}
+              onClick={() => {
+                copyToClipboard(this.proSetupLink, () => {
+                  this.setupLinRef.style.backgroundColor = '#ccc';
+                  setTimeout(() => {
+                    this.setupLinRef.style.backgroundColor = 'initial';
+                  }, 250);
+                });
+              }}
+            >
+              {i18n.t('copy_to_pasteboard')}
+            </span>
           </div>
-          <div
+          <a
+            href={this.proSetupLink}
+            ref={(r) => {
+              this.setupLinRef = r;
+            }}
+            className="link"
+            target="_blank"
+            rel="noreferrer"
             style={{
               textAlign: 'center',
-              display: 'block',
+              display: 'inline',
               marginBottom: 20,
-              textOverflow: 'ellipsis',
-              maxWidth: '100%',
+              alignSelf: 'center',
               wordWrap: 'break-word',
             }}
           >
             {this.proSetupLink}
-          </div>
+          </a>
           <img src={this.base64Img} style={{ height: 150, width: 150 }} alt="" />
-        </a>
+        </div>
       </div>
     );
   }

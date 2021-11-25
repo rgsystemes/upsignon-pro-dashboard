@@ -3,6 +3,7 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Extracts.css';
 import { groupServerUrl } from '../../helpers/env';
+import { copyToClipboard } from '../../helpers/clipboard';
 
 // Props = setIsLoading
 class Extracts extends React.Component {
@@ -179,14 +180,11 @@ class Extracts extends React.Component {
           <div
             style={{ cursor: 'pointer', textDecoration: 'underline' }}
             onClick={() => {
-              navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
-                if (result.state === 'granted' || result.state === 'prompt') {
-                  this.emailExtractRef.style.backgroundColor = '#ccc';
-                  navigator.clipboard.writeText(this.state.extractedEmails);
-                  setTimeout(() => {
-                    this.emailExtractRef.style.backgroundColor = 'initial';
-                  }, 250);
-                }
+              copyToClipboard(this.state.extractedEmails, () => {
+                this.emailExtractRef.style.backgroundColor = '#ccc';
+                setTimeout(() => {
+                  this.emailExtractRef.style.backgroundColor = 'initial';
+                }, 250);
               });
             }}
           >
