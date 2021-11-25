@@ -39,6 +39,7 @@ app.use(
     // @ts-ignore
     secret: env.SESSION_SECRET,
     resave: false,
+    rolling: true,
     saveUninitialized: false,
     unset: 'destroy',
     store: new SessionStore(),
@@ -68,7 +69,6 @@ app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
   logInfo(adminEmail || 'unconnected user', req.method, req.url);
-  req.session.touch();
   next();
 });
 
