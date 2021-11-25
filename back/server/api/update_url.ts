@@ -13,17 +13,18 @@ export const update_url = async (req: any, res: any): Promise<void> => {
       ]);
     }
     if (signinUrl != null) {
-      await db.query(`UPDATE url_list SET signin_url=lower($1) WHERE id=$2 AND group_id=$3`, [
+      await db.query(`UPDATE url_list SET signin_url=$1 WHERE id=$2 AND group_id=$3`, [
         signinUrl,
         id,
         req.proxyParamsGroupId,
       ]);
     }
     if (passwordChangeUrl != null) {
-      await db.query(
-        `UPDATE url_list SET password_change_url=lower($1) WHERE id=$2 AND group_id=$3`,
-        [passwordChangeUrl, id, req.proxyParamsGroupId],
-      );
+      await db.query(`UPDATE url_list SET password_change_url=$1 WHERE id=$2 AND group_id=$3`, [
+        passwordChangeUrl,
+        id,
+        req.proxyParamsGroupId,
+      ]);
     }
     res.status(200).end();
   } catch (e) {
