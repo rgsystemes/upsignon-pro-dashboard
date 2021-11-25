@@ -89,10 +89,14 @@ app.use((req, res, next) => {
   const isLoginRoute = req.url.startsWith('/login');
   // @ts-ignore
   if (!req.session.adminEmail && !isLoginRoute) {
-    if (env.IS_PRODUCTION) {
-      res.redirect(303, env.SERVER_URL + '/login.html');
+    if (req.method !== 'GET') {
+      res.status(401).end();
     } else {
-      res.redirect(303, `${req.protocol}://${req.headers.host?.replace(/\/$/, '')}/login.html`);
+      if (env.IS_PRODUCTION) {
+        res.redirect(303, env.SERVER_URL + '/login.html');
+      } else {
+        res.redirect(303, `${req.protocol}://${req.headers.host?.replace(/\/$/, '')}/login.html`);
+      }
     }
   } else {
     next();
