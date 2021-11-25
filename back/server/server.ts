@@ -68,6 +68,7 @@ app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
   logInfo(adminEmail || 'unconnected user', req.method, req.url);
+  req.session.touch();
   next();
 });
 
@@ -88,7 +89,11 @@ app.use((req, res, next) => {
   const isLoginRoute = req.url.startsWith('/login');
   // @ts-ignore
   if (!req.session.adminEmail && !isLoginRoute) {
-    return res.status(401).end();
+    if (env.IS_PRODUCTION) {
+      res.redirect(303, env.SERVER_URL + '/login.html');
+    } else {
+      res.redirect(303, `${req.protocol}://${req.headers.host?.replace(/\/$/, '')}/login.html`);
+    }
   } else {
     next();
   }
