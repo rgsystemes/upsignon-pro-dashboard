@@ -17,7 +17,7 @@ import { disconnect } from './helpers/disconnect';
 import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 
-const frontBuildDir = path.join(__dirname, '../front/build');
+const frontBuildDir = path.join(__dirname, '../../front/build');
 
 const app = express();
 
