@@ -17,6 +17,8 @@ import { disconnect } from './helpers/disconnect';
 import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 
+const frontBuildDir = path.join(__dirname, '../front/build');
+
 const app = express();
 
 // Set express trust-proxy so that secure sessions cookies can work
@@ -73,11 +75,11 @@ app.use((req, res, next) => {
 });
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
-app.use('/', express.static('../front/build'));
+app.use('/', express.static(frontBuildDir));
 
 app.get('/login.html', (req, res) => {
   res.status(200).sendFile('login.html', {
-    root: path.resolve('../front/build'),
+    root: path.resolve(frontBuildDir),
     dotfiles: 'deny',
   });
 });
@@ -127,7 +129,7 @@ app.use(
     '/:groupId/settings/',
     '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
   ],
-  express.static('../front/build'),
+  express.static(frontBuildDir),
 );
 
 // START
