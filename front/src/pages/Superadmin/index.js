@@ -50,16 +50,6 @@ class Superadmin extends React.Component {
             <a
               className="link"
               target="_blank"
-              href="https://github.com/UpSignOn/UpSignOn-pro-forest-admin"
-              rel="noreferrer"
-            >
-              {i18n.t('install_doc_server_pro_dashboard')}
-            </a>
-          </li>
-          <li>
-            <a
-              className="link"
-              target="_blank"
               href="https://github.com/UpSignOn/UpSignOn-pro-server/blob/production/doc/GPO_deployment.md"
               rel="noreferrer"
             >
