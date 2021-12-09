@@ -1,6 +1,6 @@
 {
   "name": "upsignon-pro-dashboard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "react": "^17.0.2",
@@ -17,8 +17,7 @@
   },
   "scripts": {
     "start-front": "react-scripts start",
-    "build-front": "react-scripts build",
-    "build-front-if-problem": "react-scripts --openssl-legacy-provider build",
+    "build-front": "./buildFront.sh",
     "test-front": "react-scripts test",
     "eject-front": "react-scripts eject",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
