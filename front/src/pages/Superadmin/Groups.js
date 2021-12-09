@@ -2,6 +2,7 @@ import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { baseUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { baseFrontUrl } from '../../helpers/env';
 
 // Props : setIsLoading, groups, fetchGroups
 class Groups extends React.Component {
@@ -134,6 +135,7 @@ class Groups extends React.Component {
           <table>
             <thead>
               <tr>
+                <th></th>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
@@ -144,6 +146,16 @@ class Groups extends React.Component {
               {this.props.groups.map((group) => {
                 return (
                   <tr key={group.id}>
+                    <td>
+                      <span
+                        className="action"
+                        onClick={() => {
+                          window.location.href = baseFrontUrl + '/' + group.id + '/';
+                        }}
+                      >
+                        {i18n.t('sasettings_group_open')}
+                      </span>
+                    </td>
                     <EditableCell
                       value={group.name}
                       onChange={(newVal) => {

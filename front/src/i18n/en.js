@@ -180,10 +180,12 @@ const translations = {
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
   sasettings_superadmins: 'Administrators',
-  sasettings_groups: 'Groups',
+  sasettings_superadmins_invite: '(Re)Send an invite (valid for 24h)',
+  sasettings_groups: 'Groups / Companies',
   sasettings_groups_explanation:
     'Groups are hermetically sealed areas. Users will not be able to share accounts with people outside their group. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several groups.',
-  sasettings_group_name: 'Company name',
+  sasettings_group_name: 'Group / Company name',
+  sasettings_group_open: 'See',
   sasettings_nb_users: 'Number of users',
   sasettings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator of his group',

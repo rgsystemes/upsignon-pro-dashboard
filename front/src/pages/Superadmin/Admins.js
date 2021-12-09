@@ -98,7 +98,7 @@ class Admins extends React.Component {
             }}
           />
           <div className="action" style={{ marginLeft: 10 }} onClick={this.insertSuperAdmin}>
-            {i18n.t('add')}
+            {i18n.t('sasettings_superadmins_invite')}
           </div>
         </div>
         {this.state.admins.length > 0 && (
