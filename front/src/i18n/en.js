@@ -191,7 +191,7 @@ const translations = {
   sasettings_group_name_change_warning:
     'Notice: group name changes only affect new devices for now.',
   sasettings_group_delete_warning:
-    'Are you sure you want to delete this group? This will permanently delete all user data for this group.This action is irreversible!',
+    'Are you sure you want to delete this group? All safes associated with this group and the secrets stored in them will be permanently deleted. This action is irreversible!',
   sasetting_confirm_group_delete: 'To confirm, please type exactly "$name"',
 };
 
