@@ -14,14 +14,14 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getLocaleDateFormat, getDateBack1Month } from '../../helpers/dateHelper';
+import { getLocaleDateFormat } from '../../helpers/dateHelper';
 import { Toggler } from '../../helpers/Toggler';
 
 class SecurityChart extends React.Component {
   rawStats = [];
   usePctg = false;
   useEntropy = false;
-  startDate = getDateBack1Month();
+  startDate = null;
   endDate = new Date();
 
   state = {
@@ -29,8 +29,18 @@ class SecurityChart extends React.Component {
   };
 
   showStats = () => {
-    this.setState({
-      stats: this.rawStats.map((s) => {
+    if (!this.startDate) {
+      this.clearDates();
+      return;
+    }
+    const utcTimeStart = new Date(this.startDate).getTime();
+    const utcTimeEnd = new Date(this.endDate).getTime();
+    const newStats = this.rawStats
+      .filter((s) => {
+        const utcTime = new Date(s.day).getTime();
+        return utcTime >= utcTimeStart && utcTime <= utcTimeEnd;
+      })
+      .map((s) => {
         const sum = s.nbAccounts;
         return {
           ...s,
@@ -49,16 +59,12 @@ class SecurityChart extends React.Component {
           nbAccountsOrange: this.usePctg ? (s.nbAccountsOrange / sum) * 100 : s.nbAccountsOrange,
           nbAccountsGreen: this.usePctg ? (s.nbAccountsGreen / sum) * 100 : s.nbAccountsGreen,
         };
-      }),
-    });
+      });
+    this.setState({ stats: newStats });
   };
   fetchStats = async () => {
     try {
-      const stats = await groupUrlFetch(
-        `/api/get-password-stats?start=${this.startDate.toISOString()}&end=${this.endDate.toISOString()}`,
-        'GET',
-        null,
-      );
+      const stats = await groupUrlFetch(`/api/get-password-stats`, 'GET', null);
       this.rawStats = stats;
       this.showStats();
     } catch (e) {
@@ -83,22 +89,23 @@ class SecurityChart extends React.Component {
   updateStartDate = (newStartDate) => {
     if (this.startDate.getTime() !== newStartDate.getTime()) {
       this.startDate = newStartDate;
-      this.fetchStats();
       sessionStorage['startDate'] = newStartDate.toISOString();
+      this.showStats();
     }
   };
   updateEndDate = (newEndDate) => {
     if (this.endDate.getTime() !== newEndDate.getTime()) {
       this.endDate = newEndDate;
-      this.fetchStats();
       sessionStorage['endDate'] = newEndDate.toISOString();
+      this.showStats();
     }
   };
   clearDates = () => {
     sessionStorage.clear();
-    this.startDate = getDateBack1Month();
+    this.startDate = new Date(this.rawStats[0].day);
+    this.startDate.setDate(this.startDate.getDate() - 1);
     this.endDate = new Date();
-    this.fetchStats();
+    this.showStats();
   };
   render() {
     return (
