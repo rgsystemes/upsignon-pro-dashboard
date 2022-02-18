@@ -199,6 +199,7 @@ class Groups extends React.Component {
                 <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
