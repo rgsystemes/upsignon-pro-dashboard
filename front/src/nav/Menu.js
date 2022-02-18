@@ -8,6 +8,7 @@ import { GroupChooser } from './GroupChooser';
 // PROPS pages, groups, isSuperadmin, isSuperadminPage
 function Menu(props) {
   const { pages, groups, isSuperadmin, isSuperadminPage } = props;
+  const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
       <GroupChooser
@@ -70,6 +71,7 @@ function Menu(props) {
           </svg>
         </svg>
         <div>UpSignOn</div>
+        <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
       </div>
     </nav>
   );
