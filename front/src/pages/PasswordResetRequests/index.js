@@ -2,9 +2,9 @@ import React from 'react';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
-// Props setIsLoading
+// Props setIsLoading, totalCount
 
-class PendingPasswordResetRequests extends React.Component {
+class PasswordResetRequests extends React.Component {
   state = {
     pendingRequests: [],
   };
@@ -55,8 +55,10 @@ class PendingPasswordResetRequests extends React.Component {
   render() {
     if (this.state.pendingRequests.length === 0) return null;
     return (
-      <div>
-        <h2>{i18n.t('password_reset_requests_pending')}</h2>
+      <div className="page">
+        <h1>{`${i18n.t('menu_password_reset_requests')} - ${i18n.t('total_count', {
+          count: this.props.totalCount,
+        })}`}</h1>
         <table style={{ marginBottom: 20 }}>
           <thead>
             <tr>
@@ -109,4 +111,4 @@ class PendingPasswordResetRequests extends React.Component {
   }
 }
 
-export { PendingPasswordResetRequests };
+export { PasswordResetRequests };

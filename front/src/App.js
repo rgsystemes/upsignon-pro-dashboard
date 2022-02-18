@@ -12,6 +12,7 @@ import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
 import { baseFrontUrl, groupId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
+import { PasswordResetRequests } from './pages/PasswordResetRequests';
 
 class App extends React.Component {
   state = {
@@ -19,6 +20,7 @@ class App extends React.Component {
     nb_users: null,
     nb_shared_accounts: null,
     nb_shared_devices: null,
+    nb_pwd_reset_requests: null,
     groups: [],
     isSuperadmin: false,
     isReady: false,
@@ -29,12 +31,14 @@ class App extends React.Component {
         groupUrlFetch('/api/count-shared-accounts', 'GET', null),
         groupUrlFetch('/api/count-shared-devices', 'GET', null),
         groupUrlFetch('/api/count-users', 'GET', null),
+        groupUrlFetch('/api/count-password-reset-requests', 'GET', null),
       ]);
 
       this.setState({
         nb_shared_accounts: stats[0],
         nb_shared_devices: stats[1],
         nb_users: stats[2],
+        nb_pwd_reset_requests: stats[3],
       });
     } catch (e) {
       console.error(e);
@@ -105,6 +109,14 @@ class App extends React.Component {
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
+    } else if (path.startsWith(`/${groupId}/password_reset_requests`)) {
+      pageContent = (
+        <PasswordResetRequests
+          setIsLoading={this.setIsLoading}
+          totalCount={this.state.nb_pwd_reset_requests}
+        />
+      );
+      currentPage = 'password_reset_requests';
     } else if (path.startsWith(`/${groupId}/shared_accounts`)) {
       pageContent = (
         <SharedAccounts
@@ -136,30 +148,44 @@ class App extends React.Component {
         href: '/',
         title: i18n.t('menu_overview'),
         isCurrent: currentPage === 'overview',
+        disabledForSuperadmin: true,
+      },
+      {
+        key: 'password_reset_requests',
+        href: '/password_reset_requests/',
+        title: `${i18n.t('menu_password_reset_requests')} (${
+          this.state.nb_pwd_reset_requests || '-'
+        })`,
+        isCurrent: currentPage === 'password_reset_requests',
+        disabledForSuperadmin: false,
       },
       {
         key: 'users',
         href: '/users/',
         title: `${i18n.t('menu_users')} (${this.state.nb_users || '-'})`,
         isCurrent: currentPage === 'users',
+        disabledForSuperadmin: true,
       },
       {
         key: 'shared_devices',
         href: '/shared_devices/',
         title: `${i18n.t('menu_shared_devices')} (${this.state.nb_shared_devices || '-'})`,
         isCurrent: currentPage === 'shared_devices',
+        disabledForSuperadmin: true,
       },
       {
         key: 'shared_accounts',
         href: '/shared_accounts/',
         title: `${i18n.t('menu_shared_accounts')} (${this.state.nb_shared_accounts || '-'})`,
         isCurrent: currentPage === 'shared_accounts',
+        disabledForSuperadmin: true,
       },
       {
         key: 'settings',
         href: '/settings/',
         title: i18n.t('menu_settings'),
         isCurrent: currentPage === 'settings',
+        disabledForSuperadmin: true,
       },
     ];
 

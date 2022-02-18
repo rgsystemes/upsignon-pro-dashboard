@@ -1,6 +1,7 @@
 import express from 'express';
 import { authorize_device } from './authorize_device';
 import { copy_urls_from_group } from './copy_urls_from_group';
+import { count_password_reset_requests } from './count_password_reset_requests';
 import { count_shared_accounts } from './count_shared_accounts';
 import { count_shared_devices } from './count_shared_devices';
 import { count_users } from './count_users';
@@ -67,6 +68,7 @@ apiRouter.post('/deactivate-device-all-users/:deviceId', deactivate_device_all_u
 apiRouter.get('/count-shared-devices', count_shared_devices);
 
 // Password reset requests
+apiRouter.get('/count-password-reset-requests', count_password_reset_requests);
 apiRouter.get('/get-pending-password-reset-requests', get_pending_password_reset_requests);
 apiRouter.post('/delete-pwd-reset-request/:requestId', delete_pwd_reset_request);
 apiRouter.post('/grant-pwd-reset-request/:requestId', grant_pwd_reset_request);
