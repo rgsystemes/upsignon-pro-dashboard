@@ -170,11 +170,9 @@ class Users extends React.Component {
   render() {
     const searchInputStyle = { width: 200 };
     if (this.state.users.length === 0 && !!this.searchInput?.value) {
-      searchInputStyle.backgroundColor = 'red';
-      searchInputStyle.color = 'white';
+      searchInputStyle.borderColor = 'red';
     } else if (this.state.users.length === 1 && !!this.searchInput?.value) {
-      searchInputStyle.backgroundColor = 'green';
-      searchInputStyle.color = 'white';
+      searchInputStyle.borderColor = 'green';
     }
     return (
       <div className="page">

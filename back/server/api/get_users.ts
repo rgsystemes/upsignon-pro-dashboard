@@ -15,12 +15,15 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     // COUNT USERS
     let userCount;
     if (isSearching) {
-      const countUsersReq = await db.query('SELECT COUNT(id) FROM users WHERE email LIKE $1', [
-        search + '%',
-      ]);
+      const countUsersReq = await db.query(
+        'SELECT COUNT(id) FROM users WHERE email LIKE $1 AND users.group_id=$2',
+        [search + '%', req.proxyParamsGroupId],
+      );
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     } else {
-      const countUsersReq = await db.query('SELECT COUNT(id) FROM users');
+      const countUsersReq = await db.query('SELECT COUNT(id) FROM users WHERE users.group_id=$1', [
+        req.proxyParamsGroupId,
+      ]);
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     }
 
