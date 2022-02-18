@@ -16,19 +16,15 @@ function Menu(props) {
         isSuperadminPage={isSuperadminPage}
         isSuperadmin={isSuperadmin}
       />
-      {isSuperadminPage ? (
-        <React.Fragment>
-          {pages.map((p) => {
+      <React.Fragment>
+        {pages.map((p) => {
+          if (isSuperadminPage && p.disabledForSuperadmin) {
             return (
               <div key={p.key} className="navItem disabled">
                 {p.title}
               </div>
             );
-          })}
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          {pages.map((p) => {
+          } else {
             return (
               <a
                 key={p.key}
@@ -38,9 +34,9 @@ function Menu(props) {
                 {p.title}
               </a>
             );
-          })}
-        </React.Fragment>
-      )}
+          }
+        })}
+      </React.Fragment>
       <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
         <div
           className="action"

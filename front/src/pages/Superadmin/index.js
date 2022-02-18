@@ -13,7 +13,7 @@ class Superadmin extends React.Component {
   };
   fetchGroups = async () => {
     try {
-      const groups = await baseUrlFetch('/superadmin-api/groups', 'GET', null);
+      const groups = await baseUrlFetch('/superadmin/api/groups', 'GET', null);
       this.setState({ groups });
       this.props.updateMenuGroups(groups);
     } catch (e) {

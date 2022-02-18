@@ -70,6 +70,7 @@ const translations = {
     "Cet appareil sera autorisé sans que l'utilisateur n'ait besoin de valider son adresse email.\n\nAssurez-vous que la demande provienne bien d'un utilisateur légitime !\n\nAutoriser l'appareil ?",
   device_shared_with: 'Appareil partagé avec',
   password_reset_requests: 'Demandes de réinitialisation de mot de passe',
+  password_reset_request_group: 'Groupe',
   password_reset_request_date: 'Date de la demande',
   password_reset_request_status: 'Statut de la demande',
   password_reset_request_expired: 'Token expiré',

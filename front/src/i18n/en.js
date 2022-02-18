@@ -70,6 +70,7 @@ const translations = {
     'This device will be authorized without the user needing to validate his email address.\n\nMake sure this request originates from a legitimate user!\n\nAuthorize?',
   device_shared_with: 'Device shared with',
   password_reset_requests: 'Password reset requests',
+  password_reset_request_group: 'Group',
   password_reset_request_date: 'Request date',
   password_reset_request_status: 'Request status',
   password_reset_request_expired: 'Token has expired',

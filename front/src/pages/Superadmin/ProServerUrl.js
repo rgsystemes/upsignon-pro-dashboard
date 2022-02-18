@@ -51,7 +51,7 @@ export class ProServerUrl extends React.Component {
         oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
         oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
       };
-      await baseUrlFetch('/superadmin-api/update-setting', 'POST', {
+      await baseUrlFetch('/superadmin/api/update-setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
         value: JSON.stringify(newStateUrl),
       });

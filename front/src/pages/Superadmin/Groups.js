@@ -21,7 +21,7 @@ class Groups extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await baseUrlFetch('/superadmin-api/insert-group', 'POST', { name: newGroup });
+      await baseUrlFetch('/superadmin/api/insert-group', 'POST', { name: newGroup });
       await this.props.fetchGroups();
       this.newInputRef.value = null;
     } catch (e) {
@@ -33,7 +33,7 @@ class Groups extends React.Component {
   updateGroupName = async (groupId, newName) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch('/superadmin-api/update-group', 'POST', {
+      await baseUrlFetch('/superadmin/api/update-group', 'POST', {
         name: newName,
         id: groupId,
       });
@@ -61,7 +61,7 @@ class Groups extends React.Component {
   deleteGroup = async (id) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch(`/superadmin-api/delete-group/${id}`, 'POST', null);
+      await baseUrlFetch(`/superadmin/api/delete-group/${id}`, 'POST', null);
       await this.props.fetchGroups();
     } catch (e) {
       console.error(e);

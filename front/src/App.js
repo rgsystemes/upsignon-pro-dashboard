@@ -25,26 +25,10 @@ class App extends React.Component {
     isSuperadmin: false,
     isReady: false,
   };
-  fetchStats = async () => {
-    try {
-      const stats = await Promise.all([
-        groupUrlFetch('/api/count-shared-accounts', 'GET', null),
-        groupUrlFetch('/api/count-shared-devices', 'GET', null),
-        groupUrlFetch('/api/count-users', 'GET', null),
-        groupUrlFetch('/api/count-password-reset-requests', 'GET', null),
-      ]);
-
-      this.setState({
-        nb_shared_accounts: stats[0],
-        nb_shared_devices: stats[1],
-        nb_users: stats[2],
-        nb_pwd_reset_requests: stats[3],
-      });
-    } catch (e) {
-      console.error(e);
-    }
+  updateMenuGroups = (newGroups) => {
+    this.setState({ groups: newGroups });
   };
-  fetchGroups = async () => {
+  async componentDidMount() {
     try {
       const groupsRes = await baseUrlFetch('/get_available_groups', 'GET', null);
       // eslint-disable-next-line eqeqeq
@@ -67,15 +51,20 @@ class App extends React.Component {
       console.error(e);
       window.location.href = baseFrontUrl + '/login.html';
     }
-  };
-  updateMenuGroups = (newGroups) => {
-    this.setState({ groups: newGroups });
-  };
-  async componentDidMount() {
-    await this.fetchGroups();
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
-      await this.fetchStats();
+      groupUrlFetch('/api/count-shared-accounts', 'GET', null)
+        .then((res) => this.setState({ nb_shared_accounts: res }))
+        .catch(() => {});
+      groupUrlFetch('/api/count-shared-devices', 'GET', null)
+        .then((res) => this.setState({ nb_shared_devices: res }))
+        .catch(() => {});
+      groupUrlFetch('/api/count-users', 'GET', null)
+        .then((res) => this.setState({ nb_users: res }))
+        .catch(() => {});
     }
+    groupUrlFetch('/api/count-password-reset-requests', 'GET', null)
+      .then((res) => this.setState({ nb_pwd_reset_requests: res }))
+      .catch(() => {});
   }
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
@@ -114,6 +103,7 @@ class App extends React.Component {
         <PasswordResetRequests
           setIsLoading={this.setIsLoading}
           totalCount={this.state.nb_pwd_reset_requests}
+          isSuperAdmin={this.state.isSuperadmin}
         />
       );
       currentPage = 'password_reset_requests';
@@ -195,7 +185,10 @@ class App extends React.Component {
           pages={pages}
           groups={this.state.groups}
           isSuperadmin={this.state.isSuperadmin}
-          isSuperadminPage={currentPage === 'superadmin'}
+          isSuperadminPage={
+            currentPage === 'superadmin' ||
+            (currentPage === 'password_reset_requests' && groupId === 'superadmin')
+          }
         />
         {pageContent}
         <div

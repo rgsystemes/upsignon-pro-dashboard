@@ -112,7 +112,7 @@ app.get('/get_available_groups', get_available_groups);
 app.get('/server_url', get_server_url);
 app.use('/disconnect/', disconnect);
 
-app.use('/superadmin-api/', superadminApiRouter);
+app.use('/superadmin/api/', superadminApiRouter);
 app.use('/:groupId/api/', (req, res, next) => {
   const groupId = req.params.groupId;
   // @ts-ignore
@@ -122,6 +122,7 @@ app.use('/:groupId/api/', (req, res, next) => {
 
 app.use(
   [
+    '/superadmin/password_reset_requests/',
     '/superadmin/',
     '/:groupId/users/',
     '/:groupId/shared_devices/',

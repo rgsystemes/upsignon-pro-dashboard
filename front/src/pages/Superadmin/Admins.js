@@ -12,7 +12,7 @@ class Admins extends React.Component {
 
   fetchAdmins = async () => {
     try {
-      const adminEmails = await baseUrlFetch('/superadmin-api/admins', 'GET', null);
+      const adminEmails = await baseUrlFetch('/superadmin/api/admins', 'GET', null);
       this.setState({
         admins: adminEmails,
       });
@@ -46,7 +46,7 @@ class Admins extends React.Component {
   updateAdminGroup = async (adminId, groupId) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch('/superadmin-api/update-admin-group', 'POST', { adminId, groupId });
+      await baseUrlFetch('/superadmin/api/update-admin-group', 'POST', { adminId, groupId });
       await this.fetchAdmins();
     } catch (e) {
       console.error(e);

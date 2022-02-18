@@ -2,7 +2,7 @@ import React from 'react';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
-// Props setIsLoading, totalCount
+// Props setIsLoading, totalCount, isSuperAdmin
 
 class PasswordResetRequests extends React.Component {
   state = {
@@ -62,6 +62,7 @@ class PasswordResetRequests extends React.Component {
         <table style={{ marginBottom: 20 }}>
           <thead>
             <tr>
+              {this.props.isSuperAdmin && <th>{i18n.t('password_reset_request_group')}</th>}
               <th>{i18n.t('password_reset_request_date')}</th>
               <th>{i18n.t('user_email')}</th>
               <th>{i18n.t('device_name')}</th>
@@ -74,6 +75,7 @@ class PasswordResetRequests extends React.Component {
             {this.state.pendingRequests.map((d) => {
               return (
                 <tr key={d.pwd_reset_id}>
+                  {this.props.isSuperAdmin && <td>{d.group_name}</td>}
                   <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
                   <td>{d.email}</td>
                   <td>{d.device_name}</td>

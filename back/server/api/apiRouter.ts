@@ -68,10 +68,18 @@ apiRouter.post('/deactivate-device-all-users/:deviceId', deactivate_device_all_u
 apiRouter.get('/count-shared-devices', count_shared_devices);
 
 // Password reset requests
-apiRouter.get('/count-password-reset-requests', count_password_reset_requests);
-apiRouter.get('/get-pending-password-reset-requests', get_pending_password_reset_requests);
-apiRouter.post('/delete-pwd-reset-request/:requestId', delete_pwd_reset_request);
-apiRouter.post('/grant-pwd-reset-request/:requestId', grant_pwd_reset_request);
+apiRouter.get('/count-password-reset-requests', (req, res) =>
+  count_password_reset_requests(req, res, false),
+);
+apiRouter.get('/get-pending-password-reset-requests', (req, res) =>
+  get_pending_password_reset_requests(req, res, false),
+);
+apiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) =>
+  delete_pwd_reset_request(req, res, false),
+);
+apiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) =>
+  grant_pwd_reset_request(req, res, false),
+);
 
 // Shared accounts
 apiRouter.get('/shared-accounts', get_shared_accounts);

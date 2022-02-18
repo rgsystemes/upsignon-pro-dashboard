@@ -4,7 +4,11 @@ import { db } from '../helpers/connection';
 import env from '../helpers/env';
 import { logError } from '../helpers/logger';
 
-export const grant_pwd_reset_request = async (req: any, res: any): Promise<void> => {
+export const grant_pwd_reset_request = async (
+  req: any,
+  res: any,
+  asSuperadmin: boolean,
+): Promise<void> => {
   try {
     const requestId = req.params.requestId;
     const expDuration = 10 * 60 * 1000; // 10 minutes
@@ -14,12 +18,18 @@ export const grant_pwd_reset_request = async (req: any, res: any): Promise<void>
     const expirationDate = date.toISOString();
     const requestToken = v4().substring(0, 8);
     await db.query(
-      `UPDATE password_reset_request SET status='ADMIN_AUTHORIZED', reset_token=$1, reset_token_expiration_date=$2 WHERE id=$3 AND group_id=$4`,
-      [requestToken, expirationDate, requestId, req.proxyParamsGroupId],
+      `UPDATE password_reset_request SET status='ADMIN_AUTHORIZED', reset_token=$1, reset_token_expiration_date=$2 WHERE id=$3 ${
+        asSuperadmin ? '' : 'AND group_id=$4'
+      }`,
+      asSuperadmin
+        ? [requestToken, expirationDate, requestId]
+        : [requestToken, expirationDate, requestId, req.proxyParamsGroupId],
     );
     const userReq = await db.query(
-      'SELECT u.email, ud.device_name FROM users AS u INNER JOIN user_devices AS ud ON u.id=ud.user_id INNER JOIN password_reset_request AS prr ON prr.device_id=ud.id WHERE prr.id=$1 AND u.group_id=$2',
-      [requestId, req.proxyParamsGroupId],
+      `SELECT u.email, ud.device_name FROM users AS u INNER JOIN user_devices AS ud ON u.id=ud.user_id INNER JOIN password_reset_request AS prr ON prr.device_id=ud.id WHERE prr.id=$1 ${
+        asSuperadmin ? '' : 'AND group_id=$2'
+      }`,
+      asSuperadmin ? [requestId] : [requestId, req.proxyParamsGroupId],
     );
     const emailAddress = userReq.rows[0].email;
     const deviceName = userReq.rows[0].device_name;
