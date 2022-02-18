@@ -2,7 +2,6 @@ import React from 'react';
 import { baseUrlFetch } from '../../helpers/urlFetch';
 import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
-import { copyToClipboard } from '../../helpers/clipboard';
 
 export class ProSetupLink extends React.Component {
   qrcodeGenerator = null;
@@ -93,7 +92,7 @@ export class ProSetupLink extends React.Component {
               className="action"
               style={{ marginLeft: 20 }}
               onClick={() => {
-                copyToClipboard(this.proSetupLink, () => {
+                navigator.clipboard.writeText(this.proSetupLink).then(() => {
                   this.setupLinRef.style.backgroundColor = '#ccc';
                   setTimeout(() => {
                     this.setupLinRef.style.backgroundColor = 'initial';
