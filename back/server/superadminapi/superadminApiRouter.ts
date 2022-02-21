@@ -12,6 +12,7 @@ import { get_pending_password_reset_requests } from '../api/get_pending_password
 import { count_password_reset_requests } from '../api/count_password_reset_requests';
 import { delete_pwd_reset_request } from '../api/delete_pwd_reset_request';
 import { grant_pwd_reset_request } from '../api/grant_pwd_reset_request';
+import { update_superadmin_status } from './update_superadmin_status';
 
 export const superadminApiRouter = express.Router();
 
@@ -28,6 +29,7 @@ superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-group', update_admin_group);
+superadminApiRouter.post('/update-superadmin-status', update_superadmin_status);
 
 // GROUPS
 superadminApiRouter.get('/groups', get_groups);

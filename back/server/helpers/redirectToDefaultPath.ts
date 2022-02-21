@@ -1,9 +1,7 @@
 import env from './env';
 
 export const redirectToDefaultPath = (req: any, res: any): void => {
-  const isSuperadmin = req.session.isSuperadmin;
-  const groupId = req.session.groupId;
-  const defaultPath = isSuperadmin ? 'superadmin' : groupId;
+  const defaultPath = req.session.isSuperadmin ? 'superadmin' : req.sessions.groups[0];
 
   if (env.IS_PRODUCTION) {
     res.redirect(303, env.SERVER_URL + '/' + defaultPath + '/');

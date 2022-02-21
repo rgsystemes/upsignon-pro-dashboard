@@ -7,13 +7,19 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
 
     // Check Superadmin
     const adminRes = await db.query(
-      'SELECT is_superadmin, group_id FROM admins WHERE admins.email=$1',
+      `SELECT
+        admins.is_superadmin,
+        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(admin_groups.group_id) END AS groups
+      FROM admins
+      LEFT JOIN admin_groups ON admins.id=admin_groups.admin_id
+      WHERE admins.email=$1
+      GROUP BY admins.id`,
       [email],
     );
     if (adminRes.rowCount !== 0) {
       const isSuperadmin = adminRes.rows[0].is_superadmin;
       req.session.isSuperadmin = isSuperadmin;
-      req.session.groupId = adminRes.rows[0].group_id;
+      req.session.groups = adminRes.rows[0].groups;
     }
   } catch (e) {
     logError(e);

@@ -8,6 +8,7 @@ const translations = {
   actions: 'Actions',
   delete: 'Delete',
   add: 'Add',
+  close: 'Close',
   total: 'Total',
   disconnect: 'Disconnect',
   pagination_pages: 'pages',
@@ -90,8 +91,9 @@ const translations = {
     'This will not delete the safes for users matching this email address template.\n\nDelete ?',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Added on',
-  settings_admin_group: 'Group',
+  settings_admin_groups: 'Groups',
   sasettings_admin_delete_warning: 'Are you sure you want to revoke this admin?',
+  sasettings_admin_change_rights: 'Change rights',
   settings_urls: 'Prefilled websites',
   settings_urls_explanation:
     'The websites you enter here will be offered to users to simplify the registration of their passwords.',
@@ -194,6 +196,8 @@ const translations = {
   sasettings_group_delete_warning:
     'Are you sure you want to delete this group? All safes associated with this group and the secrets stored in them will be permanently deleted. This action is irreversible!',
   sasetting_confirm_group_delete: 'To confirm, please type exactly "$name"',
+  sasettings_admin_make_superadmin: 'Give super-admin rights',
+  sasettings_admin_make_non_superadmin: 'Remove super-admin rights',
 };
 
 export default translations;

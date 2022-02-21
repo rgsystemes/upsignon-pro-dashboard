@@ -9,28 +9,18 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
     const email = req.body.newEmail;
     if (typeof email !== 'string') return res.status(401).end();
 
-    const groupId = req.body.groupId;
+    const isSuperadmin = req.body.isSuperadmin;
 
     const newId = v4();
     const token = v4();
     const tokenExpiresAt = new Date();
     const ttl = 24 * 3600 * 1000; // one day
     tokenExpiresAt.setTime(tokenExpiresAt.getTime() + ttl);
-    let groupName = null;
-    if (groupId) {
-      const groupRes = await db.query('SELECT name FROM groups WHERE id=$1', [groupId]);
-      if (groupRes.rowCount === 0) throw new Error('bad_group');
-      groupName = groupRes.rows[0].name;
-      await db.query(
-        `INSERT INTO admins (id, email, is_superadmin, token, token_expires_at, group_id) VALUES ($1, lower($2), false, $3, $4, $5) ON CONFLICT (email) DO UPDATE SET token=$3, token_expires_at=$4`,
-        [newId, email, token, tokenExpiresAt, groupId],
-      );
-    } else {
-      await db.query(
-        `INSERT INTO admins (id, email, is_superadmin, token, token_expires_at) VALUES ($1, lower($2), true, $3, $4) ON CONFLICT (email) DO UPDATE SET token=$3, token_expires_at=$4, is_superadmin=true`,
-        [newId, email, token, tokenExpiresAt],
-      );
-    }
+    const groupName = null;
+    await db.query(
+      `INSERT INTO admins (id, email, is_superadmin, token, token_expires_at) VALUES ($1, lower($2), $3, $4, $5) ON CONFLICT (email) DO UPDATE SET token=$4, token_expires_at=$5, is_superadmin=$3`,
+      [newId, email, isSuperadmin, token, tokenExpiresAt],
+    );
 
     const transportOptions = {
       host: process.env.EMAIL_HOST,

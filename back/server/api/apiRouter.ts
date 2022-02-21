@@ -44,7 +44,7 @@ apiRouter.use(async (req, res, next) => {
     // @ts-ignore
     !req.session.isSuperadmin &&
     // @ts-ignore
-    req.session.groupId != req.proxyParamsGroupId
+    !req.session.groups.includes(req.proxyParamsGroupId)
   ) {
     return res.status(401).end();
   }

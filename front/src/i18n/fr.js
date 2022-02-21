@@ -8,6 +8,7 @@ const translations = {
   actions: 'Actions',
   delete: 'Supprimer',
   add: 'Ajouter',
+  close: 'Fermer',
   total: 'Total',
   disconnect: 'Déconnexion',
   pagination_pages: 'pages',
@@ -91,8 +92,9 @@ const translations = {
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Ajouté le',
-  settings_admin_group: 'Groupe',
+  settings_admin_groups: 'Groupes',
   sasettings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
+  sasettings_admin_change_rights: 'Changer les droits',
   settings_urls: 'Sites web pré-renseignés',
   settings_urls_explanation:
     "Les sites que vous renseignez ici seront proposés aux utilisateurs pour simplifier l'enregistrement de leurs mots de passe.",
@@ -195,6 +197,8 @@ const translations = {
   sasettings_group_delete_warning:
     'Êtes-vous sûr de vouloir supprimer ce groupe ? Tous les coffres-forts associés à ce groupe et les secrets qui y sont stockés seront définitivement supprimés. Cette action est irréversible !',
   sasetting_confirm_group_delete: 'Pour confirmer, saisissez exactement "$name"',
+  sasettings_admin_make_superadmin: 'Donner les droits super-admin',
+  sasettings_admin_make_non_superadmin: 'Enlever les droits super-admin',
 };
 
 export default translations;
