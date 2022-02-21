@@ -9,6 +9,7 @@ import { deactivate_device } from './deactivate_device';
 import { deactivate_device_all_users } from './deactivate_device_all_users';
 import { delete_allowed_email } from './delete_allowed_email';
 import { delete_device } from './delete_device';
+import { delete_group_admin } from './delete_group_admin';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
 import { delete_shared_account } from './delete_shared_account';
 import { delete_shared_account_user } from './delete_shared_account_user';
@@ -21,6 +22,7 @@ import { extract_emails_for_medium_passwords } from './extract_emails_for_medium
 import { extract_emails_for_shared_device } from './extract_emails_for_shared_device';
 import { extract_emails_for_weak_passwords } from './extract_emails_for_weak_passwords';
 import { get_allowed_emails } from './get_allowed_emails';
+import { get_group_admins } from './get_group_admins';
 import { get_password_stats } from './get_password_stats';
 import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
 import { get_shared_accounts } from './get_shared_accounts';
@@ -31,6 +33,7 @@ import { get_users } from './get_users';
 import { get_user_devices } from './get_user_devices';
 import { grant_pwd_reset_request } from './grant_pwd_reset_request';
 import { insert_allowed_email } from './insert_allowed_email';
+import { insert_group_admin } from './insert_group_admin';
 import { insert_url } from './insert_url';
 import { update_allowed_email } from './update_allowed_email';
 import { update_shared_account_manager } from './update_shared_account_manager';
@@ -112,3 +115,8 @@ apiRouter.post('/delete-url/:id', delete_url);
 apiRouter.post('/update-url', update_url);
 apiRouter.post('/insert-url', insert_url);
 apiRouter.post('/copy_urls_from_group', copy_urls_from_group);
+
+// Admins
+apiRouter.post('/delete_admin', delete_group_admin);
+apiRouter.post('/insert_admin', insert_group_admin);
+apiRouter.post('/group-admins', get_group_admins);

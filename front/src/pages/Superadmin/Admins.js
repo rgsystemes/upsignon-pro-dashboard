@@ -46,7 +46,7 @@ class Admins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await baseUrlFetch('/superadmin-api/insert-admin', 'POST', {
+      await baseUrlFetch('/api/insert-admin', 'POST', {
         newEmail,
         isSuperadmin: this.state.newAdminIsSuperadmin,
       });
@@ -93,7 +93,7 @@ class Admins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await baseUrlFetch(`/superadmin-api/delete-admin/${id}`, 'POST', null);
+        await baseUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
         await this.fetchAdmins();
       } catch (e) {
         console.error(e);

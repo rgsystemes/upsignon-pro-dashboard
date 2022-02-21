@@ -1,6 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { AllowedEmails } from './AllowedEmails';
+import { GroupAdmins } from './GroupAdmins';
 import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
 
@@ -12,6 +13,7 @@ class Settings extends React.Component {
         <h1>{i18n.t('menu_settings')}</h1>
         <ProSetupLink />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
+        <GroupAdmins setIsLoading={this.props.setIsLoading} />
         <Urls
           setIsLoading={this.props.setIsLoading}
           isSuperAdmin={this.props.isSuperAdmin}

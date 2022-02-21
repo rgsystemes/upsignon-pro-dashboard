@@ -47,7 +47,7 @@ class Groups extends React.Component {
   toggleGroupSetting = async (groupId, newSettings) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch('/superadmin-api/update-group', 'POST', {
+      await baseUrlFetch('/api/update-group', 'POST', {
         id: groupId,
         settings: JSON.stringify(newSettings),
       });

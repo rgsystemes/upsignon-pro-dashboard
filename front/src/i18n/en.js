@@ -107,6 +107,8 @@ const translations = {
   settings_urls_signin_url: 'Signin URL',
   settings_urls_password_change_url: 'Password change URL',
   settings_urls_delete_warning: 'Are your sure?',
+  settings_group_admins_title: 'Administrators of this bank of safes',
+  settings_group_admins_invite: 'Add and (re)send an invitation if needed',
   shared_devices_explanation:
     'This is the list of devices where at least two users have authorized their PRO space.',
   shared_devices_uid: 'Device unique id',
