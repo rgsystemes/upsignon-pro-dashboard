@@ -53,7 +53,6 @@ class PasswordResetRequests extends React.Component {
   };
 
   render() {
-    if (this.state.pendingRequests.length === 0) return null;
     return (
       <div className="page">
         <h1>{`${i18n.t('menu_password_reset_requests')} - ${i18n.t('total_count', {
