@@ -117,6 +117,6 @@ apiRouter.post('/insert-url', insert_url);
 apiRouter.post('/copy_urls_from_group', copy_urls_from_group);
 
 // Admins
-apiRouter.post('/delete_admin', delete_group_admin);
-apiRouter.post('/insert_admin', insert_group_admin);
-apiRouter.post('/group-admins', get_group_admins);
+apiRouter.post('/delete-admin/:id', delete_group_admin);
+apiRouter.post('/insert-admin', insert_group_admin);
+apiRouter.get('/group-admins', get_group_admins);

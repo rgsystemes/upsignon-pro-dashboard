@@ -110,6 +110,8 @@ const translations = {
   settings_urls_delete_warning: 'Êtes-vous sûr ?',
   settings_group_admins_title: 'Administrateurs de cette banque de coffres-forts',
   settings_group_admins_invite: 'Ajouter et (ré)envoyer une invitation si nécessaire',
+  settings_group_admin_delete_warning:
+    "Êtes-vous sûr de vouloir supprimer l'accès de cet administrateur à cette banque de coffres-forts ?",
   shared_devices_explanation:
     'Voici la liste des appareils sur lesquels au moins deux utilisateurs ont autorisé leur espace PRO.',
   shared_devices_uid: "Identifiant unique de l'appareil",

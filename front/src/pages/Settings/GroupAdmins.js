@@ -31,7 +31,7 @@ class GroupAdmins extends React.Component {
       await groupUrlFetch('/api/insert-admin', 'POST', {
         newEmail,
       });
-      await this.fetchAdmins();
+      await this.fetchGroupAdmins();
       this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
@@ -40,12 +40,12 @@ class GroupAdmins extends React.Component {
     }
   };
   deleteAdmin = async (id) => {
-    const confirmation = window.confirm(i18n.t('sasettings_admin_delete_warning'));
+    const confirmation = window.confirm(i18n.t('settings_group_admin_delete_warning'));
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
         await groupUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
-        await this.fetchAdmins();
+        await this.fetchGroupAdmins();
       } catch (e) {
         console.error(e);
       } finally {

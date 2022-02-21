@@ -19,7 +19,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
       adminId = existingAdminRes.rows[0].id;
       needsInvite = !existingAdminRes.rows[0].password_hash;
     }
-    if (!needsInvite) {
+    if (needsInvite) {
       const token = v4();
       const tokenExpiresAt = new Date();
       const ttl = 24 * 3600 * 1000; // one day
