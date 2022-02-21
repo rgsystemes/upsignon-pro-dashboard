@@ -2,6 +2,7 @@ import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { AllowedEmails } from './AllowedEmails';
 import { GroupAdmins } from './GroupAdmins';
+import { OtherSettings } from './OtherSettings';
 import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
 
@@ -19,6 +20,7 @@ class Settings extends React.Component {
           isSuperAdmin={this.props.isSuperAdmin}
           otherGroups={this.props.otherGroups}
         />
+        <OtherSettings setIsLoading={this.props.setIsLoading} />
       </div>
     );
   }

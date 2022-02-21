@@ -23,6 +23,7 @@ import { extract_emails_for_shared_device } from './extract_emails_for_shared_de
 import { extract_emails_for_weak_passwords } from './extract_emails_for_weak_passwords';
 import { get_allowed_emails } from './get_allowed_emails';
 import { get_group_admins } from './get_group_admins';
+import { get_group_settings } from './get_group_settings';
 import { get_password_stats } from './get_password_stats';
 import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
 import { get_shared_accounts } from './get_shared_accounts';
@@ -36,6 +37,7 @@ import { insert_allowed_email } from './insert_allowed_email';
 import { insert_group_admin } from './insert_group_admin';
 import { insert_url } from './insert_url';
 import { update_allowed_email } from './update_allowed_email';
+import { update_group } from './update_group';
 import { update_shared_account_manager } from './update_shared_account_manager';
 import { update_url } from './update_url';
 import { update_user_email } from './update_user_email';
@@ -120,3 +122,7 @@ apiRouter.post('/copy_urls_from_group', copy_urls_from_group);
 apiRouter.post('/delete-admin/:id', delete_group_admin);
 apiRouter.post('/insert-admin', insert_group_admin);
 apiRouter.get('/group-admins', get_group_admins);
+
+// Settings
+apiRouter.get('/group-settings', get_group_settings);
+apiRouter.post('/group-settings-update', update_group);

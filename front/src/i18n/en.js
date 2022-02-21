@@ -111,7 +111,7 @@ const translations = {
   settings_group_admins_invite: 'Add and (re)send an invitation if needed',
   settings_group_admin_delete_warning:
     'Are you sure you want to remove the access of this administrator to this bank of safes?',
-
+  settings_group_settings: 'Other settings',
   shared_devices_explanation:
     'This is the list of devices where at least two users have authorized their PRO space.',
   shared_devices_uid: 'Device unique id',
