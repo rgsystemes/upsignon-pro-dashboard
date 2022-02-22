@@ -4,7 +4,7 @@ import { Admins } from './Admins';
 import './superadmin.css';
 import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
-import { baseUrlFetch } from '../../helpers/urlFetch';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 
 // Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
@@ -13,7 +13,7 @@ class Superadmin extends React.Component {
   };
   fetchGroups = async () => {
     try {
-      const groups = await baseUrlFetch('/superadmin/api/groups', 'GET', null);
+      const groups = await groupUrlFetch('/api/groups', 'GET', null);
       this.setState({ groups });
       this.props.updateMenuGroups(groups);
     } catch (e) {

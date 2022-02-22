@@ -13,6 +13,8 @@ import { count_password_reset_requests } from '../api/count_password_reset_reque
 import { delete_pwd_reset_request } from '../api/delete_pwd_reset_request';
 import { grant_pwd_reset_request } from '../api/grant_pwd_reset_request';
 import { update_superadmin_status } from './update_superadmin_status';
+import { get_password_stats } from '../api/get_password_stats';
+import { get_usage_stats } from '../api/get_usage_stats';
 
 export const superadminApiRouter = express.Router();
 
@@ -53,3 +55,9 @@ superadminApiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) => {
 superadminApiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) => {
   grant_pwd_reset_request(req, res, true);
 });
+
+// Stats
+superadminApiRouter.get('/get-password-stats', (req, res) => {
+  get_password_stats(req, res, true);
+});
+superadminApiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, true));

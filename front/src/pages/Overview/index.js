@@ -4,7 +4,7 @@ import { SecurityChart } from './SecurityChart';
 import { UsageChart } from './UsageChart';
 import { Extracts } from './Extracts';
 
-// Props = setIsLoading
+// Props = setIsLoading, isSuperadminPage
 class Overview extends React.Component {
   render() {
     return (
@@ -15,7 +15,9 @@ class Overview extends React.Component {
         </p>
         <SecurityChart />
         <UsageChart />
-        <Extracts isLoading={this.props.isLoading} setIsLoading={this.props.setIsLoading} />
+        {!this.props.isSuperadminPage && (
+          <Extracts isLoading={this.props.isLoading} setIsLoading={this.props.setIsLoading} />
+        )}
       </div>
     );
   }

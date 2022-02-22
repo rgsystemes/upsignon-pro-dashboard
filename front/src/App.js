@@ -87,7 +87,9 @@ class App extends React.Component {
     }
     let path = window.location.href.replace(baseFrontUrl, '');
 
-    let pageContent = <Overview setIsLoading={this.setIsLoading} />;
+    let pageContent = (
+      <Overview setIsLoading={this.setIsLoading} isSuperadminPage={groupId === 'superadmin'} />
+    );
     let currentPage = 'overview';
 
     if (path.startsWith(`/${groupId}/users`)) {
@@ -116,20 +118,21 @@ class App extends React.Component {
       );
       currentPage = 'shared_accounts';
     } else if (path.startsWith(`/${groupId}/settings`)) {
-      pageContent = (
-        <Settings
-          setIsLoading={this.setIsLoading}
-          isSuperAdmin={this.state.isSuperadmin}
-          // eslint-disable-next-line eqeqeq
-          otherGroups={this.state.groups.filter((g) => g.id != groupId)}
-        />
-      );
+      if (groupId === 'superadmin') {
+        pageContent = (
+          <Superadmin setIsLoading={this.setIsLoading} updateMenuGroups={this.updateMenuGroups} />
+        );
+      } else {
+        pageContent = (
+          <Settings
+            setIsLoading={this.setIsLoading}
+            isSuperAdmin={this.state.isSuperadmin}
+            // eslint-disable-next-line eqeqeq
+            otherGroups={this.state.groups.filter((g) => g.id != groupId)}
+          />
+        );
+      }
       currentPage = 'settings';
-    } else if (path.startsWith('/superadmin')) {
-      pageContent = (
-        <Superadmin setIsLoading={this.setIsLoading} updateMenuGroups={this.updateMenuGroups} />
-      );
-      currentPage = 'superadmin';
     }
 
     const pages = [
@@ -138,7 +141,7 @@ class App extends React.Component {
         href: '/',
         title: i18n.t('menu_overview'),
         isCurrent: currentPage === 'overview',
-        disabledForSuperadmin: true,
+        disabledForSuperadmin: false,
       },
       {
         key: 'password_reset_requests',
@@ -175,7 +178,7 @@ class App extends React.Component {
         href: '/settings/',
         title: i18n.t('menu_settings'),
         isCurrent: currentPage === 'settings',
-        disabledForSuperadmin: true,
+        disabledForSuperadmin: false,
       },
     ];
 
@@ -185,10 +188,7 @@ class App extends React.Component {
           pages={pages}
           groups={this.state.groups}
           isSuperadmin={this.state.isSuperadmin}
-          isSuperadminPage={
-            currentPage === 'superadmin' ||
-            (currentPage === 'password_reset_requests' && groupId === 'superadmin')
-          }
+          isSuperadminPage={groupId === 'superadmin'}
         />
         {pageContent}
         <div

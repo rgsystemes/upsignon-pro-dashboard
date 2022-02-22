@@ -2,12 +2,19 @@ import { db } from '../helpers/connection';
 import { getDaysArray } from '../helpers/dateArray';
 import { logError } from '../helpers/logger';
 
-export const get_usage_stats = async (req: any, res: any): Promise<void> => {
+export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean): Promise<void> => {
   try {
-    const rawStats = await db.query(
-      "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users WHERE group_id=$1 GROUP BY day ORDER BY day ASC",
-      [req.proxyParamsGroupId],
-    );
+    let rawStats: any = null;
+    if (!asSuperadmin) {
+      rawStats = await db.query(
+        "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users WHERE group_id=$1 GROUP BY day ORDER BY day ASC",
+        [req.proxyParamsGroupId],
+      );
+    } else {
+      rawStats = await db.query(
+        "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users GROUP BY day ORDER BY day ASC",
+      );
+    }
 
     if (rawStats.rowCount === 0) return res.status(200).send([]);
 

@@ -94,8 +94,8 @@ apiRouter.post('/delete-shared-account-user/:sharedAccountUserId', delete_shared
 apiRouter.post('/update-shared-account-manager', update_shared_account_manager);
 
 // Stats
-apiRouter.get('/get-password-stats', get_password_stats);
-apiRouter.get('/get-usage-stats', get_usage_stats);
+apiRouter.get('/get-password-stats', (req, res) => get_password_stats(req, res, false));
+apiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, false));
 
 // Extracts
 apiRouter.get('/extract-database', extract_database);

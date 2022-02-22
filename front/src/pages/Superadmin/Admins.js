@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch } from '../../helpers/urlFetch';
+import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading, groups
@@ -14,7 +14,7 @@ class Admins extends React.Component {
 
   fetchAdmins = async () => {
     try {
-      const adminEmails = await baseUrlFetch('/superadmin/api/admins', 'GET', null);
+      const adminEmails = await groupUrlFetch('/api/admins', 'GET', null);
       if (!this.adminOrder) {
         this.adminOrder = [];
       }
@@ -46,7 +46,7 @@ class Admins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await baseUrlFetch('/api/insert-admin', 'POST', {
+      await groupUrlFetch('/api/insert-admin', 'POST', {
         newEmail,
         isSuperadmin: this.state.newAdminIsSuperadmin,
       });
@@ -62,7 +62,7 @@ class Admins extends React.Component {
   updateAdminGroup = async (adminId, groupId, willBelongToGroup) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch('/superadmin/api/update-admin-group', 'POST', {
+      await groupUrlFetch('/api/update-admin-group', 'POST', {
         adminId,
         groupId,
         willBelongToGroup,
@@ -77,11 +77,18 @@ class Admins extends React.Component {
   changeSuperadminStatus = async (adminId, willBeSuperadmin) => {
     try {
       this.props.setIsLoading(true);
-      await baseUrlFetch('/superadmin/api/update-superadmin-status', 'POST', {
+      await groupUrlFetch('/api/update-superadmin-status', 'POST', {
         adminId,
         willBeSuperadmin,
       });
       await this.fetchAdmins();
+
+      if (willBeSuperadmin) {
+        this.setState((s) => ({
+          ...s,
+          visibleAdminChangeRightsView: s.visibleAdminChangeRightsView.filter((v) => v !== adminId),
+        }));
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -93,7 +100,7 @@ class Admins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await baseUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
+        await groupUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
         await this.fetchAdmins();
       } catch (e) {
         console.error(e);

@@ -123,6 +123,7 @@ app.use('/:groupId/api/', (req, res, next) => {
 app.use(
   [
     '/superadmin/password_reset_requests/',
+    '/superadmin/settings/',
     '/superadmin/',
     '/:groupId/users/',
     '/:groupId/shared_devices/',
