@@ -21,6 +21,7 @@ class SecurityChart extends React.Component {
   rawStats = [];
   usePctg = false;
   useEntropy = false;
+  firstDate = null;
   startDate = null;
   endDate = new Date();
 
@@ -66,6 +67,8 @@ class SecurityChart extends React.Component {
     try {
       const stats = await groupUrlFetch(`/api/get-password-stats`, 'GET', null);
       this.rawStats = stats;
+      this.firstDate = new Date(stats[0]?.day);
+      this.firstDate.setUTCHours(0, 0, 0, 0);
       this.showStats();
     } catch (e) {
       console.error(e);
@@ -102,7 +105,7 @@ class SecurityChart extends React.Component {
   };
   clearDates = () => {
     sessionStorage.clear();
-    this.startDate = new Date(this.rawStats[0].day);
+    this.startDate = new Date(this.firstDate.getTime());
     this.startDate.setDate(this.startDate.getDate() - 1);
     this.endDate = new Date();
     this.showStats();
@@ -145,7 +148,7 @@ class SecurityChart extends React.Component {
               allowSameDay={false}
               dateFormat={getLocaleDateFormat()}
               maxDate={new Date()}
-              minDate={new Date(this.rawStats[0]?.day)}
+              minDate={this.firstDate}
             />
           </div>
           <div style={{ marginLeft: 20 }}>
@@ -155,7 +158,7 @@ class SecurityChart extends React.Component {
               onChange={this.updateEndDate}
               dateFormat={getLocaleDateFormat()}
               maxDate={new Date()}
-              minDate={new Date(this.rawStats[0]?.day)}
+              minDate={this.firstDate}
               todayButton={<div>{i18n.t('chart_today_button')}</div>}
             />
           </div>
