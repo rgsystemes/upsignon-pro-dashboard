@@ -62,10 +62,10 @@ class OtherSettings extends React.Component {
             <tr>
               <td>{i18n.t('sasettings_reset_pwd_admin_check')}</td>
               <td>
-                {this.state.settings.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN === true && (
+                {this.state.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN === true && (
                   <span className="unrecommendedParam">{i18n.t('no')}</span>
                 )}
-                {!this.state.settings.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN && (
+                {!this.state.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN && (
                   <span className="recommendedParam">{i18n.t('yes')}</span>
                 )}
                 <span
@@ -75,7 +75,7 @@ class OtherSettings extends React.Component {
                       {
                         ...this.state.settings,
                         DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN:
-                          !this.state.settings.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN,
+                          !this.state.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN,
                       },
                       null,
                     );
