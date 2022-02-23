@@ -145,6 +145,7 @@ class SecurityChart extends React.Component {
               allowSameDay={false}
               dateFormat={getLocaleDateFormat()}
               maxDate={new Date()}
+              minDate={new Date(this.rawStats[0].day)}
             />
           </div>
           <div style={{ marginLeft: 20 }}>
@@ -154,6 +155,7 @@ class SecurityChart extends React.Component {
               onChange={this.updateEndDate}
               dateFormat={getLocaleDateFormat()}
               maxDate={new Date()}
+              minDate={new Date(this.rawStats[0].day)}
               todayButton={<div>{i18n.t('chart_today_button')}</div>}
             />
           </div>
