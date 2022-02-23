@@ -7,34 +7,35 @@ export function EditableCell(props) {
   const [currentValue, setCurrentValue] = useState('');
 
   if (isEditing) {
+    const submit = () => {
+      onChange(currentValue);
+    };
     return (
       <td>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-          <input
-            style={{ width: `${Math.max(currentValue?.length || placeholder?.length || 0, 15)}ch` }}
-            value={currentValue}
-            onChange={(ev) => {
-              setCurrentValue(ev.target.value);
-            }}
-            autoFocus
-            placeholder={placeholder}
-            onBlur={(ev) => {
-              // do make isEditing false but do not prevent onClick on validate
-              setTimeout(() => {
-                setIsEditing(false);
-              }, 150);
-            }}
-          />
-          <span
-            style={{ marginLeft: 10 }}
-            className="action"
-            onClick={() => {
-              onChange(currentValue);
-            }}
-          >
-            {i18n.t('validate')}
-          </span>
-        </div>
+        <form onSubmit="submit">
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <input
+              style={{
+                width: `${Math.max(currentValue?.length || placeholder?.length || 0, 15)}ch`,
+              }}
+              value={currentValue}
+              onChange={(ev) => {
+                setCurrentValue(ev.target.value);
+              }}
+              autoFocus
+              placeholder={placeholder}
+              onBlur={(ev) => {
+                // do make isEditing false but do not prevent onClick on validate
+                setTimeout(() => {
+                  setIsEditing(false);
+                }, 150);
+              }}
+            />
+            <span style={{ marginLeft: 10 }} className="action" onClick={submit}>
+              {i18n.t('validate')}
+            </span>
+          </div>
+        </form>
       </td>
     );
   }
