@@ -3,6 +3,7 @@ nav {
   border-right: 3px solid rgb(0, 171, 168);
   overflow: scroll;
   padding-bottom: 40px;
+  max-width: 230px;
 }
 
 .navItem {
