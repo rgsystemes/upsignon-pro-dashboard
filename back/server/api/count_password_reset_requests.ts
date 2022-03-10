@@ -11,13 +11,13 @@ export const count_password_reset_requests = async (
       const dbRes = await db.query(
         "SELECT COUNT(id) AS count FROM password_reset_request WHERE status='PENDING_ADMIN_CHECK'",
       );
-      res.status(200).send(dbRes.rows[0].count);
+      res.status(200).send(dbRes.rows[0]?.count || 0);
     } else {
       const dbRes = await db.query(
         "SELECT COUNT(id) AS count FROM password_reset_request WHERE status='PENDING_ADMIN_CHECK' AND group_id=$1",
         [req.proxyParamsGroupId],
       );
-      res.status(200).send(dbRes.rows[0].count);
+      res.status(200).send(dbRes.rows[0]?.count || 0);
     }
   } catch (e) {
     logError(e);
