@@ -51,8 +51,10 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
         sa.name,
         sa.login,
         sa.type,
+        sa.shared_folder_id,
         (SELECT JSON_AGG(users_agg) FROM
           (SELECT
+            u.id AS user_id,
             u.email,
             sau.is_manager,
             sau.created_at,
@@ -78,7 +80,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
           ) > 0`
           : ''
       }
-      ORDER BY sa.name
+      ORDER BY sa.shared_folder_id desc, sa.name
       LIMIT $1
       OFFSET $2
     `,

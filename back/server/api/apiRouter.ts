@@ -1,5 +1,6 @@
 import express from 'express';
 import { authorize_device } from './authorize_device';
+import { clean_empty_shared_folders } from './clean_empty_shared_folders';
 import { copy_urls_from_group } from './copy_urls_from_group';
 import { count_password_reset_requests } from './count_password_reset_requests';
 import { count_shared_accounts } from './count_shared_accounts';
@@ -28,6 +29,7 @@ import { get_password_stats } from './get_password_stats';
 import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
 import { get_shared_accounts } from './get_shared_accounts';
 import { get_shared_devices } from './get_shared_devices';
+import { get_shared_folders } from './get_shared_folders';
 import { get_urls } from './get_urls';
 import { get_usage_stats } from './get_usage_stats';
 import { get_users } from './get_users';
@@ -90,8 +92,10 @@ apiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) =>
 apiRouter.get('/shared-accounts', get_shared_accounts);
 apiRouter.get('/count-shared-accounts', count_shared_accounts);
 apiRouter.post('/delete-shared-account/:sharedAccountId', delete_shared_account);
-apiRouter.post('/delete-shared-account-user/:sharedAccountUserId', delete_shared_account_user);
+apiRouter.post('/delete-shared-account-user', delete_shared_account_user);
 apiRouter.post('/update-shared-account-manager', update_shared_account_manager);
+apiRouter.post('/clean-empty-shared-folders', clean_empty_shared_folders);
+apiRouter.get('/shared_folders', get_shared_folders);
 
 // Stats
 apiRouter.get('/get-password-stats', (req, res) => get_password_stats(req, res, false));

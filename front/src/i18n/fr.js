@@ -122,16 +122,18 @@ const translations = {
   shared_devices_type: "Type d'appareil",
   shared_devices_status: 'Statut',
   shared_devices_last_session: 'Dernière session',
-  shared_account_name: 'Nom',
+  shared_account_shared_folder_name: 'Dossier partagé',
   shared_account_type: 'Type',
-  shared_account_url: 'Type, URL & login',
+  shared_account_items: 'Éléments',
   shared_account_users: 'Utilisateurs',
   shared_account_user_creation_date: 'Depuis',
   shared_account_user_is_manager: 'Gestionnaire',
   shared_account_user_actions: 'Actions',
   shared_account_user_delete: 'Supprimer du partage',
   shared_account_user_delete_warning:
-    '$accountName ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
+    "L'élément $name ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?",
+  shared_folder_user_delete_warning:
+    'Le dossier $name ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
   shared_account_last_user_warning:
     "IL S'AGIT DU DERNIER UTILISATEUR AYANT ACCÈS À CE COMPTE. LE MOT DE PASSE SERA PERDU.",
   shared_account_search: "Rechercher par adresse email d'utilisateur",
