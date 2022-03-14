@@ -116,7 +116,7 @@ app.use('/superadmin/api/', superadminApiRouter);
 app.use('/:groupId/api/', (req, res, next) => {
   const groupId = req.params.groupId;
   // @ts-ignore
-  req.proxyParamsGroupId = groupId;
+  req.proxyParamsGroupId = parseInt(groupId);
   return apiRouter(req, res, next);
 });
 

@@ -53,6 +53,8 @@ apiRouter.use(async (req, res, next) => {
     // @ts-ignore
     !req.session.groups.includes(req.proxyParamsGroupId)
   ) {
+    // @ts-ignore
+    console.error('Unauthorized for group ' + req.proxyParamsGroupId);
     return res.status(401).end();
   }
   next();
