@@ -6,8 +6,10 @@ import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 
 export const manualConnect = async (req: any, res: any): Promise<void> => {
   try {
-    const { email, pwd } = req.body;
-    if (!email || !pwd) return res.status(401).end();
+    let email = req.body.email;
+    const pwd = req.body.pwd;
+    if (!email || typeof email !== 'string' || !pwd) return res.status(401).end();
+    email = email.toLowerCase();
     let dbRes;
     try {
       dbRes = await db.query('SELECT password_hash FROM admins WHERE email=$1', [email]);
