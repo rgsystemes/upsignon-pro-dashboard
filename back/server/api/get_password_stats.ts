@@ -30,7 +30,7 @@ export const get_password_stats = async (
     }
 
     if (rawStats.rowCount === 0) {
-      return res.status(200).send([]);
+      return res.status(400).end();
     }
 
     /*
