@@ -4,23 +4,24 @@
   "private": true,
   "dependencies": {
     "react": "^17.0.2",
-    "react-datepicker": "^4.2.1",
+    "react-datepicker": "^4.7.0",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "recharts": "^2.1.4"
+    "react-scripts": "5.0.0",
+    "recharts": "^2.1.9"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "^2.4.1"
+    "postcss-normalize": "^10.0.1",
+    "prettier": "^2.6.0"
   },
   "scripts": {
     "start-front": "react-scripts start",
     "build-front": "./buildFront.sh",
     "test-front": "react-scripts test",
     "eject-front": "react-scripts eject",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "eslintConfig": {
     "extends": [
