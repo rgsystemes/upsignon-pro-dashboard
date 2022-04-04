@@ -6,7 +6,7 @@ import { i18n } from '../../i18n/i18n';
 class Admins extends React.Component {
   state = {
     admins: [],
-    newAdminIsSuperadmin: true,
+    newAdminIsSuperadmin: false,
     visibleAdminChangeRightsView: [],
   };
   newInputRef = null;
@@ -36,7 +36,7 @@ class Admins extends React.Component {
       console.error(e);
     }
   };
-  insertSuperAdmin = async () => {
+  insertAdmin = async () => {
     try {
       this.props.setIsLoading(true);
       const newEmail = this.newInputRef.value;
@@ -52,7 +52,7 @@ class Admins extends React.Component {
       });
       await this.fetchAdmins();
       this.newInputRef.value = null;
-      this.setState({ newAdminIsSuperadmin: true });
+      this.setState({ newAdminIsSuperadmin: false });
     } catch (e) {
       console.error(e);
     } finally {
@@ -163,7 +163,7 @@ class Admins extends React.Component {
           >
             {this.state.newAdminIsSuperadmin ? i18n.t('yes') : i18n.t('no')}
           </div>
-          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertSuperAdmin}>
+          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertAdmin}>
             {i18n.t('sasettings_superadmins_invite')}
           </div>
         </div>
