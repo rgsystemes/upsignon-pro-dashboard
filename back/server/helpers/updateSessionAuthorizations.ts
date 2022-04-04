@@ -19,6 +19,7 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
     if (adminRes.rowCount !== 0) {
       const isSuperadmin = adminRes.rows[0].is_superadmin;
       req.session.isSuperadmin = isSuperadmin;
+      adminRes.rows[0].groups = adminRes.rows[0].groups.filter((g: any) => g != null);
       req.session.groups = adminRes.rows[0].groups;
     }
   } catch (e) {

@@ -83,6 +83,12 @@ app.get('/login.html', (req, res) => {
     dotfiles: 'deny',
   });
 });
+app.get('/no-admin-bank.html', (req, res) => {
+  res.status(200).sendFile('no-admin-bank.html', {
+    root: path.resolve(frontBuildDir),
+    dotfiles: 'deny',
+  });
+});
 app.post('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 
