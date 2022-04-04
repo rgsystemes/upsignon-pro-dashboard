@@ -30,7 +30,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
         [adminId, email, false, token, tokenExpiresAt],
       );
     } else {
-      await db.query(`UPDATE admins (token, token_expires_at) VALUES ($1, $2) WHERE id=$3`, [
+      await db.query(`UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3`, [
         token,
         tokenExpiresAt,
         adminId,
