@@ -1,6 +1,6 @@
 {
   "name": "upsignon-pro-dashboard-back",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "private": true,
   "dependencies": {
     "bcrypt": "^5.0.1",
