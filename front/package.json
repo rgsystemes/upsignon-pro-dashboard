@@ -23,12 +23,6 @@
     "eject-front": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet --fix"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
