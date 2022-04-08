@@ -16,6 +16,7 @@ class Urls extends React.Component {
   signinUrlInput = null;
   passwordChangeUrlInput = null;
   nbCopiedFromTargetGroup = null;
+  usesBasicAuth = false;
 
   fetchUrls = async () => {
     try {
@@ -42,6 +43,7 @@ class Urls extends React.Component {
       const displayedName = this.nameInput.value;
       const signinUrl = this.signinUrlInput.value;
       const passwordChangeUrl = this.passwordChangeUrlInput.value;
+      const usesBasicAuth = this.usesBasicAuth;
       if (!displayedName) {
         this.nameInput.style.borderColor = 'red';
         return;
@@ -52,11 +54,13 @@ class Urls extends React.Component {
         displayedName,
         signinUrl,
         passwordChangeUrl,
+        usesBasicAuth,
       });
       await this.fetchUrls();
       this.nameInput.value = null;
       this.signinUrlInput.value = null;
       this.passwordChangeUrlInput.value = null;
+      this.usesBasicAuth = false;
     } catch (e) {
       console.error(e);
     } finally {
@@ -153,6 +157,20 @@ class Urls extends React.Component {
                 }}
                 placeholder={passwordChangeUrlPlaceholder}
               />
+              <tr>
+                <td>
+                  <label htmlFor="url-uses-basic-auth" style={{ marginRight: 10 }}>
+                    {i18n.t('settings_urls_basic_auth')}
+                  </label>
+                </td>
+                <td>
+                  <input
+                    type="checkbox"
+                    name="url-uses-basic-auth"
+                    onChange={() => (this.usesBasicAuth = !this.usesBasicAuth)}
+                  />
+                </td>
+              </tr>
             </tbody>
           </table>
           <div className="action" onClick={this.insertUrl}>
@@ -166,6 +184,9 @@ class Urls extends React.Component {
                 <th>{i18n.t('settings_urls_name')}</th>
                 <th>{i18n.t('settings_urls_signin_url')}</th>
                 <th>{i18n.t('settings_urls_password_change_url')}</th>
+                <th title={i18n.t('settings_urls_basic_auth_details')} style={{ cursor: 'help' }}>
+                  {i18n.t('settings_urls_basic_auth')}
+                </th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
@@ -195,6 +216,17 @@ class Urls extends React.Component {
                         this.submitUrlEdition(url.id, { passwordChangeUrl: newVal });
                       }}
                     />
+                    <td>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <input
+                          type="checkbox"
+                          checked={url.uses_basic_auth}
+                          onChange={() => {
+                            this.submitUrlEdition(url.id, { usesBasicAuth: !url.uses_basic_auth });
+                          }}
+                        ></input>
+                      </div>
+                    </td>
                     <td>
                       <div className="action" onClick={() => this.deleteUrl(url.id)}>
                         {i18n.t('delete')}

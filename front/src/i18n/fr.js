@@ -107,6 +107,9 @@ const translations = {
   settings_urls_name: 'Nom du site',
   settings_urls_signin_url: 'URL de signin',
   settings_urls_password_change_url: 'URL de changement de mot de passe',
+  settings_urls_basic_auth: 'Authentification HTTP basic',
+  settings_urls_basic_auth_details:
+    "Si le site utilise une méthode d'authentification HTTP basic, signalez-le ici pour que l'extension de navigateur puisse connecter automatiquement l'utilisateur car le remplissage automatique ne pourra pas fonctionner.",
   settings_urls_delete_warning: 'Êtes-vous sûr ?',
   settings_group_admins_title: 'Administrateurs de cette banque de coffres-forts',
   settings_group_admins_invite: 'Ajouter et (ré)envoyer une invitation si nécessaire',

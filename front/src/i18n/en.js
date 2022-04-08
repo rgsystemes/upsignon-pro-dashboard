@@ -106,6 +106,9 @@ const translations = {
   settings_urls_name: 'Site name',
   settings_urls_signin_url: 'Signin URL',
   settings_urls_password_change_url: 'Password change URL',
+  settings_urls_basic_auth: 'HTTP basic authentication',
+  settings_urls_basic_auth_details:
+    'If the website uses basic authentication, you need to tell it here so the browser extension can automatically connect the user as autofilling cannot work.',
   settings_urls_delete_warning: 'Are your sure?',
   settings_group_admins_title: 'Administrators of this bank of safes',
   settings_group_admins_invite: 'Add and (re)send an invitation if needed',
