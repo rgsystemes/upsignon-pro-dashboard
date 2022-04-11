@@ -16,7 +16,7 @@ class Urls extends React.Component {
   signinUrlInput = null;
   passwordChangeUrlInput = null;
   nbCopiedFromTargetGroup = null;
-  usesBasicAuth = false;
+  usesBasicAuthCheckbox = false;
 
   fetchUrls = async () => {
     try {
@@ -43,7 +43,7 @@ class Urls extends React.Component {
       const displayedName = this.nameInput.value;
       const signinUrl = this.signinUrlInput.value;
       const passwordChangeUrl = this.passwordChangeUrlInput.value;
-      const usesBasicAuth = this.usesBasicAuth;
+      const usesBasicAuth = this.usesBasicAuthCheckbox.checked;
       if (!displayedName) {
         this.nameInput.style.borderColor = 'red';
         return;
@@ -60,7 +60,7 @@ class Urls extends React.Component {
       this.nameInput.value = null;
       this.signinUrlInput.value = null;
       this.passwordChangeUrlInput.value = null;
-      this.usesBasicAuth = false;
+      this.usesBasicAuthCheckbox.checked = false;
     } catch (e) {
       console.error(e);
     } finally {
@@ -167,7 +167,7 @@ class Urls extends React.Component {
                   <input
                     type="checkbox"
                     name="url-uses-basic-auth"
-                    onChange={() => (this.usesBasicAuth = !this.usesBasicAuth)}
+                    ref={(r) => (this.usesBasicAuthCheckbox = r)}
                   />
                 </td>
               </tr>
