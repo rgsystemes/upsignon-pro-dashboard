@@ -41,7 +41,7 @@ app.use(
     // @ts-ignore
     secret: env.SESSION_SECRET,
     resave: false,
-    rolling: true,
+    rolling: false,
     saveUninitialized: false,
     unset: 'destroy',
     store: new SessionStore(),
