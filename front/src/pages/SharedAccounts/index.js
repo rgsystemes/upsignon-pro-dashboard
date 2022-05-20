@@ -314,7 +314,7 @@ class SharedAccounts extends React.Component {
             {foldersOnPage.map((sf) => {
               const contacts = [];
               sf.rows.forEach((r) => {
-                r.users.forEach((u) => {
+                r.users?.forEach((u) => {
                   const prevContact = contacts.find((c) => c.user_id === u.user_id);
                   if (!prevContact) {
                     contacts.push(u);
