@@ -2,19 +2,9 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const v4 = require('uuid').v4;
-const bcrypt = require('bcrypt');
 const db = require('../compiledServer/helpers/connection').db;
 
-const email = process.argv[2];
-if (!email) {
-  console.error(
-    `ERROR: You need to provide an email. Use '${process.argv[0]} ${process.argv[1]} email@domain.com'`,
-  );
-  return process.exit(1);
-}
-
-function createPassword(length) {
+function createToken(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
@@ -24,23 +14,26 @@ function createPassword(length) {
   return result;
 }
 
-async function insert(email) {
-  const newId = v4();
-  const newPassword = createPassword(20);
-  const passwordHash = await bcrypt.hash(newPassword, 10);
-  await db.query(
-    `INSERT INTO admins (id, email, is_superadmin, password_hash) VALUES ($1, lower($2), true, $3) ON CONFLICT (email) DO UPDATE SET password_hash=$3, is_superadmin=true`,
-    [newId, email, passwordHash],
-  );
-  console.log(`A temporary password has been generated for ${email}.`);
-  console.log(`The password is: ${newPassword}`);
-  console.log(
-    `You can log into your dashboard at ${process.env.SERVER_URL.replace(/\/$/, '')}/login.html`,
-  );
-  return newPassword;
+async function createTemporaryAdminTable() {
+  try {
+    await db.query(
+      "CREATE TABLE IF NOT EXISTS temporary_admins (token VARCHAR, expiration_time TIMESTAMP(0) DEFAULT current_timestamp(0) + interval '5 minutes')",
+    );
+  } catch (e) {
+    logError(e);
+    throw e;
+  }
 }
 
-insert(email)
+async function createTemporaryAdmin() {
+  const token = createToken(20);
+  await db.query(`INSERT INTO temporary_admins (token) VALUES ($1)`, [token]);
+  console.log('You can log into your dashboard using this one-time link (valid for 5 minutes):');
+  console.log(`${process.env.SERVER_URL.replace(/\/$/, '')}/manualConnect?token=${token}`);
+}
+
+createTemporaryAdminTable()
+  .then(createTemporaryAdmin)
   .then(() => {
     process.exit(0);
   })

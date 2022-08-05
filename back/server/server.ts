@@ -89,7 +89,7 @@ app.get('/no-admin-bank.html', (req, res) => {
     dotfiles: 'deny',
   });
 });
-app.post('/manualConnect', manualConnect);
+app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 
 // CHECK SESSION VALIDITY

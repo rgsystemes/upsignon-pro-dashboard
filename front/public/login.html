@@ -16,67 +16,16 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    label {
-      display: inline-block;
-      margin-right: 15px;
-    }
   </style>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript.</noscript>
   <div style="display:flex; flex-direction: column; align-items: center;">
-    <h1>Standard connection</h1>
     <div style="margin-bottom: 20px;">Click this button to connect (only works if you have UpSignOn installed)</div>
     <div id="UpSignOn"></div>
-
-    <h2 style="margin-top: 60px;"">Very first connection</h2>
-    <div style=" margin-bottom: 10px;">For the first connection of the first admin only, you can use this form
-  </div>
-  <div style="margin-bottom: 10px;">
-    <label for="email">Email</label>
-    <input name="email" id="email" type="email" />
-  </div>
-  <div style="margin-bottom: 10px;">
-    <label for="pwd">Password</label>
-    <input name="pwd" id="pwd" type="password" />
-  </div>
-  <input type="submit" value="Submit" onClick="submitConnect()" style="cursor: pointer;" />
-  <div id="loginError" style="display:none; color: red;">Incorrect credentials</div>
-  <div id="internetError" style="display:none; color: red;">Internet error</div>
   </div>
 
-  <script type="text/javascript">
-    function submitConnect() {
-      const loginError = document.getElementById("loginError");
-      const internetError = document.getElementById("internetError");
-      loginError.style.display = "none";
-      internetError.style.display = "none";
-      const email = document.getElementById("email").value;
-      const pwd = document.getElementById("pwd").value;
-      if (!email || !pwd) {
-        loginError.style.display = 'block';
-        return;
-      }
-      const baseUrl = window.location.href.replace('/login.html', '');
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          window.location.href = xhr.responseURL;
-        }
-      }
-      xhr.addEventListener('error', () => {
-        internetError.style.display = "block";
-      });
-      xhr.addEventListener('timeout', () => {
-        internetError.style.display = "block";
-      });
-
-      xhr.open("POST", baseUrl + '/manualConnect', true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify({ email, pwd }));
-    };
-  </script>
   <script type="text/javascript">
     "use strict";
     var UpSignOn = (function () {
