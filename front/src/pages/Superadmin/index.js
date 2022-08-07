@@ -5,6 +5,7 @@ import './superadmin.css';
 import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
 import { groupUrlFetch } from '../../helpers/urlFetch';
+import { EmailConfig } from './EmailConfig';
 
 // Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
@@ -34,6 +35,7 @@ class Superadmin extends React.Component {
           fetchGroups={this.fetchGroups}
         />
         <Admins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
+        <EmailConfig setIsLoading={this.props.setIsLoading} />
         <h2>{i18n.t('useful_links')}</h2>
         <ul>
           <li>

@@ -15,6 +15,8 @@ import { grant_pwd_reset_request } from '../api/grant_pwd_reset_request';
 import { update_superadmin_status } from './update_superadmin_status';
 import { get_password_stats } from '../api/get_password_stats';
 import { get_usage_stats } from '../api/get_usage_stats';
+import { get_setting } from './get_setting';
+import { test_email } from './test_email';
 
 export const superadminApiRouter = express.Router();
 
@@ -25,6 +27,8 @@ superadminApiRouter.use(async (req, res, next) => {
   }
   next();
 });
+
+superadminApiRouter.get('/test-email', test_email);
 
 // ADMIN USERS
 superadminApiRouter.get('/admins', get_admins);
@@ -40,6 +44,7 @@ superadminApiRouter.post('/update-group', update_group);
 superadminApiRouter.post('/delete-group/:id', delete_group);
 
 // SETTINGS
+superadminApiRouter.post('/get-setting', get_setting);
 superadminApiRouter.post('/update-setting', update_setting);
 
 // Password reset requests

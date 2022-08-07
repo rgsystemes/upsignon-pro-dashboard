@@ -210,6 +210,17 @@ const translations = {
   sasetting_confirm_group_delete: 'Pour confirmer, saisissez exactement "$name"',
   sasettings_admin_make_superadmin: 'Donner les droits super-admin',
   sasettings_admin_make_non_superadmin: 'Enlever les droits super-admin',
+  sasettings_email_config: "Configuration de l'envoi d'emails",
+  sasettings_email_config_label_host: 'Serveur SMTP',
+  sasettings_email_config_label_port: 'Port (e.g. 25, 587 ou 465)',
+  sasettings_email_config_label_user: "Identifiant (habituellement identique à l'adresse d'envoi)",
+  sasettings_email_config_label_pass: 'Mot de passe',
+  sasettings_email_config_label_sending_address: "Adresse email d'envoi",
+  sasettings_email_config_label_allow_invalid_certificate:
+    'Autoriser un certificat non vérifié (dangereux)',
+  sasettings_email_config_testing: 'Tester',
+  sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
+  sasettings_email_config_testing_alert: 'Un email a été envoyé',
 };
 
 export default translations;

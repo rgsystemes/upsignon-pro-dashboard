@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { getEmailConfig, getMailTransporter } from './mailTransporter';
 
 export const sendAdminInvite = async (
   email: string,
@@ -7,20 +7,9 @@ export const sendAdminInvite = async (
   groupName: null | string,
 ): Promise<void> => {
   try {
-    const transportOptions = {
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: parseInt(process.env.EMAIL_PORT || '587') === 465,
-    };
-    if (process.env.EMAIL_PASS) {
-      // @ts-ignore
-      transportOptions.auth = {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      };
-    }
-    // @ts-ignore
-    const transporter = nodemailer.createTransport(transportOptions);
+    const emailConfig = await getEmailConfig();
+    const transporter = getMailTransporter(emailConfig, { debug: false });
+
     const baseUrl = encodeURIComponent(process.env.SERVER_URL?.replace(/\/$/, '') + '/login');
     const encodedToken = encodeURIComponent(token);
     const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
@@ -29,7 +18,7 @@ export const sendAdminInvite = async (
     const expTime = tokenExpiresAt.toISOString().split('T')[1].split('.')[0];
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: emailConfig.EMAIL_SENDING_ADDRESS,
       to: email,
       subject: "Administration d'UpSignOn",
       text: `Bonjour,
