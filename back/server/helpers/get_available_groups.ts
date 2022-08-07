@@ -1,4 +1,4 @@
-import { db } from './connection';
+import { db } from './db';
 import { logError } from './logger';
 
 export const get_available_groups = async (req: any, res: any): Promise<void> => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { v4 } from 'uuid';
-import { db } from '../helpers/connection';
+import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { sendAdminInvite } from '../helpers/sendAdminInvite';
 

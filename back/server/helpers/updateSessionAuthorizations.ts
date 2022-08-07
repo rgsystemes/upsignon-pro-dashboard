@@ -1,4 +1,4 @@
-import { db } from './connection';
+import { db } from './db';
 import { logError } from './logger';
 
 export const updateSessionAuthorizations = async (req: any, email: string): Promise<void> => {

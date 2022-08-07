@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import { db } from '../helpers/connection';
+import { db } from '../helpers/db';
 import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
 import { logError } from '../helpers/logger';

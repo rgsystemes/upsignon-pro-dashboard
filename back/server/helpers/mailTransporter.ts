@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { db } from './connection';
+import { db } from './db';
 
 type EmailConfig = {
   EMAIL_HOST: string;

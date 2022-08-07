@@ -1,4 +1,4 @@
-import { db } from './connection';
+import { db } from './db';
 import { logError } from './logger';
 
 export const get_server_url = async (req: any, res: any): Promise<void> => {

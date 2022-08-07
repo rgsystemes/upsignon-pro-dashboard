@@ -1,4 +1,4 @@
-import { db } from '../helpers/connection';
+import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
 export const delete_pwd_reset_request = async (

@@ -1,4 +1,4 @@
-import { db } from '../helpers/connection';
+import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
 export const get_group_settings = async (req: any, res: any): Promise<void> => {
