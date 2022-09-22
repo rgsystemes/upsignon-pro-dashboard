@@ -2,7 +2,7 @@
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const db = require('../compiledServer/helpers/connection').db;
+const db = require('../compiledServer/helpers/db').db;
 
 function createToken(length) {
   var result = '';
