@@ -48,7 +48,7 @@ class Groups extends React.Component {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
-        nb_licences_sold: newNb,
+        nb_licences_sold: parseInt(newNb),
         id: groupId,
       });
       await this.props.fetchGroups();
