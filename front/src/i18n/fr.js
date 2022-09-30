@@ -202,6 +202,7 @@ const translations = {
   sasettings_group_created_at: 'Crée le',
   sasettings_group_open: 'Voir',
   sasettings_nb_users: "Nombre d'utilisateurs",
+  sasettings_nb_licences_sold: 'Licences vendues',
   sasettings_reset_pwd_admin_check:
     "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de sa banque",
   sasettings_group_name_change_warning:

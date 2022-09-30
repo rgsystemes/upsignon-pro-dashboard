@@ -44,6 +44,20 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
+  updateNbLicences = async (groupId, newNb) => {
+    try {
+      this.props.setIsLoading(true);
+      await groupUrlFetch('/api/update-group', 'POST', {
+        nb_licences_sold: newNb,
+        id: groupId,
+      });
+      await this.props.fetchGroups();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
   toggleGroupSetting = async (groupId, newSettings) => {
     try {
       this.props.setIsLoading(true);
@@ -138,6 +152,7 @@ class Groups extends React.Component {
                 <th></th>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
+                <th>{i18n.t('sasettings_nb_licences_sold')}</th>
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
                 <th>{i18n.t('actions')}</th>
@@ -145,7 +160,6 @@ class Groups extends React.Component {
             </thead>
             <tbody>
               {this.props.groups.map((group) => {
-                console.log(new Date(group.created_at).toLocaleDateString());
                 return (
                   <tr key={group.id}>
                     <td>
@@ -165,7 +179,23 @@ class Groups extends React.Component {
                         this.updateGroupName(group.id, newVal);
                       }}
                     />
-                    <td>{group.nb_users}</td>
+                    <td
+                      style={
+                        group.nb_users > group.nb_licences_sold
+                          ? { backgroundColor: 'orange' }
+                          : null
+                      }
+                    >
+                      {group.nb_users}
+                    </td>
+                    <EditableCell
+                      type="number"
+                      value={group.nb_licences_sold}
+                      onChange={(newVal) => {
+                        if (!newVal) return;
+                        this.updateNbLicences(group.id, newVal);
+                      }}
+                    />
                     <td>{new Date(group.created_at).toLocaleDateString()}</td>
                     <td>
                       {group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN ===
@@ -200,6 +230,8 @@ class Groups extends React.Component {
               <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
                 <td>{i18n.t('total')}</td>
                 <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

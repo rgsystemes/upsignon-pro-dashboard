@@ -200,6 +200,7 @@ const translations = {
   sasettings_group_created_at: 'Created on',
   sasettings_group_open: 'See',
   sasettings_nb_users: 'Number of users',
+  sasettings_nb_licences_sold: 'Licences vendues',
   sasettings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator of his group',
   sasettings_group_name_change_warning:

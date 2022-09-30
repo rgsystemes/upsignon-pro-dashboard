@@ -9,7 +9,8 @@ export const get_groups = async (req: any, res: any): Promise<void> => {
         groups.id,
         groups.name,
         groups.settings,
-        (SELECT count(users.id) FROM users WHERE users.group_id=groups.id) AS nb_users
+        (SELECT count(users.id) FROM users WHERE users.group_id=groups.id) AS nb_users,
+        groups.nb_licences_sold
       FROM groups ORDER BY name ASC`,
     );
     res.status(200).send(dbRes.rows);

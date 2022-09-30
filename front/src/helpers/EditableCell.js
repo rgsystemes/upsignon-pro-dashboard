@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { i18n } from '../i18n/i18n';
 
 export function EditableCell(props) {
-  const { value, onChange, placeholder } = props;
+  const { value, onChange, placeholder, type } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
 
@@ -12,7 +12,13 @@ export function EditableCell(props) {
     };
     return (
       <td>
-        <form onSubmit="submit">
+        <form
+          onSubmit={(ev) => {
+            ev.nativeEvent.preventDefault();
+            setIsEditing(false);
+            submit();
+          }}
+        >
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <input
               style={{
@@ -30,6 +36,7 @@ export function EditableCell(props) {
                   setIsEditing(false);
                 }, 150);
               }}
+              type={type || 'text'}
             />
             <span style={{ marginLeft: 10 }} className="action" onClick={submit}>
               {i18n.t('validate')}
