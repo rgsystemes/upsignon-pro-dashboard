@@ -138,12 +138,14 @@ class Groups extends React.Component {
                 <th></th>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
+                <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
             <tbody>
               {this.props.groups.map((group) => {
+                console.log(new Date(group.created_at).toLocaleDateString());
                 return (
                   <tr key={group.id}>
                     <td>
@@ -164,6 +166,7 @@ class Groups extends React.Component {
                       }}
                     />
                     <td>{group.nb_users}</td>
+                    <td>{new Date(group.created_at).toLocaleDateString()}</td>
                     <td>
                       {group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN ===
                         true && <span className="unrecommendedParam">{i18n.t('no')}</span>}

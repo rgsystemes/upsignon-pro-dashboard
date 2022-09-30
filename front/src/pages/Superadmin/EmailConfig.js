@@ -72,12 +72,12 @@ export class EmailConfig extends React.Component {
       <div>
         <h2>{i18n.t('sasettings_email_config')}</h2>
         <form onSubmit={this.submitNewEmailConfig}>
-          <label for="emailHost">{i18n.t('sasettings_email_config_label_host')}</label>
+          <label htmlFor="emailHost">{i18n.t('sasettings_email_config_label_host')}</label>
           <br />
           <input
             name="emailHost"
             type="text"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailHostInputRef = r;
             }}
@@ -86,12 +86,12 @@ export class EmailConfig extends React.Component {
           />
 
           <br />
-          <label for="emailPort">{i18n.t('sasettings_email_config_label_port')}</label>
+          <label htmlFor="emailPort">{i18n.t('sasettings_email_config_label_port')}</label>
           <br />
           <input
             name="emailPort"
             type="text"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailPortInputRef = r;
             }}
@@ -100,12 +100,12 @@ export class EmailConfig extends React.Component {
           />
 
           <br />
-          <label for="emailUser">{i18n.t('sasettings_email_config_label_user')}</label>
+          <label htmlFor="emailUser">{i18n.t('sasettings_email_config_label_user')}</label>
           <br />
           <input
             name="emailUser"
             type="text"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailUserInputRef = r;
             }}
@@ -114,12 +114,12 @@ export class EmailConfig extends React.Component {
           />
 
           <br />
-          <label for="emailPass">{i18n.t('sasettings_email_config_label_pass')}</label>
+          <label htmlFor="emailPass">{i18n.t('sasettings_email_config_label_pass')}</label>
           <br />
           <input
             name="emailPass"
             type="password"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailPassInputRef = r;
             }}
@@ -127,14 +127,14 @@ export class EmailConfig extends React.Component {
           />
 
           <br />
-          <label for="emailSendingAddress">
+          <label htmlFor="emailSendingAddress">
             {i18n.t('sasettings_email_config_label_sending_address')}
           </label>
           <br />
           <input
             name="emailSendingAddress"
             type="text"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailSendingAddressInputRef = r;
             }}
@@ -145,13 +145,13 @@ export class EmailConfig extends React.Component {
           <input
             name="emailAllowInvalidCertificate"
             type="checkbox"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.emailAllowInvalidCertificateInputRef = r;
             }}
             style={{ marginRight: 15 }}
           />
-          <label for="emailAllowInvalidCertificate">
+          <label htmlFor="emailAllowInvalidCertificate">
             {i18n.t('sasettings_email_config_label_allow_invalid_certificate')}
           </label>
 
@@ -165,7 +165,7 @@ export class EmailConfig extends React.Component {
           <input
             type="text"
             placeholder="prenom.nom@domaine.fr"
-            autocomplete="off"
+            autoComplete="off"
             ref={(r) => {
               this.testingEmailInputRef = r;
             }}

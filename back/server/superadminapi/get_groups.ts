@@ -5,6 +5,7 @@ export const get_groups = async (req: any, res: any): Promise<void> => {
   try {
     const dbRes = await db.query(
       `SELECT
+        groups.created_at,
         groups.id,
         groups.name,
         groups.settings,

@@ -145,7 +145,7 @@ class Admins extends React.Component {
           />
           <label>{i18n.t('menu_superadmin')}:</label>
           <div
-            class="noSelect"
+            className="noSelect"
             style={{
               marginLeft: 10,
               display: 'inline-block',
