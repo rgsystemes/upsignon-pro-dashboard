@@ -20,7 +20,7 @@ async function createTemporaryAdminTable() {
       "CREATE TABLE IF NOT EXISTS temporary_admins (token VARCHAR, expiration_time TIMESTAMP(0) DEFAULT current_timestamp(0) + interval '5 minutes')",
     );
   } catch (e) {
-    logError(e);
+    console.error(e); //
     throw e;
   }
 }
