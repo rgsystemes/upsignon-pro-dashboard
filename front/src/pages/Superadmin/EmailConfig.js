@@ -62,6 +62,7 @@ export class EmailConfig extends React.Component {
       alert(i18n.t('sasettings_email_config_testing_alert'));
     } catch (e) {
       console.log(e);
+      alert(i18n.t('sasettings_email_config_testing_error_alert', {e}));
     } finally {
       this.props.setIsLoading(false);
     }

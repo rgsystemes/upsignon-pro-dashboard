@@ -220,6 +220,7 @@ const translations = {
   sasettings_email_config_testing: 'Testing',
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
+  sasettings_email_config_testing_error_alert: 'Error sending email: $e',
 };
 
 export default translations;
