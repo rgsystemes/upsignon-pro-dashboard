@@ -211,6 +211,7 @@ const translations = {
   sasettings_admin_make_superadmin: 'Give super-admin rights',
   sasettings_admin_make_non_superadmin: 'Remove super-admin rights',
   sasettings_email_config: 'Sending email configuration',
+  sasettings_email_config_use_postfix: 'Postfix is used to send emails.',
   sasettings_email_config_label_host: 'SMTP server',
   sasettings_email_config_label_port: 'Port (e.g. 25, 587 or 465)',
   sasettings_email_config_label_user: 'Identifier (usually the same as sending address)',

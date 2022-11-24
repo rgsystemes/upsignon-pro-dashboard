@@ -11,6 +11,12 @@ SERVER_URL=https://upsignonpro.votre-domaine.fr/admin
 # SESSION SECRET, A RANDOM STRING GENERATE WITH `openssl rand -hex 30`
 SESSION_SECRET=
 
+# EMAILS
+USE_POSTFIX=true
+# this selector and private key path must match a DKIM record in your DNS configuration
+DKIM_KEY_SELECTOR=selector1
+DKIM_PRIVATE_KEY_PATH=/home/upsignonpro/DKIM/private.key
+
 # OPTIONAL PROXY CONFIGURATION ex: http://proxy.domain.com:1234
 HTTP_PROXY=
 

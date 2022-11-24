@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 const {
   DB_USER,
   DB_PASS,
@@ -15,7 +17,16 @@ const {
   DEV_FALLBACK_ADMIN_URL,
   HTTP_PROXY,
   EMAIL_ALLOW_INVALID_CERTIFICATE,
+  USE_POSTFIX,
+  DKIM_KEY_SELECTOR,
+  DKIM_PRIVATE_KEY_PATH,
 } = process.env;
+
+let DKIM_PRIVATE_KEY;
+if (!!USE_POSTFIX && !!DKIM_PRIVATE_KEY_PATH) {
+  DKIM_PRIVATE_KEY = fs.readFileSync(DKIM_PRIVATE_KEY_PATH);
+}
+
 
 export default {
   IS_PRODUCTION: NODE_ENV !== 'development',
@@ -32,4 +43,7 @@ export default {
   DEV_FALLBACK_ADMIN_URL,
   HTTP_PROXY,
   EMAIL_ALLOW_INVALID_CERTIFICATE,
+  USE_POSTFIX,
+  DKIM_KEY_SELECTOR,
+  DKIM_PRIVATE_KEY,
 };

@@ -213,6 +213,7 @@ const translations = {
   sasettings_admin_make_superadmin: 'Donner les droits super-admin',
   sasettings_admin_make_non_superadmin: 'Enlever les droits super-admin',
   sasettings_email_config: "Configuration de l'envoi d'emails",
+  sasettings_email_config_use_postfix: "Postfix est utilisé pour l'envoi des emails.",
   sasettings_email_config_label_host: 'Serveur SMTP',
   sasettings_email_config_label_port: 'Port (e.g. 25, 587 ou 465)',
   sasettings_email_config_label_user: "Identifiant (habituellement identique à l'adresse d'envoi)",
@@ -223,7 +224,7 @@ const translations = {
   sasettings_email_config_testing: 'Tester',
   sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
   sasettings_email_config_testing_alert: 'Un email a été envoyé',
-  sasettings_email_config_testing_error_alert: 'Error d\'envoi du mail : $e',
+  sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
 };
 
 export default translations;
