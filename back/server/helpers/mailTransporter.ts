@@ -13,7 +13,7 @@ type EmailConfig = {
 };
 
 let machineHostname: string;
-exec('hostnamectl', (error, stdout, stderr) => {
+exec('hostname', (error, stdout, stderr) => {
   machineHostname = stdout;
 });
 
