@@ -216,7 +216,7 @@ const translations = {
   sasettings_email_config_use_postfix:
     "Postfix est utilisé pour l'envoi des emails. Vous n'avez rien d'autre à configurer.",
   sasettings_email_config_use_postfix_check_deliverability:
-    "Nous vous conseillons de vérifier la déliverabilité de vos emails grâce à l'outil gratuit",
+    "Nous vous conseillons de vérifier la délivrabilité de vos emails grâce à l'outil gratuit",
   sasettings_email_config_label_host: 'Serveur SMTP',
   sasettings_email_config_label_port: 'Port (e.g. 25, 587 ou 465)',
   sasettings_email_config_label_user: "Identifiant (habituellement identique à l'adresse d'envoi)",
