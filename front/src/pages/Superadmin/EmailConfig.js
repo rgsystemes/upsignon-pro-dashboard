@@ -75,7 +75,13 @@ export class EmailConfig extends React.Component {
     return (
       <div>
         <h2>{i18n.t('sasettings_email_config')}</h2>
-        {this.usePostfix && <div>{i18n.t('sasettings_email_config_use_postfix')}</div>}
+        {this.usePostfix && (
+          <div>
+            <div>{i18n.t('sasettings_email_config_use_postfix')}</div>
+            <div>{i18n.t('sasettings_email_config_use_postfix_check_deliverability')}</div>
+            <a href="https://mail-tester.com">https://mail-tester.com</a>
+          </div>
+        )}
         {!this.usePostfix && (
           <form onSubmit={this.submitNewEmailConfig}>
             <label htmlFor="emailHost">{i18n.t('sasettings_email_config_label_host')}</label>

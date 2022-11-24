@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
 import { db } from './db';
 import env from './env';
-import { exec } from 'child_process';
 
 type EmailConfig = {
   EMAIL_HOST?: string;
@@ -12,14 +11,9 @@ type EmailConfig = {
   EMAIL_ALLOW_INVALID_CERTIFICATE?: boolean;
 };
 
-let machineHostname: string;
-exec('hostname', (error, stdout, stderr) => {
-  machineHostname = stdout;
-});
-
 export const getEmailConfig = async (): Promise<EmailConfig> => {
   if (!!env.USE_POSTFIX) {
-    return { EMAIL_SENDING_ADDRESS: `ne-pas-repondre@${machineHostname}` };
+    return { EMAIL_SENDING_ADDRESS: `ne-pas-repondre@${env.DKIM_HOSTNAME}` };
   } else {
     const emailConfReq = await db.query("SELECT value FROM settings WHERE key = 'EMAIL_CONFIG'");
     if (emailConfReq.rowCount !== 1) {
@@ -52,7 +46,7 @@ export const getMailTransporter = (
       path: '/usr/sbin/sendmail',
       secure: true,
       dkim: {
-        domainName: machineHostname,
+        domainName: env.DKIM_HOSTNAME,
         privateKey: env.DKIM_PRIVATE_KEY,
         keySelector: env.DKIM_KEY_SELECTOR,
       },

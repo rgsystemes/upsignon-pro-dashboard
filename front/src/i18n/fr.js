@@ -213,7 +213,10 @@ const translations = {
   sasettings_admin_make_superadmin: 'Donner les droits super-admin',
   sasettings_admin_make_non_superadmin: 'Enlever les droits super-admin',
   sasettings_email_config: "Configuration de l'envoi d'emails",
-  sasettings_email_config_use_postfix: "Postfix est utilisé pour l'envoi des emails.",
+  sasettings_email_config_use_postfix:
+    "Postfix est utilisé pour l'envoi des emails. Vous n'avez rien d'autre à configurer.",
+  sasettings_email_config_use_postfix_check_deliverability:
+    "Nous vous conseillons de vérifier la déliverabilité de vos emails grâce à l'outil gratuit",
   sasettings_email_config_label_host: 'Serveur SMTP',
   sasettings_email_config_label_port: 'Port (e.g. 25, 587 ou 465)',
   sasettings_email_config_label_user: "Identifiant (habituellement identique à l'adresse d'envoi)",
