@@ -54,7 +54,7 @@ export const getMailTransporter = (
       };
     }
   } else {
-    const transportOptions = {
+    transportOptions = {
       host: emailConfig.EMAIL_HOST,
       port: emailConfig.EMAIL_PORT,
       secure: emailConfig.EMAIL_PORT === 465,
