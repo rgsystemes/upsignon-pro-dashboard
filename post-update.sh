@@ -1,13 +1,13 @@
 #!/bin/bash
 cd front
-yarn install
+/home/upsignonpro/.npm-global/bin/yarn install
 ./buildFront.sh
 
 
 cd ../back
-yarn install
-yarn build-server
+/home/upsignonpro/.npm-global/bin/yarn install
+/home/upsignonpro/.npm-global/bin/yarn build-server
 cd ..
 
-pm2 stop upsignon-pro-dashboard
-pm2 start ./back/dashboard.config.js --update-env
+/home/upsignonpro/.npm-global/bin/pm2 stop upsignon-pro-dashboard
+/home/upsignonpro/.npm-global/bin/pm2 start ./back/dashboard.config.js --update-env
