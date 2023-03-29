@@ -3,35 +3,35 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 export class EmailConfig extends React.Component {
-  emailHostInputRef = null;
-  emailPortInputRef = null;
-  emailUserInputRef = null;
-  emailPassInputRef = null;
-  emailSendingAddressInputRef = null;
-  emailAllowInvalidCertificateInputRef = null;
+  state = {
+    emailHost: '',
+    emailPort: '',
+    emailUser: '',
+    emailPass: '',
+    emailSendingAddress: '',
+    emailAllowInvalidCertificate: false,
+    usePostfix: true,
+  };
   testingEmailInputRef = null;
-  usePostfix = true;
 
   fetchEmailConfig = async () => {
     try {
       const settings = await groupUrlFetch('/api/get-setting', 'POST', { key: 'EMAIL_CONFIG' });
-      this.usePostfix = !!settings.usePostfix;
-      if (settings.EMAIL_CONFIG) {
-        this.emailHostInputRef.value = settings.EMAIL_CONFIG.EMAIL_HOST || '';
-        this.emailPortInputRef.value = settings.EMAIL_CONFIG.EMAIL_PORT || '';
-        this.emailUserInputRef.value = settings.EMAIL_CONFIG.EMAIL_USER || '';
-        this.emailPassInputRef.value = settings.EMAIL_CONFIG.EMAIL_PASS || '';
-        this.emailSendingAddressInputRef.value = settings.EMAIL_CONFIG.EMAIL_SENDING_ADDRESS || '';
-        this.emailAllowInvalidCertificateInputRef.checked =
-          settings.EMAIL_CONFIG.EMAIL_ALLOW_INVALID_CERTIFICATE;
-      }
+      this.setState({
+        emailHost: settings.EMAIL_CONFIG?.EMAIL_HOST || '',
+        emailPort: settings.EMAIL_CONFIG?.EMAIL_PORT || '',
+        emailUser: settings.EMAIL_CONFIG?.EMAIL_USER || '',
+        emailPass: settings.EMAIL_CONFIG?.EMAIL_PASS || '',
+        emailSendingAddress: settings.EMAIL_CONFIG?.EMAIL_SENDING_ADDRESS || '',
+        emailAllowInvalidCertificate: settings.EMAIL_CONFIG?.EMAIL_ALLOW_INVALID_CERTIFICATE,
+        usePostfix: !!settings.usePostfix,
+      });
     } catch (e) {
       console.error(e);
     }
   };
   componentDidMount() {
     this.fetchEmailConfig();
-    this.forceUpdate();
   }
 
   submitNewEmailConfig = async (event) => {
@@ -39,12 +39,12 @@ export class EmailConfig extends React.Component {
       event.preventDefault();
       this.props.setIsLoading(true);
       const emailConfig = {
-        EMAIL_HOST: this.emailHostInputRef.value,
-        EMAIL_PORT: Number.parseInt(this.emailPortInputRef.value),
-        EMAIL_USER: this.emailUserInputRef.value,
-        EMAIL_PASS: this.emailPassInputRef.value,
-        EMAIL_SENDING_ADDRESS: this.emailSendingAddressInputRef.value,
-        EMAIL_ALLOW_INVALID_CERTIFICATE: this.emailAllowInvalidCertificateInputRef.checked,
+        EMAIL_HOST: this.state.emailHost,
+        EMAIL_PORT: this.state.emailPort,
+        EMAIL_USER: this.state.emailUser,
+        EMAIL_PASS: this.state.emailPass,
+        EMAIL_SENDING_ADDRESS: this.state.emailSendingAddress,
+        EMAIL_ALLOW_INVALID_CERTIFICATE: this.state.emailAllowInvalidCertificate,
       };
       await groupUrlFetch('/api/update-setting', 'POST', {
         key: 'EMAIL_CONFIG',
@@ -75,14 +75,14 @@ export class EmailConfig extends React.Component {
     return (
       <div>
         <h2>{i18n.t('sasettings_email_config')}</h2>
-        {this.usePostfix && (
+        {this.state.usePostfix && (
           <div>
             <div>{i18n.t('sasettings_email_config_use_postfix')}</div>
             <div>{i18n.t('sasettings_email_config_use_postfix_check_deliverability')}</div>
             <a href="https://mail-tester.com">https://mail-tester.com</a>
           </div>
         )}
-        {!this.usePostfix && (
+        {!this.state.usePostfix && (
           <form onSubmit={this.submitNewEmailConfig}>
             <label htmlFor="emailHost">{i18n.t('sasettings_email_config_label_host')}</label>
             <br />
@@ -90,9 +90,10 @@ export class EmailConfig extends React.Component {
               name="emailHost"
               type="text"
               autoComplete="off"
-              ref={(r) => {
-                this.emailHostInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailHost: v.target.value });
               }}
+              value={this.state.emailHost}
               placeholder="smtp.ionos.fr"
               style={{ minWidth: 300, marginBottom: 15 }}
             />
@@ -104,10 +105,11 @@ export class EmailConfig extends React.Component {
               name="emailPort"
               type="text"
               autoComplete="off"
-              ref={(r) => {
-                this.emailPortInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailPort: Number.parseInt(v.target.value) });
               }}
-              placeholder="465"
+              value={this.state.emailPort}
+              placeholder="587"
               style={{ minWidth: 300, marginBottom: 15 }}
             />
 
@@ -118,9 +120,10 @@ export class EmailConfig extends React.Component {
               name="emailUser"
               type="text"
               autoComplete="off"
-              ref={(r) => {
-                this.emailUserInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailUser: v.target.value });
               }}
+              value={this.state.emailUser}
               placeholder="ne-pas-repondre@domaine.fr"
               style={{ minWidth: 300, marginBottom: 15 }}
             />
@@ -132,9 +135,10 @@ export class EmailConfig extends React.Component {
               name="emailPass"
               type="password"
               autoComplete="off"
-              ref={(r) => {
-                this.emailPassInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailPass: v.target.value });
               }}
+              value={this.state.emailPass}
               style={{ minWidth: 300, marginBottom: 15 }}
             />
 
@@ -147,9 +151,10 @@ export class EmailConfig extends React.Component {
               name="emailSendingAddress"
               type="text"
               autoComplete="off"
-              ref={(r) => {
-                this.emailSendingAddressInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailSendingAddress: v.target.value });
               }}
+              value={this.state.emailSendingAddress}
               style={{ minWidth: 300, marginBottom: 15 }}
             />
 
@@ -158,9 +163,10 @@ export class EmailConfig extends React.Component {
               name="emailAllowInvalidCertificate"
               type="checkbox"
               autoComplete="off"
-              ref={(r) => {
-                this.emailAllowInvalidCertificateInputRef = r;
+              onChange={(v) => {
+                this.setState({ emailAllowInvalidCertificate: v.target.checked });
               }}
+              checked={this.state.emailAllowInvalidCertificate}
               style={{ marginRight: 15 }}
             />
             <label htmlFor="emailAllowInvalidCertificate">
