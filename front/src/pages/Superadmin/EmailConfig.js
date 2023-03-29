@@ -106,7 +106,9 @@ export class EmailConfig extends React.Component {
               type="text"
               autoComplete="off"
               onChange={(v) => {
-                this.setState({ emailPort: Number.parseInt(v.target.value) });
+                this.setState({
+                  emailPort: !!v.target.value ? Number.parseInt(v.target.value) : '',
+                });
               }}
               value={this.state.emailPort}
               placeholder="587"
