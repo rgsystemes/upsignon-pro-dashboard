@@ -16,8 +16,10 @@ import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
+import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
+replacePublicUrlInFront(frontBuildDir);
 
 const app = express();
 
@@ -143,7 +145,7 @@ app.use(
 
 // START
 if (module === require.main) {
-  startServer(app, () => {});
+  startServer(app, () => { });
 }
 
 module.exports = app;
