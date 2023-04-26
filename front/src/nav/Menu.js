@@ -17,14 +17,9 @@ function Menu(props) {
         isSuperadmin={isSuperadmin}
       />
       <React.Fragment>
-        {pages.map((p) => {
-          if (isSuperadminPage && p.disabledForSuperadmin) {
-            return (
-              <div key={p.key} className="navItem disabled">
-                {p.title}
-              </div>
-            );
-          } else {
+        {pages
+          .filter((p) => !isSuperadminPage || !p.disabledForSuperadmin)
+          .map((p) => {
             return (
               <a
                 key={p.key}
@@ -34,8 +29,7 @@ function Menu(props) {
                 {p.title}
               </a>
             );
-          }
-        })}
+          })}
       </React.Fragment>
       <div style={{ marginTop: 20, display: 'flex', justifyContent: 'center' }}>
         <div
