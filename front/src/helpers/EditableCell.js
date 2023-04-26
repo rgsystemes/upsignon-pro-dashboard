@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { i18n } from '../i18n/i18n';
 
 export function EditableCell(props) {
-  const { value, onChange, placeholder, type } = props;
+  const { value, onChange, placeholder, type, style } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
 
@@ -23,6 +23,7 @@ export function EditableCell(props) {
             <input
               style={{
                 width: `${Math.max(currentValue?.length || placeholder?.length || 0, 15)}ch`,
+                height: 'auto',
               }}
               value={currentValue}
               onChange={(ev) => {
@@ -48,13 +49,17 @@ export function EditableCell(props) {
   }
   return (
     <td
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: 'pointer', ...style }}
       onClick={() => {
         setIsEditing(true);
         setCurrentValue(value);
       }}
     >
-      {value}
+      {type === 'date'
+        ? !!value
+          ? new Date(value).toLocaleDateString()
+          : i18n.t('sasettings_group_test_expires_at_never')
+        : value}
     </td>
   );
 }

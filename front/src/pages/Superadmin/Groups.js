@@ -4,6 +4,12 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { baseFrontUrl } from '../../helpers/env';
 
+// eslint-disable-next-line no-extend-native
+Date.prototype.addWeeks = function (w) {
+  this.setTime(this.getTime() + w * 7 * 24 * 60 * 60 * 1000);
+  return this;
+};
+
 // Props : setIsLoading, groups, fetchGroups
 class Groups extends React.Component {
   state = {
@@ -154,6 +160,8 @@ class Groups extends React.Component {
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
                 <th>{i18n.t('sasettings_group_created_at')}</th>
+                <th>{i18n.t('sasettings_group_is_testing')}</th>
+                <th>{i18n.t('sasettings_group_test_expires_at')}</th>
                 <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
@@ -198,6 +206,40 @@ class Groups extends React.Component {
                     />
                     <td>{new Date(group.created_at).toLocaleDateString()}</td>
                     <td>
+                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <input
+                          type="checkbox"
+                          checked={group.settings?.IS_TESTING}
+                          onChange={() => {
+                            this.toggleGroupSetting(group.id, {
+                              ...group.settings,
+                              IS_TESTING: !group.settings?.IS_TESTING,
+                            });
+                          }}
+                        ></input>
+                        &nbsp;{group.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
+                      </div>
+                    </td>
+                    {group.settings?.IS_TESTING ? (
+                      <EditableCell
+                        type="date"
+                        value={group.settings?.TESTING_EXPIRATION_DATE}
+                        style={
+                          new Date(group.settings?.TESTING_EXPIRATION_DATE) < new Date()
+                            ? { backgroundColor: 'red', color: 'white' }
+                            : null
+                        }
+                        onChange={(newVal) => {
+                          this.toggleGroupSetting(group.id, {
+                            ...group.settings,
+                            TESTING_EXPIRATION_DATE: newVal,
+                          });
+                        }}
+                      />
+                    ) : (
+                      <td>N/A</td>
+                    )}
+                    <td>
                       {group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN ===
                         true && <span className="unrecommendedParam">{i18n.t('no')}</span>}
                       {!group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN && (
@@ -230,6 +272,8 @@ class Groups extends React.Component {
               <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
                 <td>{i18n.t('total')}</td>
                 <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
