@@ -5,7 +5,6 @@ import { i18n } from '../../i18n/i18n';
 
 const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
-const passwordChangeUrlPlaceholder = 'https://service.com/account-setting';
 
 // Props = setIsLoading, isSuperAdmin, otherGroups
 class Urls extends React.Component {
@@ -14,7 +13,6 @@ class Urls extends React.Component {
   };
   nameInput = null;
   signinUrlInput = null;
-  passwordChangeUrlInput = null;
   nbCopiedFromTargetGroup = null;
   usesBasicAuthCheckbox = false;
 
@@ -42,7 +40,6 @@ class Urls extends React.Component {
       this.props.setIsLoading(true);
       const displayedName = this.nameInput.value;
       const signinUrl = this.signinUrlInput.value;
-      const passwordChangeUrl = this.passwordChangeUrlInput.value;
       const usesBasicAuth = this.usesBasicAuthCheckbox.checked;
       if (!displayedName) {
         this.nameInput.style.borderColor = 'red';
@@ -53,13 +50,11 @@ class Urls extends React.Component {
       await groupUrlFetch('/api/insert-url', 'POST', {
         displayedName,
         signinUrl,
-        passwordChangeUrl,
         usesBasicAuth,
       });
       await this.fetchUrls();
       this.nameInput.value = null;
       this.signinUrlInput.value = null;
-      this.passwordChangeUrlInput.value = null;
       this.usesBasicAuthCheckbox.checked = false;
     } catch (e) {
       console.error(e);
@@ -149,14 +144,6 @@ class Urls extends React.Component {
                 }}
                 placeholder={signinUrlPlaceholder}
               />
-              <InputWithLabel
-                labelFor="password-change-url"
-                label={i18n.t('settings_urls_password_change_url')}
-                handleRef={(r) => {
-                  this.passwordChangeUrlInput = r;
-                }}
-                placeholder={passwordChangeUrlPlaceholder}
-              />
               <tr>
                 <td>
                   <label htmlFor="url-uses-basic-auth" style={{ marginRight: 10 }}>
@@ -183,7 +170,6 @@ class Urls extends React.Component {
               <tr>
                 <th>{i18n.t('settings_urls_name')}</th>
                 <th>{i18n.t('settings_urls_signin_url')}</th>
-                <th>{i18n.t('settings_urls_password_change_url')}</th>
                 <th title={i18n.t('settings_urls_basic_auth_details')} style={{ cursor: 'help' }}>
                   {i18n.t('settings_urls_basic_auth')}
                 </th>
@@ -207,13 +193,6 @@ class Urls extends React.Component {
                       placeholder={signinUrlPlaceholder}
                       onChange={(newVal) => {
                         this.submitUrlEdition(url.id, { signinUrl: newVal });
-                      }}
-                    />
-                    <EditableCell
-                      value={url.password_change_url}
-                      placeholder={passwordChangeUrlPlaceholder}
-                      onChange={(newVal) => {
-                        this.submitUrlEdition(url.id, { passwordChangeUrl: newVal });
                       }}
                     />
                     <td>
