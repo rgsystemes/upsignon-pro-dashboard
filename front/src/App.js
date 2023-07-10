@@ -13,12 +13,14 @@ import { i18n } from './i18n/i18n';
 import { baseFrontUrl, groupId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
+import { SharedVaults } from './pages/SharedVaults';
 
 class App extends React.Component {
   state = {
     isLoading: false,
     nb_users: null,
     nb_shared_accounts: null,
+    nb_shared_vaults: null,
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
     groups: [],
@@ -53,6 +55,9 @@ class App extends React.Component {
     }
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
       groupUrlFetch('/api/count-shared-accounts', 'GET', null)
+        .then((res) => this.setState({ nb_shared_accounts: res }))
+        .catch(() => {});
+      groupUrlFetch('/api/count-shared-vaults', 'GET', null)
         .then((res) => this.setState({ nb_shared_accounts: res }))
         .catch(() => {});
       groupUrlFetch('/api/count-shared-devices', 'GET', null)
@@ -117,6 +122,14 @@ class App extends React.Component {
         />
       );
       currentPage = 'shared_accounts';
+    } else if (path.startsWith(`/${groupId}/shared_vaults`)) {
+      pageContent = (
+        <SharedVaults
+          setIsLoading={this.setIsLoading}
+          totalCount={this.state.nb_shared_vaults}
+        />
+      );
+      currentPage = 'shared_accounts';
     } else if (path.startsWith(`/${groupId}/settings`)) {
       if (groupId === 'superadmin') {
         pageContent = (
@@ -171,6 +184,13 @@ class App extends React.Component {
         href: '/shared_accounts/',
         title: `${i18n.t('menu_shared_accounts')} (${this.state.nb_shared_accounts || '-'})`,
         isCurrent: currentPage === 'shared_accounts',
+        disabledForSuperadmin: true,
+      },
+      {
+        key: 'shared_vaults',
+        href: '/shared_vaults/',
+        title: `${i18n.t('menu_shared_vaults')} (${this.state.nb_shared_vaults || '-'})`,
+        isCurrent: currentPage === 'shared_vaults',
         disabledForSuperadmin: true,
       },
       {

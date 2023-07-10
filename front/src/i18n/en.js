@@ -19,7 +19,8 @@ const translations = {
   menu_users: 'Users',
   menu_settings: 'Settings',
   menu_shared_devices: 'Shared devices',
-  menu_shared_accounts: 'Shared accounts',
+  menu_shared_accounts: 'Shared accounts (deprecated)',
+  menu_shared_vaults: 'Shared vaults',
   menu_superadmin: 'Super-Admin',
   loading: 'Loading data...',
   total_count: 'Total $count',
@@ -124,6 +125,7 @@ const translations = {
   shared_devices_status: 'Status',
   shared_devices_last_session: 'Last session',
   shared_account_shared_folder_name: 'Shared folder',
+  shared_vault_shared_folder_name: 'Shared vault',
   shared_account_type: 'Type',
   shared_account_items: 'Items',
   shared_account_users: 'Users',
@@ -133,14 +135,20 @@ const translations = {
   shared_account_user_delete: 'Delete from sharing',
   shared_account_user_delete_warning:
     'The item $name will no longer be shared with $user.\n\nAre you sure?',
+  shared_vault_user_delete_warning:
+    'The shared vault $name will no longer be shared with $user.\n\nAre you sure?',
   shared_folder_user_delete_warning:
     'The folder $name will no longer be shared with $user.\n\nAre you sure?',
   shared_account_last_user_warning:
     'THIS IS THE LAST USER WITH ACCESS TO THIS ACCOUNT. THE PASSWORD WILL BE LOST.',
   shared_account_search: 'Search by user email address',
+  shared_vault_search: 'Search by user email address',
   shared_account_unit_name: 'Shared accounts',
+  shared_vault_unit_name: 'Shared vaults',
   shared_account_manager_note:
     "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
+  shared_vault_manager_note:
+    "You can't remove management rights from the last manager of a shared vault or delete him from the share. But you can transfer the management rights to another user.",
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
   extract_emails_text: 'Get the list of emails of users:',

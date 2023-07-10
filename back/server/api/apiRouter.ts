@@ -43,6 +43,10 @@ import { update_group } from './update_group';
 import { update_shared_account_manager } from './update_shared_account_manager';
 import { update_url } from './update_url';
 import { update_user_email } from './update_user_email';
+import { get_shared_vaults } from './get_shared_vaults';
+import { count_shared_vaults } from './count_shared_vaults';
+import { delete_shared_vault_user } from './delete_shared_vault_user';
+import { update_shared_vault_manager } from './update_shared_vault_manager';
 
 export const apiRouter = express.Router();
 
@@ -98,6 +102,12 @@ apiRouter.post('/delete-shared-account-user', delete_shared_account_user);
 apiRouter.post('/update-shared-account-manager', update_shared_account_manager);
 apiRouter.post('/clean-empty-shared-folders', clean_empty_shared_folders);
 apiRouter.get('/shared_folders', get_shared_folders);
+
+// Shared vaults
+apiRouter.get('/shared-vaults', get_shared_vaults);
+apiRouter.get('/count-shared-vaults', count_shared_vaults);
+apiRouter.post('/delete-shared-vault-user', delete_shared_vault_user);
+apiRouter.post('/update-shared-vault-manager', update_shared_vault_manager);
 
 // Stats
 apiRouter.get('/get-password-stats', (req, res) => get_password_stats(req, res, false));

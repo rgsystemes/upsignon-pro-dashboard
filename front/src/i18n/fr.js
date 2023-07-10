@@ -19,7 +19,8 @@ const translations = {
   menu_users: 'Utilisateurs',
   menu_settings: 'Paramètres',
   menu_shared_devices: 'Appareils partagés',
-  menu_shared_accounts: 'Comptes partagés',
+  menu_shared_accounts: 'Comptes partagés (déprécié)',
+  menu_shared_vaults: 'Coffres-forts partagés',
   menu_superadmin: 'Super-Admin',
   loading: 'Chargement des données...',
   total_count: 'Total $count',
@@ -124,6 +125,7 @@ const translations = {
   shared_devices_type: "Type d'appareil",
   shared_devices_status: 'Statut',
   shared_devices_last_session: 'Dernière session',
+  shared_vault_shared_folder_name: 'Coffre-fort partagé',
   shared_account_shared_folder_name: 'Dossier partagé',
   shared_account_type: 'Type',
   shared_account_items: 'Éléments',
@@ -134,14 +136,20 @@ const translations = {
   shared_account_user_delete: 'Supprimer du partage',
   shared_account_user_delete_warning:
     "L'élément $name ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?",
+  shared_vault_user_delete_warning:
+    'Le coffre partafé $name ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
   shared_folder_user_delete_warning:
     'Le dossier $name ne sera plus partagé avec $user.\n\nÊtes-vous sûrs ?',
   shared_account_last_user_warning:
     "IL S'AGIT DU DERNIER UTILISATEUR AYANT ACCÈS À CE COMPTE. LE MOT DE PASSE SERA PERDU.",
   shared_account_search: "Rechercher par adresse email d'utilisateur",
+  shared_vault_search: "Rechercher par adresse email d'utilisateur",
   shared_account_unit_name: 'Comptes partagés',
+  shared_vault_unit_name: 'Coffres-forts partagés',
   shared_account_manager_note:
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
+  shared_vault_manager_note:
+    "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
   extract_emails_text: 'Récupérer la liste des emails des utilisateurs :',

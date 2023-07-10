@@ -136,6 +136,7 @@ app.use(
     '/:groupId/users/',
     '/:groupId/shared_devices/',
     '/:groupId/shared_accounts/',
+    '/:groupId/shared_vaults/',
     '/:groupId/password_reset_requests/',
     '/:groupId/settings/',
     '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
