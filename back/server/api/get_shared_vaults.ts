@@ -20,12 +20,12 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
       AND sv.group_id=$2`,
         [search + '%', req.proxyParamsGroupId],
       );
-      sharedVaultsCount = parseInt(countReq.rows[0].count, 10);
+      sharedVaultsCount = parseInt(countReq.rows[0]?.count || 0, 10);
     } else {
       const countReq = await db.query('SELECT COUNT(id) FROM shared_vaults WHERE group_id=$1', [
         req.proxyParamsGroupId,
       ]);
-      sharedVaultsCount = parseInt(countReq.rows[0].count, 10);
+      sharedVaultsCount = parseInt(countReq.rows[0]?.count || 0, 10);
     }
 
     // GET SHARED VAULTS

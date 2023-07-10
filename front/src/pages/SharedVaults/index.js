@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
