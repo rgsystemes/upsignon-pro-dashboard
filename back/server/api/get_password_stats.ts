@@ -10,22 +10,13 @@ export const get_password_stats = async (
   try {
     let rawStats: any = null;
     if (!asSuperadmin) {
-      // Clean data_stats to make there is at most one line per user per day
-      await db.query(
-        "DELETE FROM data_stats as ds1 USING data_stats as ds2 WHERE ds1.user_id=ds2.user_id AND date_trunc('day',ds1.date)=date_trunc('day', ds2.date) AND ds1.date<ds2.date AND ds1.group_id=$1",
-        [req.proxyParamsGroupId],
-      );
       rawStats = await db.query(
-        "SELECT user_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats WHERE group_id=$1 ORDER BY day ASC",
+        "SELECT user_id, sahred_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats WHERE group_id=$1 ORDER BY day ASC",
         [req.proxyParamsGroupId],
       );
     } else {
-      // Clean data_stats to make there is at most one line per user per day
-      await db.query(
-        "DELETE FROM data_stats as ds1 USING data_stats as ds2 WHERE ds1.user_id=ds2.user_id AND date_trunc('day',ds1.date)=date_trunc('day', ds2.date) AND ds1.date<ds2.date",
-      );
       rawStats = await db.query(
-        "SELECT user_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats ORDER BY day ASC",
+        "SELECT user_id, sahred_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats ORDER BY day ASC",
       );
     }
 
@@ -34,18 +25,26 @@ export const get_password_stats = async (
     }
 
     /*
-     * First get chartDataPerUserPerDay = {
+     * First get chartDataPerVaultPerDay = {
      *  [userId]: {
      *    [day]: stats
      *  }
      * }
      */
-    const chartDataPerUserPerDay: any = {};
+    const chartDataPerVaultPerDay: any = {};
     rawStats.rows.forEach((r: any) => {
-      if (!chartDataPerUserPerDay[r.user_id]) {
-        chartDataPerUserPerDay[r.user_id] = {};
+      if(r.user_id) {
+        if (!chartDataPerVaultPerDay['v'+r.user_id]) {
+          chartDataPerVaultPerDay['v'+r.user_id] = {};
+        }
+        chartDataPerVaultPerDay['v'+r.user_id][r.day.toISOString()] = r;
+      } else {
+        if (!chartDataPerVaultPerDay['sv'+r.shared_vault_id]) {
+          chartDataPerVaultPerDay['sv'+r.shared_vault_id] = {};
+        }
+        chartDataPerVaultPerDay['sv'+r.shared_vault_id][r.day.toISOString()] = r;
+
       }
-      chartDataPerUserPerDay[r.user_id][r.day.toISOString()] = r;
     });
 
     // Then get the continuous list of days
@@ -70,10 +69,10 @@ export const get_password_stats = async (
     });
 
     // Then map each day to its stats
-    const userList = Object.keys(chartDataPerUserPerDay);
-    userList.forEach((u) => {
+    const vaultList = Object.keys(chartDataPerVaultPerDay);
+    vaultList.forEach((u) => {
       let lastKnownStats: any = null;
-      const userStats = chartDataPerUserPerDay[u];
+      const userStats = chartDataPerVaultPerDay[u];
       days.forEach((d) => {
         if (userStats[d]) {
           lastKnownStats = userStats[d];
