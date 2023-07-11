@@ -24,7 +24,7 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
       u.nb_accounts_weak AS nb_accounts_weak,
       u.nb_accounts_medium AS nb_accounts_medium,
       u.nb_accounts_strong AS nb_accounts_strong,
-      u.nb_accounts_with_duplicate_password AS nb_accounts_with_duplicate_password
+      u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
     WHERE u.group_id=$1

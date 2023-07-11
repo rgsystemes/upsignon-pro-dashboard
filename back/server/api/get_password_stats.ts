@@ -11,12 +11,12 @@ export const get_password_stats = async (
     let rawStats: any = null;
     if (!asSuperadmin) {
       rawStats = await db.query(
-        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats WHERE group_id=$1 ORDER BY day ASC",
+        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicated_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats WHERE group_id=$1 ORDER BY day ASC",
         [req.proxyParamsGroupId],
       );
     } else {
       rawStats = await db.query(
-        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicate_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats ORDER BY day ASC",
+        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicated_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats ORDER BY day ASC",
       );
     }
 
@@ -85,7 +85,7 @@ export const get_password_stats = async (
           lastKnownStats?.nb_accounts_with_no_password || 0;
         chartDataObjet[d].nbAccounts += lastKnownStats?.nb_accounts || 0;
         chartDataObjet[d].nbDuplicatePasswords +=
-          lastKnownStats?.nb_accounts_with_duplicate_password || 0;
+          lastKnownStats?.nb_accounts_with_duplicated_password || 0;
         chartDataObjet[d].nbAccountsGreen += lastKnownStats?.nb_accounts_green || 0;
         chartDataObjet[d].nbAccountsOrange += lastKnownStats?.nb_accounts_orange || 0;
         chartDataObjet[d].nbAccountsRed += lastKnownStats?.nb_accounts_red || 0;

@@ -319,11 +319,11 @@ class Users extends React.Component {
                       <div
                         style={{ borderTop: '1px solid #eee' }}
                         className={`tag ${
-                          u.nb_accounts_with_duplicate_password > 0 && 'positiveReused'
+                          u.nb_accounts_with_duplicated_password > 0 && 'positiveReused'
                         }`}
                       >
                         {i18n.t('user_passwords_duplicated', {
-                          nb: u.nb_accounts_with_duplicate_password || 0,
+                          nb: u.nb_accounts_with_duplicated_password || 0,
                         })}
                       </div>
                     </td>

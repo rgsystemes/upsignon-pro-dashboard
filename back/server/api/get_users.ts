@@ -59,14 +59,14 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       u.nb_accounts_red AS nb_accounts_red,
       u.nb_accounts_orange AS nb_accounts_orange,
       u.nb_accounts_green AS nb_accounts_green,
-      u.nb_accounts_with_duplicate_password AS nb_accounts_with_duplicate_password,
+      u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
       (SELECT ul.date FROM usage_logs AS ul INNER JOIN user_devices AS ud ON ud.id=ul.device_id WHERE ul.log_type='SESSION' AND ud.user_id=u.id ORDER BY date DESC LIMIT 1) AS last_session
     FROM users AS u
     WHERE u.group_id=$3
     ${isSearching ? 'AND u.email LIKE $4' : ''}
     ${
       sortingType === 0
-        ? 'ORDER BY u.nb_accounts_with_duplicate_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
+        ? 'ORDER BY u.nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
         : 'ORDER BY last_session ASC, u.email ASC'
     }
     LIMIT $1
