@@ -58,7 +58,7 @@ class App extends React.Component {
         .then((res) => this.setState({ nb_shared_accounts: res }))
         .catch(() => {});
       groupUrlFetch('/api/count-shared-vaults', 'GET', null)
-        .then((res) => this.setState({ nb_shared_accounts: res }))
+        .then((res) => this.setState({ nb_shared_vaults: res }))
         .catch(() => {});
       groupUrlFetch('/api/count-shared-devices', 'GET', null)
         .then((res) => this.setState({ nb_shared_devices: res }))
@@ -129,7 +129,7 @@ class App extends React.Component {
           totalCount={this.state.nb_shared_vaults}
         />
       );
-      currentPage = 'shared_accounts';
+      currentPage = 'shared_vaults';
     } else if (path.startsWith(`/${groupId}/settings`)) {
       if (groupId === 'superadmin') {
         pageContent = (

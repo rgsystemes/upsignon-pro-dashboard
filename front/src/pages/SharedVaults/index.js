@@ -188,7 +188,7 @@ class SharedVaults extends React.Component {
           <tbody>
             {this.state.sharedVaults.map((sv) => {
               const contacts = [];
-              sv.rows.forEach((r) => {
+              sv.users?.forEach((r) => {
                 r.users?.forEach((u) => {
                   const prevContact = contacts.find((c) => c.user_id === u.user_id);
                   if (!prevContact) {
