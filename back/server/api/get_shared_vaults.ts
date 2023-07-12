@@ -76,7 +76,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
           ) > 0`
           : ''
       }
-      ORDER BY sv.shared_vault_id desc, sv.name
+      ORDER BY sv.id desc, sv.name
       LIMIT $1
       OFFSET $2
     `,
