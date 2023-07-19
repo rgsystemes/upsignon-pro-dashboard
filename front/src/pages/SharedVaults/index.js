@@ -3,6 +3,7 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
+import { StatsCell } from '../../helpers/statsCell';
 
 const maxRenderedItems = 20;
 
@@ -51,19 +52,14 @@ class SharedVaults extends React.Component {
     }
   };
 
-  unshareWithUser = async (
-    sharedVaultId,
-    userId,
-    sharedVaultName,
-    userEmail,
-  ) => {
+  unshareWithUser = async (sharedVaultId, userId, sharedVaultName, userEmail) => {
     try {
       this.props.setIsLoading(true);
       const confirmation = window.confirm(
         i18n.t('shared_vault_user_delete_warning', {
-              name: sharedVaultName,
-              user: userEmail,
-            })
+          name: sharedVaultName,
+          user: userEmail,
+        }),
       );
       if (!confirmation) return;
       await groupUrlFetch(`/api/delete-shared-vault-user`, 'POST', {
@@ -78,11 +74,7 @@ class SharedVaults extends React.Component {
     }
   };
 
-  toggleManagerRightsForUser = async (
-    sharedVaultId,
-    willBeManager,
-    userId,
-  ) => {
+  toggleManagerRightsForUser = async (sharedVaultId, willBeManager, userId) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch(`/api/update-shared-vault-manager`, 'POST', {
@@ -175,6 +167,7 @@ class SharedVaults extends React.Component {
                   {i18n.t('shared_vault_shared_folder_name')}
                 </div>
               </th>
+              <th style={{ width: 150 }}>{i18n.t('shared_vault_passwords_stats')}</th>
               <th>{i18n.t('shared_account_users')}</th>
               <th>{i18n.t('shared_account_user_creation_date')}</th>
               <th>{i18n.t('shared_account_user_is_manager')}</th>
@@ -194,15 +187,6 @@ class SharedVaults extends React.Component {
                   prevContact.is_manager = prevContact.is_manager && u.is_manager;
                 }
               });
-              if(contacts.length == 0) {
-                return <tr key={sv.id}>
-                      <td>{sv.name}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-              }
               return (
                 <React.Fragment key={sv.id}>
                   {contacts.map((u, i) => {
@@ -212,6 +196,19 @@ class SharedVaults extends React.Component {
                     return (
                       <tr key={u.user_id}>
                         {i === 0 && <td rowSpan={contacts.length}>{sv.name}</td>}
+                        {i === 0 && (
+                          <StatsCell
+                            nb_accounts_strong={sv.nb_accounts_strong}
+                            nb_accounts_medium={sv.nb_accounts_medium}
+                            nb_accounts_weak={sv.nb_accounts_weak}
+                            nb_accounts_with_duplicated_password={
+                              sv.nb_accounts_with_duplicated_password
+                            }
+                            nb_accounts_red={sv.nb_accounts_red}
+                            nb_accounts_orange={sv.nb_accounts_orange}
+                            nb_accounts_green={sv.nb_accounts_green}
+                          />
+                        )}
                         <td>{u.email}</td>
                         <td>{new Date(u.created_at).toLocaleDateString()}</td>
                         <td>
@@ -221,11 +218,7 @@ class SharedVaults extends React.Component {
                               checked={u.is_manager}
                               disabled={isLastManager}
                               onChange={() => {
-                                this.toggleManagerRightsForUser(
-                                  sv.id,
-                                  !u.is_manager,
-                                  u.user_id,
-                                );
+                                this.toggleManagerRightsForUser(sv.id, !u.is_manager, u.user_id);
                               }}
                             ></input>
                           </div>

@@ -48,6 +48,16 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
       SELECT
         sv.id,
         sv.name,
+        sv.nb_accounts,
+        sv.nb_codes,
+        sv.nb_accounts_strong,
+        sv.nb_accounts_medium,
+        sv.nb_accounts_weak,
+        sv.nb_accounts_with_duplicated_password,
+        sv.nb_accounts_with_no_password,
+        sv.nb_accounts_red,
+        sv.nb_accounts_orange,
+        sv.nb_accounts_green
         (SELECT JSON_AGG(users_agg) FROM
           (SELECT
             u.id AS user_id,
