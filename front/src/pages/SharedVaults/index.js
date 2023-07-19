@@ -52,7 +52,6 @@ class SharedVaults extends React.Component {
   };
 
   unshareWithUser = async (
-    sharedVaultUserId, // TODO
     sharedVaultId,
     userId,
     sharedVaultName,
@@ -68,7 +67,6 @@ class SharedVaults extends React.Component {
       );
       if (!confirmation) return;
       await groupUrlFetch(`/api/delete-shared-vault-user`, 'POST', {
-        sharedVaultUserId,
         sharedVaultId,
         userId,
       });
@@ -81,7 +79,6 @@ class SharedVaults extends React.Component {
   };
 
   toggleManagerRightsForUser = async (
-    sharedVaultUserId,
     sharedVaultId,
     willBeManager,
     userId,
@@ -89,7 +86,6 @@ class SharedVaults extends React.Component {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch(`/api/update-shared-vault-manager`, 'POST', {
-        sharedVaultUserId,
         sharedVaultId,
         willBeManager,
         userId,
@@ -188,17 +184,15 @@ class SharedVaults extends React.Component {
           <tbody>
             {this.state.sharedVaults.map((sv) => {
               const contacts = [];
-              sv.users?.forEach((r) => {
-                r.users?.forEach((u) => {
-                  const prevContact = contacts.find((c) => c.user_id === u.user_id);
-                  if (!prevContact) {
-                    contacts.push(u);
-                  } else {
-                    prevContact.created_at =
-                      prevContact.created_at < u.created_at ? prevContact.created_at : u.created_at;
-                    prevContact.is_manager = prevContact.is_manager && u.is_manager;
-                  }
-                });
+              sv.users?.forEach((u) => {
+                const prevContact = contacts.find((c) => c.user_id === u.user_id);
+                if (!prevContact) {
+                  contacts.push(u);
+                } else {
+                  prevContact.created_at =
+                    prevContact.created_at < u.created_at ? prevContact.created_at : u.created_at;
+                  prevContact.is_manager = prevContact.is_manager && u.is_manager;
+                }
               });
               return (
                 <React.Fragment key={sv.id}>
@@ -218,8 +212,7 @@ class SharedVaults extends React.Component {
                               checked={u.is_manager}
                               disabled={isLastManager}
                               onChange={() => {
-                                this.toggleManagerRightsvorUser(
-                                  null,
+                                this.toggleManagerRightsForUser(
                                   sv.id,
                                   !u.is_manager,
                                   u.user_id,
@@ -234,7 +227,6 @@ class SharedVaults extends React.Component {
                               className="action"
                               onClick={() => {
                                 this.unshareWithUser(
-                                  null,
                                   sv.id,
                                   u.user_id,
                                   sv.name,

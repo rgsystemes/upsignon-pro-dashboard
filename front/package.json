@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start-front": "react-scripts start",
-    "build-front": "./buildFront.sh",
+    "build-front": "npx react-scripts build",
     "test-front": "react-scripts test",
     "eject-front": "react-scripts eject",
     "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet --fix"
