@@ -194,6 +194,15 @@ class SharedVaults extends React.Component {
                   prevContact.is_manager = prevContact.is_manager && u.is_manager;
                 }
               });
+              if(contacts.length == 0) {
+                return <tr key={sv.id}>
+                      <td>{sv.name}</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+              }
               return (
                 <React.Fragment key={sv.id}>
                   {contacts.map((u, i) => {
