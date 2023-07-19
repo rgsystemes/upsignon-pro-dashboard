@@ -198,6 +198,7 @@ class SharedVaults extends React.Component {
                         {i === 0 && <td rowSpan={contacts.length}>{sv.name}</td>}
                         {i === 0 && (
                           <StatsCell
+                            rowSpan={contacts.length}
                             nb_accounts_strong={sv.nb_accounts_strong}
                             nb_accounts_medium={sv.nb_accounts_medium}
                             nb_accounts_weak={sv.nb_accounts_weak}
