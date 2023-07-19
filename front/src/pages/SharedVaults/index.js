@@ -166,7 +166,7 @@ class SharedVaults extends React.Component {
         <PaginationBar
           pageIndex={this.state.pageIndex}
           limit={this.state.limit}
-          totalCount={this.state.sharedAccountsCount}
+          totalCount={this.state.sharedVaultsCount}
           onClick={this.goToPageIndex}
           itemUnitName={i18n.t('shared_vault_unit_name')}
         />

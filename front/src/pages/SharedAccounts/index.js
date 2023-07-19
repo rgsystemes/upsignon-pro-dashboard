@@ -477,7 +477,7 @@ const CodeIcon = () => {
   );
 };
 
-const SharedFolderIcon = (p: { color: string }) => {
+const SharedFolderIcon = (p) => {
   return (
     <svg
       version="1.1"
