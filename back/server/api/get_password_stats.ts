@@ -11,12 +11,40 @@ export const get_password_stats = async (
     let rawStats: any = null;
     if (!asSuperadmin) {
       rawStats = await db.query(
-        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicated_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats WHERE group_id=$1 ORDER BY day ASC",
+        `SELECT
+        user_id,
+        shared_vault_id,
+        date_trunc('day', date) as day,
+        nb_accounts,
+        nb_codes,
+        nb_accounts_strong,
+        nb_accounts_medium,
+        nb_accounts_weak,
+        nb_accounts_with_no_password,
+        nb_accounts_with_duplicated_password,
+        nb_accounts_red,
+        nb_accounts_orange,
+        nb_accounts_green
+        FROM data_stats WHERE group_id=$1 ORDER BY day ASC`,
         [req.proxyParamsGroupId],
       );
     } else {
       rawStats = await db.query(
-        "SELECT user_id, shared_vault_id, date_trunc('day', date) as day, nb_accounts, nb_codes, nb_accounts_strong, nb_accounts_medium, nb_accounts_weak, nb_accounts_with_no_password, nb_accounts_with_duplicated_password, nb_accounts_red, nb_accounts_orange, nb_accounts_green FROM data_stats ORDER BY day ASC",
+        `SELECT
+        user_id,
+        shared_vault_id,
+        date_trunc('day', date) as day,
+        nb_accounts,
+        nb_codes,
+        nb_accounts_strong,
+        nb_accounts_medium,
+        nb_accounts_weak,
+        nb_accounts_with_no_password,
+        nb_accounts_with_duplicated_password,
+        nb_accounts_red,
+        nb_accounts_orange,
+        nb_accounts_green
+        FROM data_stats ORDER BY day ASC`,
       );
     }
 

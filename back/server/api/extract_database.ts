@@ -19,12 +19,16 @@ export const extract_database = async (req: any, res: any): Promise<void> => {
       (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
       (SELECT COUNT(id) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
       (SELECT COUNT(id) FROM shared_vault_recipients AS sau WHERE sau.user_id=u.id) AS nb_shared_vaults,
-      u.nb_codes AS nb_codes,
-      u.nb_accounts AS nb_accounts,
-      u.nb_accounts_weak AS nb_accounts_weak,
-      u.nb_accounts_medium AS nb_accounts_medium,
-      u.nb_accounts_strong AS nb_accounts_strong,
-      u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password
+
+      (SELECT nb_codes FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_codes,
+      (SELECT nb_accounts FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts,
+      (SELECT nb_accounts_weak  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_weak,
+      (SELECT nb_accounts_medium  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_medium,
+      (SELECT nb_accounts_strong  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_strong,
+      (SELECT nb_accounts_red  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_red,
+      (SELECT nb_accounts_orange  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_orange,
+      (SELECT nb_accounts_green  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_green,
+      (SELECT nb_accounts_with_duplicated_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicated_password
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
     WHERE u.group_id=$1

@@ -51,22 +51,23 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       u.updated_at AS updated_at,
       (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
       (SELECT COUNT(id) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
-      u.nb_codes AS nb_codes,
-      u.nb_accounts AS nb_accounts,
-      u.nb_accounts_weak AS nb_accounts_weak,
-      u.nb_accounts_medium AS nb_accounts_medium,
-      u.nb_accounts_strong AS nb_accounts_strong,
-      u.nb_accounts_red AS nb_accounts_red,
-      u.nb_accounts_orange AS nb_accounts_orange,
-      u.nb_accounts_green AS nb_accounts_green,
-      u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
+
+      (SELECT nb_codes FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_codes,
+      (SELECT nb_accounts FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts,
+      (SELECT nb_accounts_weak  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_weak,
+      (SELECT nb_accounts_medium  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_medium,
+      (SELECT nb_accounts_strong  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_strong,
+      (SELECT nb_accounts_red  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_red,
+      (SELECT nb_accounts_orange  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_orange,
+      (SELECT nb_accounts_green  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_green,
+      (SELECT nb_accounts_with_duplicated_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicated_password,
       (SELECT ul.date FROM usage_logs AS ul INNER JOIN user_devices AS ud ON ud.id=ul.device_id WHERE ul.log_type='SESSION' AND ud.user_id=u.id ORDER BY date DESC LIMIT 1) AS last_session
     FROM users AS u
     WHERE u.group_id=$3
     ${isSearching ? 'AND u.email LIKE $4' : ''}
     ${
       sortingType === 0
-        ? 'ORDER BY u.nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
+        ? 'ORDER BY nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
         : 'ORDER BY last_session ASC, u.email ASC'
     }
     LIMIT $1
