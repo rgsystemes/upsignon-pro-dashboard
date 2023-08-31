@@ -36,14 +36,14 @@ app.use(
       path: '/',
       httpOnly: true,
       secure: env.IS_PRODUCTION,
-      maxAge: 3600000, // one hour
+      maxAge: 1800000, // half an hour
       sameSite: env.IS_PRODUCTION ? 'strict' : 'lax',
     },
     name: 'upsignon_dashboard_session',
     // @ts-ignore
     secret: env.SESSION_SECRET,
     resave: false,
-    rolling: false,
+    rolling: true,
     saveUninitialized: false,
     unset: 'destroy',
     store: new SessionStore(),
