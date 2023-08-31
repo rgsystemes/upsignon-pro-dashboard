@@ -1,1 +1,0 @@
-scp -r build/ upsignonpro@pro-test.upsignon.eu:~/upsignon-pro-dashboard/front/

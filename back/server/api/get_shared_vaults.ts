@@ -16,9 +16,9 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
       FROM shared_vaults AS sv
       LEFT JOIN shared_vault_recipients AS svr ON svr.shared_vault_id=sv.id
       LEFT JOIN users AS u ON svr.user_id=u.id
-      WHERE u.email LIKE $1
+      WHERE u.email LIKE '%' || $1 || '%'
       AND sv.group_id=$2`,
-        [search + '%', req.proxyParamsGroupId],
+        [search, req.proxyParamsGroupId],
       );
       sharedVaultsCount = parseInt(countReq.rows[0]?.count || 0, 10);
     } else {
@@ -40,7 +40,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
       req.proxyParamsGroupId,
     ];
     if (isSearching) {
-      queryInputs.push(search + '%');
+      queryInputs.push(search);
     }
 
     const dbRes = await db.query(
@@ -80,7 +80,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
             FROM shared_vault_recipients AS svr2
             LEFT JOIN users AS u2 ON svr2.user_id=u2.id
             WHERE
-              u2.email LIKE $4
+              u2.email LIKE '%' || $4 || '%'
               AND svr2.shared_vault_id=sv.id
           ) > 0`
           : ''

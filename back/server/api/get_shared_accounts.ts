@@ -16,9 +16,9 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       FROM shared_accounts AS sa
       LEFT JOIN shared_account_users AS sau ON sau.shared_account_id=sa.id
       LEFT JOIN users AS u ON sau.user_id=u.id
-      WHERE u.email LIKE $1
+      WHERE u.email LIKE '%' || $1 || '%'
       AND sa.group_id=$2`,
-        [search + '%', req.proxyParamsGroupId],
+        [search, req.proxyParamsGroupId],
       );
       sharedAccountsCount = parseInt(countReq.rows[0].count, 10);
     } else {
@@ -40,7 +40,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
       req.proxyParamsGroupId,
     ];
     if (isSearching) {
-      queryInputs.push(search + '%');
+      queryInputs.push(search);
     }
 
     const dbRes = await db.query(
@@ -75,7 +75,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
             FROM shared_account_users AS sau2
             LEFT JOIN users AS u2 ON sau2.user_id=u2.id
             WHERE
-              u2.email LIKE $4
+              u2.email LIKE '%' || $4 || '%'
               AND sau2.shared_account_id=sa.id
           ) > 0`
           : ''

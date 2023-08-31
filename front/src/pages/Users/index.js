@@ -192,7 +192,7 @@ class Users extends React.Component {
               ref={(r) => (this.searchInput = r)}
               type="search"
               style={searchInputStyle}
-              placeholder="email@domain.com"
+              placeholder="email or id"
               onChange={this.onSearch}
             />
           </div>
