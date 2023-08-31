@@ -222,6 +222,7 @@ class Users extends React.Component {
         <table>
           <thead>
             <tr>
+              <th>{i18n.t('user_id')}</th>
               <th>{i18n.t('user_email')}</th>
               <th>{i18n.t('user_data')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
@@ -249,6 +250,7 @@ class Users extends React.Component {
               return (
                 <React.Fragment key={u.user_id}>
                   <tr>
+                    <td>{u.user_id}</td>
                     <EditableCell
                       value={u.email}
                       placeholder="email@domain.fr"

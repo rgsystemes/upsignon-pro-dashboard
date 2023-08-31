@@ -32,6 +32,7 @@ const translations = {
     'Sorting by last session: Users are sorted by date of last session, starting with the oldests.',
   user_search: 'Search a user',
   user_unit_name: 'users',
+  user_id: 'Id',
   user_email: 'Email',
   user_data: 'Data',
   user_data_updated_at: 'Updated at',

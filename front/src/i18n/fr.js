@@ -32,6 +32,7 @@ const translations = {
     'Tri par dernière session : Les utilisateurs sont triés par date de dernière activité en commençant par les plus anciennes.',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
+  user_id: 'Id',
   user_email: 'Email',
   user_data: 'Données',
   user_data_updated_at: 'Modifiées le',
