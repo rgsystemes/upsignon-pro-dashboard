@@ -17,6 +17,13 @@ import { get_password_stats } from '../api/get_password_stats';
 import { get_usage_stats } from '../api/get_usage_stats';
 import { get_setting } from './get_setting';
 import { test_email } from './test_email';
+import { extract_database } from '../api/extract_database';
+import { extract_emails_for_duplicate_passwords } from '../api/extract_emails_for_duplicate_passwords';
+import { extract_emails_for_weak_passwords } from '../api/extract_emails_for_weak_passwords';
+import { extract_emails_for_medium_passwords } from '../api/extract_emails_for_medium_passwords';
+import { extract_emails_for_shared_device } from '../api/extract_emails_for_shared_device';
+import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_unused';
+import { send_email, send_email_precheck } from '../api/send_email';
 
 export const superadminApiRouter = express.Router();
 
@@ -60,6 +67,18 @@ superadminApiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) => {
 superadminApiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) => {
   grant_pwd_reset_request(req, res, true);
 });
+
+// Extracts
+superadminApiRouter.get('/extract-database', (req, res) => extract_database(req, res, true));
+superadminApiRouter.get('/extract-emails-for-duplicate-passwords',(req, res)=> extract_emails_for_duplicate_passwords(req, res, true));
+superadminApiRouter.get('/extract-emails-for-weak-passwords', (req, res)=> extract_emails_for_weak_passwords(req, res, true));
+superadminApiRouter.get('/extract-emails-for-medium-passwords', (req, res)=> extract_emails_for_medium_passwords(req, res, true));
+superadminApiRouter.get('/extract-emails-for-shared-device', (req, res)=> extract_emails_for_shared_device(req, res, true));
+superadminApiRouter.get('/extract-emails-for-long-unused', (req, res)=> extract_emails_for_long_unused(req, res, true));
+
+// Send emails
+superadminApiRouter.post('/send-email-precheck', (req, res) => send_email_precheck(req, res, true));
+superadminApiRouter.post('/send-email', (req, res)=> send_email(req, res, true));
 
 // Stats
 superadminApiRouter.get('/get-password-stats', (req, res) => {

@@ -14,6 +14,7 @@ import { baseFrontUrl, groupId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
+import { Communications } from './pages/Communications';
 
 class App extends React.Component {
   state = {
@@ -100,6 +101,9 @@ class App extends React.Component {
     if (path.startsWith(`/${groupId}/users`)) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
+    } else if (path.startsWith(`/${groupId}/communications`)) {
+      pageContent = <Communications setIsLoading={this.setIsLoading} />;
+      currentPage = 'communications';
     } else if (path.startsWith(`/${groupId}/shared_devices`)) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
@@ -124,10 +128,7 @@ class App extends React.Component {
       currentPage = 'shared_accounts';
     } else if (path.startsWith(`/${groupId}/shared_vaults`)) {
       pageContent = (
-        <SharedVaults
-          setIsLoading={this.setIsLoading}
-          totalCount={this.state.nb_shared_vaults}
-        />
+        <SharedVaults setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_vaults} />
       );
       currentPage = 'shared_vaults';
     } else if (path.startsWith(`/${groupId}/settings`)) {
@@ -192,6 +193,13 @@ class App extends React.Component {
         title: `${i18n.t('menu_shared_vaults')} (${this.state.nb_shared_vaults || '-'})`,
         isCurrent: currentPage === 'shared_vaults',
         disabledForSuperadmin: true,
+      },
+      {
+        key: 'communications',
+        href: '/communications/',
+        title: `${i18n.t('menu_communications')}`,
+        isCurrent: currentPage === 'communications',
+        disabledForSuperadmin: false,
       },
       {
         key: 'settings',

@@ -131,6 +131,7 @@ app.use('/:groupId/api/', (req, res, next) => {
 app.use(
   [
     '/superadmin/password_reset_requests/',
+    '/superadmin/communications/',
     '/superadmin/settings/',
     '/superadmin/',
     '/:groupId/users/',
@@ -139,6 +140,7 @@ app.use(
     '/:groupId/shared_vaults/',
     '/:groupId/password_reset_requests/',
     '/:groupId/settings/',
+    '/:groupId/communications/',
     '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
   ],
   express.static(frontBuildDir),

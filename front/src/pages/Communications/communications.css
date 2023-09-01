@@ -27,3 +27,10 @@ li {
 .extractorConfig input[type='number']::-webkit-inner-spin-button {
   opacity: 1;
 }
+
+
+/* mail */
+input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+}

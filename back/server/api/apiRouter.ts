@@ -47,6 +47,7 @@ import { get_shared_vaults } from './get_shared_vaults';
 import { count_shared_vaults } from './count_shared_vaults';
 import { delete_shared_vault_user } from './delete_shared_vault_user';
 import { update_shared_vault_manager } from './update_shared_vault_manager';
+import { send_email, send_email_precheck } from './send_email';
 
 export const apiRouter = express.Router();
 
@@ -114,12 +115,26 @@ apiRouter.get('/get-password-stats', (req, res) => get_password_stats(req, res, 
 apiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, false));
 
 // Extracts
-apiRouter.get('/extract-database', extract_database);
-apiRouter.get('/extract-emails-for-duplicate-passwords', extract_emails_for_duplicate_passwords);
-apiRouter.get('/extract-emails-for-weak-passwords', extract_emails_for_weak_passwords);
-apiRouter.get('/extract-emails-for-medium-passwords', extract_emails_for_medium_passwords);
-apiRouter.get('/extract-emails-for-shared-device', extract_emails_for_shared_device);
-apiRouter.get('/extract-emails-for-long-unused', extract_emails_for_long_unused);
+apiRouter.get('/extract-database', (req, res) => extract_database(req, res, false));
+apiRouter.get('/extract-emails-for-duplicate-passwords', (req, res) =>
+  extract_emails_for_duplicate_passwords(req, res, false),
+);
+apiRouter.get('/extract-emails-for-weak-passwords', (req, res) =>
+  extract_emails_for_weak_passwords(req, res, false),
+);
+apiRouter.get('/extract-emails-for-medium-passwords', (req, res) =>
+  extract_emails_for_medium_passwords(req, res, false),
+);
+apiRouter.get('/extract-emails-for-shared-device', (req, res) =>
+  extract_emails_for_shared_device(req, res, false),
+);
+apiRouter.get('/extract-emails-for-long-unused', (req, res) =>
+  extract_emails_for_long_unused(req, res, false),
+);
+
+// Send emails
+apiRouter.post('/send-email-precheck', (req, res) => send_email_precheck(req, res, false));
+apiRouter.post('/send-email', (req, res) => send_email(req, res, false));
 
 // Allowed emails
 apiRouter.get('/allowed-emails', get_allowed_emails);
