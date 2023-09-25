@@ -36,7 +36,7 @@ export class ProSetupLink extends React.Component {
     const { url, oidcAuthority, oidcClientId, oidcClientIdForAddons } =
       this.state.proServerUrlConfig;
 
-    let link = `https://upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
+    let link = `https://app.upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
     if (oidcAuthority && oidcClientId) {
       link += `&oidcAuthority=${encodeURIComponent(oidcAuthority)}&oidcClientId=${oidcClientId}`;
       if (oidcClientIdForAddons) {
