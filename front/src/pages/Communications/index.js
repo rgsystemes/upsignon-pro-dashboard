@@ -8,7 +8,11 @@ import './communications.css';
 // Props = setIsLoading, isSuperadminPage
 class Communications extends React.Component {
   emailExtractRef = null;
+  emailExtractWindowsRef = null;
+
   state = {
+    extractedEmailsWindows: null,
+
     extractorDuplicateSelect: true,
     extractorWeakSelect: true,
     extractorMediumSelect: true,
@@ -151,11 +155,31 @@ class Communications extends React.Component {
     return uniqueEmails;
   };
 
+  fetchSelectionEmailsWindows = async()=>{
+    const uniqueEmails = await groupUrlFetch("/api/extract-emails-for-windows-below-6-0-4", 'GET', null);
+    return uniqueEmails;
+  }
+
+
   extractEmails = async () => {
     try {
       this.props.setIsLoading(true);
       const emailList = await this.fetchSelectionEmails();
       this.setState({ extractedEmails: emailList.join(' ; ') });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+  extractEmailsWindows = async () => {
+    try {
+      this.props.setIsLoading(true);
+      const emailList = await this.fetchSelectionEmailsWindows();
+      if(emailList.length==0) {
+        alert(i18n.t("extract_emails_windows_below_6_0_4_empty"));
+      }
+      this.setState({ extractedEmailsWindows: emailList.join(' ; ') });
     } catch (e) {
       console.error(e);
     } finally {
@@ -176,6 +200,41 @@ class Communications extends React.Component {
           >
             {i18n.t('extract_database')}
           </a>
+          <h2>{i18n.t('extract_emails_windows_below_6_0_4')}</h2>
+          <div style={{ marginTop: 10 }} className="extractAction" onClick={this.extractEmailsWindows}>
+            {i18n.t('extract_emails')}
+          </div>
+          {this.state.extractedEmailsWindows !== null && (
+            <div
+              style={{ cursor: 'pointer', textDecoration: 'underline' }}
+              onClick={() => {
+                navigator.clipboard.writeText(this.state.extractedEmailsWindows).then(() => {
+                  this.emailExtractWindowsRef.style.backgroundColor = '#ccc';
+                  setTimeout(() => {
+                    this.emailExtractWindowsRef.style.backgroundColor = 'initial';
+                  }, 250);
+                });
+              }}
+            >
+              {i18n.t('copy_to_pasteboard')}
+            </div>
+          )}
+          {this.state.extractedEmailsWindows !== null && (
+            <div
+              ref={(r) => (this.emailExtractWindowsRef = r)}
+              style={{
+                border: '1px solid #aaa',
+                padding: 10,
+                marginTop: 10,
+                marginRight: 10,
+                flex: 1,
+                maxHeight: 200,
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {this.state.extractedEmailsWindows}
+            </div>
+          )}
           <h2>{i18n.t('extract_emails_text')}</h2>
           <div className="extractorConfig">
             <input

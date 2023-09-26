@@ -24,6 +24,7 @@ import { extract_emails_for_medium_passwords } from '../api/extract_emails_for_m
 import { extract_emails_for_shared_device } from '../api/extract_emails_for_shared_device';
 import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_unused';
 import { send_email, send_email_precheck } from '../api/send_email';
+import { extract_emails_for_windows_below_6_0_4 } from '../api/extract_emails_for_windows_below_6_0_4';
 
 export const superadminApiRouter = express.Router();
 
@@ -75,6 +76,7 @@ superadminApiRouter.get('/extract-emails-for-weak-passwords', (req, res)=> extra
 superadminApiRouter.get('/extract-emails-for-medium-passwords', (req, res)=> extract_emails_for_medium_passwords(req, res, true));
 superadminApiRouter.get('/extract-emails-for-shared-device', (req, res)=> extract_emails_for_shared_device(req, res, true));
 superadminApiRouter.get('/extract-emails-for-long-unused', (req, res)=> extract_emails_for_long_unused(req, res, true));
+superadminApiRouter.get('/extract-emails-for-windows-below-6-0-4', (req, res)=> extract_emails_for_windows_below_6_0_4(req, res, true));
 
 // Send emails
 superadminApiRouter.post('/send-email-precheck', (req, res) => send_email_precheck(req, res, true));
