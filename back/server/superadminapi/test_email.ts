@@ -22,7 +22,7 @@ export const test_email = async (req: any, res: any): Promise<void> => {
     // Return res
     return res.status(200).end();
   } catch (e) {
-    logError('ERROR sending email:', e);
+    logError('ERROR sending test email:', e);
     res.status(400).send();
   }
 };

@@ -9,7 +9,7 @@ export const insert_allowed_email = async (req: any, res: any): Promise<void> =>
     ]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("insert_allowed_email", e);
     res.status(400).end();
   }
 };

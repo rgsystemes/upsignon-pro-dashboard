@@ -16,7 +16,7 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
     // superadmin case
     res.status(200).json({ groups: allGroups.rows, isSuperadmin: true });
   } catch (e) {
-    logError(e);
+    logError("get_available_groups", e);
     res.status(400).end();
   }
 };

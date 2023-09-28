@@ -17,7 +17,7 @@ export const update_group = async (req: any, res: any): Promise<void> => {
     }
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("update_group", e);
     res.status(400).end();
   }
 };

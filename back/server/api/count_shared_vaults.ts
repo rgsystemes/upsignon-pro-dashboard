@@ -9,7 +9,7 @@ export const count_shared_vaults = async (req: any, res: any): Promise<void> => 
     );
     res.status(200).send(dbRes.rows[0].count);
   } catch (e) {
-    logError(e);
+    logError("count_shared_vaults", e);
     res.status(400).end();
   }
 };

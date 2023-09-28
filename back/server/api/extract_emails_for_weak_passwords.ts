@@ -16,7 +16,7 @@ export const extract_emails_for_weak_passwords = async (
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
-    logError(e);
+    logError("extract_emails_for_weak_passwords", e);
     res.status(400).end();
   }
 };

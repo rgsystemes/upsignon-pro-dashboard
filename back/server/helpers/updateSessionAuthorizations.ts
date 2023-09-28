@@ -22,6 +22,6 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
       req.session.groups = adminRes.rows[0].groups?.filter((g: any) => g != null);
     }
   } catch (e) {
-    logError(e);
+    logError("updateSessionAuthorizations", e);
   }
 };

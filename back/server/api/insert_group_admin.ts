@@ -44,7 +44,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("insert_group_admin", e);
     res.status(400).end();
   }
 };

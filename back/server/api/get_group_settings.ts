@@ -8,7 +8,7 @@ export const get_group_settings = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).send(dbRes.rows[0]);
   } catch (e) {
-    logError(e);
+    logError("get_group_settings", e);
     res.status(400).end();
   }
 };

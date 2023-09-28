@@ -48,7 +48,7 @@ export const grant_pwd_reset_request = async (
     });
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("grant_pwd_reset_request", e);
     res.status(400).end();
   }
 };

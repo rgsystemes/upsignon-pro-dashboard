@@ -16,7 +16,7 @@ export const get_group_admins = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
-    logError(e);
+    logError("get_group_admins", e);
     res.status(400).end();
   }
 };

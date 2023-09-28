@@ -28,7 +28,7 @@ export const get_pending_password_reset_requests = async (
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
-    logError(e);
+    logError("get_pending_password_reset_requests", e);
     res.status(400).end();
   }
 };

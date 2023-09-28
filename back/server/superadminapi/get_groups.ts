@@ -15,7 +15,7 @@ export const get_groups = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
-    logError(e);
+    logError("get_groups", e);
     res.status(400).end();
   }
 };

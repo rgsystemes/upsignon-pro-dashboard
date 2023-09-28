@@ -20,7 +20,7 @@ export const count_password_reset_requests = async (
       res.status(200).send(dbRes.rows[0]?.count || 0);
     }
   } catch (e) {
-    logError(e);
+    logError("count_password_reset_requests", e);
     res.status(400).end();
   }
 };

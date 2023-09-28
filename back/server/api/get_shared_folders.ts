@@ -9,7 +9,7 @@ export const get_shared_folders = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).json(sharedFolders.rows);
   } catch (e) {
-    logError(e);
+    logError("get_shared_folders", e);
     res.status(400).end();
   }
 };

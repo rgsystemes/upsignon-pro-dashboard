@@ -88,7 +88,7 @@ export const get_shared_accounts = async (req: any, res: any): Promise<void> => 
     );
     res.status(200).send({ sharedAccounts: dbRes.rows, sharedAccountsCount });
   } catch (e) {
-    logError(e);
+    logError("get_shared_accounts", e);
     res.status(400).end();
   }
 };

@@ -61,7 +61,7 @@ loginRouter.get('/config', async (req, res) => {
   try {
     return res.status(200).json(config);
   } catch (e) {
-    logError(e);
+    logError("/config", e);
     res.status(444).end();
   }
 });
@@ -76,7 +76,7 @@ loginRouter.get('/button-config', async (req, res) => {
     }
     return res.status(200).json(buttonConfig);
   } catch (e) {
-    logError(e);
+    logError("/button-config", e);
     res.status(404).end();
   }
 });
@@ -116,7 +116,7 @@ loginRouter.post('/connect', async (req, res) => {
     }
     res.status(200).json({ connectionToken, redirectionUri });
   } catch (e) {
-    logError(e);
+    logError("/connect", e);
     res.status(444).end();
   }
 });
@@ -170,7 +170,7 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
     await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [hash, adminId]);
     res.status(200).json({ userId: adminId, userData });
   } catch (e) {
-    logError(e);
+    logError("/export-account", e);
     res.status(444).end();
   }
 });
@@ -195,7 +195,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     await updateSessionAuthorizations(req, dbRes.rows[0].email);
     redirectToDefaultPath(req, res);
   } catch (e) {
-    logError(e);
+    logError("/redirection/", e);
     res.status(444).end();
   }
 });
@@ -218,7 +218,7 @@ loginRouter.post('/update-password', async (req, res) => {
       return res.status(401).end();
     }
   } catch (e) {
-    logError(e);
+    logError("/update-password", e);
     res.status(444).end();
   }
 });
@@ -250,7 +250,7 @@ loginRouter.post('/delete-account-and-data', async (req, res) => {
     });
     res.status(200).json({ deletionStatus: 'DONE' });
   } catch (e) {
-    logError(e);
+    logError("/delete-account-and-data", e);
     res.status(444).end();
   }
 });

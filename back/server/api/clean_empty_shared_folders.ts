@@ -8,7 +8,7 @@ export const clean_empty_shared_folders = async (req: any, res: any): Promise<vo
     );
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("clean_empty_shared_folders", e);
     res.status(400).end();
   }
 };

@@ -141,7 +141,7 @@ export const send_email_precheck = async (
     const uniqueEmails = await getSelectedEmails(req, isSuperadmin);
     return res.status(200).send({n: uniqueEmails.length});
   }catch(e) {
-    console.error(e);
+    logError("send_email_precheck", e);
   }
 };
 
@@ -168,7 +168,7 @@ export const send_email = async (req: any, res: any, isSuperadmin: boolean): Pro
     );
     res.status(200).send({ n: uniqueEmails.length });
   } catch (e) {
-    logError(e);
+    logError("send_email", e);
     res.status(400).end();
   }
 };

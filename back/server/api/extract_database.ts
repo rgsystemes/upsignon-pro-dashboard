@@ -48,7 +48,7 @@ export const extract_database = async (req: any, res: any, isSuperadmin: boolean
     res.attachment(`upsignon-pro-stats-${d}.csv`);
     res.send(csvContent);
   } catch (e) {
-    logError(e);
+    logError("extract_database", e);
     res.status(400).end();
   }
 };

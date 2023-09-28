@@ -10,7 +10,7 @@ export const delete_device = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("delete_device", e);
     res.status(400).end();
   }
 };

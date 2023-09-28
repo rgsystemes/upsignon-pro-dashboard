@@ -6,7 +6,7 @@ export const delete_group = async (req: any, res: any): Promise<void> => {
     await db.query(`DELETE FROM groups WHERE id=$1`, [req.params.id]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("delete_group", e);
     res.status(400).end();
   }
 };

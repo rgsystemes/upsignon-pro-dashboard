@@ -24,7 +24,7 @@ export const manualConnect = async (req: any, res: any): Promise<void> => {
       return res.status(400).send('Token expired.');
     }
   } catch (e) {
-    logError(e);
+    logError("manualConnect", e);
     res.status(400).end();
   }
 };

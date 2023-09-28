@@ -11,7 +11,7 @@ export const update_shared_vault_manager = async (req: any, res: any): Promise<v
     ]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("update_shared_vault_manager", e);
     res.status(400).end();
   }
 };

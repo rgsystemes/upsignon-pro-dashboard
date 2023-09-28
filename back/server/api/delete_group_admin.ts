@@ -17,7 +17,7 @@ export const delete_group_admin = async (req: any, res: any): Promise<void> => {
     });
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("delete_group_admin", e);
     res.status(400).end();
   }
 };

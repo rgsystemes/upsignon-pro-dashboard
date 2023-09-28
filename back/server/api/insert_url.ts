@@ -14,7 +14,7 @@ export const insert_url = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("insert_url", e);
     res.status(400).end();
   }
 };

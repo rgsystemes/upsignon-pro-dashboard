@@ -17,7 +17,7 @@ export default class PostgreSQLStore extends expressSession.Store {
         'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data JSON NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
       );
     } catch (e) {
-      logError(e);
+      logError("sessionStore", "createTable", e);
       throw e;
     }
   };

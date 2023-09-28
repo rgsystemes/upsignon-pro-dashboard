@@ -16,7 +16,7 @@ export const delete_shared_account_user = async (req: any, res: any): Promise<vo
     }
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("delete_shared_account_user", e);
     res.status(400).end();
   }
 };

@@ -34,7 +34,7 @@ export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean)
 
     res.status(200).send(usageStats);
   } catch (e) {
-    logError(e);
+    logError("get_usage_stats", e);
     res.status(400).end();
   }
 };

@@ -25,7 +25,7 @@ export const extract_emails_for_long_unused = async (
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
-    logError(e);
+    logError("extract_emails_for_long_unused", e);
     res.status(400).end();
   }
 };

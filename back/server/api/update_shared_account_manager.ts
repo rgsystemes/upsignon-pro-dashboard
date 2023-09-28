@@ -17,7 +17,7 @@ export const update_shared_account_manager = async (req: any, res: any): Promise
     }
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("update_shared_account_manager", e);
     res.status(400).end();
   }
 };

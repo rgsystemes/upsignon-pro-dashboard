@@ -23,7 +23,7 @@ export const get_admins = async (req: any, res: any): Promise<void> => {
       })),
     );
   } catch (e) {
-    logError(e);
+    logError("get_admins", e);
     res.status(400).end();
   }
 };

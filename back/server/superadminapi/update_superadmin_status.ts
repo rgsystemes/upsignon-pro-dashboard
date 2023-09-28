@@ -20,7 +20,7 @@ export const update_superadmin_status = async (req: any, res: any): Promise<void
     ]);
     res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError("update_superadmin_status", e);
     res.status(400).end();
   }
 };

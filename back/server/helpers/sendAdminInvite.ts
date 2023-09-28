@@ -1,3 +1,4 @@
+import { logError } from './logger';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 
 export const sendAdminInvite = async (
@@ -54,6 +55,6 @@ UpSignOn`,
 </body></html>`,
     });
   } catch (e) {
-    console.error(e);
+    logError("sendAdminInvite", e);
   }
 };

@@ -31,7 +31,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
-    logError(e);
+    logError("get_user_devices", e);
     res.status(400).end();
   }
 };

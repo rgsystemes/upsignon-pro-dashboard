@@ -85,7 +85,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
 
     res.status(200).send({ users, userCount });
   } catch (e) {
-    logError(e);
+    logError("get_users", e);
     res.status(400).end();
   }
 };

@@ -123,7 +123,7 @@ export const get_password_stats = async (
     const result = Object.values(chartDataObjet);
     res.status(200).send(result);
   } catch (e) {
-    logError(e);
+    logError("get_password_stats", e);
     res.status(400).end();
   }
 };
