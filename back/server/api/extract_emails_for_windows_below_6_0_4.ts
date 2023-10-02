@@ -15,13 +15,13 @@ export const extract_emails_for_windows_below_6_0_4 = async (
           AND ud.device_type='Windows.Desktop'
           AND ud.app_version != '6.0.2'
           AND ud.app_version != '6.0.4'
-        ${isSuperadmin ? '' : 'AND u.group_id=$2'}
+        ${isSuperadmin ? '' : 'AND u.group_id=$1'}
       `,
       isSuperadmin ? [] : [req.proxyParamsGroupId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
-    logError("extract_emails_for_windows_below_6_0_4", e);
+    logError('extract_emails_for_windows_below_6_0_4', e);
     res.status(400).end();
   }
 };
