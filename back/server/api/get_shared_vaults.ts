@@ -58,6 +58,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
         sv.nb_accounts_red,
         sv.nb_accounts_orange,
         sv.nb_accounts_green,
+        sv.content_details,
         (SELECT JSON_AGG(users_agg) FROM
           (SELECT
             u.id AS user_id,
@@ -93,7 +94,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send({ sharedVaults: dbRes.rows, sharedVaultsCount });
   } catch (e) {
-    logError("get_shared_vaults", e);
+    logError('get_shared_vaults', e);
     res.status(400).end();
   }
 };
