@@ -325,15 +325,8 @@ const SharedVaultAccount = (props) => {
       {!isFolded && (
         <div style={{ marginLeft: 15 }}>
           {props.urls.map((u) => {
-            const urlDomain = u
-              ?.replace(/^https?:\/\//, '')
-              .split('/')[0]
-              .split('?')[0]
-              .split('#')[0];
             return (
-              <div style={{ maxWidth: 300, textOverflow: 'clip', overflow: 'hidden' }}>
-                {urlDomain}
-              </div>
+              <div style={{ maxWidth: 300, textOverflow: 'clip', overflow: 'hidden' }}>{u}</div>
             );
           })}
           <div>{props.login}</div>
