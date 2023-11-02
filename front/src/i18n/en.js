@@ -2,6 +2,8 @@ const translations = {
   suggestion: "Please don't hesitate to send us all your feedbacks and suggestions at",
   yes: 'YES',
   no: 'NO',
+  default_yes: '_ (YES)',
+  default_no: '_ (NO)',
   edit: 'Edit',
   see: 'See',
   hide: 'Hide',
@@ -44,6 +46,7 @@ const translations = {
   user_nb_accounts_value: '$nb accounts',
   user_nb_shared_items_value: 'of which $nb shared',
   user_passwords_stats: 'Passwords stats (not shared only)',
+  user_settings_override: 'Settings',
   shared_vault_passwords_stats: 'Passwords stats',
   user_passwords_weak: '$nb weak',
   user_passwords_medium: '$nb medium',
@@ -58,6 +61,9 @@ const translations = {
     "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
   user_email_already_used:
     'ERROR\n$email is already used or has already been used by another user.',
+  user_allowed_offline_desktop: 'Offline desktop:',
+  user_allowed_offline_mobile: 'Offline mobile:',
+  user_allowed_to_export: 'CSV export:',
   devices_for_user: 'Devices of $email',
   device_name: 'Device name',
   device_app_version: 'App version',
@@ -230,10 +236,10 @@ const translations = {
   sasettings_nb_licences_sold: 'Licences vendues',
   sasettings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator of his group',
-  sasettings_offline_default_desktop: 'Offline mode activated by default on desktop computers',
-  sasettings_offline_default_smartphone:
-    'Offline mode activated by default on smartphones and tablets',
-  sasettings_export_allowed_default: 'Allow CSV exports by default',
+  sasettings_offline_default_desktop: 'By default, activate the offline mode on desktop computers',
+  sasettings_offline_default_mobile:
+    'By default, activate the offline mode on smartphones and tablets',
+  sasettings_export_allowed_default: 'By default, allow CSV exports',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

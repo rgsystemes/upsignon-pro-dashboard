@@ -49,6 +49,7 @@ import { delete_shared_vault_user } from './delete_shared_vault_user';
 import { update_shared_vault_manager } from './update_shared_vault_manager';
 import { send_email, send_email_precheck } from './send_email';
 import { extract_emails_for_windows_below_6_0_4 } from './extract_emails_for_windows_below_6_0_4';
+import { update_user_setting } from './update_user_setting';
 
 export const apiRouter = express.Router();
 
@@ -70,6 +71,7 @@ apiRouter.get('/users', get_users);
 apiRouter.get('/count-users', count_users);
 apiRouter.post('/delete-user/:userId', delete_user);
 apiRouter.post('/update-user-email', update_user_email);
+apiRouter.post('/update-user-setting', update_user_setting);
 
 // Devices
 apiRouter.get('/user-devices/:userId', get_user_devices);

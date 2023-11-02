@@ -254,8 +254,8 @@ class Groups extends React.Component {
                       />
                       <InlineSetting
                         group={group}
-                        title={i18n.t('sasettings_offline_default_smartphone')}
-                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE"
+                        title={i18n.t('sasettings_offline_default_mobile')}
+                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_MOBILE"
                         toggleGroupSetting={this.toggleGroupSetting}
                       />
                       <InlineSetting

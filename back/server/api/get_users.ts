@@ -60,8 +60,13 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     (SELECT nb_accounts_orange  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_orange,
     (SELECT nb_accounts_green  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_green,
     (SELECT nb_accounts_with_duplicated_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_with_duplicated_password,
-    (SELECT ul.date FROM usage_logs AS ul INNER JOIN user_devices AS ud ON ud.id=ul.device_id WHERE ul.log_type='SESSION' AND ud.user_id=u.id ORDER BY date DESC LIMIT 1) AS last_session
+    (SELECT ul.date FROM usage_logs AS ul INNER JOIN user_devices AS ud ON ud.id=ul.device_id WHERE ul.log_type='SESSION' AND ud.user_id=u.id ORDER BY date DESC LIMIT 1) AS last_session,
+    g.settings AS group_settings,
+    u.allowed_to_export AS allowed_to_export,
+    u.allowed_offline_mobile AS allowed_offline_mobile,
+    u.allowed_offline_desktop AS allowed_offline_desktop
   FROM users AS u
+  INNER JOIN groups AS g ON u.group_id=g.id
   WHERE u.group_id=$3
   ${isSearching ? "AND (u.email LIKE '%' || $4 || '%' OR u.id::varchar(5) LIKE $4 || '%')" : ''}
   ${
@@ -73,10 +78,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
   OFFSET $2
   `;
 
-    const usersRequest = await db.query(
-      requestString,
-      queryInputs,
-    );
+    const usersRequest = await db.query(requestString, queryInputs);
     const users = usersRequest.rows.map((u) => ({
       ...u,
       nb_devices: parseInt(u.nb_devices, 10),
@@ -85,7 +87,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
 
     res.status(200).send({ users, userCount });
   } catch (e) {
-    logError("get_users", e);
+    logError('get_users', e);
     res.status(400).end();
   }
 };

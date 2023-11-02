@@ -9,6 +9,9 @@ class OtherSettings extends React.Component {
     name: '',
     settings: {
       DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN: false,
+      DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP: false,
+      DISABLE_OFFLINE_MODE_DEFAULT_MOBILE: false,
+      DISABLE_CSV_EXPORT: false,
     },
   };
   newInputRef = null;
@@ -28,7 +31,10 @@ class OtherSettings extends React.Component {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/group-settings-update', 'POST', {
-        settings: newSettings,
+        settings: {
+          ...this.state.settings,
+          ...newSettings,
+        },
         name: newName,
       });
       await this.fetchGroupSettings();
@@ -72,9 +78,9 @@ class OtherSettings extends React.Component {
               toggleValue={this.updateGroupSetting}
             />
             <SettingTableRow
-              title={i18n.t('sasettings_offline_default_smartphone')}
-              settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE"
-              value={this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE}
+              title={i18n.t('sasettings_offline_default_mobile')}
+              settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_MOBILE"
+              value={this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
               toggleValue={this.updateGroupSetting}
             />
             <SettingTableRow
@@ -101,13 +107,7 @@ const SettingTableRow = (props) => {
         <span
           className="action"
           onClick={() => {
-            toggleValue(
-              {
-                ...this.state.settings,
-                [settingNameInDB]: !value,
-              },
-              null,
-            );
+            toggleValue({ [settingNameInDB]: !value });
           }}
         >
           {i18n.t('settings_change')}

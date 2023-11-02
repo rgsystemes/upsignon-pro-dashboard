@@ -19,6 +19,13 @@
   padding: 3px 6px;
   text-transform: uppercase;
 }
+.defaultParam {
+  margin: 5px;
+  color: white;
+  background-color: lightgrey;
+  border-radius: 3px;
+  padding: 3px 6px;
+}
 
 .button {
   display: inline-block;

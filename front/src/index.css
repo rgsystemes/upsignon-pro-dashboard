@@ -15,3 +15,7 @@ input {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 }
+
+.clickable {
+  cursor: pointer;
+}

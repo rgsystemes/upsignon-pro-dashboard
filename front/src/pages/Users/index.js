@@ -168,6 +168,42 @@ class Users extends React.Component {
     }
   };
 
+  toggleUserSettingOverride = async (userId, settingName) => {
+    try {
+      this.props.setIsLoading(true);
+      const currentValue = this.state.users.find((u) => u.user_id === userId)[settingName];
+      var nextValue;
+      if (currentValue === null) {
+        nextValue = false;
+      } else if (currentValue === false) {
+        nextValue = true;
+      } else {
+        nextValue = null;
+      }
+      await groupUrlFetch(`/api/update-user-setting`, 'POST', {
+        userId,
+        [settingName]: nextValue,
+      });
+      this.setState((s) => ({
+        ...s,
+        users: s.users.map((u) => {
+          if (u.user_id === userId) {
+            return {
+              ...u,
+              [settingName]: nextValue,
+            };
+          } else {
+            return u;
+          }
+        }),
+      }));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+
   render() {
     const searchInputStyle = { width: 200 };
     if (this.state.users.length === 0 && !!this.searchInput?.value) {
@@ -227,6 +263,7 @@ class Users extends React.Component {
               <th>{i18n.t('user_data')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
+              <th>{i18n.t('user_settings_override')}</th>
               <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
@@ -298,6 +335,32 @@ class Users extends React.Component {
                       nb_accounts_green={u.nb_accounts_green}
                     />
                     <td>
+                      <UserSettingOverride
+                        title={i18n.t('user_allowed_offline_desktop')}
+                        defaultValue={!u.group_settings.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP}
+                        userValue={u.allowed_offline_desktop}
+                        toggleValue={() =>
+                          this.toggleUserSettingOverride(u.user_id, 'allowed_offline_desktop')
+                        }
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allowed_offline_mobile')}
+                        defaultValue={!u.group_settings.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
+                        userValue={u.allowed_offline_mobile}
+                        toggleValue={() =>
+                          this.toggleUserSettingOverride(u.user_id, 'allowed_offline_mobile')
+                        }
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allowed_to_export')}
+                        defaultValue={!u.group_settings.DISABLE_CSV_EXPORT}
+                        userValue={u.allowed_to_export}
+                        toggleValue={() =>
+                          this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')
+                        }
+                      />
+                    </td>
+                    <td>
                       <div
                         className="action"
                         onClick={() => this.deleteUserWithWarning(u.user_id, u.email)}
@@ -335,5 +398,34 @@ class Users extends React.Component {
     );
   }
 }
+
+const UserSettingOverride = (props) => {
+  const { title, defaultValue, userValue, toggleValue } = props;
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div>{title}</div>
+      {userValue === null && defaultValue && (
+        <span onClick={toggleValue} className={`clickable defaultParam`}>
+          {i18n.t('default_yes')}
+        </span>
+      )}
+      {userValue === null && !defaultValue && (
+        <span onClick={toggleValue} className={`clickable defaultParam`}>
+          {i18n.t('default_no')}
+        </span>
+      )}
+      {userValue !== null && userValue && (
+        <span onClick={toggleValue} className={`clickable recommendedParam`}>
+          {i18n.t('yes')}
+        </span>
+      )}
+      {userValue !== null && !userValue && (
+        <span onClick={toggleValue} className={`clickable unrecommendedParam`}>
+          {i18n.t('no')}
+        </span>
+      )}
+    </div>
+  );
+};
 
 export { Users };

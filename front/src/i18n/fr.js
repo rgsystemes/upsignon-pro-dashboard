@@ -2,6 +2,8 @@ const translations = {
   suggestion: "N'hésitez pas à nous envoyer toutes vos remarques et suggestions à",
   yes: 'OUI',
   no: 'NON',
+  default_yes: '_ (OUI)',
+  default_no: '_ (NON)',
   edit: 'Modifier',
   see: 'Voir',
   hide: 'Cacher',
@@ -44,6 +46,7 @@ const translations = {
   user_nb_accounts_value: '$nb comptes',
   user_nb_shared_items_value: 'dont $nb partagés',
   user_passwords_stats: 'Stats des mots de passe (non partagés uniquement)',
+  user_settings_override: 'Paramètres',
   shared_vault_passwords_stats: 'Stats des mots de passe',
   user_passwords_weak: '$nb faibles',
   user_passwords_medium: '$nb moyens',
@@ -58,6 +61,9 @@ const translations = {
     "Êtes-vous sûr de vouloir changer l'adresse email de cet utilisateur de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
   user_email_already_used:
     'ERREUR\n$email est déjà utilisé ou a déjà été utilisé par un autre utilisateur.',
+  user_allowed_offline_desktop: 'Hors-ligne ordi:',
+  user_allowed_offline_mobile: 'Hors-ligne mobile:',
+  user_allowed_to_export: 'Export CSV :',
   devices_for_user: 'Appareils de $email',
   device_name: "Nom de l'appareil",
   device_app_version: "Version de l'app",
@@ -235,10 +241,10 @@ const translations = {
   sasettings_reset_pwd_admin_check:
     "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de sa banque",
   sasettings_offline_default_desktop:
-    'Mode hors-ligne activé par défaut sur les ordinateurs de bureau',
-  sasettings_offline_default_smartphone:
-    'Mode hors-ligne activé par défaut sur téléphones et tablettes',
-  sasettings_export_allowed_default: "Autoriser l'export CSV par défaut",
+    'Par défaut, activer le mode hors-ligne sur les ordinateurs de bureau',
+  sasettings_offline_default_mobile:
+    'Par défaut, activer le mode hors-ligne sur téléphones et tablettes',
+  sasettings_export_allowed_default: "Par défaut, autoriser l'export CSV",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
