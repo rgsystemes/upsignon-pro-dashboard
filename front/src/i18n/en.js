@@ -154,8 +154,9 @@ const translations = {
     "You can't remove management rights from the last manager of a shared vault or delete him from the share. But you can transfer the management rights to another user.",
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
-  extract_emails_windows_below_6_0_4: "Get emails of all users that have at least one windows device which has a version strictly below 6.0.4.",
-  extract_emails_windows_below_6_0_4_empty: "All your windows users are up to date.",
+  extract_emails_windows_below_6_0_4:
+    'Get emails of all users that have at least one windows device which has a version strictly below 6.0.4.',
+  extract_emails_windows_below_6_0_4_empty: 'All your windows users are up to date.',
   extract_emails_text: 'Get the list of emails of users matching one of these conditions:',
   extract_emails_duplicates: 'who have at least $n duplicate passwords',
   extract_emails_weak: 'who have at least $n weak passwords',
@@ -171,7 +172,8 @@ const translations = {
   mail_writer_send: 'Send',
   mail_writer_success: 'SUCCESS\n\nMail sent to $n recipients',
   mail_writer_error: 'ERROR\n\n$e',
-  mail_writer_empty_fields: 'ERROR\n\nBoth subject and content need to be not empty for sending an email.',
+  mail_writer_empty_fields:
+    'ERROR\n\nBoth subject and content need to be not empty for sending an email.',
   mail_writer_confirm_send: 'You are about to send an email to $n recipients. Continue?',
   copy_to_pasteboard: 'Copy',
   chart_security_title: 'Passwords strength evolution',
@@ -228,6 +230,9 @@ const translations = {
   sasettings_nb_licences_sold: 'Licences vendues',
   sasettings_reset_pwd_admin_check:
     'To reset his password, a user must obtain a validation from an administrator of his group',
+  sasettings_offline_default_desktop: 'Offline mode activated by default on desktop computers',
+  sasettings_offline_default_smartphone:
+    'Offline mode activated by default on smartphones and tablets',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

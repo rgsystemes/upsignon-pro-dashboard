@@ -3,7 +3,7 @@
 }
 
 .recommendedParam {
-  margin: 0 5px;
+  margin: 5px;
   color: white;
   background-color: green;
   border-radius: 3px;
@@ -12,7 +12,7 @@
 }
 
 .unrecommendedParam {
-  margin: 0 5px;
+  margin: 5px;
   color: white;
   background-color: orange;
   border-radius: 3px;

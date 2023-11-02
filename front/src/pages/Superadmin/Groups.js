@@ -162,7 +162,7 @@ class Groups extends React.Component {
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
-                <th>{i18n.t('sasettings_reset_pwd_admin_check')}</th>
+                <th>{i18n.t('settings_group_settings')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
@@ -240,23 +240,24 @@ class Groups extends React.Component {
                       <td>N/A</td>
                     )}
                     <td>
-                      {group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN ===
-                        true && <span className="unrecommendedParam">{i18n.t('no')}</span>}
-                      {!group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN && (
-                        <span className="recommendedParam">{i18n.t('yes')}</span>
-                      )}
-                      <span
-                        className="action"
-                        onClick={() => {
-                          this.toggleGroupSetting(group.id, {
-                            ...group.settings,
-                            DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN:
-                              !group.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN,
-                          });
-                        }}
-                      >
-                        {i18n.t('settings_change')}
-                      </span>
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_reset_pwd_admin_check')}
+                        settingNameInDB="DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_offline_default_desktop')}
+                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_offline_default_smartphone')}
+                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
                     </td>
                     <td>
                       <div
@@ -287,5 +288,31 @@ class Groups extends React.Component {
     );
   }
 }
+
+const InlineSetting = (props) => {
+  const { group, title, settingNameInDB, toggleGroupSetting } = props;
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ marginBottom: 5, fontSize: '0.5em' }}>{title}</div>
+      {group.settings?.[settingNameInDB] === true && (
+        <span className="unrecommendedParam">{i18n.t('no')}</span>
+      )}
+      {!group.settings?.[settingNameInDB] && (
+        <span className="recommendedParam">{i18n.t('yes')}</span>
+      )}
+      <span
+        className="action"
+        onClick={() => {
+          toggleGroupSetting(group.id, {
+            ...group.settings,
+            [settingNameInDB]: !group.settings?.[settingNameInDB],
+          });
+        }}
+      >
+        {i18n.t('settings_change')}
+      </span>
+    </div>
+  );
+};
 
 export { Groups };

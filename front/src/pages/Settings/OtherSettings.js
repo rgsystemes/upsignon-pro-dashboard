@@ -85,6 +85,58 @@ class OtherSettings extends React.Component {
                 </span>
               </td>
             </tr>
+            <tr>
+              <td>{i18n.t('sasettings_offline_default_desktop')}</td>
+              <td>
+                {this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP === true && (
+                  <span className="unrecommendedParam">{i18n.t('no')}</span>
+                )}
+                {!this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP && (
+                  <span className="recommendedParam">{i18n.t('yes')}</span>
+                )}
+                <span
+                  className="action"
+                  onClick={() => {
+                    this.updateGroupSetting(
+                      {
+                        ...this.state.settings,
+                        DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP:
+                          !this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP,
+                      },
+                      null,
+                    );
+                  }}
+                >
+                  {i18n.t('settings_change')}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>{i18n.t('sasettings_offline_default_smartphone')}</td>
+              <td>
+                {this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE === true && (
+                  <span className="unrecommendedParam">{i18n.t('no')}</span>
+                )}
+                {!this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE && (
+                  <span className="recommendedParam">{i18n.t('yes')}</span>
+                )}
+                <span
+                  className="action"
+                  onClick={() => {
+                    this.updateGroupSetting(
+                      {
+                        ...this.state.settings,
+                        DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE:
+                          !this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE,
+                      },
+                      null,
+                    );
+                  }}
+                >
+                  {i18n.t('settings_change')}
+                </span>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

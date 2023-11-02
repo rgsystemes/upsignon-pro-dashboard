@@ -155,9 +155,11 @@ const translations = {
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
-  extract_emails_windows_below_6_0_4: "Extraire la liste des emails des utilisateurs ayant au moins un appareil windows dont la version est inférieure strictement à la version 6.0.4.",
-  extract_emails_windows_below_6_0_4_empty: "Tous vos utilisateurs windows sont à jour.",
-  extract_emails_text: 'Récupérer la liste des emails des utilisateurs remplissant l\'une des ces conditions :',
+  extract_emails_windows_below_6_0_4:
+    'Extraire la liste des emails des utilisateurs ayant au moins un appareil windows dont la version est inférieure strictement à la version 6.0.4.',
+  extract_emails_windows_below_6_0_4_empty: 'Tous vos utilisateurs windows sont à jour.',
+  extract_emails_text:
+    "Récupérer la liste des emails des utilisateurs remplissant l'une des ces conditions :",
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',
   extract_emails_weak: 'ayant au moins $n mots de passe faibles',
   extract_emails_medium: 'ayant au moins $n mots de passe moyens',
@@ -172,8 +174,10 @@ const translations = {
   mail_writer_send: 'Envoyer',
   mail_writer_success: 'SUCCÈS\n\nMail envoyé à $n destinataires',
   mail_writer_error: 'ERREUR\n\n$e',
-  mail_writer_empty_fields: 'ERREUR\n\nL\'object et le contenu ne peuvent pas être vides pour envoyer un email.',
-  mail_writer_confirm_send: 'Vous êtes sur le point d\'envoyer un email à $n personnes. Voulez-vous continuer ?',
+  mail_writer_empty_fields:
+    "ERREUR\n\nL'object et le contenu ne peuvent pas être vides pour envoyer un email.",
+  mail_writer_confirm_send:
+    "Vous êtes sur le point d'envoyer un email à $n personnes. Voulez-vous continuer ?",
   copy_to_pasteboard: 'Copier',
   chart_security_title: 'Évolution de la force des mots de passe',
   chart_no_pwd: 'Sans mdp',
@@ -230,6 +234,10 @@ const translations = {
   sasettings_nb_licences_sold: 'Licences vendues',
   sasettings_reset_pwd_admin_check:
     "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de sa banque",
+  sasettings_offline_default_desktop:
+    'Mode hors-ligne activé par défaut sur les ordinateurs de bureau',
+  sasettings_offline_default_smartphone:
+    'Mode hors-ligne activé par défaut sur téléphones et tablettes',
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
