@@ -238,6 +238,7 @@ const translations = {
     'Mode hors-ligne activé par défaut sur les ordinateurs de bureau',
   sasettings_offline_default_smartphone:
     'Mode hors-ligne activé par défaut sur téléphones et tablettes',
+  sasettings_export_allowed_default: "Autoriser l'export CSV par défaut",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

@@ -258,6 +258,12 @@ class Groups extends React.Component {
                         settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_SMARTPHONE"
                         toggleGroupSetting={this.toggleGroupSetting}
                       />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_export_allowed_default')}
+                        settingNameInDB="DISABLE_CSV_EXPORT"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
                     </td>
                     <td>
                       <div

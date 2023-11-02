@@ -233,6 +233,7 @@ const translations = {
   sasettings_offline_default_desktop: 'Offline mode activated by default on desktop computers',
   sasettings_offline_default_smartphone:
     'Offline mode activated by default on smartphones and tablets',
+  sasettings_export_allowed_default: 'Allow CSV exports by default',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:
