@@ -345,7 +345,7 @@ class Users extends React.Component {
                       />
                       <UserSettingOverride
                         title={i18n.t('user_allowed_offline_mobile')}
-                        defaultValue={!u.group_settings.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
+                        defaultValue={!u.group_settings?.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
                         userValue={u.allowed_offline_mobile}
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_offline_mobile')
@@ -353,7 +353,7 @@ class Users extends React.Component {
                       />
                       <UserSettingOverride
                         title={i18n.t('user_allowed_to_export')}
-                        defaultValue={!u.group_settings.DISABLE_CSV_EXPORT}
+                        defaultValue={!u.group_settings?.DISABLE_CSV_EXPORT}
                         userValue={u.allowed_to_export}
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')
