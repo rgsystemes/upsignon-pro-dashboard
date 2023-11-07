@@ -337,7 +337,7 @@ class Users extends React.Component {
                     <td>
                       <UserSettingOverride
                         title={i18n.t('user_allowed_offline_desktop')}
-                        defaultValue={!u.group_settings.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP}
+                        defaultValue={!u.group_settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP}
                         userValue={u.allowed_offline_desktop}
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_offline_desktop')
