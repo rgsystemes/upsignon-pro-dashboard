@@ -160,9 +160,6 @@ const translations = {
     "You can't remove management rights from the last manager of a shared vault or delete him from the share. But you can transfer the management rights to another user.",
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
-  extract_emails_windows_below_6_0_4:
-    'Get emails of all users that have at least one windows device which has a version strictly below 6.0.4.',
-  extract_emails_windows_below_6_0_4_empty: 'All your windows users are up to date.',
   extract_emails_text: 'Get the list of emails of users matching one of these conditions:',
   extract_emails_duplicates: 'who have at least $n duplicate passwords',
   extract_emails_weak: 'who have at least $n weak passwords',

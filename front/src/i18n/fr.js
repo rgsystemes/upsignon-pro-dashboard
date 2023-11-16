@@ -161,9 +161,6 @@ const translations = {
     "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
-  extract_emails_windows_below_6_0_4:
-    'Extraire la liste des emails des utilisateurs ayant au moins un appareil windows dont la version est inférieure strictement à la version 6.0.4.',
-  extract_emails_windows_below_6_0_4_empty: 'Tous vos utilisateurs windows sont à jour.',
   extract_emails_text:
     "Récupérer la liste des emails des utilisateurs remplissant l'une des ces conditions :",
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',
