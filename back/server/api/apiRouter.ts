@@ -48,7 +48,6 @@ import { count_shared_vaults } from './count_shared_vaults';
 import { delete_shared_vault_user } from './delete_shared_vault_user';
 import { update_shared_vault_manager } from './update_shared_vault_manager';
 import { send_email, send_email_precheck } from './send_email';
-import { extract_emails_for_windows_below_6_0_4 } from './extract_emails_for_windows_below_6_0_4';
 import { update_user_setting } from './update_user_setting';
 
 export const apiRouter = express.Router();
@@ -133,9 +132,6 @@ apiRouter.get('/extract-emails-for-shared-device', (req, res) =>
 );
 apiRouter.get('/extract-emails-for-long-unused', (req, res) =>
   extract_emails_for_long_unused(req, res, false),
-);
-apiRouter.get('/extract-emails-for-windows-below-6-0-4', (req, res) =>
-  extract_emails_for_windows_below_6_0_4(req, res, false),
 );
 
 // Send emails
