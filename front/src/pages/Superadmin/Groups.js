@@ -200,7 +200,7 @@ class Groups extends React.Component {
                       type="number"
                       value={group.nb_licences_sold}
                       onChange={(newVal) => {
-                        if (!newVal) return;
+                        if (newVal == null || newVal < 0) return;
                         this.updateNbLicences(group.id, newVal);
                       }}
                     />
