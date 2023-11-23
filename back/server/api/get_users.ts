@@ -72,7 +72,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
   ${
     sortingType === 0
       ? 'ORDER BY nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
-      : 'ORDER BY last_session ASC, u.email ASC'
+      : 'ORDER BY last_session ASC NULLS FIRST, u.email ASC'
   }
   LIMIT $1
   OFFSET $2

@@ -270,9 +270,16 @@ class Users extends React.Component {
           <tbody>
             {this.state.users.map((u) => {
               let lastSessionStyle = {};
+              const lastSessionDateOrNull = !u.last_session ? null : new Date(u.last_session);
               if (this.state.sortingType !== 0) {
-                const isLastSessionOld = new Date(u.last_session) < getDateBack2Weeks();
-                const isLastSessionVeryOld = new Date(u.last_session) < getDateBack1Month();
+                const isLastSessionOld =
+                  lastSessionDateOrNull == null
+                    ? true
+                    : lastSessionDateOrNull < getDateBack2Weeks();
+                const isLastSessionVeryOld =
+                  lastSessionDateOrNull == null
+                    ? true
+                    : lastSessionDateOrNull < getDateBack1Month();
                 lastSessionStyle = {
                   fontWeight: 'bold',
                   backgroundColor: isLastSessionVeryOld
@@ -307,7 +314,7 @@ class Users extends React.Component {
                       <div>
                         {i18n.t('user_data_seen_at')}{' '}
                         <span style={{ fontSize: 12, ...lastSessionStyle }}>
-                          {new Date(u.last_session).toLocaleString()}
+                          {lastSessionDateOrNull?.toLocaleString()}
                         </span>
                       </div>
                     </td>
