@@ -215,10 +215,6 @@ const translations = {
   setup_link_is_group_specific:
     'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
   pro_server_url: 'URL de votre serveur UpSignOn PRO',
-  openid_unfold: "Cas particulier d'OpenId (optionnel et non recommandé)",
-  openid_authority: 'URL du serveur OpenId',
-  openid_clientid: "Identifiant de l'application ",
-  openid_clientid_browsers: 'Identifiant pour les extensions de navigateur',
   link_to_communicate: 'Lien à communiquer',
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',

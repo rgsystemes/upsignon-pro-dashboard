@@ -9,7 +9,6 @@ export class ProServerUrl extends React.Component {
   state = {
     proServerUrlConfig: null,
     isEditing: false,
-    showOpenId: false,
   };
   fetchSetupUrlComponents = async () => {
     try {
@@ -18,7 +17,6 @@ export class ProServerUrl extends React.Component {
         this.serverStatusUrl = serverUrl.url;
         this.setState({
           proServerUrlConfig: serverUrl,
-          showOpenId: false,
         });
       } else {
         this.setState({ isEditing: true });
@@ -56,7 +54,7 @@ export class ProServerUrl extends React.Component {
         value: JSON.stringify(newStateUrl),
       });
       this.serverStatusUrl = newUrl;
-      this.setState({ isEditing: false, showOpenId: false, proServerUrlConfig: newStateUrl });
+      this.setState({ isEditing: false, proServerUrlConfig: newStateUrl });
     } catch (e) {
       console.error(e);
     }
@@ -118,67 +116,6 @@ export class ProServerUrl extends React.Component {
             </div>
           )}
         </div>
-        <div>
-          {i18n.t('openid_unfold')}{' '}
-          {this.state.showOpenId ? (
-            <span className="action" onClick={() => this.setState({ showOpenId: false })}>
-              {i18n.t('hide')}
-            </span>
-          ) : (
-            <span className="action" onClick={() => this.setState({ showOpenId: true })}>
-              {i18n.t('see')}
-            </span>
-          )}
-        </div>
-        {this.state.showOpenId && (
-          <div style={{ border: '1px solid #aaa', borderRadius: 3, padding: 10, marginTop: 5 }}>
-            <div style={{ display: 'flex', marginBottom: 10 }}>
-              <div>{i18n.t('openid_authority')}</div>
-              <input
-                style={{ marginLeft: 10, width: 200 }}
-                type="text"
-                value={this.state.proServerUrlConfig?.oidcAuthority || ''}
-                onChange={(ev) => {
-                  this.setState((s) => ({
-                    proServerUrlConfig: { ...s.proServerUrlConfig, oidcAuthority: ev.target.value },
-                  }));
-                }}
-              />
-            </div>
-            <div style={{ display: 'flex', marginBottom: 10 }}>
-              <div>{i18n.t('openid_clientid')}</div>
-              <input
-                style={{ marginLeft: 10, width: 200 }}
-                type="text"
-                value={this.state.proServerUrlConfig?.oidcClientId || ''}
-                onChange={(ev) => {
-                  this.setState((s) => ({
-                    proServerUrlConfig: { ...s.proServerUrlConfig, oidcClientId: ev.target.value },
-                  }));
-                }}
-              />
-            </div>
-            <div style={{ display: 'flex', marginBottom: 10 }}>
-              <div>{i18n.t('openid_clientid_browsers')}</div>
-              <input
-                style={{ marginLeft: 10, width: 200 }}
-                type="text"
-                value={this.state.proServerUrlConfig?.oidcClientIdForAddons || ''}
-                onChange={(ev) => {
-                  this.setState((s) => ({
-                    proServerUrlConfig: {
-                      ...s.proServerUrlConfig,
-                      oidcClientIdForAddons: ev.target.value,
-                    },
-                  }));
-                }}
-              />
-            </div>
-            <div className="action" onClick={this.submitNewProServerUrl}>
-              {i18n.t('validate')}
-            </div>
-          </div>
-        )}
       </div>
     );
   }
