@@ -28,7 +28,7 @@ class AllowedEmails extends React.Component {
         this.props.setIsLoading(true);
         await groupUrlFetch('/api/update-allowed-email', 'POST', {
           allowedEmailId: this.state.editingEmailId,
-          updatedPattern: this.state.updatedPattern,
+          updatedPattern: this.state.updatedPattern.trim().toLowerCase(),
         });
         await this.fetchAllowedEmails();
       } catch (e) {
@@ -42,7 +42,7 @@ class AllowedEmails extends React.Component {
   insertAllowedEmail = async () => {
     try {
       this.props.setIsLoading(true);
-      const newPattern = this.newInputRef.value;
+      const newPattern = this.newInputRef.value?.trim().toLowerCase();
       if (!newPattern) {
         this.newInputRef.style.borderColor = 'red';
         return;
