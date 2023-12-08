@@ -76,7 +76,11 @@ class PasswordResetRequests extends React.Component {
               return (
                 <tr key={d.pwd_reset_id}>
                   {this.props.isSuperAdmin && <td>{d.group_name}</td>}
-                  <td>{d.status}</td>
+                  <td>
+                    {d.status}
+                    {d.pwd_reset_token && <br />}
+                    {d.pwd_reset_token ?? ''}
+                  </td>
                   <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
                   <td>{d.email}</td>
                   <td>{d.device_name}</td>

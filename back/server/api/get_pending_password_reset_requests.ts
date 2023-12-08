@@ -15,6 +15,7 @@ export const get_pending_password_reset_requests = async (
       ud.device_type AS device_type,
       reset.status AS status,
       reset.id AS pwd_reset_id,
+      reset.reset_token AS pwd_reset_token,
       reset.created_at AS pwd_reset_created_at,
       (SELECT STRING_AGG(users.email,';') FROM user_devices AS udbis INNER JOIN users ON udbis.user_id=users.id WHERE udbis.device_unique_id=ud.device_unique_id AND udbis.id!=ud.id) AS shared_with
     FROM password_reset_request AS reset
@@ -28,7 +29,7 @@ export const get_pending_password_reset_requests = async (
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
-    logError("get_pending_password_reset_requests", e);
+    logError('get_pending_password_reset_requests', e);
     res.status(400).end();
   }
 };
