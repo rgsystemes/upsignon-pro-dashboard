@@ -47,7 +47,7 @@ class SharedDevices extends React.Component {
               <th>{i18n.t('shared_devices_name')}</th>
               <th>{i18n.t('shared_devices_type')}</th>
               <th>{i18n.t('shared_devices_status')}</th>
-              <th>{i18n.t('shared_devices_last_session')}</th>
+              <th>{i18n.t('shared_devices_last_sync_date')}</th>
             </tr>
           </thead>
           <tbody>
@@ -78,7 +78,7 @@ class SharedDevices extends React.Component {
                             <div>{new Date(u.revocation_date).toLocaleString()}</div>
                           )}
                         </td>
-                        <td>{new Date(u.last_session).toLocaleString()}</td>
+                        <td>{new Date(u.last_sync_date).toLocaleString()}</td>
                       </tr>
                     );
                   })}

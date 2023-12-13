@@ -49,7 +49,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     length(u.encrypted_data) AS data_length,
     u.updated_at AS updated_at,
     (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
-    (SELECT last_sync_date FROM user_devices AS ud WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) AS last_session,
+    (SELECT last_sync_date FROM user_devices AS ud WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) AS last_sync_date,
     (SELECT COUNT(id) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
 
     (SELECT nb_codes FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_codes,
@@ -72,7 +72,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
   ${
     sortingType === 0
       ? 'ORDER BY nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
-      : 'ORDER BY last_session ASC NULLS FIRST, u.email ASC'
+      : 'ORDER BY last_sync_date ASC NULLS FIRST, u.email ASC'
   }
   LIMIT $1
   OFFSET $2

@@ -18,7 +18,7 @@ export const extract_database = async (
       ud.device_type AS device_type,
       ud.os_version AS os_version,
       ud.app_version AS app_version,
-      ud.last_sync_date AS last_session,
+      ud.last_sync_date AS last_sync_date,
       length(u.encrypted_data) AS data_length,
       u.updated_at AS updated_at,
       (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,

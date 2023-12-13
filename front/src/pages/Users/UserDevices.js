@@ -175,7 +175,7 @@ class UserDevices extends React.Component {
               <th>{i18n.t('device_app_version')}</th>
               <th>{i18n.t('device_type')}</th>
               <th>{i18n.t('device_status')}</th>
-              <th>{i18n.t('device_last_session')}</th>
+              <th>{i18n.t('device_last_sync_date')}</th>
               <th>{i18n.t('device_shared_with')}</th>
               <th>{i18n.t('actions')}</th>
             </tr>
@@ -200,7 +200,7 @@ class UserDevices extends React.Component {
                       <div>{new Date(d.revocation_date).toLocaleString()}</div>
                     )}
                   </td>
-                  <td>{d.last_session && new Date(d.last_session).toLocaleString()}</td>
+                  <td>{d.last_sync_date && new Date(d.last_sync_date).toLocaleString()}</td>
                   {!!d.shared_with ? (
                     <td>
                       {d.shared_with.split(';').map((email) => (

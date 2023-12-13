@@ -14,7 +14,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
       ud.os_version AS os_version,
       ud.revocation_date AS revocation_date,
       ud.app_version AS app_version,
-      ud.last_sync_date AS last_session,
+      ud.last_sync_date AS last_sync_date,
       reset.id AS pwd_reset_id,
       reset.status AS pwd_reset_status,
       reset.created_at AS pwd_reset_created_at,

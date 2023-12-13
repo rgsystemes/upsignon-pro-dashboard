@@ -270,7 +270,7 @@ class Users extends React.Component {
           <tbody>
             {this.state.users.map((u) => {
               let lastSessionStyle = {};
-              const lastSessionDateOrNull = !u.last_session ? null : new Date(u.last_session);
+              const lastSessionDateOrNull = !u.last_sync_date ? null : new Date(u.last_sync_date);
               if (this.state.sortingType !== 0) {
                 const isLastSessionOld =
                   lastSessionDateOrNull == null
