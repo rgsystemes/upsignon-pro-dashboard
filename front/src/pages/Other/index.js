@@ -3,10 +3,10 @@ import { i18n } from '../../i18n/i18n';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { groupServerUrl } from '../../helpers/env';
 
-import './communications.css';
+import './other.css';
 
 // Props = setIsLoading, isSuperadminPage
-class Communications extends React.Component {
+class Other extends React.Component {
   emailExtractRef = null;
 
   state = {
@@ -167,7 +167,7 @@ class Communications extends React.Component {
   render() {
     return (
       <div className="page">
-        <h1>{i18n.t('menu_communications')}</h1>
+        <h1>{i18n.t('menu_other')}</h1>
         <div>
           <h2>{i18n.t('extracts')}</h2>
           <a
@@ -338,4 +338,4 @@ class Communications extends React.Component {
   }
 }
 
-export { Communications };
+export { Other };

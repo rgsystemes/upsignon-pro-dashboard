@@ -19,7 +19,7 @@ const translations = {
   menu_overview: 'Overview',
   menu_password_reset_requests: 'Password reset requests',
   menu_users: 'Users',
-  menu_communications: 'CSV Extract & Communications',
+  menu_other: 'Autres requêtes',
   menu_settings: 'Settings',
   menu_shared_devices: 'Shared devices',
   menu_shared_accounts: 'Shared accounts (deprecated)',

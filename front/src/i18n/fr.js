@@ -19,7 +19,7 @@ const translations = {
   menu_overview: "Vue d'ensemble",
   menu_password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   menu_users: 'Utilisateurs',
-  menu_communications: 'Extract CSV & Communications',
+  menu_other: 'Autres requêtes',
   menu_settings: 'Paramètres',
   menu_shared_devices: 'Appareils partagés',
   menu_shared_accounts: 'Comptes partagés (déprécié)',

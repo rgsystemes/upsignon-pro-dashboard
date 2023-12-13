@@ -14,7 +14,7 @@ import { baseFrontUrl, groupId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
-import { Communications } from './pages/Communications';
+import { Other } from './pages/Other';
 
 class App extends React.Component {
   state = {
@@ -101,9 +101,9 @@ class App extends React.Component {
     if (path.startsWith(`/${groupId}/users`)) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith(`/${groupId}/communications`)) {
-      pageContent = <Communications setIsLoading={this.setIsLoading} />;
-      currentPage = 'communications';
+    } else if (path.startsWith(`/${groupId}/other`)) {
+      pageContent = <Other setIsLoading={this.setIsLoading} />;
+      currentPage = 'other';
     } else if (path.startsWith(`/${groupId}/shared_devices`)) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
@@ -195,10 +195,10 @@ class App extends React.Component {
         disabledForSuperadmin: true,
       },
       {
-        key: 'communications',
-        href: '/communications/',
-        title: `${i18n.t('menu_communications')}`,
-        isCurrent: currentPage === 'communications',
+        key: 'other',
+        href: '/other/',
+        title: `${i18n.t('menu_other')}`,
+        isCurrent: currentPage === 'other',
         disabledForSuperadmin: false,
       },
       {
