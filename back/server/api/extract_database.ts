@@ -1,20 +1,24 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const extract_database = async (req: any, res: any, isSuperadmin: boolean): Promise<void> => {
+export const extract_database = async (
+  req: any,
+  res: any,
+  isSuperadmin: boolean,
+): Promise<void> => {
   try {
     const dbRes = await db.query(
       `
     SELECT
       u.email,
-      ${isSuperadmin? 'g.name AS bank_name,':''}
+      ${isSuperadmin ? 'g.name AS bank_name,' : ''}
       ud.device_unique_id AS device_uid,
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
       ud.device_type AS device_type,
       ud.os_version AS os_version,
       ud.app_version AS app_version,
-      (SELECT date FROM usage_logs WHERE log_type='SESSION' AND device_id=ud.id ORDER BY date DESC LIMIT 1) AS last_session,
+      ud.last_sync_date AS last_session,
       length(u.encrypted_data) AS data_length,
       u.updated_at AS updated_at,
       (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
@@ -35,7 +39,7 @@ export const extract_database = async (req: any, res: any, isSuperadmin: boolean
     ${isSuperadmin ? '' : 'WHERE u.group_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
   `,
-      isSuperadmin ? []:[req.proxyParamsGroupId],
+      isSuperadmin ? [] : [req.proxyParamsGroupId],
     );
 
     let csvContent = '';
@@ -48,7 +52,7 @@ export const extract_database = async (req: any, res: any, isSuperadmin: boolean
     res.attachment(`upsignon-pro-stats-${d}.csv`);
     res.send(csvContent);
   } catch (e) {
-    logError("extract_database", e);
+    logError('extract_database', e);
     res.status(400).end();
   }
 };

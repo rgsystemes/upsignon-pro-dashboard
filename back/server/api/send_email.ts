@@ -43,7 +43,6 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
   const sendMailToAll =
     typeof req.body.sendMailToAll === 'boolean' ? req.body.sendMailToAll : false;
 
-
   let uniqueEmails: string[] = [];
   if (sendMailToAll) {
     uniqueEmails = (
@@ -92,10 +91,9 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
       const longUnusedEmails = (
         await db.query(
           `SELECT email FROM users AS u
-        WHERE (SELECT AGE(date)
-          FROM usage_logs AS ul
-          INNER JOIN user_devices AS ud ON ud.id=ul.device_id
-          WHERE ud.user_id=u.id AND log_type='SESSION' AND ul.group_id=1 ORDER BY date DESC LIMIT 1) > interval '$1 days'
+          WHERE (SELECT AGE(last_sync_date)
+            FROM user_devices AS ud
+            WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) > interval '$1 days'
           ${isSuperadmin ? '' : 'AND u.group_id=$2'}
       `,
           isSuperadmin
@@ -139,9 +137,9 @@ export const send_email_precheck = async (
 ): Promise<void> => {
   try {
     const uniqueEmails = await getSelectedEmails(req, isSuperadmin);
-    return res.status(200).send({n: uniqueEmails.length});
-  }catch(e) {
-    logError("send_email_precheck", e);
+    return res.status(200).send({ n: uniqueEmails.length });
+  } catch (e) {
+    logError('send_email_precheck', e);
   }
 };
 
@@ -168,7 +166,7 @@ export const send_email = async (req: any, res: any, isSuperadmin: boolean): Pro
     );
     res.status(200).send({ n: uniqueEmails.length });
   } catch (e) {
-    logError("send_email", e);
+    logError('send_email', e);
     res.status(400).end();
   }
 };

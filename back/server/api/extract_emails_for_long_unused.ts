@@ -15,17 +15,16 @@ export const extract_emails_for_long_unused = async (
     }
     const dbRes = await db.query(
       `SELECT email FROM users AS u
-        WHERE (SELECT AGE(date)
-          FROM usage_logs AS ul
-          INNER JOIN user_devices AS ud ON ud.id=ul.device_id
-          WHERE ud.user_id=u.id AND log_type='SESSION' AND ul.group_id=1 ORDER BY date DESC LIMIT 1) > interval '$1 days'
+        WHERE (SELECT AGE(last_sync_date)
+          FROM user_devices AS ud
+          WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) > interval '$1 days'
         ${isSuperadmin ? '' : 'AND u.group_id=$2'}
       `,
       isSuperadmin ? [nbDays] : [nbDays, req.proxyParamsGroupId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
-    logError("extract_emails_for_long_unused", e);
+    logError('extract_emails_for_long_unused', e);
     res.status(400).end();
   }
 };

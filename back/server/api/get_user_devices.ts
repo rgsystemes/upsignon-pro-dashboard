@@ -14,7 +14,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
       ud.os_version AS os_version,
       ud.revocation_date AS revocation_date,
       ud.app_version AS app_version,
-      (SELECT date FROM usage_logs WHERE log_type='SESSION' AND device_id=ud.id ORDER BY date DESC LIMIT 1) AS last_session,
+      ud.last_sync_date AS last_session,
       reset.id AS pwd_reset_id,
       reset.status AS pwd_reset_status,
       reset.created_at AS pwd_reset_created_at,
@@ -31,7 +31,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
-    logError("get_user_devices", e);
+    logError('get_user_devices', e);
     res.status(400).end();
   }
 };
