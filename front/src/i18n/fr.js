@@ -39,7 +39,7 @@ const translations = {
   user_email: 'Email',
   user_data: 'Données',
   user_data_updated_at: 'Modifiées le',
-  user_data_seen_at: 'Consultées le',
+  user_data_seen_at: 'Synchronisées le',
   user_general_stats: 'Stats générales',
   user_nb_devices_value: '$nb appareils',
   user_nb_codes_value: '$nb codes',

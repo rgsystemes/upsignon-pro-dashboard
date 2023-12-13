@@ -93,7 +93,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           `SELECT email FROM users AS u
           WHERE (SELECT AGE(last_sync_date)
             FROM user_devices AS ud
-            WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) > interval '$1 days'
+            WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
           ${isSuperadmin ? '' : 'AND u.group_id=$2'}
       `,
           isSuperadmin

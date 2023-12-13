@@ -49,9 +49,8 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     length(u.encrypted_data) AS data_length,
     u.updated_at AS updated_at,
     (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
-    (SELECT last_sync_date FROM user_devices AS ud WHERE ud.user_id=u.id ORDER BY last_sync_date DESC LIMIT 1) AS last_sync_date,
+    (SELECT last_sync_date FROM user_devices AS ud WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) AS last_sync_date,
     (SELECT COUNT(id) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
-
     (SELECT nb_codes FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_codes,
     (SELECT nb_accounts FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts,
     (SELECT nb_accounts_weak  FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) AS nb_accounts_weak,
