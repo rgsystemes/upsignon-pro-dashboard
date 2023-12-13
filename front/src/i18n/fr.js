@@ -25,6 +25,7 @@ const translations = {
   menu_shared_accounts: 'Comptes partagés (déprécié)',
   menu_shared_vaults: 'Coffres-forts partagés',
   menu_superadmin: 'Super-Admin',
+  menu_release_notes: 'Notes de version',
   loading: 'Chargement des données...',
   total_count: 'Total $count',
   user_sort_by_vuln: 'Par vulnérabilité',
@@ -261,6 +262,25 @@ const translations = {
   sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
   sasettings_email_config_testing_alert: 'Un email a été envoyé',
   sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
+  release_notes_app: 'Application',
+  release_notes_extension: 'Extension de navigateur',
+  release_notes_server: 'Serveur applicatif',
+  release_notes_dashboard: 'Console de supervision',
+  release_notes_app_7_1_0_title: '7.1.0 - (7.0.17 en beta) - beta',
+  release_notes_app_7_1_0_content: `Amélioration du système de partage
+- déplacer un élément partagé dans un dossier
+- partager un dossier directement
+- partager un compte directement
+- gestion des propriétaires sur les coffres PERSO
+
+Création des comptes, codes et dossiers directement dans un dossier
+
+Correctifs et améliorations techniques
+- gestion des proxys sortants
+- correction d'un crash sur iOS 16-
+- correction d'un gèle de l'application sur iOS au démarrage lorsqu'il n'y a qu'un seul compte et que la biométrie est activée
+- possibilité de réouvrir la fenêtre de l'application sur macOS
+- amélioration du système de serveur local utilisé par l'extension de navigateur`,
 };
 
 export default translations;

@@ -15,6 +15,7 @@ import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
 import { Other } from './pages/Other';
+import { ReleaseNotes } from './pages/ReleaseNotes';
 
 class App extends React.Component {
   state = {
@@ -147,6 +148,8 @@ class App extends React.Component {
         );
       }
       currentPage = 'settings';
+    } else if (path.startsWith(`/${groupId}/release_notes`)) {
+      pageContent = <ReleaseNotes />;
     }
 
     const pages = [
@@ -206,6 +209,13 @@ class App extends React.Component {
         href: '/settings/',
         title: i18n.t('menu_settings'),
         isCurrent: currentPage === 'settings',
+        disabledForSuperadmin: false,
+      },
+      {
+        key: 'release_notes',
+        href: '/release_notes/',
+        title: i18n.t('menu_release_notes'),
+        isCurrent: currentPage === 'release_notes',
         disabledForSuperadmin: false,
       },
     ];

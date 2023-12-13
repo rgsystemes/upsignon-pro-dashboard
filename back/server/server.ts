@@ -133,6 +133,7 @@ app.use(
     '/superadmin/password_reset_requests/',
     '/superadmin/other/',
     '/superadmin/settings/',
+    '/superadmin/release_notes/',
     '/superadmin/',
     '/:groupId/users/',
     '/:groupId/shared_devices/',
@@ -141,6 +142,7 @@ app.use(
     '/:groupId/password_reset_requests/',
     '/:groupId/settings/',
     '/:groupId/other/',
+    '/:groupId/release_notes/',
     '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
   ],
   express.static(frontBuildDir),

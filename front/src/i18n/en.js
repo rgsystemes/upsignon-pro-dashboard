@@ -25,6 +25,7 @@ const translations = {
   menu_shared_accounts: 'Shared accounts (deprecated)',
   menu_shared_vaults: 'Shared vaults',
   menu_superadmin: 'Super-Admin',
+  menu_release_notes: 'Release notes',
   loading: 'Loading data...',
   total_count: 'Total $count',
   user_sort_by_vuln: 'By vulnerability',
@@ -255,6 +256,25 @@ const translations = {
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
+  release_notes_app: 'Application',
+  release_notes_extension: 'Brower extension',
+  release_notes_server: 'App server',
+  release_notes_dashboard: 'Monitoring dashboard',
+  release_notes_app_7_1_0_title: '7.1.0 - (7.0.17 in beta) - beta',
+  release_notes_app_7_1_0_content: `Improvements to the sharing system
+- move a shared item into a folder
+- share a folder directly
+- share an account directly
+- owner management on PERSO vaults
+
+Create accounts, codes and folders directly in a folder
+
+Technical fixes and improvements
+- management of outgoing proxies
+- fixed a crash on iOS 16-
+- fixed application freeze on iOS startup when there is only one account and biometrics is enabled
+- ability to reopen the application window on macOS
+- improvement to the local server system used by the browser extension`,
 };
 
 export default translations;

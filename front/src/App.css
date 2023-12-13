@@ -24,3 +24,7 @@
   color: rgb(0, 136, 134);
   font-style: italic;
 }
+
+p {
+  white-space: pre-line;
+}
