@@ -261,7 +261,7 @@ class Groups extends React.Component {
                       <InlineSetting
                         group={group}
                         title={i18n.t('sasettings_export_allowed_default')}
-                        settingNameInDB="DISABLE_CSV_EXPORT"
+                        settingNameInDB="ALLOWED_TO_EXPORT"
                         toggleGroupSetting={this.toggleGroupSetting}
                       />
                     </td>

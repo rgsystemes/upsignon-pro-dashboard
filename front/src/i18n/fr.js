@@ -2,8 +2,8 @@ const translations = {
   suggestion: "N'hésitez pas à nous envoyer toutes vos remarques et suggestions à",
   yes: 'OUI',
   no: 'NON',
-  default_yes: '_ (OUI)',
-  default_no: '_ (NON)',
+  default_yes: '(OUI)',
+  default_no: '(NON)',
   edit: 'Modifier',
   see: 'Voir',
   hide: 'Cacher',
@@ -237,7 +237,7 @@ const translations = {
     'Par défaut, activer le mode hors-ligne sur les ordinateurs de bureau',
   sasettings_offline_default_mobile:
     'Par défaut, activer le mode hors-ligne sur téléphones et tablettes',
-  sasettings_export_allowed_default: "Par défaut, autoriser l'export CSV",
+  sasettings_export_allowed_default: "Par défaut, interdire l'export CSV",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

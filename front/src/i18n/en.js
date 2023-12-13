@@ -2,8 +2,8 @@ const translations = {
   suggestion: "Please don't hesitate to send us all your feedbacks and suggestions at",
   yes: 'YES',
   no: 'NO',
-  default_yes: '_ (YES)',
-  default_no: '_ (NO)',
+  default_yes: '(YES)',
+  default_no: '(NO)',
   edit: 'Edit',
   see: 'See',
   hide: 'Hide',
@@ -232,7 +232,7 @@ const translations = {
   sasettings_offline_default_desktop: 'By default, activate the offline mode on desktop computers',
   sasettings_offline_default_mobile:
     'By default, activate the offline mode on smartphones and tablets',
-  sasettings_export_allowed_default: 'By default, allow CSV exports',
+  sasettings_export_allowed_default: 'By default, disallow CSV exports',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

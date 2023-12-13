@@ -360,7 +360,7 @@ class Users extends React.Component {
                       />
                       <UserSettingOverride
                         title={i18n.t('user_allowed_to_export')}
-                        defaultValue={!u.group_settings?.DISABLE_CSV_EXPORT}
+                        defaultValue={u.group_settings?.ALLOWED_TO_EXPORT}
                         userValue={u.allowed_to_export}
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')

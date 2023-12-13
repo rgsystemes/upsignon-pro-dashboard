@@ -11,7 +11,7 @@ class OtherSettings extends React.Component {
       DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN: false,
       DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP: false,
       DISABLE_OFFLINE_MODE_DEFAULT_MOBILE: false,
-      DISABLE_CSV_EXPORT: false,
+      ALLOWED_TO_EXPORT: false,
     },
   };
   newInputRef = null;
@@ -85,8 +85,8 @@ class OtherSettings extends React.Component {
             />
             <SettingTableRow
               title={i18n.t('sasettings_export_allowed_default')}
-              settingNameInDB="DISABLE_CSV_EXPORT"
-              value={this.state.settings?.DISABLE_CSV_EXPORT}
+              settingNameInDB="ALLOWED_TO_EXPORT"
+              value={this.state.settings?.ALLOWED_TO_EXPORT}
               toggleValue={this.updateGroupSetting}
             />
           </tbody>
