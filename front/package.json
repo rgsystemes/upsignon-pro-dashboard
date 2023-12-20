@@ -1,6 +1,6 @@
 {
   "name": "upsignon-pro-dashboard",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "licence": "none",
   "private": true,
   "dependencies": {
