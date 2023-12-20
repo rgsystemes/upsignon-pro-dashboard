@@ -208,8 +208,9 @@ const translations = {
   useful_links: 'Liens utiles',
   install_doc_server_pro: "Documentation d'installation (serveur et console d'administration)",
   install_doc_browser_extension: "Documentation d'installation des extensions de navigateur",
-  windows_app_download_link: "Téléchargement de l'application pour Windows 10",
-  to_unzip: "ajoutez l'extension .zip pour le dézipper",
+  link_to_tutorials: "Tutoriels / notice d'utilisation pour les utilisateurs",
+  link_to_changelogs: 'Notes de version',
+  link_to_downloads: "Liens de téléchargement de l'application",
   pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
   setup_link_is_group_specific:

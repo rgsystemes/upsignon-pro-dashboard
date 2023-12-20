@@ -36,40 +36,6 @@ class Superadmin extends React.Component {
         />
         <Admins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
         <EmailConfig setIsLoading={this.props.setIsLoading} />
-        <h2>{i18n.t('useful_links')}</h2>
-        <ul>
-          <li>
-            <a
-              className="link"
-              target="_blank"
-              href="https://github.com/UpSignOn/UpSignOn-pro-server"
-              rel="noreferrer"
-            >
-              {i18n.t('install_doc_server_pro')}
-            </a>
-          </li>
-          <li>
-            <a
-              className="link"
-              target="_blank"
-              href="https://github.com/UpSignOn/UpSignOn-pro-server/blob/production/doc/GPO_deployment.md"
-              rel="noreferrer"
-            >
-              {i18n.t('install_doc_browser_extension')}
-            </a>
-          </li>
-          <li>
-            <a
-              className="link"
-              href="https://app.upsignon.eu/windows-sideloading-gpo/UpSignOn_latest"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {i18n.t('windows_app_download_link')}
-            </a>
-            {` (${i18n.t('to_unzip')})`}
-          </li>
-        </ul>
       </div>
     );
   }
