@@ -181,13 +181,6 @@ class App extends React.Component {
         disabledForSuperadmin: true,
       },
       {
-        key: 'shared_accounts',
-        href: '/shared_accounts/',
-        title: `${i18n.t('menu_shared_accounts')} (${this.state.nb_shared_accounts || '-'})`,
-        isCurrent: currentPage === 'shared_accounts',
-        disabledForSuperadmin: true,
-      },
-      {
         key: 'shared_vaults',
         href: '/shared_vaults/',
         title: `${i18n.t('menu_shared_vaults')} (${this.state.nb_shared_vaults || '-'})`,
