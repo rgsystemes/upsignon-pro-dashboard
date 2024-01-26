@@ -25,7 +25,7 @@ export const get_password_stats = async (
         nb_accounts_red,
         nb_accounts_orange,
         nb_accounts_green
-        FROM data_stats WHERE group_id=$1 ORDER BY day ASC`,
+        FROM data_stats WHERE group_id=$1 ORDER BY date ASC`, // order by date not day to keep only the last stat of a day per user or shared vault
         [req.proxyParamsGroupId],
       );
     } else {
@@ -44,7 +44,7 @@ export const get_password_stats = async (
         nb_accounts_red,
         nb_accounts_orange,
         nb_accounts_green
-        FROM data_stats ORDER BY day ASC`,
+        FROM data_stats ORDER BY date ASC`,
       );
     }
 
@@ -61,17 +61,16 @@ export const get_password_stats = async (
      */
     const chartDataPerVaultPerDay: any = {};
     rawStats.rows.forEach((r: any) => {
-      if(r.user_id) {
-        if (!chartDataPerVaultPerDay['v'+r.user_id]) {
-          chartDataPerVaultPerDay['v'+r.user_id] = {};
+      if (r.user_id) {
+        if (!chartDataPerVaultPerDay['v' + r.user_id]) {
+          chartDataPerVaultPerDay['v' + r.user_id] = {};
         }
-        chartDataPerVaultPerDay['v'+r.user_id][r.day.toISOString()] = r;
+        chartDataPerVaultPerDay['v' + r.user_id][r.day.toISOString()] = r; // this will erase previous stats for the same day
       } else {
-        if (!chartDataPerVaultPerDay['sv'+r.shared_vault_id]) {
-          chartDataPerVaultPerDay['sv'+r.shared_vault_id] = {};
+        if (!chartDataPerVaultPerDay['sv' + r.shared_vault_id]) {
+          chartDataPerVaultPerDay['sv' + r.shared_vault_id] = {};
         }
-        chartDataPerVaultPerDay['sv'+r.shared_vault_id][r.day.toISOString()] = r;
-
+        chartDataPerVaultPerDay['sv' + r.shared_vault_id][r.day.toISOString()] = r;
       }
     });
 
@@ -123,7 +122,7 @@ export const get_password_stats = async (
     const result = Object.values(chartDataObjet);
     res.status(200).send(result);
   } catch (e) {
-    logError("get_password_stats", e);
+    logError('get_password_stats', e);
     res.status(400).end();
   }
 };
