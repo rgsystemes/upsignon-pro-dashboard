@@ -73,10 +73,11 @@ class PasswordResetRequests extends React.Component {
           </thead>
           <tbody>
             {this.state.pendingRequests.map((d) => {
+              const requiresAttention = d.status === 'PENDING_ADMIN_CHECK';
               return (
                 <tr key={d.pwd_reset_id}>
                   {this.props.isSuperAdmin && <td>{d.group_name}</td>}
-                  <td>
+                  <td className={requiresAttention ? 'requires_attention' : null}>
                     {d.status}
                     {d.pwd_reset_token && <br />}
                     {d.pwd_reset_token ?? ''}
