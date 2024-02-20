@@ -349,6 +349,7 @@ class Users extends React.Component {
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_offline_desktop')
                         }
+                        recommendedValue={true}
                       />
                       <UserSettingOverride
                         title={i18n.t('user_allowed_offline_mobile')}
@@ -357,6 +358,7 @@ class Users extends React.Component {
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_offline_mobile')
                         }
+                        recommendedValue={true}
                       />
                       <UserSettingOverride
                         title={i18n.t('user_allowed_to_export')}
@@ -365,6 +367,7 @@ class Users extends React.Component {
                         toggleValue={() =>
                           this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')
                         }
+                        recommendedValue={false}
                       />
                     </td>
                     <td>
@@ -407,28 +410,22 @@ class Users extends React.Component {
 }
 
 const UserSettingOverride = (props) => {
-  const { title, defaultValue, userValue, toggleValue } = props;
+  const { title, defaultValue, userValue, toggleValue, recommendedValue } = props;
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div>{title}</div>
-      {userValue === null && defaultValue && (
+      {userValue === null ? (
         <span onClick={toggleValue} className={`clickable defaultParam`}>
-          {i18n.t('default_yes')}
+          {i18n.t(defaultValue ? 'default_yes' : 'default_no')}
         </span>
-      )}
-      {userValue === null && !defaultValue && (
-        <span onClick={toggleValue} className={`clickable defaultParam`}>
-          {i18n.t('default_no')}
-        </span>
-      )}
-      {userValue !== null && userValue && (
-        <span onClick={toggleValue} className={`clickable recommendedParam`}>
-          {i18n.t('yes')}
-        </span>
-      )}
-      {userValue !== null && !userValue && (
-        <span onClick={toggleValue} className={`clickable unrecommendedParam`}>
-          {i18n.t('no')}
+      ) : (
+        <span
+          onClick={toggleValue}
+          className={`clickable ${
+            recommendedValue === userValue ? 'recommendedParam' : 'unrecommendedParam'
+          }`}
+        >
+          {i18n.t(userValue ? 'yes' : 'no')}
         </span>
       )}
     </div>
