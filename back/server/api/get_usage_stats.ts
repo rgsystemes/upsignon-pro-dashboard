@@ -19,13 +19,13 @@ export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean)
     if (rawStats.rowCount === 0) return res.status(200).send([]);
 
     // Then get the continuous list of days
-    const days = getDaysArray(rawStats.rows[0].day, new Date().toISOString());
+    const days = getDaysArray(rawStats.rows[0].day);
 
     let lastStatIndex = 0;
     let lastNbUsers = 0;
     const usageStats = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
-      if (row && row.day.toISOString() === d) {
+      if (row && row.day.toISOString().split('T')[0] === d) {
         lastNbUsers += parseInt(row.nb_users, 10);
         lastStatIndex++;
       }
@@ -34,7 +34,7 @@ export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean)
 
     res.status(200).send(usageStats);
   } catch (e) {
-    logError("get_usage_stats", e);
+    logError('get_usage_stats', e);
     res.status(400).end();
   }
 };

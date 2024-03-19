@@ -61,21 +61,22 @@ export const get_password_stats = async (
      */
     const chartDataPerVaultPerDay: any = {};
     rawStats.rows.forEach((r: any) => {
+      const d = r.day.toISOString().split('T')[0];
       if (r.user_id) {
         if (!chartDataPerVaultPerDay['v' + r.user_id]) {
           chartDataPerVaultPerDay['v' + r.user_id] = {};
         }
-        chartDataPerVaultPerDay['v' + r.user_id][r.day.toISOString()] = r; // this will erase previous stats for the same day
+        chartDataPerVaultPerDay['v' + r.user_id][d] = r; // this will erase previous stats for the same day
       } else {
         if (!chartDataPerVaultPerDay['sv' + r.shared_vault_id]) {
           chartDataPerVaultPerDay['sv' + r.shared_vault_id] = {};
         }
-        chartDataPerVaultPerDay['sv' + r.shared_vault_id][r.day.toISOString()] = r;
+        chartDataPerVaultPerDay['sv' + r.shared_vault_id][d] = r;
       }
     });
 
     // Then get the continuous list of days
-    const days = getDaysArray(rawStats.rows[0].day, new Date().toISOString()).map((d) => d);
+    const days = getDaysArray(rawStats.rows[0].day).map((d) => d);
 
     // Init chart data object
     const chartDataObjet: any = {};

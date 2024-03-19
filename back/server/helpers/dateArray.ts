@@ -1,12 +1,12 @@
+// Returns [2023-01-12, 2023-01-13, 2023-01-14, ..., until current date]
 // NB use ISO string dates because they can be compared alphabetically
-export const getDaysArray = (startDay: string, endDay: string): string[] => {
+export const getDaysArray = (startDay: string): string[] => {
   const current = new Date(startDay);
-  current.setHours(0, 0, 0, 0); // make sur time date is set in ISO standard
-  const end = new Date(endDay);
+  const end = new Date();
   const res = [];
   let hasNextDate = true;
   while (hasNextDate) {
-    res.push(current.toISOString());
+    res.push(current.toISOString().split('T')[0]);
     current.setDate(current.getDate() + 1);
     hasNextDate = current.getTime() < end.getTime();
   }
