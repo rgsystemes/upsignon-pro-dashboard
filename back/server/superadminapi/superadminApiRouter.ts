@@ -24,6 +24,8 @@ import { extract_emails_for_medium_passwords } from '../api/extract_emails_for_m
 import { extract_emails_for_shared_device } from '../api/extract_emails_for_shared_device';
 import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_unused';
 import { send_email, send_email_precheck } from '../api/send_email';
+import { extract_emails_not_migrated_users } from '../api/extract_emails_not_migrated_users';
+import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
 
 export const superadminApiRouter = express.Router();
 
@@ -84,6 +86,12 @@ superadminApiRouter.get('/extract-emails-for-shared-device', (req, res) =>
 );
 superadminApiRouter.get('/extract-emails-for-long-unused', (req, res) =>
   extract_emails_for_long_unused(req, res, true),
+);
+superadminApiRouter.get('/extract-emails-not-migrated-users', (req, res) =>
+  extract_emails_not_migrated_users(req, res, true),
+);
+superadminApiRouter.get('/extract-emails-msi-install', (req, res) =>
+  extract_emails_msi_install(req, res, true),
 );
 
 // Send emails

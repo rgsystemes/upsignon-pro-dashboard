@@ -164,6 +164,30 @@ class Other extends React.Component {
     }
   };
 
+  extractEmailsNotMigrated = async () => {
+    try {
+      this.props.setIsLoading(true);
+      const emailList = await groupUrlFetch('/api/extract-emails-not-migrated-users', 'GET', null);
+      this.setState({ extractedEmails: emailList.join(' ; ') });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+
+  extractEmailsMsiInstall = async () => {
+    try {
+      this.props.setIsLoading(true);
+      const emailList = await groupUrlFetch('/api/extract-emails-msi-install', 'GET', null);
+      this.setState({ extractedEmails: emailList.join(' ; ') });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+
   render() {
     return (
       <div className="page">
@@ -260,6 +284,22 @@ class Other extends React.Component {
           </div>
           <div style={{ marginTop: 10 }} className="extractAction" onClick={this.extractEmails}>
             {i18n.t('extract_emails')}
+          </div>
+          <div style={{ width: 300, borderTop: '1px solid grey', margin: '5px 0' }} />
+          <div
+            style={{ marginTop: 10 }}
+            className="extractAction"
+            onClick={this.extractEmailsNotMigrated}
+          >
+            {i18n.t('extract_emails_not_migrated')}
+          </div>
+          <br />
+          <div
+            style={{ marginTop: 10 }}
+            className="extractAction"
+            onClick={this.extractEmailsMsiInstall}
+          >
+            {i18n.t('extract_emails_msi')}
           </div>
           {this.state.extractedEmails !== null && (
             <div

@@ -49,6 +49,8 @@ import { delete_shared_vault_user } from './delete_shared_vault_user';
 import { update_shared_vault_manager } from './update_shared_vault_manager';
 import { send_email, send_email_precheck } from './send_email';
 import { update_user_setting } from './update_user_setting';
+import { extract_emails_not_migrated_users } from './extract_emails_not_migrated_users';
+import { extract_emails_msi_install } from './extract_emails_msi_install';
 
 export const apiRouter = express.Router();
 
@@ -132,6 +134,12 @@ apiRouter.get('/extract-emails-for-shared-device', (req, res) =>
 );
 apiRouter.get('/extract-emails-for-long-unused', (req, res) =>
   extract_emails_for_long_unused(req, res, false),
+);
+apiRouter.get('/extract-emails-not-migrated-users', (req, res) =>
+  extract_emails_not_migrated_users(req, res, false),
+);
+apiRouter.get('/extract-emails-msi-install', (req, res) =>
+  extract_emails_msi_install(req, res, false),
 );
 
 // Send emails
