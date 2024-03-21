@@ -12,12 +12,14 @@ export const extract_database = async (
     SELECT
       u.email,
       ${isSuperadmin ? 'g.name AS bank_name,' : ''}
+      starts_with(u.encrypted_data_2, 'formatP003-') AS migrated_from_v5,
       ud.device_unique_id AS device_uid,
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
       ud.device_type AS device_type,
       ud.os_version AS os_version,
       ud.app_version AS app_version,
+      ud.install_type AS install_type,
       ud.last_sync_date AS last_sync_date,
       length(u.encrypted_data) AS data_length,
       u.updated_at AS updated_at,
