@@ -187,7 +187,11 @@ class UserDevices extends React.Component {
               return (
                 <tr key={d.id}>
                   <td>{d.device_name}</td>
-                  <td>{d.app_version}</td>
+                  <td>
+                    {d.app_version}
+                    <br />
+                    {d.install_type}
+                  </td>
                   <td>
                     <div>{d.device_type}</div>
                     <div>{d.os_version}</div>
