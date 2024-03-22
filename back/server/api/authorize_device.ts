@@ -10,7 +10,7 @@ export const authorize_device = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).end();
   } catch (e) {
-    logError("authorize_device", e);
+    logError('authorize_device', e);
     res.status(400).end();
   }
 };

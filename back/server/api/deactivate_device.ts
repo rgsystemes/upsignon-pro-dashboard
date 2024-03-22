@@ -10,7 +10,7 @@ export const deactivate_device = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).end();
   } catch (e) {
-    logError("deactivate_device", e);
+    logError('deactivate_device', e);
     res.status(400).end();
   }
 };

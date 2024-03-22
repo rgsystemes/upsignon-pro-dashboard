@@ -85,7 +85,10 @@ class PasswordResetRequests extends React.Component {
                   <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
                   <td>{d.email}</td>
                   <td>{d.device_name}</td>
-                  <td>{d.device_type}</td>
+                  <td>
+                    <div>{d.os_version}</div>
+                    <div>{d.device_type}</div>
+                  </td>
                   {!!d.shared_with ? (
                     <td className="warningCell">
                       {d.shared_with.split(';').map((email) => (

@@ -17,6 +17,7 @@ export const extract_database = async (
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
       ud.device_type AS device_type,
+      ud.os_family AS os_family,
       ud.os_version AS os_version,
       ud.app_version AS app_version,
       ud.install_type AS install_type,

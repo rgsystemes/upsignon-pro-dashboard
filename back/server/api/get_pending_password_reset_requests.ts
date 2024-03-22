@@ -12,6 +12,8 @@ export const get_pending_password_reset_requests = async (
       groups.name AS group_name,
       u.email,
       ud.device_name,
+      ud.os_family AS os_family,
+      ud.os_version AS os_version,
       ud.device_type AS device_type,
       prr.status AS status,
       prr.id AS pwd_reset_id,

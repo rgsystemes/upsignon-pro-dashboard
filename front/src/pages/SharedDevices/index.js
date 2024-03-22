@@ -64,8 +64,11 @@ class SharedDevices extends React.Component {
                         ) : null}
                         <td>{u.email}</td>
                         <td>{new Date(u.created_at).toLocaleDateString()}</td>
-                        <td>{u.name}</td>
-                        <td>{u.type}</td>
+                        <td>{u.device_name}</td>
+                        <td>
+                          <div>{u.os_version}</div>
+                          <div>{u.device_type}</div>
+                        </td>
                         <td>
                           <div
                             className={

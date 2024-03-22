@@ -193,8 +193,9 @@ class UserDevices extends React.Component {
                     {d.install_type}
                   </td>
                   <td>
-                    <div>{d.device_type}</div>
+                    <div>{d.os_family}</div>
                     <div>{d.os_version}</div>
+                    <div>{d.device_type}</div>
                   </td>
                   <td>
                     <div className={!isAuthorized ? 'unauthorizedDevice' : ''}>

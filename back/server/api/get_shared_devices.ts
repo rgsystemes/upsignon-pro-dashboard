@@ -7,9 +7,11 @@ export const get_shared_devices = async (req: any, res: any): Promise<void> => {
       `
     SELECT
       ud.device_unique_id AS unique_id,
-      ud.device_name AS name,
+      ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
-      ud.device_type AS type,
+      ud.device_type AS device_type,
+      ud.os_family AS os_family,
+      ud.os_version AS os_version,
       ud.revocation_date AS revocation_date,
       ud.created_at AS created_at,
       u.email AS email,

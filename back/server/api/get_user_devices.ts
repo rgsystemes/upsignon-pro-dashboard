@@ -11,6 +11,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
       ud.device_type AS device_type,
+      ud.os_family AS os_family,
       ud.os_version AS os_version,
       ud.revocation_date AS revocation_date,
       ud.app_version AS app_version,

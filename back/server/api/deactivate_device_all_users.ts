@@ -11,7 +11,7 @@ export const deactivate_device_all_users = async (req: any, res: any): Promise<v
 
     res.status(200).end();
   } catch (e) {
-    logError("deactivate_device_all_users", e);
+    logError('deactivate_device_all_users', e);
     res.status(400).end();
   }
 };
