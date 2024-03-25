@@ -241,6 +241,16 @@ const translations = {
   sasettings_offline_default_mobile:
     'Par défaut, activer le mode hors-ligne sur téléphones et tablettes',
   sasettings_export_allowed_default: "Par défaut, interdire l'export CSV",
+  sasettings_allow_windows: 'Par défaut, autoriser Windows',
+  sasettings_allow_ios: 'Par défaut, autoriser iOS',
+  sasettings_allow_android: 'Par défaut, autoriser Android',
+  sasettings_allow_macos: 'Par défaut, autoriser macOS',
+  sasettings_allow_linux: 'Par défaut, autoriser Linux',
+  user_allow_windows: 'Autoriser Windows',
+  user_allow_ios: 'Autoriser iOS',
+  user_allow_android: 'Autoriser Android',
+  user_allow_macos: 'Autoriser macOS',
+  user_allow_linux: 'Autoriser Linux',
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

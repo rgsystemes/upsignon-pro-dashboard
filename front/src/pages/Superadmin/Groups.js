@@ -264,6 +264,36 @@ class Groups extends React.Component {
                         settingNameInDB="ALLOWED_TO_EXPORT"
                         toggleGroupSetting={this.toggleGroupSetting}
                       />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_allow_windows')}
+                        settingNameInDB="ALLOW_WINDOWS"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_allow_ios')}
+                        settingNameInDB="ALLOW_IOS"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_allow_android')}
+                        settingNameInDB="ALLOW_Android"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_allow_macos')}
+                        settingNameInDB="ALLOW_MACOS"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
+                      <InlineSetting
+                        group={group}
+                        title={i18n.t('sasettings_allow_linux')}
+                        settingNameInDB="ALLOW_LINUX"
+                        toggleGroupSetting={this.toggleGroupSetting}
+                      />
                     </td>
                     <td>
                       <div

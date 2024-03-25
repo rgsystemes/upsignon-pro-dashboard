@@ -25,6 +25,16 @@ export const update_user_setting = async (req: any, res: any): Promise<void> => 
       ]);
     }
 
+    if (Object.keys(req.body).indexOf('settings_override') != -1) {
+      {
+        await db.query(`UPDATE users SET settings_override=$1 WHERE id=$2 AND group_id=$3`, [
+          req.body.settings_override,
+          req.body.userId,
+          req.proxyParamsGroupId,
+        ]);
+      }
+    }
+
     res.status(200).end();
   } catch (e) {
     logError('update_user_setting', e);

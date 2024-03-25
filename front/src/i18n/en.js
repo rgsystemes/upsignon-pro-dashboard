@@ -236,6 +236,16 @@ const translations = {
   sasettings_offline_default_mobile:
     'By default, activate the offline mode on smartphones and tablets',
   sasettings_export_allowed_default: 'By default, disallow CSV exports',
+  sasettings_allow_windows: 'By default, allow Windows',
+  sasettings_allow_ios: 'By default, allow iOS',
+  sasettings_allow_android: 'By default, allow Android',
+  sasettings_allow_macos: 'By default, allow macOS',
+  sasettings_allow_linux: 'By default, allow Linux',
+  user_allow_windows: 'Allow Windows',
+  user_allow_ios: 'Allow iOS',
+  user_allow_android: 'Allow Android',
+  user_allow_macos: 'Allow macOS',
+  user_allow_linux: 'Allow Linux',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

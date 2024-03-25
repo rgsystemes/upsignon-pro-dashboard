@@ -63,7 +63,8 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     g.settings AS group_settings,
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
-    u.allowed_offline_desktop AS allowed_offline_desktop
+    u.allowed_offline_desktop AS allowed_offline_desktop,
+    u.settings_override AS settings_override
   FROM users AS u
   INNER JOIN groups AS g ON u.group_id=g.id
   WHERE u.group_id=$3

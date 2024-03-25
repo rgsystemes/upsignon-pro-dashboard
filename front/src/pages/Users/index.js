@@ -171,32 +171,66 @@ class Users extends React.Component {
   toggleUserSettingOverride = async (userId, settingName) => {
     try {
       this.props.setIsLoading(true);
-      const currentValue = this.state.users.find((u) => u.user_id === userId)[settingName];
-      var nextValue;
-      if (currentValue === null) {
-        nextValue = false;
-      } else if (currentValue === false) {
-        nextValue = true;
+      if (
+        settingName === 'allowed_offline_desktop' ||
+        settingName === 'allowed_offline_mobile' ||
+        settingName === 'allowed_to_export'
+      ) {
+        // DEPRECATED -> move to users.settings_override
+        const currentValue = this.state.users.find((u) => u.user_id === userId)[settingName];
+        var nextValue;
+        if (currentValue === null) {
+          nextValue = false;
+        } else if (currentValue === false) {
+          nextValue = true;
+        } else {
+          nextValue = null;
+        }
+        await groupUrlFetch(`/api/update-user-setting`, 'POST', {
+          userId,
+          [settingName]: nextValue,
+        });
+        this.setState((s) => ({
+          ...s,
+          users: s.users.map((u) => {
+            if (u.user_id === userId) {
+              return {
+                ...u,
+                [settingName]: nextValue,
+              };
+            } else {
+              return u;
+            }
+          }),
+        }));
       } else {
-        nextValue = null;
+        const userSettings = this.state.users.find((u) => u.user_id === userId)?.settings_override;
+        var nextVal;
+        if (userSettings[settingName] === null) {
+          nextVal = false;
+        } else if (userSettings[settingName] === false) {
+          nextVal = true;
+        } else {
+          nextVal = null;
+        }
+        await groupUrlFetch(`/api/update-user-setting`, 'POST', {
+          userId,
+          settings_override: JSON.stringify({ ...userSettings, [settingName]: nextVal }),
+        });
+        this.setState((s) => ({
+          ...s,
+          users: s.users.map((u) => {
+            if (u.user_id === userId) {
+              return {
+                ...u,
+                settings_override: { ...userSettings, [settingName]: nextVal },
+              };
+            } else {
+              return u;
+            }
+          }),
+        }));
       }
-      await groupUrlFetch(`/api/update-user-setting`, 'POST', {
-        userId,
-        [settingName]: nextValue,
-      });
-      this.setState((s) => ({
-        ...s,
-        users: s.users.map((u) => {
-          if (u.user_id === userId) {
-            return {
-              ...u,
-              [settingName]: nextValue,
-            };
-          } else {
-            return u;
-          }
-        }),
-      }));
     } catch (e) {
       console.error(e);
     } finally {
@@ -368,6 +402,45 @@ class Users extends React.Component {
                           this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')
                         }
                         recommendedValue={false}
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allow_windows')}
+                        defaultValue={u.group_settings?.ALLOW_WINDOWS}
+                        userValue={u.settings_override?.ALLOW_WINDOWS}
+                        toggleValue={() =>
+                          this.toggleUserSettingOverride(u.user_id, 'ALLOW_WINDOWS')
+                        }
+                        recommendedValue={true}
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allow_ios')}
+                        defaultValue={!u.group_settings?.ALLOW_IOS}
+                        userValue={u.settings_override?.ALLOW_IOS}
+                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_IOS')}
+                        recommendedValue={true}
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allow_android')}
+                        defaultValue={!u.group_settings?.ALLOW_ANDROID}
+                        userValue={u.settings_override?.ALLOW_ANDROID}
+                        toggleValue={() =>
+                          this.toggleUserSettingOverride(u.user_id, 'ALLOW_ANDROID')
+                        }
+                        recommendedValue={true}
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allow_macos')}
+                        defaultValue={!u.group_settings?.ALLOW_MACOS}
+                        userValue={u.settings_override?.ALLOW_MACOS}
+                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_MACOS')}
+                        recommendedValue={true}
+                      />
+                      <UserSettingOverride
+                        title={i18n.t('user_allow_linux')}
+                        defaultValue={!u.group_settings?.ALLOW_LINUX}
+                        userValue={u.settings_override?.ALLOW_LINUX}
+                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_LINUX')}
+                        recommendedValue={true}
                       />
                     </td>
                     <td>

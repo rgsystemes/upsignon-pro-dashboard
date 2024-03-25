@@ -12,6 +12,11 @@ class OtherSettings extends React.Component {
       DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP: false,
       DISABLE_OFFLINE_MODE_DEFAULT_MOBILE: false,
       ALLOWED_TO_EXPORT: false,
+      DISALLOW_WINDOWS: false,
+      DISALLOW_IOS: false,
+      DISALLOW_ANDROID: false,
+      DISALLOW_MACOS: false,
+      DISALLOW_LINUX: false,
     },
   };
   newInputRef = null;
@@ -87,6 +92,36 @@ class OtherSettings extends React.Component {
               title={i18n.t('sasettings_export_allowed_default')}
               settingNameInDB="ALLOWED_TO_EXPORT"
               value={this.state.settings?.ALLOWED_TO_EXPORT}
+              toggleValue={this.updateGroupSetting}
+            />
+            <SettingTableRow
+              title={i18n.t('sasettings_allow_windows')}
+              settingNameInDB="ALLOW_WINDOWS"
+              value={this.state.settings?.ALLOW_WINDOWS}
+              toggleValue={this.updateGroupSetting}
+            />
+            <SettingTableRow
+              title={i18n.t('sasettings_allow_ios')}
+              settingNameInDB="ALLOW_IOS"
+              value={this.state.settings?.ALLOW_IOS}
+              toggleValue={this.updateGroupSetting}
+            />
+            <SettingTableRow
+              title={i18n.t('sasettings_allow_android')}
+              settingNameInDB="ALLOW_ANDROID"
+              value={this.state.settings?.ALLOW_ANDROID}
+              toggleValue={this.updateGroupSetting}
+            />
+            <SettingTableRow
+              title={i18n.t('sasettings_allow_macos')}
+              settingNameInDB="ALLOW_MACOS"
+              value={this.state.settings?.ALLOW_MACOS}
+              toggleValue={this.updateGroupSetting}
+            />
+            <SettingTableRow
+              title={i18n.t('sasettings_allow_linux')}
+              settingNameInDB="ALLOW_LINUX"
+              value={this.state.settings?.ALLOW_LINUX}
               toggleValue={this.updateGroupSetting}
             />
           </tbody>
