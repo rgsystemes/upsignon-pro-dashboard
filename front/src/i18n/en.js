@@ -246,6 +246,8 @@ const translations = {
   user_allow_android: 'Android',
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
+  sasettings_require_admin_check_for_second_device:
+    'Require a manual administrator validation to add a second device',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

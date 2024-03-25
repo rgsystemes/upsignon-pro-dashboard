@@ -55,8 +55,12 @@ export const settingsConfig = {
     userTitle: 'user_allow_android',
     reverseMeaningForUser: false,
   },
+  REQUIRE_ADMIN_CHECK_FOR_SECOND_DEVICE: {
+    groupsTitle: 'sasettings_require_admin_check_for_second_device',
+    recommendedValue: false,
+    userTitle: null,
+  },
 };
 
 // NB :
 //  - When null, the value will be considered as "recommendedValue"
-//  - When displayed, if "directDisplay" is false, true will become NO and false will become YES

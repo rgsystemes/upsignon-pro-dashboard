@@ -251,6 +251,8 @@ const translations = {
   user_allow_android: 'Android',
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
+  sasettings_require_admin_check_for_second_device:
+    "Exiger une validation manuelle d'un administrateur pour l'ajout d'un deuxième appareil",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
