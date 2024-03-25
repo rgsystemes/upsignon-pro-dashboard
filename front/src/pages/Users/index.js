@@ -9,6 +9,7 @@ import './users.css';
 import { Toggler } from '../../helpers/Toggler';
 import { getDateBack1Month, getDateBack2Weeks } from '../../helpers/dateHelper';
 import { StatsCell } from '../../helpers/statsCell';
+import { settingsConfig } from '../../helpers/settingsConfig';
 
 const maxRenderedItems = 50;
 
@@ -179,7 +180,7 @@ class Users extends React.Component {
         // DEPRECATED -> move to users.settings_override
         const currentValue = this.state.users.find((u) => u.user_id === userId)[settingName];
         var nextValue;
-        if (currentValue === null) {
+        if (currentValue == null) {
           nextValue = false;
         } else if (currentValue === false) {
           nextValue = true;
@@ -206,16 +207,20 @@ class Users extends React.Component {
       } else {
         const userSettings = this.state.users.find((u) => u.user_id === userId)?.settings_override;
         var nextVal;
-        if (userSettings[settingName] === null) {
+        if (userSettings[settingName] == null) {
           nextVal = false;
         } else if (userSettings[settingName] === false) {
           nextVal = true;
         } else {
           nextVal = null;
         }
+        const newUserSettings = { ...userSettings, [settingName]: nextVal };
+        if (nextVal == null) {
+          delete newUserSettings[settingName];
+        }
         await groupUrlFetch(`/api/update-user-setting`, 'POST', {
           userId,
-          settings_override: JSON.stringify({ ...userSettings, [settingName]: nextVal }),
+          settings_override: JSON.stringify(newUserSettings),
         });
         this.setState((s) => ({
           ...s,
@@ -223,7 +228,7 @@ class Users extends React.Component {
             if (u.user_id === userId) {
               return {
                 ...u,
-                settings_override: { ...userSettings, [settingName]: nextVal },
+                settings_override: newUserSettings,
               };
             } else {
               return u;
@@ -376,72 +381,15 @@ class Users extends React.Component {
                       nb_accounts_green={u.nb_accounts_green}
                     />
                     <td>
-                      <UserSettingOverride
-                        title={i18n.t('user_allowed_offline_desktop')}
-                        defaultValue={!u.group_settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP}
-                        userValue={u.allowed_offline_desktop}
-                        toggleValue={() =>
-                          this.toggleUserSettingOverride(u.user_id, 'allowed_offline_desktop')
-                        }
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allowed_offline_mobile')}
-                        defaultValue={!u.group_settings?.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
-                        userValue={u.allowed_offline_mobile}
-                        toggleValue={() =>
-                          this.toggleUserSettingOverride(u.user_id, 'allowed_offline_mobile')
-                        }
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allowed_to_export')}
-                        defaultValue={u.group_settings?.ALLOWED_TO_EXPORT}
-                        userValue={u.allowed_to_export}
-                        toggleValue={() =>
-                          this.toggleUserSettingOverride(u.user_id, 'allowed_to_export')
-                        }
-                        recommendedValue={false}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allow_windows')}
-                        defaultValue={u.group_settings?.ALLOW_WINDOWS}
-                        userValue={u.settings_override?.ALLOW_WINDOWS}
-                        toggleValue={() =>
-                          this.toggleUserSettingOverride(u.user_id, 'ALLOW_WINDOWS')
-                        }
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allow_ios')}
-                        defaultValue={!u.group_settings?.ALLOW_IOS}
-                        userValue={u.settings_override?.ALLOW_IOS}
-                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_IOS')}
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allow_android')}
-                        defaultValue={!u.group_settings?.ALLOW_ANDROID}
-                        userValue={u.settings_override?.ALLOW_ANDROID}
-                        toggleValue={() =>
-                          this.toggleUserSettingOverride(u.user_id, 'ALLOW_ANDROID')
-                        }
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allow_macos')}
-                        defaultValue={!u.group_settings?.ALLOW_MACOS}
-                        userValue={u.settings_override?.ALLOW_MACOS}
-                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_MACOS')}
-                        recommendedValue={true}
-                      />
-                      <UserSettingOverride
-                        title={i18n.t('user_allow_linux')}
-                        defaultValue={!u.group_settings?.ALLOW_LINUX}
-                        userValue={u.settings_override?.ALLOW_LINUX}
-                        toggleValue={() => this.toggleUserSettingOverride(u.user_id, 'ALLOW_LINUX')}
-                        recommendedValue={true}
-                      />
+                      {Object.keys(settingsConfig)
+                        .filter((k) => settingsConfig[k].userTitle != null)
+                        .map((k) => (
+                          <UserSettingOverride
+                            settingNameInDb={k}
+                            userValue={u}
+                            toggleUserSettingOverride={this.toggleUserSettingOverride}
+                          />
+                        ))}
                     </td>
                     <td>
                       <div
@@ -483,11 +431,27 @@ class Users extends React.Component {
 }
 
 const UserSettingOverride = (props) => {
-  const { title, defaultValue, userValue, toggleValue, recommendedValue } = props;
+  const { settingNameInDb, userValue, toggleUserSettingOverride } = props;
+  const settingConf = settingsConfig[settingNameInDb];
+  const userSettingValue = settingConf.dbNameForUser
+    ? userValue[settingConf.dbNameForUser]
+    : userValue.settings_override?.[settingNameInDb];
+  var defaultValue =
+    userValue.group_settings?.[settingNameInDb] != null
+      ? userValue.group_settings?.[settingNameInDb]
+      : settingConf.recommendedValue;
+  var recommendedValue = settingConf.recommendedValue;
+  if (settingConf.reverseMeaningForUser) {
+    defaultValue = !defaultValue;
+    recommendedValue = !recommendedValue;
+  }
+  const toggleValue = () => {
+    toggleUserSettingOverride(userValue.user_id, settingConf.dbNameForUser || settingNameInDb);
+  };
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>{title}</div>
-      {userValue === null ? (
+      <div>{i18n.t(settingConf.userTitle)}</div>
+      {userSettingValue == null ? (
         <span onClick={toggleValue} className={`clickable defaultParam`}>
           {i18n.t(defaultValue ? 'default_yes' : 'default_no')}
         </span>
@@ -495,10 +459,10 @@ const UserSettingOverride = (props) => {
         <span
           onClick={toggleValue}
           className={`clickable ${
-            recommendedValue === userValue ? 'recommendedParam' : 'unrecommendedParam'
+            recommendedValue === userSettingValue ? 'recommendedParam' : 'unrecommendedParam'
           }`}
         >
-          {i18n.t(userValue ? 'yes' : 'no')}
+          {i18n.t(userSettingValue ? 'yes' : 'no')}
         </span>
       )}
     </div>

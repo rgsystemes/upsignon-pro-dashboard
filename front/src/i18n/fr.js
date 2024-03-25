@@ -63,7 +63,7 @@ const translations = {
     'ERREUR\n$email est déjà utilisé ou a déjà été utilisé par un autre utilisateur.',
   user_allowed_offline_desktop: 'Hors-ligne ordi:',
   user_allowed_offline_mobile: 'Hors-ligne mobile:',
-  user_allowed_to_export: 'Export CSV :',
+  user_allowed_csv_export: 'Export CSV :',
   devices_for_user: 'Appareils de $email',
   device_name: "Nom de l'appareil",
   device_app_version: "Version de l'app",
@@ -234,23 +234,23 @@ const translations = {
   sasettings_group_open: 'Voir',
   sasettings_nb_users: "Nombre d'utilisateurs",
   sasettings_nb_licences_sold: 'Licences vendues',
-  sasettings_reset_pwd_admin_check:
-    "Pour réinitialiser son mot de passe, un utilisateur doit obtenir une validation d'un administrateur de sa banque",
-  sasettings_offline_default_desktop:
-    'Par défaut, activer le mode hors-ligne sur les ordinateurs de bureau',
-  sasettings_offline_default_mobile:
-    'Par défaut, activer le mode hors-ligne sur téléphones et tablettes',
-  sasettings_export_allowed_default: "Par défaut, interdire l'export CSV",
+  sasettings_disable_reset_pwd_manual_admin_check:
+    "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
+  sasettings_disable_offline_desktop:
+    'Par défaut, désactiver le mode hors-ligne sur les ordinateurs de bureau',
+  sasettings_disable_offline_mobile:
+    'Par défaut, désactiver le mode hors-ligne sur téléphones et tablettes',
+  sasettings_allow_csv_export: "Par défaut, autoriser l'export CSV",
   sasettings_allow_windows: 'Par défaut, autoriser Windows',
   sasettings_allow_ios: 'Par défaut, autoriser iOS',
   sasettings_allow_android: 'Par défaut, autoriser Android',
   sasettings_allow_macos: 'Par défaut, autoriser macOS',
   sasettings_allow_linux: 'Par défaut, autoriser Linux',
-  user_allow_windows: 'Autoriser Windows',
-  user_allow_ios: 'Autoriser iOS',
-  user_allow_android: 'Autoriser Android',
-  user_allow_macos: 'Autoriser macOS',
-  user_allow_linux: 'Autoriser Linux',
+  user_allow_windows: 'Windows',
+  user_allow_ios: 'iOS',
+  user_allow_android: 'Android',
+  user_allow_macos: 'macOS',
+  user_allow_linux: 'Linux',
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:

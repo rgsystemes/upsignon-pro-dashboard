@@ -63,7 +63,7 @@ const translations = {
     'ERROR\n$email is already used or has already been used by another user.',
   user_allowed_offline_desktop: 'Offline desktop:',
   user_allowed_offline_mobile: 'Offline mobile:',
-  user_allowed_to_export: 'CSV export:',
+  user_allowed_csv_export: 'CSV export:',
   devices_for_user: 'Devices of $email',
   device_name: 'Device name',
   device_app_version: 'App version',
@@ -230,22 +230,22 @@ const translations = {
   sasettings_group_open: 'See',
   sasettings_nb_users: 'Number of users',
   sasettings_nb_licences_sold: 'Licences vendues',
-  sasettings_reset_pwd_admin_check:
-    'To reset his password, a user must obtain a validation from an administrator of his group',
-  sasettings_offline_default_desktop: 'By default, activate the offline mode on desktop computers',
-  sasettings_offline_default_mobile:
-    'By default, activate the offline mode on smartphones and tablets',
-  sasettings_export_allowed_default: 'By default, disallow CSV exports',
+  sasettings_disable_reset_pwd_manual_admin_check:
+    'Deactivate manual admin check for password reset requests',
+  sasettings_disable_offline_desktop: 'By default, disable the offline mode on desktop computers',
+  sasettings_disable_offline_mobile:
+    'By default, disable the offline mode on smartphones and tablets',
+  sasettings_allow_csv_export: 'By default, allow CSV exports',
   sasettings_allow_windows: 'By default, allow Windows',
   sasettings_allow_ios: 'By default, allow iOS',
   sasettings_allow_android: 'By default, allow Android',
   sasettings_allow_macos: 'By default, allow macOS',
   sasettings_allow_linux: 'By default, allow Linux',
-  user_allow_windows: 'Allow Windows',
-  user_allow_ios: 'Allow iOS',
-  user_allow_android: 'Allow Android',
-  user_allow_macos: 'Allow macOS',
-  user_allow_linux: 'Allow Linux',
+  user_allow_windows: 'Windows',
+  user_allow_ios: 'iOS',
+  user_allow_android: 'Android',
+  user_allow_macos: 'macOS',
+  user_allow_linux: 'Linux',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

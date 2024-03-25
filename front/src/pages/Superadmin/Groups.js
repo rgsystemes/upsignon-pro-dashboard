@@ -1,8 +1,9 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
+import { baseFrontUrl } from '../../helpers/env';
+import { settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { baseFrontUrl } from '../../helpers/env';
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.addWeeks = function (w) {
@@ -240,60 +241,13 @@ class Groups extends React.Component {
                       <td>N/A</td>
                     )}
                     <td>
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_reset_pwd_admin_check')}
-                        settingNameInDB="DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_offline_default_desktop')}
-                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_offline_default_mobile')}
-                        settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_MOBILE"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_export_allowed_default')}
-                        settingNameInDB="ALLOWED_TO_EXPORT"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_allow_windows')}
-                        settingNameInDB="ALLOW_WINDOWS"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_allow_ios')}
-                        settingNameInDB="ALLOW_IOS"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_allow_android')}
-                        settingNameInDB="ALLOW_Android"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_allow_macos')}
-                        settingNameInDB="ALLOW_MACOS"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
-                      <InlineSetting
-                        group={group}
-                        title={i18n.t('sasettings_allow_linux')}
-                        settingNameInDB="ALLOW_LINUX"
-                        toggleGroupSetting={this.toggleGroupSetting}
-                      />
+                      {Object.keys(settingsConfig).map((k) => (
+                        <InlineSetting
+                          group={group}
+                          settingNameInDB={k}
+                          toggleGroupSetting={this.toggleGroupSetting}
+                        />
+                      ))}
                     </td>
                     <td>
                       <div
@@ -326,22 +280,31 @@ class Groups extends React.Component {
 }
 
 const InlineSetting = (props) => {
-  const { group, title, settingNameInDB, toggleGroupSetting } = props;
+  const { group, settingNameInDB, toggleGroupSetting } = props;
+  const settingConf = settingsConfig[settingNameInDB];
+  const resValue =
+    group.settings?.[settingNameInDB] == null
+      ? settingConf.recommendedValue
+      : group.settings?.[settingNameInDB];
+  const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
     <div style={{ marginBottom: 10 }}>
-      <div style={{ marginBottom: 5, fontSize: '0.5em' }}>{title}</div>
-      {group.settings?.[settingNameInDB] === true && (
-        <span className="unrecommendedParam">{i18n.t('no')}</span>
-      )}
-      {!group.settings?.[settingNameInDB] && (
-        <span className="recommendedParam">{i18n.t('yes')}</span>
+      <div style={{ marginBottom: 5, fontSize: '0.5em' }}>{i18n.t(settingConf.groupsTitle)}</div>
+      {isRecommendedValue ? (
+        <span className="recommendedParam">
+          {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
+        </span>
+      ) : (
+        <span className="unrecommendedParam">
+          {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
+        </span>
       )}
       <span
         className="action"
         onClick={() => {
           toggleGroupSetting(group.id, {
             ...group.settings,
-            [settingNameInDB]: !group.settings?.[settingNameInDB],
+            [settingNameInDB]: !resValue,
           });
         }}
       >

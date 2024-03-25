@@ -2,22 +2,13 @@ import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { settingsConfig } from '../../helpers/settingsConfig';
 
 // Props : setIsLoading
 class OtherSettings extends React.Component {
   state = {
     name: '',
-    settings: {
-      DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN: false,
-      DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP: false,
-      DISABLE_OFFLINE_MODE_DEFAULT_MOBILE: false,
-      ALLOWED_TO_EXPORT: false,
-      DISALLOW_WINDOWS: false,
-      DISALLOW_IOS: false,
-      DISALLOW_ANDROID: false,
-      DISALLOW_MACOS: false,
-      DISALLOW_LINUX: false,
-    },
+    settings: {},
   };
   newInputRef = null;
 
@@ -70,60 +61,13 @@ class OtherSettings extends React.Component {
                 }}
               />
             </tr>
-            <SettingTableRow
-              title={i18n.t('sasettings_reset_pwd_admin_check')}
-              settingNameInDB="DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN"
-              value={this.state.settings?.DISABLE_MANUAL_VALIDATION_FOR_PASSWORD_FORGOTTEN}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_offline_default_desktop')}
-              settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP"
-              value={this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_DESKTOP}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_offline_default_mobile')}
-              settingNameInDB="DISABLE_OFFLINE_MODE_DEFAULT_MOBILE"
-              value={this.state.settings?.DISABLE_OFFLINE_MODE_DEFAULT_MOBILE}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_export_allowed_default')}
-              settingNameInDB="ALLOWED_TO_EXPORT"
-              value={this.state.settings?.ALLOWED_TO_EXPORT}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_allow_windows')}
-              settingNameInDB="ALLOW_WINDOWS"
-              value={this.state.settings?.ALLOW_WINDOWS}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_allow_ios')}
-              settingNameInDB="ALLOW_IOS"
-              value={this.state.settings?.ALLOW_IOS}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_allow_android')}
-              settingNameInDB="ALLOW_ANDROID"
-              value={this.state.settings?.ALLOW_ANDROID}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_allow_macos')}
-              settingNameInDB="ALLOW_MACOS"
-              value={this.state.settings?.ALLOW_MACOS}
-              toggleValue={this.updateGroupSetting}
-            />
-            <SettingTableRow
-              title={i18n.t('sasettings_allow_linux')}
-              settingNameInDB="ALLOW_LINUX"
-              value={this.state.settings?.ALLOW_LINUX}
-              toggleValue={this.updateGroupSetting}
-            />
+            {Object.keys(settingsConfig).map((k) => (
+              <SettingTableRow
+                settingNameInDB={k}
+                stateSettings={this.state.settings}
+                toggleValue={this.updateGroupSetting}
+              />
+            ))}
           </tbody>
         </table>
       </div>
@@ -132,17 +76,30 @@ class OtherSettings extends React.Component {
 }
 
 const SettingTableRow = (props) => {
-  const { title, settingNameInDB, value, toggleValue } = props;
+  const { settingNameInDB, toggleValue, stateSettings } = props;
+  const settingConf = settingsConfig[settingNameInDB];
+  const resValue =
+    stateSettings?.[settingNameInDB] == null
+      ? settingConf.recommendedValue
+      : stateSettings[settingNameInDB];
+  const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
     <tr>
-      <td>{title}</td>
+      <td>{i18n.t(settingConf.groupsTitle)}</td>
       <td>
-        {value === true && <span className="unrecommendedParam">{i18n.t('no')}</span>}
-        {!value && <span className="recommendedParam">{i18n.t('yes')}</span>}
+        {isRecommendedValue ? (
+          <span className="recommendedParam">
+            {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
+          </span>
+        ) : (
+          <span className="unrecommendedParam">
+            {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
+          </span>
+        )}
         <span
           className="action"
           onClick={() => {
-            toggleValue({ [settingNameInDB]: !value });
+            toggleValue({ [settingNameInDB]: !resValue });
           }}
         >
           {i18n.t('settings_change')}
