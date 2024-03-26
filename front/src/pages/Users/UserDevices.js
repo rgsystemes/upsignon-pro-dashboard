@@ -47,8 +47,11 @@ class UserDevices extends React.Component {
       }
     }
   };
-  authorizeDeviceWithWarning = async (deviceId) => {
-    const confirmation = window.confirm(i18n.t('device_authorize_warning'));
+  authorizeDeviceWithWarning = async (deviceId, isPendingAdminCheck) => {
+    let confirmation = true;
+    if (!isPendingAdminCheck) {
+      confirmation = window.confirm(i18n.t('device_authorize_warning'));
+    }
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
@@ -184,6 +187,8 @@ class UserDevices extends React.Component {
             {this.props.devices.map((d) => {
               const isAuthorized = d.authorization_status === 'AUTHORIZED';
               const isRevokedByUser = d.authorization_status === 'REVOKED_BY_USER';
+              const isPendingAdminCheck =
+                d.authorization_status === 'USER_VERIFIED_PENDING_ADMIN_CHECK';
               return (
                 <tr key={d.id}>
                   <td>{d.device_name}</td>
@@ -234,7 +239,10 @@ class UserDevices extends React.Component {
                       </div>
                     )}
                     {!isAuthorized && !isRevokedByUser && (
-                      <div className="action" onClick={() => this.authorizeDeviceWithWarning(d.id)}>
+                      <div
+                        className="action"
+                        onClick={() => this.authorizeDeviceWithWarning(d.id, isPendingAdminCheck)}
+                      >
                         {i18n.t('device_authorize')}
                       </div>
                     )}
