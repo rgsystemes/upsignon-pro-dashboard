@@ -123,7 +123,7 @@ const translations = {
   settings_group_admins_invite: 'Add and (re)send an invitation if needed',
   settings_group_admin_delete_warning:
     'Are you sure you want to remove the access of this administrator to this bank of safes?',
-  settings_group_settings: 'Other settings',
+  settings_group_settings: 'Options',
   settings_group_settings_toggle_all_settings: 'Show/hide all settings',
   settings_group_settings_toggle_group_settings: 'SHow/hide',
   shared_devices_explanation:
@@ -268,6 +268,7 @@ const translations = {
   sasettings_email_config_label_pass: 'Password',
   sasettings_email_config_label_sending_address: 'Sending email address',
   sasettings_email_config_label_allow_invalid_certificate: 'Allow invalid certificate (dangerous)',
+  sasettings_email_config_apply_config: 'Apply configuration',
   sasettings_email_config_testing: 'Testing',
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',

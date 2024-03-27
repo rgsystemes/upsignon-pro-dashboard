@@ -6,7 +6,7 @@ export const update_group = async (req: any, res: any): Promise<void> => {
     if (req.body.name && typeof req.body.name === 'string') {
       await db.query(`UPDATE groups SET name=$1 WHERE id=$2`, [req.body.name, req.body.id]);
     }
-    if (req.body.settings && typeof req.body.settings === 'string') {
+    if (req.body.settings) {
       await db.query(`UPDATE groups SET settings=$1 WHERE id=$2`, [req.body.settings, req.body.id]);
     }
     if (typeof req.body.nb_licences_sold === 'number') {

@@ -222,7 +222,7 @@ class Users extends React.Component {
         }
         await groupUrlFetch(`/api/update-user-setting`, 'POST', {
           userId,
-          settings_override: JSON.stringify(newUserSettings),
+          settings_override: newUserSettings,
         });
         this.setState((s) => ({
           ...s,

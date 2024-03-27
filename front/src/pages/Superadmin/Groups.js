@@ -72,7 +72,7 @@ class Groups extends React.Component {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
         id: groupId,
-        settings: JSON.stringify(newSettings),
+        settings: newSettings,
       });
       await this.props.fetchGroups();
     } catch (e) {

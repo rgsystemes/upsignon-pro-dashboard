@@ -124,7 +124,7 @@ const translations = {
   settings_group_admins_invite: 'Ajouter et (ré)envoyer une invitation si nécessaire',
   settings_group_admin_delete_warning:
     "Êtes-vous sûr de vouloir supprimer l'accès de cet administrateur à cette banque de coffres-forts ?",
-  settings_group_settings: 'Autres paramètres',
+  settings_group_settings: 'Options',
   settings_group_settings_toggle_all_settings: 'Montrer/cacher tous les paramètres',
   settings_group_settings_toggle_group_settings: 'Montrer/cacher',
   shared_devices_explanation:
@@ -274,6 +274,7 @@ const translations = {
   sasettings_email_config_label_sending_address: "Adresse email d'envoi",
   sasettings_email_config_label_allow_invalid_certificate:
     'Autoriser un certificat non vérifié (dangereux)',
+  sasettings_email_config_apply_config: 'Appliquer la configuration',
   sasettings_email_config_testing: 'Tester',
   sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
   sasettings_email_config_testing_alert: 'Un email a été envoyé',

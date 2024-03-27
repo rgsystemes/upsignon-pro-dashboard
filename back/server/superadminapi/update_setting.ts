@@ -22,7 +22,7 @@ export const update_setting = async (req: any, res: any): Promise<void> => {
 
     res.status(200).end();
   } catch (e) {
-    logError("update_setting", e);
+    logError('update_setting', e);
     res.status(400).end();
   }
 };

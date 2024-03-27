@@ -176,7 +176,11 @@ export class EmailConfig extends React.Component {
             </label>
 
             <br />
-            <input style={{ marginTop: 15 }} type="submit" value="Appliquer la configuration" />
+            <input
+              style={{ marginTop: 15 }}
+              type="submit"
+              value={i18n.t('sasettings_email_config_apply_config')}
+            />
           </form>
         )}
         <div style={{ fontWeight: 'bold', marginTop: 20 }}>

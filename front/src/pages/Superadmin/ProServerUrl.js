@@ -51,7 +51,7 @@ export class ProServerUrl extends React.Component {
       };
       await groupUrlFetch('/api/update-setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
-        value: JSON.stringify(newStateUrl),
+        value: newStateUrl,
       });
       this.serverStatusUrl = newUrl;
       this.setState({ isEditing: false, proServerUrlConfig: newStateUrl });
