@@ -13,14 +13,14 @@ class Settings extends React.Component {
       <div className="page">
         <h1>{i18n.t('menu_settings')}</h1>
         <ProSetupLink />
-        <AllowedEmails setIsLoading={this.props.setIsLoading} />
+        <OtherSettings setIsLoading={this.props.setIsLoading} />
         <GroupAdmins setIsLoading={this.props.setIsLoading} />
         <Urls
           setIsLoading={this.props.setIsLoading}
           isSuperAdmin={this.props.isSuperAdmin}
           otherGroups={this.props.otherGroups}
         />
-        <OtherSettings setIsLoading={this.props.setIsLoading} />
+        <AllowedEmails setIsLoading={this.props.setIsLoading} />
       </div>
     );
   }
