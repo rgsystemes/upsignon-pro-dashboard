@@ -23,6 +23,8 @@ class Users extends React.Component {
     limit: maxRenderedItems,
     pageIndex: 1,
     sortingType: 0,
+    showAllSettings: false,
+    showUserSettings: {},
   };
   getCurrentQueryParameters = () => {
     const queryParamsArray = window.location.search
@@ -243,6 +245,20 @@ class Users extends React.Component {
     }
   };
 
+  toggleAllSettings = () => {
+    this.setState((s) => {
+      if (s.showAllSettings) {
+        return { ...s, showAllSettings: false, showUserSettings: {} };
+      }
+      return { ...s, showAllSettings: true };
+    });
+  };
+  toggleShowUserSettings = (userId) => {
+    this.setState((s) => {
+      return { ...s, showUserSettings: { [userId]: !s.showUserSettings[userId] } };
+    });
+  };
+
   render() {
     const searchInputStyle = { width: 200 };
     if (this.state.users.length === 0 && !!this.searchInput?.value) {
@@ -302,7 +318,12 @@ class Users extends React.Component {
               <th>{i18n.t('user_data')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
-              <th>{i18n.t('user_settings_override')}</th>
+              <th>
+                <div>{i18n.t('user_settings_override')}</div>
+                <div className="action" style={{ color: 'white' }} onClick={this.toggleAllSettings}>
+                  {i18n.t('settings_group_settings_toggle_all_settings')}
+                </div>
+              </th>
               <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
@@ -330,6 +351,8 @@ class Users extends React.Component {
                   padding: '0 3px',
                 };
               }
+              const showSettings =
+                this.state.showAllSettings || this.state.showUserSettings[u.user_id];
               return (
                 <React.Fragment key={u.user_id}>
                   <tr>
@@ -381,15 +404,24 @@ class Users extends React.Component {
                       nb_accounts_green={u.nb_accounts_green}
                     />
                     <td>
-                      {Object.keys(settingsConfig)
-                        .filter((k) => settingsConfig[k].userTitle != null)
-                        .map((k) => (
-                          <UserSettingOverride
-                            settingNameInDb={k}
-                            userValue={u}
-                            toggleUserSettingOverride={this.toggleUserSettingOverride}
-                          />
-                        ))}
+                      <div
+                        className="action"
+                        onClick={() => this.toggleShowUserSettings(u.user_id)}
+                      >
+                        {i18n.t('settings_group_settings_toggle_group_settings')}
+                      </div>
+                      <div>
+                        {Object.keys(settingsConfig)
+                          .filter((k) => settingsConfig[k].userTitle != null)
+                          .map((k) => (
+                            <UserSettingOverride
+                              settingNameInDb={k}
+                              userValue={u}
+                              toggleUserSettingOverride={this.toggleUserSettingOverride}
+                              showAll={showSettings}
+                            />
+                          ))}
+                      </div>
                     </td>
                     <td>
                       <div
@@ -431,11 +463,14 @@ class Users extends React.Component {
 }
 
 const UserSettingOverride = (props) => {
-  const { settingNameInDb, userValue, toggleUserSettingOverride } = props;
+  const { settingNameInDb, userValue, toggleUserSettingOverride, showAll } = props;
   const settingConf = settingsConfig[settingNameInDb];
   const userSettingValue = settingConf.dbNameForUser
     ? userValue[settingConf.dbNameForUser]
     : userValue.settings_override?.[settingNameInDb];
+  if (userSettingValue == null && !showAll) {
+    return null;
+  }
   var defaultValue =
     userValue.group_settings?.[settingNameInDb] != null
       ? userValue.group_settings?.[settingNameInDb]

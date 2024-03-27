@@ -124,6 +124,8 @@ const translations = {
   settings_group_admin_delete_warning:
     'Are you sure you want to remove the access of this administrator to this bank of safes?',
   settings_group_settings: 'Other settings',
+  settings_group_settings_toggle_all_settings: 'Show/hide all settings',
+  settings_group_settings_toggle_group_settings: 'SHow/hide',
   shared_devices_explanation:
     'This is the list of devices where at least two users have authorized their PRO space.',
   shared_devices_uid: 'Device unique id',
@@ -247,7 +249,7 @@ const translations = {
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
   sasettings_require_admin_check_for_second_device:
-    'Require a manual administrator validation to add a second device',
+    'Require a manual administrator validation to add more than one device',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

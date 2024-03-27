@@ -15,6 +15,8 @@ Date.prototype.addWeeks = function (w) {
 class Groups extends React.Component {
   state = {
     groupToDeleteId: null,
+    showAllSettings: false,
+    showGroupSettings: {},
   };
   newInputRef = null;
 
@@ -90,6 +92,19 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
+  toggleAllSettings = () => {
+    this.setState((s) => {
+      if (s.showAllSettings) {
+        return { ...s, showAllSettings: false, showGroupSettings: {} };
+      }
+      return { ...s, showAllSettings: true };
+    });
+  };
+  toggleShowGroupSettings = (groupId) => {
+    this.setState((s) => {
+      return { ...s, showGroupSettings: { [groupId]: !s.showGroupSettings[groupId] } };
+    });
+  };
   render() {
     const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
@@ -163,12 +178,23 @@ class Groups extends React.Component {
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
-                <th>{i18n.t('settings_group_settings')}</th>
+                <th>
+                  <div>{i18n.t('settings_group_settings')}</div>
+                  <div
+                    className="action"
+                    style={{ color: 'white' }}
+                    onClick={this.toggleAllSettings}
+                  >
+                    {i18n.t('settings_group_settings_toggle_all_settings')}
+                  </div>
+                </th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
             <tbody>
               {this.props.groups.map((group) => {
+                const showSettings =
+                  this.state.showAllSettings || this.state.showGroupSettings[group.id];
                 return (
                   <tr key={group.id}>
                     <td>
@@ -240,14 +266,21 @@ class Groups extends React.Component {
                     ) : (
                       <td>N/A</td>
                     )}
-                    <td>
-                      {Object.keys(settingsConfig).map((k) => (
-                        <InlineSetting
-                          group={group}
-                          settingNameInDB={k}
-                          toggleGroupSetting={this.toggleGroupSetting}
-                        />
-                      ))}
+                    <td style={showSettings ? { width: 400 } : {}}>
+                      <div
+                        className="action"
+                        onClick={() => this.toggleShowGroupSettings(group.id)}
+                      >
+                        {i18n.t('settings_group_settings_toggle_group_settings')}
+                      </div>
+                      {showSettings &&
+                        Object.keys(settingsConfig).map((k) => (
+                          <InlineSetting
+                            group={group}
+                            settingNameInDB={k}
+                            toggleGroupSetting={this.toggleGroupSetting}
+                          />
+                        ))}
                     </td>
                     <td>
                       <div
@@ -288,28 +321,36 @@ const InlineSetting = (props) => {
       : group.settings?.[settingNameInDB];
   const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
-    <div style={{ marginBottom: 10 }}>
-      <div style={{ marginBottom: 5, fontSize: '0.5em' }}>{i18n.t(settingConf.groupsTitle)}</div>
-      {isRecommendedValue ? (
-        <span className="recommendedParam">
-          {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
-        </span>
-      ) : (
-        <span className="unrecommendedParam">
-          {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
-        </span>
-      )}
-      <span
-        className="action"
-        onClick={() => {
-          toggleGroupSetting(group.id, {
-            ...group.settings,
-            [settingNameInDB]: !resValue,
-          });
-        }}
-      >
-        {i18n.t('settings_change')}
-      </span>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        borderBottom: '1px solid grey',
+      }}
+    >
+      <div style={{ flex: 1 }}>{i18n.t(settingConf.groupsTitle)}</div>
+      <div>
+        {isRecommendedValue ? (
+          <div className="recommendedParam">
+            {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
+          </div>
+        ) : (
+          <div className="unrecommendedParam">
+            {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
+          </div>
+        )}
+        <div
+          className="action"
+          onClick={() => {
+            toggleGroupSetting(group.id, {
+              ...group.settings,
+              [settingNameInDB]: !resValue,
+            });
+          }}
+        >
+          {i18n.t('settings_change')}
+        </div>
+      </div>
     </div>
   );
 };

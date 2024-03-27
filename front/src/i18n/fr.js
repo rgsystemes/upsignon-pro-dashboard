@@ -125,6 +125,8 @@ const translations = {
   settings_group_admin_delete_warning:
     "Êtes-vous sûr de vouloir supprimer l'accès de cet administrateur à cette banque de coffres-forts ?",
   settings_group_settings: 'Autres paramètres',
+  settings_group_settings_toggle_all_settings: 'Montrer/cacher tous les paramètres',
+  settings_group_settings_toggle_group_settings: 'Montrer/cacher',
   shared_devices_explanation:
     'Voici la liste des appareils sur lesquels au moins deux utilisateurs ont autorisé leur espace PRO.',
   shared_devices_uid: "Identifiant unique de l'appareil",
@@ -252,7 +254,7 @@ const translations = {
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
   sasettings_require_admin_check_for_second_device:
-    "Exiger une validation manuelle d'un administrateur pour l'ajout d'un deuxième appareil",
+    "Exiger une validation manuelle d'un administrateur pour l'ajout de plus d'un appareil",
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
