@@ -223,6 +223,8 @@ const translations = {
   link_to_communicate: 'Lien à communiquer',
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
+  pro_server_certificate_chain_complete: 'Chaîne de certification complète',
+  pro_server_certificate_chain_incomplete: 'Chaîne de certification incomplète',
   sasettings_superadmins: 'Administrateurs',
   sasettings_superadmins_invite: '(Ré)Envoyer une invitation (valide 24h)',
   sasettings_groups: 'Banques de coffres-forts',

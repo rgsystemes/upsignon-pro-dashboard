@@ -219,6 +219,8 @@ const translations = {
   link_to_communicate: 'Link to communicate',
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
+  pro_server_certificate_chain_complete: 'Certificate chain complete',
+  pro_server_certificate_chain_incomplete: 'Certificate chain issue',
   sasettings_superadmins: 'Administrators',
   sasettings_superadmins_invite: '(Re)Send an invite (valid for 24h)',
   sasettings_groups: 'Banks of safes',

@@ -9,7 +9,7 @@ export const get_server_url = async (req: any, res: any): Promise<void> => {
     if (settingsRes.rowCount === 0) return res.status(200).send(null);
     res.status(200).send(settingsRes.rows[0].value);
   } catch (e) {
-    logError("get_server_url", e);
+    logError('get_server_url', e);
     res.status(400).end();
   }
 };

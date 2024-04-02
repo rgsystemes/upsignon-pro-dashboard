@@ -65,8 +65,6 @@ export class ProServerUrl extends React.Component {
     return (
       <div>
         <h2>{i18n.t('pro_server')}</h2>
-        {/* add key to rebuild the component when url changes so that status is refreshed */}
-        <ServerStatus key={this.serverStatusUrl} proServerUrl={this.serverStatusUrl} />
         <div style={{ display: 'flex', marginBottom: 10 }}>
           <div style={{ marginRight: 20 }}>{i18n.t('pro_server_url')}</div>
           {this.state.isEditing ? (
@@ -116,6 +114,8 @@ export class ProServerUrl extends React.Component {
             </div>
           )}
         </div>
+        {/* add key to rebuild the component when url changes so that status is refreshed */}
+        <ServerStatus key={this.serverStatusUrl} proServerUrl={this.serverStatusUrl} />
       </div>
     );
   }
