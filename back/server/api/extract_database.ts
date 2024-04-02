@@ -46,7 +46,7 @@ export const extract_database = async (
     );
 
     let csvContent = '';
-    if (dbRes.rowCount > 0) {
+    if (dbRes.rowCount && dbRes.rowCount > 0) {
       csvContent += Object.keys(dbRes.rows[0]).join(';') + '\n';
       csvContent += dbRes.rows.map((r) => Object.values(r).join(';')).join('\n');
     }

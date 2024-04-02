@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, QueryResult } from 'pg';
 import env from './env';
 
 // @ts-ignore
@@ -10,15 +10,7 @@ const pool = new Pool({
   password: env.DB_PASS,
 });
 
-const query = (
-  text: string,
-  params?: Array<any>,
-): Promise<{
-  rows: any[];
-  fields: { name: string }[];
-  rowCount: number;
-  command: string;
-}> => pool.query(text, params);
+const query = (text: string, params?: Array<any>): Promise<QueryResult> => pool.query(text, params);
 
 const gracefulShutdown = (): Promise<void> => pool.end();
 

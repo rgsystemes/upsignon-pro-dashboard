@@ -17,7 +17,7 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
       'SELECT id, email FROM users WHERE email = lower($1) AND group_id=$2',
       [newEmail, req.proxyParamsGroupId],
     );
-    if (checkRes.rowCount > 0) {
+    if (checkRes.rowCount && checkRes.rowCount > 0) {
       return res.status(409).send({ status: 'EMAIL_ALREADY_EXISTS' });
     }
     // check that new email is not an older email of someone else
@@ -25,7 +25,7 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
       'SELECT user_id FROM changed_emails WHERE old_email = lower($1) AND user_id != $2 AND group_id=$3',
       [newEmail, userId, req.proxyParamsGroupId],
     );
-    if (checkRes2.rowCount > 0) {
+    if (checkRes2.rowCount && checkRes2.rowCount > 0) {
       return res.status(409).send({ status: 'EMAIL_ALREADY_EXISTED' });
     }
 
@@ -51,7 +51,7 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
 
     res.status(200).end();
   } catch (e) {
-    logError("update_user_email", e);
+    logError('update_user_email', e);
     res.status(400).end();
   }
 };

@@ -14,7 +14,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     const existingAdminRes = await db.query('SELECT id, password_hash FROM admins WHERE email=$1', [
       email,
     ]);
-    if (existingAdminRes.rowCount > 0) {
+    if (existingAdminRes.rowCount && existingAdminRes.rowCount > 0) {
       adminId = existingAdminRes.rows[0].id;
     }
 
@@ -44,7 +44,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError("insert_group_admin", e);
+    logError('insert_group_admin', e);
     res.status(400).end();
   }
 };
