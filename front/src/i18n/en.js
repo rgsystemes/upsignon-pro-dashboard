@@ -4,6 +4,7 @@ const translations = {
   no: 'NO',
   default_yes: '(YES)',
   default_no: '(NO)',
+  or: 'or',
   edit: 'Edit',
   see: 'See',
   hide: 'Hide',
@@ -286,6 +287,23 @@ const translations = {
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
+  group_setting_microsoft_entra_title: 'BETA - Microsoft Entra ID configuration (optionnal)',
+  group_setting_microsoft_entra_pitch:
+    "UpSignOn can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
+  group_setting_microsoft_entra_authorizations:
+    'If you choose to configure Microsoft Entra, UpSignOn will need the following authorizations requiring admin consent :',
+  group_setting_microsoft_entra_tenant_id_label: 'Tenant ID (alias Directory ID)',
+  group_setting_microsoft_entra_client_id_label:
+    'Application ID for the "UpSignOn" Application that you have created in your directory',
+  group_setting_microsoft_entra_client_secret_label: 'Client Secret for the "UpSignOn" Application',
+  group_setting_microsoft_entra_app_resource_id_label:
+    'Object ID for the "UpSignOn" Application (alias Service principal ID)',
+  group_setting_microsoft_entra_apply_config: 'Apply configuration',
+  group_setting_microsoft_entra_testing: 'Test',
+  group_setting_microsoft_entra_test_start: 'Start test',
+  group_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
+  group_setting_microsoft_entra_test_user_authorized: 'User authorized :',
+  group_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user :',
 };
 
 export default translations;

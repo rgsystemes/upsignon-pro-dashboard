@@ -53,6 +53,8 @@ import { extract_emails_not_migrated_users } from './extract_emails_not_migrated
 import { extract_emails_msi_install } from './extract_emails_msi_install';
 import { getRedirectionUrl } from './get_redirection_url';
 import { setRedirectionUrl } from './set_redirection_url';
+import { get_group_entra_config } from './get_group_entra_config';
+import { test_ms_entra } from './test_ms_entra';
 
 export const apiRouter = express.Router();
 
@@ -173,3 +175,8 @@ apiRouter.post('/group-settings-update', update_group);
 // SERVER REDIRECTION
 apiRouter.post('/redirection_url', getRedirectionUrl);
 apiRouter.post('/set_redirection_url', setRedirectionUrl);
+
+// Microsoft Entra
+apiRouter.get('/group-entra-config', get_group_entra_config);
+apiRouter.post('/group-entra-config-update', update_group);
+apiRouter.post('/test-ms-entra', test_ms_entra);

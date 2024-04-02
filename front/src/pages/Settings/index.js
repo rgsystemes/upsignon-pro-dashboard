@@ -6,6 +6,7 @@ import { OtherSettings } from './OtherSettings';
 import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
 import { ServerRedirection } from './ServerRedirection';
+import { MicrosoftEntraConfig } from './MicrosoftEntraConfig';
 
 // Props setIsLoading, isSuperAdmin, otherGroups
 class Settings extends React.Component {
