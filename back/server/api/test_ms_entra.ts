@@ -14,6 +14,9 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     const entraConfigRes = await db.query('SELECT ms_entra_config FROM groups WHERE id=$1', [
       req.proxyParamsGroupId,
     ]);
+    if (entraConfigRes.rowCount == null || entraConfigRes.rowCount == 0) {
+      return res.status(400).end();
+    }
     const entraConfig = entraConfigRes.rows[0].ms_entra_config;
     const graph = MicrosoftGraph.initInstance(req.proxyParamsGroupId, entraConfig);
     let isAuthorized = false;
