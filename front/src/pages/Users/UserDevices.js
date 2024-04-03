@@ -130,6 +130,11 @@ class UserDevices extends React.Component {
                       <td>{d.device_name}</td>
                       <td>
                         <div>{d.pwd_reset_status}</div>
+                        {d.granted_by && (
+                          <div>
+                            {i18n.t('password_reset_request_granted_by')} {d.granted_by || '?'}
+                          </div>
+                        )}
                         {d.pwd_reset_token_expiration_date && (
                           <div>
                             {isExpired

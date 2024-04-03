@@ -9,6 +9,7 @@ export const grant_pwd_reset_request = async (
   asSuperadmin: boolean,
 ): Promise<void> => {
   try {
+    const adminEmail = req.session?.adminEmail;
     const requestId = req.params.requestId;
     const expDuration = 10 * 60 * 1000; // 10 minutes
     const expDate = Date.now() + expDuration;
@@ -17,12 +18,12 @@ export const grant_pwd_reset_request = async (
     const expirationDate = date.toISOString();
     const requestToken = v4().substring(0, 8);
     await db.query(
-      `UPDATE password_reset_request SET status='ADMIN_AUTHORIZED', reset_token=$1, reset_token_expiration_date=$2 WHERE id=$3 ${
-        asSuperadmin ? '' : 'AND group_id=$4'
+      `UPDATE password_reset_request SET status='ADMIN_AUTHORIZED', reset_token=$1, reset_token_expiration_date=$2, granted_by=$3 WHERE id=$4 ${
+        asSuperadmin ? '' : 'AND group_id=$5'
       }`,
       asSuperadmin
-        ? [requestToken, expirationDate, requestId]
-        : [requestToken, expirationDate, requestId, req.proxyParamsGroupId],
+        ? [requestToken, expirationDate, adminEmail, requestId]
+        : [requestToken, expirationDate, adminEmail, requestId, req.proxyParamsGroupId],
     );
     const userReq = await db.query(
       `SELECT u.email, ud.device_name FROM users AS u INNER JOIN user_devices AS ud ON u.id=ud.user_id INNER JOIN password_reset_request AS prr ON prr.device_id=ud.id WHERE prr.id=$1 ${
@@ -48,7 +49,7 @@ export const grant_pwd_reset_request = async (
     });
     res.status(200).end();
   } catch (e) {
-    logError("grant_pwd_reset_request", e);
+    logError('grant_pwd_reset_request', e);
     res.status(400).end();
   }
 };

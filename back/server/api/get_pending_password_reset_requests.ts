@@ -19,6 +19,7 @@ export const get_pending_password_reset_requests = async (
       prr.id AS pwd_reset_id,
       prr.reset_token AS pwd_reset_token,
       prr.created_at AS pwd_reset_created_at,
+      prr.granted_by AS granted_by,
       (SELECT STRING_AGG(users.email,';') FROM user_devices AS udbis INNER JOIN users ON udbis.user_id=users.id WHERE udbis.device_unique_id=ud.device_unique_id AND udbis.id!=ud.id) AS shared_with
     FROM password_reset_request AS prr
     INNER JOIN user_devices AS ud ON prr.device_id=ud.id

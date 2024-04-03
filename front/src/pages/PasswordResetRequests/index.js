@@ -79,6 +79,11 @@ class PasswordResetRequests extends React.Component {
                   {this.props.isSuperAdmin && <td>{d.group_name}</td>}
                   <td className={requiresAttention ? 'requires_attention' : null}>
                     {d.status}
+                    {d.granted_by && (
+                      <div>
+                        {i18n.t('password_reset_request_granted_by')} {d.granted_by || '?'}
+                      </div>
+                    )}
                     {d.pwd_reset_token && <br />}
                     {d.pwd_reset_token ?? ''}
                   </td>
