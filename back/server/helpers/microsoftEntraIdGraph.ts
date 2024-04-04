@@ -1,6 +1,7 @@
 import { ClientSecretCredential } from '@azure/identity';
 import { Client, ClientOptions } from '@microsoft/microsoft-graph-client';
 import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials';
+import { db } from './db';
 
 // Necessary permissions are listed here
 // Création de l'application: App Registrations > New
@@ -14,28 +15,78 @@ import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-grap
 // GRAPH EXPLORER
 // https://developer.microsoft.com/en-us/graph/graph-explorer
 
+type EntraConfig = {
+  tenantId: string | null;
+  clientId: string | null;
+  clientSecret: string | null;
+  appResourceId: string | null;
+};
+export type EntraGroup = {
+  id: string;
+  displayName: string;
+};
 export class MicrosoftGraph {
-  static instances: { [groupId: number]: _MicrosoftGraph } = {};
+  static _instances: { [groupId: number]: _MicrosoftGraph } = {};
+  static _groupConfig: { [groupId: number]: EntraConfig | null } = {};
 
-  static initInstance(
-    groupId: number,
-    entraConfig: {
-      tenantId: string;
-      clientId: string;
-      clientSecret: string;
-      appResourceId: string;
-    },
-  ): _MicrosoftGraph {
-    if (!MicrosoftGraph.instances[groupId]) {
-      // see app overview
-      MicrosoftGraph.instances[groupId] = new _MicrosoftGraph(
-        entraConfig.tenantId,
-        entraConfig.clientId,
-        entraConfig.clientSecret,
-        entraConfig.appResourceId,
-      );
+  static async isUserAuthorizedForUpSignOn(groupId: number, userEmail: string): Promise<boolean> {
+    const graph = await MicrosoftGraph._getInstance(groupId);
+    if (graph) {
+      const isAuthorized = await graph.isUserAuthorizedForUpSignOn(userEmail);
+      return isAuthorized;
     }
-    return MicrosoftGraph.instances[groupId];
+    return false;
+  }
+  static async getGroupsForUser(groupId: number, userEmail: string): Promise<EntraGroup[]> {
+    const graph = await MicrosoftGraph._getInstance(groupId);
+    if (graph) {
+      const groups = await graph.getGroupsForUser(userEmail);
+      return groups;
+    }
+    return [];
+  }
+
+  static async _getInstance(groupId: number): Promise<_MicrosoftGraph | null> {
+    const entraConfigRes = await db.query('SELECT ms_entra_config FROM groups WHERE id=$1', [
+      groupId,
+    ]);
+    const entraConfig: EntraConfig | null = entraConfigRes.rows[0]?.ms_entra_config || null;
+    if (
+      !MicrosoftGraph._instances[groupId] ||
+      MicrosoftGraph._hasConfigChanged(groupId, entraConfig)
+    ) {
+      if (
+        entraConfig?.tenantId &&
+        entraConfig.clientId &&
+        entraConfig.clientSecret &&
+        entraConfig.appResourceId
+      ) {
+        MicrosoftGraph._instances[groupId] = new _MicrosoftGraph(
+          entraConfig.tenantId,
+          entraConfig.clientId,
+          entraConfig.clientSecret,
+          entraConfig.appResourceId,
+        );
+      } else {
+        delete MicrosoftGraph._instances[groupId];
+      }
+      MicrosoftGraph._groupConfig[groupId] = entraConfig;
+    }
+    return MicrosoftGraph._instances[groupId] || null;
+  }
+
+  static _hasConfigChanged(groupId: number, currentConfig: EntraConfig | null): boolean {
+    const cachedConfig = MicrosoftGraph._groupConfig[groupId];
+    if (currentConfig == null && cachedConfig == null) return false;
+    if (
+      currentConfig?.tenantId != cachedConfig?.tenantId ||
+      currentConfig?.clientId != cachedConfig?.clientId ||
+      currentConfig?.clientSecret != cachedConfig?.clientSecret ||
+      currentConfig?.appResourceId != cachedConfig?.appResourceId
+    ) {
+      return true;
+    }
+    return false;
   }
 }
 
@@ -109,7 +160,7 @@ class _MicrosoftGraph {
    * @param email
    * @returns
    */
-  async getGroupsForUser(email: string): Promise<{ id: string; displayName: string }[]> {
+  async getGroupsForUser(email: string): Promise<EntraGroup[]> {
     const userId = await this._getUserIdFromEmail(email);
     if (!userId) return [];
     // https://learn.microsoft.com/en-us/graph/api/associatedteaminfo-list?view=graph-rest-1.0&tabs=http
