@@ -55,6 +55,7 @@ import { getRedirectionUrl } from './get_redirection_url';
 import { setRedirectionUrl } from './set_redirection_url';
 import { get_group_entra_config } from './get_group_entra_config';
 import { test_ms_entra } from './test_ms_entra';
+import { reactivate_user } from './reactivate_user';
 
 export const apiRouter = express.Router();
 
@@ -77,6 +78,7 @@ apiRouter.get('/count-users', count_users);
 apiRouter.post('/delete-user/:userId', delete_user);
 apiRouter.post('/update-user-email', update_user_email);
 apiRouter.post('/update-user-setting', update_user_setting);
+apiRouter.post('/reactivate-user/:userId', reactivate_user);
 
 // Devices
 apiRouter.get('/user-devices/:userId', get_user_devices);

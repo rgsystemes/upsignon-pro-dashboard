@@ -34,10 +34,17 @@ const translations = {
   total_count: 'Total $count',
   user_sort_by_vuln: 'By vulnerability',
   user_sort_by_time: 'By last session',
+  user_filter_by_deactivated: 'Deactivated',
+  user_deactivated: 'Deactivated user',
+  reactivate: 'Reactivate',
   user_sorting:
     'Sorting by vulnerability: Users are sorted by descending number of duplicated passwords, then by descending number of weak passwords, then by descending number of medium passwords, then by alphabetical order.',
   user_sorting_by_time:
     'Sorting by last session: Users are sorted by date of last session, starting with the oldests.',
+  user_filtering_by_deactivated:
+    'Vaults will be automatically deactivated when their email address is no longer authorized (neither by allowed emails nor via Microsoft Entra if configured).\nIf you reauthorize an email address in allowed emails or in Microsoft Entra, the vault will be automatically reactivated on next check.',
+  user_filtering_by_deactivated_interval:
+    'NB : Checks happen automatically every day at 1am and 1pm.',
   user_search: 'Search a user',
   user_unit_name: 'users',
   user_id: 'Id',

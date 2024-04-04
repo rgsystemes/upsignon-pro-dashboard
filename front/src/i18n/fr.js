@@ -34,10 +34,17 @@ const translations = {
   total_count: 'Total $count',
   user_sort_by_vuln: 'Par vulnérabilité',
   user_sort_by_time: 'Par dernière session',
+  user_filter_by_deactivated: 'Désactivés',
+  user_deactivated: 'Utilisateur désactivé',
+  reactivate: 'Réactiver',
   user_sorting_by_vuln:
     'Tri par vulnérabilité : Les utilisateurs sont triés par nombre décroissant de mots de passe dupliqués, puis par nombre décroissant de mots de passe faibles, puis par nombre décroissant de mots de passe moyens, puis par ordre alphabétique.',
   user_sorting_by_time:
     'Tri par dernière session : Les utilisateurs sont triés par date de dernière activité en commençant par les plus anciennes.',
+  user_filtering_by_deactivated:
+    "Les coffres-forts seront désactivés automatiquement si leur adresse email n'est plus autorisée (ni par les adresses emails autorisées ni via Microsoft Entra si configuré).\nSi vous autorisez à nouveau une adresse email via les adresses emails autorisées ou via Microsoft Entra, le coffre-fort sera réactivé automatiquement à la prochaine vérification.",
+  user_filtering_by_deactivated_interval:
+    'NB : Les vérifications ont lieu automatiquement à 1h et 13h tous les jours.',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
   user_id: 'Id',

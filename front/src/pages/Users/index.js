@@ -71,6 +71,17 @@ class Users extends React.Component {
       }
     }
   };
+  reactivateUser = async (userId) => {
+    try {
+      this.props.setIsLoading(true);
+      await groupUrlFetch(`/api/reactivate-user/${userId}`, 'POST', null);
+      await this.loadUsers();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
 
   loadUserDevices = async (userId) => {
     try {
@@ -116,10 +127,10 @@ class Users extends React.Component {
   goToPageIndex = (p) => {
     window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
   };
-  toggleSorting = (sortByTime) => {
+  toggleSorting = (sortType) => {
     window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${
       this.state.pageIndex
-    }&sortingType=${sortByTime ? 1 : 0}`;
+    }&sortingType=${sortType === 'vuln' ? 0 : sortType === 'time' ? 1 : 2}`;
   };
 
   onSearch = async (ev) => {
@@ -271,11 +282,7 @@ class Users extends React.Component {
         <h1>{`${i18n.t('menu_users')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
-        <div style={{ marginBottom: 15 }}>
-          {this.state.sortingType === 0
-            ? i18n.t('user_sorting_by_vuln')
-            : i18n.t('user_sorting_by_time')}
-        </div>
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div>
             <div>{i18n.t('user_search')}</div>
@@ -297,12 +304,32 @@ class Users extends React.Component {
               {
                 key: 'time',
                 title: i18n.t('user_sort_by_time'),
-                isCurrent: this.state.sortingType !== 0,
+                isCurrent: this.state.sortingType === 1,
+              },
+              {
+                key: 'deactivated',
+                title: i18n.t('user_filter_by_deactivated'),
+                isCurrent: this.state.sortingType === 2,
               },
             ]}
-            onSelect={(choice) => this.toggleSorting(choice === 'time')}
+            onSelect={this.toggleSorting}
           />
         </div>
+        {this.state.sortingType !== 2 && (
+          <div style={{ marginBottom: 15 }}>
+            {this.state.sortingType === 0
+              ? i18n.t('user_sorting_by_vuln')
+              : i18n.t('user_sorting_by_time')}
+          </div>
+        )}
+        {this.state.sortingType === 2 && (
+          <div style={{ marginBottom: 20 }}>
+            <p>{i18n.t('user_filtering_by_deactivated')}</p>
+            <strong style={{ fontSize: 16 }}>
+              {i18n.t('user_filtering_by_deactivated_interval')}
+            </strong>
+          </div>
+        )}
         <PaginationBar
           pageIndex={this.state.pageIndex}
           limit={this.state.limit}
@@ -345,8 +372,8 @@ class Users extends React.Component {
                   backgroundColor: isLastSessionVeryOld
                     ? 'red'
                     : isLastSessionOld
-                    ? 'orange'
-                    : 'green',
+                      ? 'orange'
+                      : 'green',
                   color: 'white',
                   padding: '0 3px',
                 };
@@ -394,35 +421,57 @@ class Users extends React.Component {
                           i18n.t('user_nb_shared_items_value', { nb: u.nb_shared_items || 0 })}
                       </div>
                     </td>
-                    <StatsCell
-                      nb_accounts_strong={u.nb_accounts_strong}
-                      nb_accounts_medium={u.nb_accounts_medium}
-                      nb_accounts_weak={u.nb_accounts_weak}
-                      nb_accounts_with_duplicated_password={u.nb_accounts_with_duplicated_password}
-                      nb_accounts_red={u.nb_accounts_red}
-                      nb_accounts_orange={u.nb_accounts_orange}
-                      nb_accounts_green={u.nb_accounts_green}
-                    />
-                    <td>
-                      <div
-                        className="action"
-                        onClick={() => this.toggleShowUserSettings(u.user_id)}
+                    {!u.deactivated && (
+                      <StatsCell
+                        nb_accounts_strong={u.nb_accounts_strong}
+                        nb_accounts_medium={u.nb_accounts_medium}
+                        nb_accounts_weak={u.nb_accounts_weak}
+                        nb_accounts_with_duplicated_password={
+                          u.nb_accounts_with_duplicated_password
+                        }
+                        nb_accounts_red={u.nb_accounts_red}
+                        nb_accounts_orange={u.nb_accounts_orange}
+                        nb_accounts_green={u.nb_accounts_green}
+                      />
+                    )}
+                    {!u.deactivated && (
+                      <td>
+                        <div
+                          className="action"
+                          onClick={() => this.toggleShowUserSettings(u.user_id)}
+                        >
+                          {i18n.t('settings_group_settings_toggle_group_settings')}
+                        </div>
+                        <div>
+                          {Object.keys(settingsConfig)
+                            .filter((k) => settingsConfig[k].userTitle != null)
+                            .map((k) => (
+                              <UserSettingOverride
+                                settingNameInDb={k}
+                                userValue={u}
+                                toggleUserSettingOverride={this.toggleUserSettingOverride}
+                                showAll={showSettings}
+                              />
+                            ))}
+                        </div>
+                      </td>
+                    )}
+                    {u.deactivated && (
+                      <td
+                        colSpan={2}
+                        style={{ backgroundColor: 'rgb(168, 50, 50)', color: 'white' }}
                       >
-                        {i18n.t('settings_group_settings_toggle_group_settings')}
-                      </div>
-                      <div>
-                        {Object.keys(settingsConfig)
-                          .filter((k) => settingsConfig[k].userTitle != null)
-                          .map((k) => (
-                            <UserSettingOverride
-                              settingNameInDb={k}
-                              userValue={u}
-                              toggleUserSettingOverride={this.toggleUserSettingOverride}
-                              showAll={showSettings}
-                            />
-                          ))}
-                      </div>
-                    </td>
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          {i18n.t('user_deactivated').toUpperCase()}
+                        </div>
+                      </td>
+                    )}
                     <td>
                       <div
                         className="action"
@@ -430,6 +479,11 @@ class Users extends React.Component {
                       >
                         {i18n.t('delete')}
                       </div>
+                      {u.deactivated && (
+                        <div className="action" onClick={() => this.reactivateUser(u.user_id)}>
+                          {i18n.t('reactivate')}
+                        </div>
+                      )}
                     </td>
                   </tr>
                   {u.devices && (
