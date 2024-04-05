@@ -37,9 +37,7 @@ export const grant_pwd_reset_request = async (
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
 
-    const expirationTime = `${date.getHours()}:${date
-      .getMinutes()
-      .toLocaleString(undefined, { minimumIntegerDigits: 2 })}`;
+    const expirationTime = date.toLocaleTimeString().split(':').slice(0, 2).join(':');
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
       to: emailAddress,

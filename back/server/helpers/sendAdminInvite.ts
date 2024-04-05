@@ -15,8 +15,8 @@ export const sendAdminInvite = async (
     const encodedToken = encodeURIComponent(token);
     const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 
-    const expDate = tokenExpiresAt.toISOString().split('T')[0];
-    const expTime = tokenExpiresAt.toISOString().split('T')[1].split('.')[0];
+    const expDate = tokenExpiresAt.toLocaleDateString();
+    const expTime = tokenExpiresAt.toLocaleTimeString().split(':').slice(0, 2).join(':');
 
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
@@ -55,6 +55,6 @@ UpSignOn`,
 </body></html>`,
     });
   } catch (e) {
-    logError("sendAdminInvite", e);
+    logError('sendAdminInvite', e);
   }
 };
