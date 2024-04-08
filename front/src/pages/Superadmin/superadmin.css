@@ -1,6 +1,9 @@
 .link {
   color: rgb(44, 83, 132);
 }
+.bold {
+  font-weight: bold;
+}
 
 .recommendedParam {
   margin: 5px;

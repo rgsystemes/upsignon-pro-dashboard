@@ -16,6 +16,10 @@ const translations = {
   pagination_pages: 'pages',
   validate: 'Valider',
   cancel: 'Annuler',
+  newsletter_admins:
+    'Newsletter administrateurs (notes de versions en avance, information utiles pour le déploiement, autres informations importantes).',
+  newsletter_tech:
+    'Bulletins techniques (pour les infogéreurs - alertes de sécurité, demandes de maintenance manuelle).',
   menu_overview: "Vue d'ensemble",
   menu_password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   menu_users: 'Utilisateurs',

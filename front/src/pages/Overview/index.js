@@ -2,6 +2,7 @@ import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { SecurityChart } from './SecurityChart';
 import { UsageChart } from './UsageChart';
+import './highlighter.css';
 
 // Props = setIsLoading, isSuperadminPage
 class Overview extends React.Component {
@@ -13,10 +14,32 @@ class Overview extends React.Component {
         <p>
           {i18n.t('suggestion')} <a href="mailto:contact@upsignon.eu">contact@upsignon.eu</a>
         </p>
-        <ul>
+        <ul className="highlighter">
           <li>
             <a
-              className="link"
+              className="link bold"
+              target="_blank"
+              href="https://app.upsignon.eu/newsletter-admins"
+              rel="noreferrer"
+            >
+              {i18n.t('newsletter_admins')}
+            </a>
+          </li>
+          {this.props.isSuperadminPage && (
+            <li>
+              <a
+                className="link bold"
+                target="_blank"
+                href="https://app.upsignon.eu/newsletter-tech"
+                rel="noreferrer"
+              >
+                {i18n.t('newsletter_tech')}
+              </a>
+            </li>
+          )}
+          <li>
+            <a
+              className="link bold"
               target="_blank"
               href="https://upsignon.notion.site/Notice-d-utilisation-d-UpSignOn-de4f8ba200e14ec1adcaba2613b38340"
               rel="noreferrer"
