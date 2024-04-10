@@ -191,7 +191,8 @@ const translations = {
   extract_emails_shared_device: 'qui partagent au moins un de leurs appareils',
   extract_emails: 'Récupérer les emails',
   extract_emails_not_migrated: "Récupérer les utilisateurs n'ayant pas migré vers la v7",
-  extract_emails_msi: "Récupérer les utilisateurs ayant la version msi de l'application Windows",
+  extract_emails_msi:
+    "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
   mail_writer: 'Envoyer un email',
   mail_writer_to_selection: 'Utiliser la liste de destinataires de la sélection ci-dessus.',
   mail_writer_to_all: "Envoyer à tous les détenteurs d'un coffre-fort.",

@@ -189,7 +189,8 @@ const translations = {
   extract_emails_shared_device: 'who share at least one of their devices',
   extract_emails: 'Extract emails',
   extract_emails_not_migrated: 'Extract users who have not migrated to v7',
-  extract_emails_msi: 'Extract users having the msi version of the Windows app',
+  extract_emails_msi:
+    'Extract users having the msi version of the Windows app (since UpSignOn 7.5.0)',
   mail_writer: 'Sending an email',
   mail_writer_to_selection: 'Use recipients from above selection.',
   mail_writer_to_all: 'Send to all vault holders.',
