@@ -55,6 +55,26 @@ class Other extends React.Component {
       alert(i18n.t('mail_writer_empty_fields'));
       return;
     }
+    if (this.state.extractedEmails) {
+      try {
+        this.props.setIsLoading(true);
+        const res = await groupUrlFetch('/api/send-email', 'POST', {
+          emailList: this.state.extractedEmails,
+          mailContent: this.state.mailContent,
+          mailSubject: this.state.mailSubject,
+        });
+        this.setState({ mailContent: '', mailSubject: '' });
+        localStorage.removeItem('mailContent');
+        localStorage.removeItem('mailSubject');
+        alert(i18n.t('mail_writer_success', { n: res.n }));
+      } catch (e) {
+        console.error(e);
+        alert(i18n.t('mail_writer_error', { e }));
+      } finally {
+        this.props.setIsLoading(false);
+      }
+      return;
+    }
     const resPrecheck = await groupUrlFetch('/api/send-email-precheck', 'POST', {
       extractorDuplicateSelect: this.state.extractorDuplicateSelect,
       extractorWeakSelect: this.state.extractorWeakSelect,

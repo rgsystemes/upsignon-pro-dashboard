@@ -150,7 +150,12 @@ export const send_email = async (req: any, res: any, isSuperadmin: boolean): Pro
 
     if (!mailContent) return res.status(400).end();
 
-    const uniqueEmails = await getSelectedEmails(req, isSuperadmin);
+    let uniqueEmails;
+    if (typeof req.body.emailList === 'string') {
+      uniqueEmails = req.body.emailList.split(';').map((e: string) => e.trim()) as string[];
+    } else {
+      uniqueEmails = await getSelectedEmails(req, isSuperadmin);
+    }
 
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
