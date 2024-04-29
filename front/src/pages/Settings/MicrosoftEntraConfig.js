@@ -15,12 +15,14 @@ export class MicrosoftEntraConfig extends React.Component {
   fetchMSEntraConfig = async () => {
     try {
       const entraConfig = await groupUrlFetch('/api/group-entra-config', 'GET', null);
-      this.setState({
-        tenantId: entraConfig.tenantId || '',
-        clientId: entraConfig.clientId || '',
-        clientSecret: entraConfig.clientSecret || '',
-        appResourceId: entraConfig.appResourceId || '',
-      });
+      if (entraConfig) {
+        this.setState({
+          tenantId: entraConfig.tenantId || '',
+          clientId: entraConfig.clientId || '',
+          clientSecret: entraConfig.clientSecret || '',
+          appResourceId: entraConfig.appResourceId || '',
+        });
+      }
     } catch (e) {
       console.error(e);
     }
