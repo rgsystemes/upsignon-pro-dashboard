@@ -51,6 +51,8 @@ import { send_email, send_email_precheck } from './send_email';
 import { update_user_setting } from './update_user_setting';
 import { extract_emails_not_migrated_users } from './extract_emails_not_migrated_users';
 import { extract_emails_msi_install } from './extract_emails_msi_install';
+import { getRedirectionUrl } from './get_redirection_url';
+import { setRedirectionUrl } from './set_redirection_url';
 
 export const apiRouter = express.Router();
 
@@ -167,3 +169,7 @@ apiRouter.get('/group-admins', get_group_admins);
 // Settings
 apiRouter.get('/group-settings', get_group_settings);
 apiRouter.post('/group-settings-update', update_group);
+
+// SERVER REDIRECTION
+apiRouter.post('/redirection_url', getRedirectionUrl);
+apiRouter.post('/set_redirection_url', setRedirectionUrl);

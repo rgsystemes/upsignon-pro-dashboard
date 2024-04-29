@@ -95,6 +95,12 @@ const translations = {
   password_reset_request_delete_warning: 'Do you wish to delete this password reset request?',
   password_reset_request_grant_warning:
     'Please make sure the request was made by the user himself.\n\nGrant?',
+  settings_server_redirection: 'DANGER: Redirection',
+  settings_server_redirection_explanation:
+    "If you wish to migrate to another server (go back to SAAS or go to self-hosting), this option can be used to simplify your users' migration after the transfer of the database. Contact us before using this option.",
+  settings_server_redirection_new_url_label: 'Redirect this bank to',
+  settings_server_redirection_confirm:
+    'Are you sure? This action will interrupt service for this bank.',
   settings_security: 'Security settings',
   settings_change: 'Change',
   settings_allowed_emails: 'Authorized email addresses',
