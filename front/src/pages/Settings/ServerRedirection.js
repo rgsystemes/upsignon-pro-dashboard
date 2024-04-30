@@ -53,7 +53,7 @@ export class ServerRedirection extends React.Component {
                 this.urlInputRef = r;
               }}
               style={{
-                width: `${Math.max(this.state.redirectionUrl.length, 15)}ch`,
+                width: `${Math.max(this.state.redirectionUrl?.length || 0, 15)}ch`,
               }}
               type="text"
               value={this.state.redirectionUrl || ''}
