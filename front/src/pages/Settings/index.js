@@ -22,7 +22,6 @@ class Settings extends React.Component {
           otherGroups={this.props.otherGroups}
         />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
-        <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
         <ServerRedirection />
       </div>
     );
