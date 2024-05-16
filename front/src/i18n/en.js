@@ -237,6 +237,14 @@ const translations = {
   pro_server: 'UpSignOn PRO server',
   pro_server_url: 'URL of your UpSignOn PRO server',
   link_to_communicate: 'Link to communicate',
+  preconfig_title: 'Preconfiguration of this link with group policy.',
+  preconfig_line1:
+    "Starting with version 7.7.0 of the application, you can preconfigure this link on your user's devices by creating a file containing",
+  preconfig_line2: 'at the following location:',
+  preconfig_case1: 'case of an installation from the Microsoft Store or with the .appxbundle file:',
+  preconfig_case2: 'case of an installation with the .msi file:',
+  preconfig_script_example:
+    'You can for example use the following powershell script to automate the deployment of this file:',
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
   pro_server_certificate_chain_complete: 'Certificate chain complete',

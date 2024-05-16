@@ -241,6 +241,14 @@ const translations = {
     'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
   pro_server_url: 'URL de votre serveur UpSignOn PRO',
   link_to_communicate: 'Lien à communiquer',
+  preconfig_title: 'Préconfiguration du lien par stratégie de groupe.',
+  preconfig_line1:
+    "À partir de la version 7.7.0 de l'application, vous pouvez préconfigurer ce lien sur les appareils de vos utilisateurs en créant un fichier contenant",
+  preconfig_line2: "à l'emplacement suivant :",
+  preconfig_case1: "cas d'une installation par le Microsoft Store ou via le fichier .appxbundle :",
+  preconfig_case2: "cas d'une installation via le fichier .msi :",
+  preconfig_script_example:
+    'Vous pouvez par exemple utiliser le script powershell suivant pour déployer ce fichier :',
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
   pro_server_certificate_chain_complete: 'Chaîne de certification complète',

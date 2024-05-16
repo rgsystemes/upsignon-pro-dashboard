@@ -65,6 +65,20 @@ export class ProSetupLink extends React.Component {
     this.forceUpdate();
   };
 
+  getScript = () => `## RUN AS ADMIN !
+$cUsersPath = "C:\Users"
+$usersPaths = (Get-ChildItem -Path $cUsersPath -Directory -ErrorAction SilentlyContinue).FullName
+$bankUrl = "${this.state.proServerUrlConfig.url}";
+Foreach($u in $usersPaths){
+    if (Get-AppxPackage -Name 'dataSmine.UpSignOn' -AllUsers) {
+        # Store package case
+        New-Item "$u\AppData\Local\Packages\dataSmine.UpSignOn_fqgssej11bscy\LocalState\v6-gpo-configuration.json" -ItemType File -Value "{\`"proConfigUrl\`":\`"$bankUrl\`"}" -Force
+    } else {
+        # MSI package case
+        New-Item "$u\AppData\Local\UpSignOn\v6-gpo-configuration.json" -ItemType File -Value "{\`"proConfigUrl\`":\`"$bankUrl\`"}" -Force
+    }
+}`;
+
   render() {
     if (!this.proSetupLink) return null;
     return (
@@ -123,6 +137,50 @@ export class ProSetupLink extends React.Component {
           </a>
           <img src={this.base64Img} style={{ height: 150, width: 150 }} alt="" />
         </div>
+        <details>
+          <summary style={{ fontWeight: 'bold' }}>{i18n.t('preconfig_title')}</summary>
+          <div>
+            {i18n.t('preconfig_line1')}
+            <br />
+            <pre
+              style={{
+                backgroundColor: 'lightgrey',
+                padding: 10,
+                borderRadius: 5,
+                display: 'inline-block',
+              }}
+            >{`{"proConfigUrl":"${this.state.proServerUrlConfig.url}"}`}</pre>
+            <br />
+            {i18n.t('preconfig_line2')}
+            <ul>
+              <li>
+                {i18n.t('preconfig_case1')}
+                <br />
+                <pre>
+                  C:\Users\xxx\AppData\Local\Packages\dataSmine.UpSignOn_fqgssej11bscy\LocalState\v6-gpo-configuration.json
+                </pre>
+              </li>
+              <li>
+                {i18n.t('preconfig_case2')}
+                <br />
+                <pre>C:\Users\xxx\AppData\Local\UpSignOn\v6-gpo-configuration.json</pre>
+              </li>
+            </ul>
+          </div>
+          <div>{i18n.t('preconfig_script_example')}</div>
+          <div style={{ maxWidth: '100%', overflowX: 'scroll' }}>
+            <pre
+              style={{
+                backgroundColor: 'lightgrey',
+                padding: 10,
+                borderRadius: 5,
+                display: 'inline-block',
+              }}
+            >
+              {this.getScript()}
+            </pre>
+          </div>
+        </details>
       </div>
     );
   }
