@@ -64,7 +64,7 @@ apiRouter.use(async (req, res, next) => {
     // @ts-ignore
     !req.session.isSuperadmin &&
     // @ts-ignore
-    !req.session.groups.includes(req.proxyParamsGroupId)
+    !req.session.groups?.includes(req.proxyParamsGroupId)
   ) {
     // @ts-ignore
     console.error('Unauthorized for group ' + req.proxyParamsGroupId);

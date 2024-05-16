@@ -5,7 +5,7 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
   try {
     const allGroups = await db.query('SELECT id, name FROM groups ORDER BY NAME ASC');
     if (!req.session.isSuperadmin) {
-      const filteredGroups = allGroups.rows.filter((g) => req.session.groups.includes(g.id));
+      const filteredGroups = allGroups.rows.filter((g) => req.session.groups?.includes(g.id));
       if (filteredGroups.length === 0) {
         // this case should not happen
         req.destroy();
