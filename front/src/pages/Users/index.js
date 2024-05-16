@@ -128,9 +128,7 @@ class Users extends React.Component {
     window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
   };
   toggleSorting = (sortType) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${
-      this.state.pageIndex
-    }&sortingType=${sortType === 'vuln' ? 0 : sortType === 'time' ? 1 : 2}`;
+    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${this.state.pageIndex}&sortingType=${sortType}`;
   };
 
   onSearch = async (ev) => {
@@ -297,17 +295,17 @@ class Users extends React.Component {
           <Toggler
             choices={[
               {
-                key: 'vuln',
+                key: 0,
                 title: i18n.t('user_sort_by_vuln'),
                 isCurrent: this.state.sortingType === 0,
               },
               {
-                key: 'time',
+                key: 1,
                 title: i18n.t('user_sort_by_time'),
                 isCurrent: this.state.sortingType === 1,
               },
               {
-                key: 'deactivated',
+                key: 2,
                 title: i18n.t('user_filter_by_deactivated'),
                 isCurrent: this.state.sortingType === 2,
               },
@@ -315,12 +313,11 @@ class Users extends React.Component {
             onSelect={this.toggleSorting}
           />
         </div>
-        {this.state.sortingType !== 2 && (
-          <div style={{ marginBottom: 15 }}>
-            {this.state.sortingType === 0
-              ? i18n.t('user_sorting_by_vuln')
-              : i18n.t('user_sorting_by_time')}
-          </div>
+        {this.state.sortingType === 0 && (
+          <div style={{ marginBottom: 15 }}>{i18n.t('user_sorting_by_vuln')}</div>
+        )}
+        {this.state.sortingType === 1 && (
+          <div style={{ marginBottom: 15 }}>{i18n.t('user_sorting_by_time')}</div>
         )}
         {this.state.sortingType === 2 && (
           <div style={{ marginBottom: 20 }}>
@@ -330,6 +327,9 @@ class Users extends React.Component {
             </strong>
           </div>
         )}
+        <div style={{ marginBottom: 20 }}>
+          <p style={{ color: 'red' }}>{i18n.t('user_filtering_by_to_be_migrated')}</p>
+        </div>
         <PaginationBar
           pageIndex={this.state.pageIndex}
           limit={this.state.limit}
@@ -358,26 +358,20 @@ class Users extends React.Component {
             {this.state.users.map((u) => {
               let lastSessionStyle = {};
               const lastSessionDateOrNull = !u.last_sync_date ? null : new Date(u.last_sync_date);
-              if (this.state.sortingType !== 0) {
-                const isLastSessionOld =
-                  lastSessionDateOrNull == null
-                    ? true
-                    : lastSessionDateOrNull < getDateBack2Weeks();
-                const isLastSessionVeryOld =
-                  lastSessionDateOrNull == null
-                    ? true
-                    : lastSessionDateOrNull < getDateBack1Month();
-                lastSessionStyle = {
-                  fontWeight: 'bold',
-                  backgroundColor: isLastSessionVeryOld
-                    ? 'red'
-                    : isLastSessionOld
-                      ? 'orange'
-                      : 'green',
-                  color: 'white',
-                  padding: '0 3px',
-                };
-              }
+              const isLastSessionOld =
+                lastSessionDateOrNull == null ? true : lastSessionDateOrNull < getDateBack2Weeks();
+              const isLastSessionVeryOld =
+                lastSessionDateOrNull == null ? true : lastSessionDateOrNull < getDateBack1Month();
+              lastSessionStyle = {
+                fontWeight: 'bold',
+                backgroundColor: isLastSessionVeryOld
+                  ? 'red'
+                  : isLastSessionOld
+                    ? 'orange'
+                    : 'green',
+                color: 'white',
+                padding: '0 3px',
+              };
               const showSettings =
                 this.state.showAllSettings || this.state.showUserSettings[u.user_id];
               return (
@@ -393,6 +387,11 @@ class Users extends React.Component {
                       }}
                     />
                     <td>
+                      {!u.has_migrated && (
+                        <div style={{ color: 'red', fontWeight: 'bold' }}>
+                          {i18n.t('to_migrate')}
+                        </div>
+                      )}
                       <div style={{ fontSize: 12 }}>{`${Math.round(u.data_length / 1000)}ko`}</div>
                       <div>
                         {i18n.t('user_data_updated_at')}{' '}

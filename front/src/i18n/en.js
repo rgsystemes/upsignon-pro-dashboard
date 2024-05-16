@@ -45,6 +45,7 @@ const translations = {
     'Vaults will be automatically deactivated when their email address is no longer authorized (neither by allowed emails nor via Microsoft Entra if configured).\nIf you reauthorize an email address in allowed emails or in Microsoft Entra, the vault will be automatically reactivated on next check.',
   user_filtering_by_deactivated_interval:
     'NB : Checks happen automatically every day at 1am and 1pm.',
+  user_filtering_by_to_be_migrated: 'Not migrated users will be deleted on July 15, 2024.',
   user_search: 'Search a user',
   user_unit_name: 'users',
   user_id: 'Id',
@@ -320,6 +321,7 @@ const translations = {
   group_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_authorized: 'User authorized :',
   group_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user :',
+  to_migrate: 'TO MIGRATE URGENTLY!',
 };
 
 export default translations;

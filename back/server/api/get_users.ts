@@ -67,16 +67,17 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
     u.allowed_offline_desktop AS allowed_offline_desktop,
-    u.settings_override AS settings_override
+    u.settings_override AS settings_override,
+    starts_with(u.encrypted_data_2, 'formatP003-') AS has_migrated
   FROM users AS u
   INNER JOIN groups AS g ON u.group_id=g.id
   WHERE u.group_id=$3
   ${isSearching ? "AND (u.email LIKE '%' || $4 || '%' OR u.id::varchar(5) LIKE $4 || '%')" : ''}
   ${
     sortingType === 0
-      ? 'ORDER BY nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
+      ? "ORDER BY starts_with(u.encrypted_data_2, 'formatP003-') ASC NULLS FIRST, nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC"
       : sortingType === 1
-        ? 'ORDER BY last_sync_date ASC NULLS FIRST, u.email ASC'
+        ? "ORDER BY starts_with(u.encrypted_data_2, 'formatP003-') ASC NULLS FIRST, last_sync_date ASC NULLS FIRST, u.email ASC"
         : 'AND u.deactivated ORDER BY u.email ASC'
   }
   LIMIT $1

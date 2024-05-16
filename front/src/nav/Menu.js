@@ -27,6 +27,11 @@ function Menu(props) {
                 className={`navItem ${p.isCurrent ? 'current' : ''}`}
               >
                 {p.title}
+                {p.toMigrate && (
+                  <div
+                    style={{ color: 'red', fontWeight: 'bold', backgroundColor: 'white' }}
+                  >{`${p.toMigrate} ${i18n.t('to_migrate')}`}</div>
+                )}
               </a>
             );
           })}

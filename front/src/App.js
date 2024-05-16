@@ -20,6 +20,7 @@ class App extends React.Component {
   state = {
     isLoading: false,
     nb_users: null,
+    nb_users_to_migrate: null,
     nb_shared_accounts: null,
     nb_shared_vaults: null,
     nb_shared_devices: null,
@@ -65,7 +66,12 @@ class App extends React.Component {
         .then((res) => this.setState({ nb_shared_devices: res }))
         .catch(() => {});
       groupUrlFetch('/api/count-users', 'GET', null)
-        .then((res) => this.setState({ nb_users: res }))
+        .then((res) =>
+          this.setState({
+            nb_users: res.allUsersCount,
+            nb_users_to_migrate: res.toBeMigratedUsersCount,
+          }),
+        )
         .catch(() => {});
     }
     groupUrlFetch('/api/count-password-reset-requests', 'GET', null)
@@ -170,6 +176,7 @@ class App extends React.Component {
         key: 'users',
         href: '/users/',
         title: `${i18n.t('menu_users')} (${this.state.nb_users || '-'})`,
+        toMigrate: this.state.nb_users_to_migrate,
         isCurrent: currentPage === 'users',
         disabledForSuperadmin: true,
       },
