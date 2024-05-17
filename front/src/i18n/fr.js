@@ -329,7 +329,7 @@ const translations = {
   group_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   group_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
-  to_migrate: "À MIGRER D'URGENCE !",
+  to_migrate: "À MIGRER D'URGENCE !",
 };
 
 export default translations;
