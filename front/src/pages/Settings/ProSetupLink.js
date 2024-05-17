@@ -64,11 +64,11 @@ export class ProSetupLink extends React.Component {
     // Force rendering
     this.forceUpdate();
   };
-
+  getBankUrl = () => this.state.proServerUrlConfig.url + '/' + groupId;
   getScript = () => `## RUN AS ADMIN !
 $cUsersPath = "C:\Users"
 $usersPaths = (Get-ChildItem -Path $cUsersPath -Directory -ErrorAction SilentlyContinue).FullName
-$bankUrl = "${this.state.proServerUrlConfig.url}";
+$bankUrl = "${this.getBankUrl()}";
 Foreach($u in $usersPaths){
     if (Get-AppxPackage -Name 'dataSmine.UpSignOn' -AllUsers) {
         # Store package case
@@ -149,7 +149,7 @@ Foreach($u in $usersPaths){
                 borderRadius: 5,
                 display: 'inline-block',
               }}
-            >{`{"proConfigUrl":"${this.state.proServerUrlConfig.url}"}`}</pre>
+            >{`{"proConfigUrl":"${this.getBankUrl()}"}`}</pre>
             <br />
             {i18n.t('preconfig_line2')}
             <ul>
