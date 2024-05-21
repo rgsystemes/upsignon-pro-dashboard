@@ -22,6 +22,7 @@ class Settings extends React.Component {
           isSuperAdmin={this.props.isSuperAdmin}
           otherGroups={this.props.otherGroups}
         />
+        <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
         <ServerRedirection />
       </div>
