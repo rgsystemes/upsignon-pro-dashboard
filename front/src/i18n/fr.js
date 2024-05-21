@@ -73,8 +73,8 @@ const translations = {
     'Attention, vous allez supprimer $email et toutes ses données. Cette action est irréversible.',
   user_change_email_confirm:
     "Êtes-vous sûr de vouloir changer l'adresse email de cet utilisateur de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
-  user_email_already_used:
-    'ERREUR\n$email est déjà utilisé ou a déjà été utilisé par un autre utilisateur.',
+  user_email_already_used_or_not_authorized:
+    "ERREUR\n$email est déjà utilisé ou a déjà été utilisé par un autre utilisateur ou n'est pas encore autorisé.",
   user_allowed_offline_desktop: 'Hors-ligne ordi:',
   user_allowed_offline_mobile: 'Hors-ligne mobile:',
   user_allowed_csv_export: 'Export CSV :',

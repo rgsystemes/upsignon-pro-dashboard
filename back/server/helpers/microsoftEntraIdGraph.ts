@@ -29,6 +29,15 @@ export class MicrosoftGraph {
   static _instances: { [groupId: number]: _MicrosoftGraph } = {};
   static _groupConfig: { [groupId: number]: EntraConfig | null } = {};
 
+  static async getUserId(groupId: number, userEmail: string): Promise<string | null> {
+    const graph = await MicrosoftGraph._getInstance(groupId);
+    if (graph) {
+      const userId = await graph._getUserIdFromEmail(userEmail);
+      return userId;
+    }
+    return null;
+  }
+
   static async isUserAuthorizedForUpSignOn(groupId: number, userEmail: string): Promise<boolean> {
     const graph = await MicrosoftGraph._getInstance(groupId);
     if (graph) {

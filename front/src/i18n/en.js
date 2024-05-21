@@ -72,8 +72,8 @@ const translations = {
     'Beware, you are about to delete $email and all his data. This is irrerversible.',
   user_change_email_confirm:
     "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
-  user_email_already_used:
-    'ERROR\n$email is already used or has already been used by another user.',
+  user_email_already_used_or_not_authorized:
+    'ERROR\n$email is already used or has already been used by another user or is not authorized yet.',
   user_allowed_offline_desktop: 'Offline desktop:',
   user_allowed_offline_mobile: 'Offline mobile:',
   user_allowed_csv_export: 'CSV export:',

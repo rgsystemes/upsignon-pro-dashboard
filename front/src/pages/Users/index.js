@@ -174,7 +174,7 @@ class Users extends React.Component {
           }));
         } catch (e) {
           console.error(e);
-          window.alert(i18n.t('user_email_already_used', { email: newEmail }));
+          window.alert(i18n.t('user_email_already_used_or_not_authorized', { email: newEmail }));
         }
       }
     }

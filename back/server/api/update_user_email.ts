@@ -1,5 +1,7 @@
 import { db } from '../helpers/db';
+import { getEmailAuthorizationStatus } from '../helpers/emailAuthorization';
 import { logError } from '../helpers/logger';
+import { MicrosoftGraph } from '../helpers/microsoftEntraIdGraph';
 
 export const update_user_email = async (req: any, res: any): Promise<void> => {
   try {
@@ -29,6 +31,16 @@ export const update_user_email = async (req: any, res: any): Promise<void> => {
       return res.status(409).send({ status: 'EMAIL_ALREADY_EXISTED' });
     }
 
+    // check the new email is authorized (otherwise it will be deactivated)
+    const userMSEntraId = await MicrosoftGraph.getUserId(req.proxyParamsGroupId, newEmail);
+    const authStatus = await getEmailAuthorizationStatus(
+      newEmail,
+      userMSEntraId,
+      req.proxyParamsGroupId,
+    );
+    if (authStatus == 'UNAUTHORIZED') {
+      return res.status(409).send({ status: 'EMAIL_NOT_AUTHORIZED' });
+    }
     // Update DB
     await db.transaction(async (dbClient) => {
       // Start by cleaning any previous such change (case when admin is playing with the feature)
