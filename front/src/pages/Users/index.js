@@ -387,12 +387,12 @@ class Users extends React.Component {
                       }}
                     />
                     <td>
-                      {!u.has_migrated && (
+                      {!u.has_migrated && u.data_length > 0 && (
                         <div style={{ color: 'red', fontWeight: 'bold' }}>
                           {i18n.t('to_migrate')}
                         </div>
                       )}
-                      <div style={{ fontSize: 12 }}>{`${Math.round(u.data_length / 1000)}ko`}</div>
+                      <div style={{ fontSize: 12 }}>{`${Math.round(u.data2_length / 1000)}ko`}</div>
                       <div>
                         {i18n.t('user_data_updated_at')}{' '}
                         <span style={{ fontSize: 12 }}>

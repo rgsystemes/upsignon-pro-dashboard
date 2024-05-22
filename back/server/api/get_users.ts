@@ -49,6 +49,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.id AS user_id,
     u.email AS email,
     length(u.encrypted_data) AS data_length,
+    length(u.encrypted_data_2) AS data2_length,
     u.updated_at AS updated_at,
     u.deactivated AS deactivated,
     (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,

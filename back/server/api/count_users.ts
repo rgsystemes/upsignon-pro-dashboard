@@ -7,7 +7,7 @@ export const count_users = async (req: any, res: any): Promise<void> => {
       req.proxyParamsGroupId,
     ]);
     const dbRes2 = await db.query(
-      'SELECT COUNT(id) AS count FROM users WHERE encrypted_data_2 is NULL AND group_id=$1',
+      'SELECT COUNT(id) AS count FROM users WHERE encrypted_data_2 is NULL AND encrypted_data is NOT NULL AND group_id=$1',
       [req.proxyParamsGroupId],
     );
     res

@@ -23,6 +23,7 @@ export const extract_database = async (
       ud.install_type AS install_type,
       ud.last_sync_date AS last_sync_date,
       length(u.encrypted_data) AS data_length,
+      length(u.encrypted_data_2) AS data2_length,
       u.updated_at AS updated_at,
       (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
       (SELECT COUNT(*) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
