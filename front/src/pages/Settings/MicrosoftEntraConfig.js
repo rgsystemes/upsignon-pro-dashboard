@@ -195,7 +195,7 @@ export class MicrosoftEntraConfig extends React.Component {
                 {i18n.t('group_setting_microsoft_entra_test_user_authorized')}
               </span>
               <span>
-                {this.state.testResult.isAuthorized.error ||
+                {!this.state.testResult.isAuthorized.error ||
                 this.state.testResult.isAuthorized.value
                   ? i18n.t('yes')
                   : i18n.t('no')}
