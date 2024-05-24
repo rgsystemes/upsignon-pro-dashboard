@@ -392,7 +392,13 @@ class Users extends React.Component {
                           {i18n.t('to_migrate')}
                         </div>
                       )}
-                      <div style={{ fontSize: 12 }}>{`${Math.round(u.data2_length / 1000)}ko`}</div>
+                      <div style={{ fontSize: 12 }}>
+                        {u.data2_length > 0
+                          ? `${Math.round(u.data2_length / 1000)}ko`
+                          : u.data_length > 0
+                            ? `${Math.round(u.data_length / 1000)}ko avant migration`
+                            : '0ko'}
+                      </div>
                       <div>
                         {i18n.t('user_data_updated_at')}{' '}
                         <span style={{ fontSize: 12 }}>
