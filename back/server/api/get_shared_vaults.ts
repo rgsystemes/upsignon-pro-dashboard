@@ -77,7 +77,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
         isSearching
           ? `AND
           (SELECT
-            COUNT(svr2.id)
+            COUNT(*)
             FROM shared_vault_recipients AS svr2
             LEFT JOIN users AS u2 ON svr2.user_id=u2.id
             WHERE
