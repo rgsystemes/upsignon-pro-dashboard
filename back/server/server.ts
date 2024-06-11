@@ -22,7 +22,13 @@ const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
 
 const app = express();
-
+app.use((req, res, next) => {
+  // this is a fix for proxies setting x-forwarded-proto in caps
+  try {
+    req.headers['x-forwarded-proto'] = (req.headers['x-forwarded-proto'] as string)?.toLowerCase();
+  } catch {}
+  next();
+});
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
