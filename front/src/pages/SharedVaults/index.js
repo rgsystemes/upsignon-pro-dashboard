@@ -140,7 +140,7 @@ class SharedVaults extends React.Component {
         <h1>{`${i18n.t('menu_shared_vaults')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
-        <a href="/shared_accounts/">{i18n.t('menu_shared_accounts')}</a>
+        {/* <a href="/shared_accounts/">{i18n.t('menu_shared_accounts')}</a> */}
         <p>{i18n.t('shared_vault_manager_note')}</p>
         <div>
           <div>{i18n.t('shared_vault_search')}</div>
