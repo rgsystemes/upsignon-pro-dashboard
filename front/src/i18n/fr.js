@@ -161,6 +161,7 @@ const translations = {
   shared_account_shared_folder_name: 'Dossier partagé',
   shared_account_type: 'Type',
   shared_account_items: 'Éléments',
+  shared_account_items_summary: '$n éléments',
   shared_account_users: 'Utilisateurs',
   shared_account_user_creation_date: 'Depuis',
   shared_account_user_is_manager: 'Gestionnaire',

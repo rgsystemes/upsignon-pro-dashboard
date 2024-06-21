@@ -200,19 +200,29 @@ class SharedVaults extends React.Component {
                         {i === 0 && <td rowSpan={contacts.length}>{sv.name}</td>}
                         {i === 0 && (
                           <td rowSpan={contacts.length}>
-                            {Array.isArray(sv.content_details?.codes) &&
-                              sv.content_details?.codes.map((item) => (
-                                <SharedVaultCode key={item.id} name={item.name} />
-                              ))}
-                            {Array.isArray(sv.content_details?.accounts) &&
-                              sv.content_details?.accounts.map((item) => (
-                                <SharedVaultAccount
-                                  key={item.id}
-                                  name={item.name}
-                                  urls={item.urls}
-                                  login={item.login}
-                                />
-                              ))}
+                            <details>
+                              <summary>
+                                {i18n.t('shared_account_items_summary', {
+                                  n: sv.content_details
+                                    ? sv.content_details.codes.length +
+                                      sv.content_details.accounts.length
+                                    : 0,
+                                })}
+                              </summary>
+                              {Array.isArray(sv.content_details?.codes) &&
+                                sv.content_details?.codes.map((item) => (
+                                  <SharedVaultCode key={item.id} name={item.name} />
+                                ))}
+                              {Array.isArray(sv.content_details?.accounts) &&
+                                sv.content_details?.accounts.map((item) => (
+                                  <SharedVaultAccount
+                                    key={item.id}
+                                    name={item.name}
+                                    urls={item.urls}
+                                    login={item.login}
+                                  />
+                                ))}
+                            </details>
                           </td>
                         )}
                         {i === 0 && (

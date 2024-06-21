@@ -159,6 +159,7 @@ const translations = {
   shared_vault_shared_folder_name: 'Shared vault',
   shared_account_type: 'Type',
   shared_account_items: 'Items',
+  shared_account_items_summary: '$n items',
   shared_account_users: 'Users',
   shared_account_user_creation_date: 'Since',
   shared_account_user_is_manager: 'Manager',
