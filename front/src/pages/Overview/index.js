@@ -51,7 +51,7 @@ class Overview extends React.Component {
             <a
               className="link"
               target="_blank"
-              href="https://upsignon.notion.site/Notes-de-version-7b9253161210463083a638d116f40956"
+              href="https://upsignon.eu/fr/resources/release-notes/app"
               rel="noreferrer"
             >
               {i18n.t('link_to_changelogs')}
@@ -61,7 +61,7 @@ class Overview extends React.Component {
             <a
               className="link"
               target="_blank"
-              href="https://upsignon.notion.site/Liens-de-t-l-chargement-de-l-application-45c3531505d4438d86a67890296ae437"
+              href="https://upsignon.eu/fr/downloads"
               rel="noreferrer"
             >
               {i18n.t('link_to_downloads')}
