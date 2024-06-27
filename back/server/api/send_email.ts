@@ -56,8 +56,8 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
     if (extractorDuplicateSelect) {
       const dupEmails = (
         await db.query(
-          `SELECT email FROM users AS u WHERE (SELECT nb_accounts_with_duplicated_password FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) >= $1 ${
-            isSuperadmin ? '' : 'AND u.group_id=$2'
+          `SELECT email FROM users WHERE nb_accounts_with_duplicated_password >= $1 ${
+            isSuperadmin ? '' : 'AND group_id=$2'
           }`,
           isSuperadmin ? [extractorDuplicateMin] : [extractorDuplicateMin, req.proxyParamsGroupId],
         )
@@ -68,8 +68,8 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
     if (extractorWeakSelect) {
       const weakEmails = (
         await db.query(
-          `SELECT email FROM users AS u WHERE (SELECT nb_accounts_weak FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) >= $1 ${
-            isSuperadmin ? '' : 'AND u.group_id=$2'
+          `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
+            isSuperadmin ? '' : 'AND group_id=$2'
           }`,
           isSuperadmin ? [extractorWeakMin] : [extractorWeakMin, req.proxyParamsGroupId],
         )
@@ -79,8 +79,8 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
     if (extractorMediumSelect) {
       const mediumEmails = (
         await db.query(
-          `SELECT email FROM users AS u WHERE (SELECT nb_accounts_weak FROM data_stats AS ds WHERE ds.user_id=u.id ORDER BY date DESC LIMIT 1) >= $1 ${
-            isSuperadmin ? '' : 'AND u.group_id=$2'
+          `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
+            isSuperadmin ? '' : 'AND group_id=$2'
           }`,
           isSuperadmin ? [extractorMediumMin] : [extractorMediumMin, req.proxyParamsGroupId],
         )

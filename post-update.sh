@@ -9,5 +9,4 @@ cd ../back
 ~/.npm-global/bin/yarn build-server
 cd ..
 
-~/.npm-global/bin/pm2 stop upsignon-pro-dashboard
-~/.npm-global/bin/pm2 start ./back/dashboard.config.js --update-env
+~/.npm-global/bin/pm2 startOrGracefulReload ./back/dashboard.config.js --update-env
