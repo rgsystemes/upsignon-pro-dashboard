@@ -172,6 +172,7 @@ class Groups extends React.Component {
             <thead>
               <tr>
                 <th></th>
+                <th>{i18n.t('sasettings_group_id')}</th>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
@@ -207,6 +208,7 @@ class Groups extends React.Component {
                         {i18n.t('sasettings_group_open')}
                       </span>
                     </td>
+                    <td>{group.id}</td>
                     <EditableCell
                       value={group.name}
                       onChange={(newVal) => {

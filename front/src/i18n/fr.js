@@ -261,6 +261,7 @@ const translations = {
   sasettings_groups: 'Banques de coffres-forts',
   sasettings_groups_explanation:
     "Les banques de coffres-forts sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur banque. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs banques.",
+  sasettings_group_id: 'ID',
   sasettings_group_name: 'Nom de la banque de coffres-forts',
   sasettings_group_created_at: 'Crée le',
   sasettings_group_is_testing: 'Phase de test',

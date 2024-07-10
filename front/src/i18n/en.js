@@ -256,6 +256,7 @@ const translations = {
   sasettings_groups: 'Banks of safes',
   sasettings_groups_explanation:
     'Banks of safes are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
+  sasettings_group_id: 'ID',
   sasettings_group_name: 'Bank of safes name',
   sasettings_group_created_at: 'Created on',
   sasettings_group_is_testing: 'Testing',
