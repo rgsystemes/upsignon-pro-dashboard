@@ -254,6 +254,7 @@ class Groups extends React.Component {
                         type="date"
                         value={group.settings?.TESTING_EXPIRATION_DATE}
                         style={
+                          !group.settings?.TESTING_EXPIRATION_DATE ||
                           new Date(group.settings?.TESTING_EXPIRATION_DATE) < new Date()
                             ? { backgroundColor: 'red', color: 'white' }
                             : null
