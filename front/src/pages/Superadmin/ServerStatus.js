@@ -7,7 +7,6 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 export class ServerStatus extends React.Component {
   state = {
     proServerStatus: 'FETCHING',
-    certificateChainStatus: 'FETCHING',
   };
   fetchStatus = async () => {
     try {
@@ -27,12 +26,6 @@ export class ServerStatus extends React.Component {
         } catch (e) {
           this.setState({ proServerStatus: 'STOPPED' });
         }
-
-        // CHECK CERTIFICATE
-        const certificateRes = await groupUrlFetch('/api/test-certificate-chain', 'GET', null);
-        this.setState({
-          certificateChainStatus: certificateRes.isComplete ? 'COMPLETE' : 'INCOMPLETE',
-        });
       }
     } catch (e) {
       console.error(e);
@@ -52,12 +45,6 @@ export class ServerStatus extends React.Component {
         )}
         {this.state.proServerStatus === 'STOPPED' && (
           <div className="stoppedStatus">{i18n.t('pro_server_status_stopped')}</div>
-        )}
-        {this.state.certificateChainStatus === 'COMPLETE' && (
-          <div className="runningStatus">{i18n.t('pro_server_certificate_chain_complete')}</div>
-        )}
-        {this.state.certificateChainStatus === 'INCOMPLETE' && (
-          <div className="stoppedStatus">{i18n.t('pro_server_certificate_chain_incomplete')}</div>
         )}
       </React.Fragment>
     );

@@ -26,7 +26,6 @@ import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_u
 import { send_email, send_email_precheck } from '../api/send_email';
 import { extract_emails_not_migrated_users } from '../api/extract_emails_not_migrated_users';
 import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
-import { test_certificate_chain } from './test_certificate_chain';
 
 export const superadminApiRouter = express.Router();
 
@@ -39,7 +38,6 @@ superadminApiRouter.use(async (req, res, next) => {
 });
 
 superadminApiRouter.get('/test-email', test_email);
-superadminApiRouter.get('/test-certificate-chain', test_certificate_chain);
 
 // ADMIN USERS
 superadminApiRouter.get('/admins', get_admins);
