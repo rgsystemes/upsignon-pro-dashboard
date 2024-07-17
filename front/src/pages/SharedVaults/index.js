@@ -194,34 +194,47 @@ class SharedVaults extends React.Component {
                     const isLastManager =
                       u.is_manager &&
                       contacts.filter((c) => c.is_manager && c.user_id !== u.user_id).length === 0;
+                    const hasUniqueItem =
+                      (sv.content_details?.codes.length || 0) +
+                        (sv.content_details?.accounts.length || 0) ===
+                      1;
+                    const items = (
+                      <>
+                        {Array.isArray(sv.content_details?.codes) &&
+                          sv.content_details?.codes.map((item) => (
+                            <SharedVaultCode key={item.id} name={item.name} />
+                          ))}
+                        {Array.isArray(sv.content_details?.accounts) &&
+                          sv.content_details?.accounts.map((item) => (
+                            <SharedVaultAccount
+                              key={item.id}
+                              name={item.name}
+                              urls={item.urls}
+                              login={item.login}
+                            />
+                          ))}
+                      </>
+                    );
                     return (
                       <tr key={u.user_id}>
                         {i === 0 && <td rowSpan={contacts.length}>{sv.name}</td>}
                         {i === 0 && (
                           <td rowSpan={contacts.length}>
-                            <details>
-                              <summary>
-                                {i18n.t('shared_account_items_summary', {
-                                  n: sv.content_details
-                                    ? sv.content_details.codes.length +
-                                      sv.content_details.accounts.length
-                                    : 0,
-                                })}
-                              </summary>
-                              {Array.isArray(sv.content_details?.codes) &&
-                                sv.content_details?.codes.map((item) => (
-                                  <SharedVaultCode key={item.id} name={item.name} />
-                                ))}
-                              {Array.isArray(sv.content_details?.accounts) &&
-                                sv.content_details?.accounts.map((item) => (
-                                  <SharedVaultAccount
-                                    key={item.id}
-                                    name={item.name}
-                                    urls={item.urls}
-                                    login={item.login}
-                                  />
-                                ))}
-                            </details>
+                            {hasUniqueItem ? (
+                              items
+                            ) : (
+                              <details>
+                                <summary>
+                                  {i18n.t('shared_account_items_summary', {
+                                    n: sv.content_details
+                                      ? sv.content_details.codes.length +
+                                        sv.content_details.accounts.length
+                                      : 0,
+                                  })}
+                                </summary>
+                                {items}
+                              </details>
+                            )}
                           </td>
                         )}
                         {i === 0 && (
