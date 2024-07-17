@@ -327,9 +327,6 @@ class Users extends React.Component {
             </strong>
           </div>
         )}
-        <div style={{ marginBottom: 20 }}>
-          <p style={{ color: 'red' }}>{i18n.t('user_filtering_by_to_be_migrated')}</p>
-        </div>
         <PaginationBar
           pageIndex={this.state.pageIndex}
           limit={this.state.limit}
@@ -387,17 +384,8 @@ class Users extends React.Component {
                       }}
                     />
                     <td>
-                      {!u.has_migrated && u.data_length > 0 && (
-                        <div style={{ color: 'red', fontWeight: 'bold' }}>
-                          {i18n.t('to_migrate')}
-                        </div>
-                      )}
                       <div style={{ fontSize: 12 }}>
-                        {u.data2_length > 0
-                          ? `${Math.round(u.data2_length / 1000)}ko`
-                          : u.data_length > 0
-                            ? `${Math.round(u.data_length / 1000)}ko avant migration`
-                            : '0ko'}
+                        {u.data2_length > 0 ? `${Math.round(u.data2_length / 1000)}ko` : '0ko'}
                       </div>
                       <div>
                         {i18n.t('user_data_updated_at')}{' '}
@@ -419,35 +407,28 @@ class Users extends React.Component {
                       >
                         {i18n.t('user_nb_devices_value', { nb: u.nb_devices || 0 })}
                       </div>
-                      {u.has_migrated && (
-                        <div>{i18n.t('user_nb_codes_value', { nb: u.nb_codes || 0 })}</div>
-                      )}
-                      {u.has_migrated && (
-                        <div>{i18n.t('user_nb_accounts_value', { nb: u.nb_accounts || 0 })}</div>
-                      )}
-                      {u.has_migrated && (
-                        <div>
-                          {u.nb_shared_items &&
-                            i18n.t('user_nb_shared_items_value', { nb: u.nb_shared_items || 0 })}
-                        </div>
-                      )}
+                      <div>{i18n.t('user_nb_codes_value', { nb: u.nb_codes || 0 })}</div>
+                      <div>{i18n.t('user_nb_accounts_value', { nb: u.nb_accounts || 0 })}</div>
+                      <div>
+                        {u.nb_shared_items &&
+                          i18n.t('user_nb_shared_items_value', { nb: u.nb_shared_items || 0 })}
+                      </div>
                     </td>
-                    {!u.deactivated &&
-                      (u.has_migrated ? (
-                        <StatsCell
-                          nb_accounts_strong={u.nb_accounts_strong}
-                          nb_accounts_medium={u.nb_accounts_medium}
-                          nb_accounts_weak={u.nb_accounts_weak}
-                          nb_accounts_with_duplicated_password={
-                            u.nb_accounts_with_duplicated_password
-                          }
-                          nb_accounts_red={u.nb_accounts_red}
-                          nb_accounts_orange={u.nb_accounts_orange}
-                          nb_accounts_green={u.nb_accounts_green}
-                        />
-                      ) : (
-                        <td></td>
-                      ))}
+                    {!u.deactivated ? (
+                      <StatsCell
+                        nb_accounts_strong={u.nb_accounts_strong}
+                        nb_accounts_medium={u.nb_accounts_medium}
+                        nb_accounts_weak={u.nb_accounts_weak}
+                        nb_accounts_with_duplicated_password={
+                          u.nb_accounts_with_duplicated_password
+                        }
+                        nb_accounts_red={u.nb_accounts_red}
+                        nb_accounts_orange={u.nb_accounts_orange}
+                        nb_accounts_green={u.nb_accounts_green}
+                      />
+                    ) : (
+                      <td></td>
+                    )}
                     {!u.deactivated && (
                       <td>
                         <div

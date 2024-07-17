@@ -27,7 +27,6 @@ const translations = {
   menu_other: 'Autres requêtes',
   menu_settings: 'Paramètres',
   menu_shared_devices: 'Appareils partagés',
-  menu_shared_accounts: 'Comptes partagés (déprécié)',
   menu_shared_vaults: 'Coffres-forts partagés',
   menu_superadmin: 'Super-Admin',
   loading: 'Chargement des données...',
@@ -45,8 +44,6 @@ const translations = {
     "Les coffres-forts seront désactivés automatiquement si leur adresse email n'est plus autorisée (ni par les adresses emails autorisées ni via Microsoft Entra si configuré).\nSi vous autorisez à nouveau une adresse email via les adresses emails autorisées ou via Microsoft Entra, le coffre-fort sera réactivé automatiquement à la prochaine vérification.",
   user_filtering_by_deactivated_interval:
     'NB : Les vérifications ont lieu automatiquement à 1h et 13h tous les jours.',
-  user_filtering_by_to_be_migrated:
-    'Les coffres-forts non migrés seront supprimés automatiquement le 15 juillet 2024.',
   user_search: 'Rechercher un utilisateur',
   user_unit_name: 'utilisateurs',
   user_id: 'Id',
@@ -193,7 +190,6 @@ const translations = {
   extract_emails_long_unused: "qui n'ont pas utilisé UpSignOn depuis au moins $n jours",
   extract_emails_shared_device: 'qui partagent au moins un de leurs appareils',
   extract_emails: 'Récupérer les emails',
-  extract_emails_not_migrated: "Récupérer les utilisateurs n'ayant pas migré vers la v7",
   extract_emails_msi:
     "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
   mail_writer: 'Envoyer un email',
@@ -329,7 +325,6 @@ const translations = {
   group_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   group_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
-  to_migrate: "À MIGRER D'URGENCE !",
 };
 
 export default translations;

@@ -48,14 +48,12 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     const requestString = `SELECT
     u.id AS user_id,
     u.email AS email,
-    length(u.encrypted_data) AS data_length,
     length(u.encrypted_data_2) AS data2_length,
     u.updated_at AS updated_at,
     u.deactivated AS deactivated,
-    (SELECT COUNT(id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
+    (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
     (SELECT last_sync_date FROM user_devices AS ud WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) AS last_sync_date,
-    (SELECT COUNT(id) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
-
+    (SELECT COUNT(svr.user_id) FROM shared_vault_recipients AS svr WHERE svr.user_id=u.id) AS nb_shared_items,
     u.nb_codes AS nb_codes,
     u.nb_accounts AS nb_accounts,
     u.nb_accounts_weak AS nb_accounts_weak,
@@ -70,17 +68,16 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
     u.allowed_offline_desktop AS allowed_offline_desktop,
-    u.settings_override AS settings_override,
-    starts_with(u.encrypted_data_2, 'formatP003-') AS has_migrated
+    u.settings_override AS settings_override
   FROM users AS u
   INNER JOIN groups AS g ON u.group_id=g.id
   WHERE u.group_id=$3
   ${isSearching ? "AND (u.email LIKE '%' || $4 || '%' OR u.id::varchar(5) LIKE $4 || '%')" : ''}
   ${
     sortingType === 0
-      ? "ORDER BY starts_with(u.encrypted_data_2, 'formatP003-') ASC NULLS FIRST, nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC"
+      ? 'ORDER BY nb_accounts_with_duplicated_password DESC, nb_accounts_weak DESC, nb_accounts_medium DESC, u.email ASC'
       : sortingType === 1
-        ? "ORDER BY starts_with(u.encrypted_data_2, 'formatP003-') ASC NULLS FIRST, last_sync_date ASC NULLS FIRST, u.email ASC"
+        ? 'ORDER BY last_sync_date ASC NULLS FIRST, u.email ASC'
         : 'AND u.deactivated ORDER BY u.email ASC'
   }
   LIMIT $1

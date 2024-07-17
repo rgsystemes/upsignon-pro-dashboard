@@ -12,7 +12,6 @@ export const extract_database = async (
     SELECT
       u.email,
       ${isSuperadmin ? 'g.name AS bank_name,' : ''}
-      starts_with(u.encrypted_data_2, 'formatP003-') AS migrated_from_v5,
       ud.device_unique_id AS device_uid,
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
@@ -22,11 +21,9 @@ export const extract_database = async (
       ud.app_version AS app_version,
       ud.install_type AS install_type,
       ud.last_sync_date AS last_sync_date,
-      length(u.encrypted_data) AS data_length,
       length(u.encrypted_data_2) AS data2_length,
       u.updated_at AS updated_at,
       (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
-      (SELECT COUNT(*) FROM shared_account_users AS sau WHERE sau.user_id=u.id) AS nb_shared_items,
       (SELECT COUNT(*) FROM shared_vault_recipients AS sau WHERE sau.user_id=u.id) AS nb_shared_vaults,
       u.nb_codes AS nb_codes,
       u.nb_accounts, AS nb_accounts,

@@ -6,7 +6,6 @@ import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
 import { Overview } from './pages/Overview';
 import { Settings } from './pages/Settings';
-import { SharedAccounts } from './pages/SharedAccounts';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
@@ -20,8 +19,6 @@ class App extends React.Component {
   state = {
     isLoading: false,
     nb_users: null,
-    nb_users_to_migrate: null,
-    nb_shared_accounts: null,
     nb_shared_vaults: null,
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
@@ -56,9 +53,6 @@ class App extends React.Component {
       window.location.href = baseFrontUrl + '/login.html';
     }
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
-      groupUrlFetch('/api/count-shared-accounts', 'GET', null)
-        .then((res) => this.setState({ nb_shared_accounts: res }))
-        .catch(() => {});
       groupUrlFetch('/api/count-shared-vaults', 'GET', null)
         .then((res) => this.setState({ nb_shared_vaults: res }))
         .catch(() => {});
@@ -69,7 +63,6 @@ class App extends React.Component {
         .then((res) =>
           this.setState({
             nb_users: res.allUsersCount,
-            nb_users_to_migrate: res.toBeMigratedUsersCount,
           }),
         )
         .catch(() => {});
@@ -124,14 +117,6 @@ class App extends React.Component {
         />
       );
       currentPage = 'password_reset_requests';
-    } else if (path.startsWith(`/${groupId}/shared_accounts`)) {
-      pageContent = (
-        <SharedAccounts
-          setIsLoading={this.setIsLoading}
-          totalCount={this.state.nb_shared_accounts}
-        />
-      );
-      currentPage = 'shared_accounts';
     } else if (path.startsWith(`/${groupId}/shared_vaults`)) {
       pageContent = (
         <SharedVaults setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_vaults} />
@@ -176,7 +161,6 @@ class App extends React.Component {
         key: 'users',
         href: '/users/',
         title: `${i18n.t('menu_users')} (${this.state.nb_users || '-'})`,
-        toMigrate: this.state.nb_users_to_migrate,
         isCurrent: currentPage === 'users',
         disabledForSuperadmin: true,
       },

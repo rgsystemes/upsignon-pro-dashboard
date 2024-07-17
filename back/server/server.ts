@@ -142,7 +142,6 @@ app.use(
     '/superadmin/',
     '/:groupId/users/',
     '/:groupId/shared_devices/',
-    '/:groupId/shared_accounts/',
     '/:groupId/shared_vaults/',
     '/:groupId/password_reset_requests/',
     '/:groupId/settings/',
