@@ -29,6 +29,7 @@ const translations = {
   menu_shared_devices: 'Shared devices',
   menu_shared_vaults: 'Shared vaults',
   menu_superadmin: 'Super-Admin',
+  menu_licences: 'Licences',
   loading: 'Loading data...',
   total_count: 'Total $count',
   user_sort_by_vuln: 'By vulnerability',
@@ -318,6 +319,15 @@ const translations = {
   group_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_authorized: 'User authorized :',
   group_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user :',
+  licences_bank_name: 'Bank',
+  licences_nb: 'Number of licences',
+  licences_valid_from: 'Valid from',
+  licences_valid_until: 'Valid until',
+  licences_to_be_renewed: 'Will renew',
+  licences_none: 'No licence yet available.',
+  licences_none_explanation:
+    'Check that your server allows external requests on the /licences route.',
+  licences_all: 'Here are all the licences currently associated to you.',
 };
 
 export default translations;

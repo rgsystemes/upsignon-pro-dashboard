@@ -29,6 +29,7 @@ const translations = {
   menu_shared_devices: 'Appareils partagés',
   menu_shared_vaults: 'Coffres-forts partagés',
   menu_superadmin: 'Super-Admin',
+  menu_licences: 'Licences',
   loading: 'Chargement des données...',
   total_count: 'Total $count',
   user_sort_by_vuln: 'Par vulnérabilité',
@@ -325,6 +326,15 @@ const translations = {
   group_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   group_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
+  licences_bank_name: 'Banque',
+  licences_nb: 'Nombre de licences',
+  licences_valid_from: 'Valides à partir de',
+  licences_valid_until: "Valide jusqu'à",
+  licences_to_be_renewed: 'Sera renouvellé',
+  licences_none: "Aucune licence associée pour l'instant.",
+  licences_none_explanation:
+    'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
+  licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
 };
 
 export default translations;

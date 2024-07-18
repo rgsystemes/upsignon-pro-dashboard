@@ -28,3 +28,18 @@
 p {
   white-space: pre-line;
 }
+
+
+/*Licences*/
+.redrow td {
+  background-color: #D0312D;
+  color: white;
+}
+.orangerow td {
+  background-color: orange;
+  color: white;
+}
+.greyrow td {
+  background-color: grey;
+  color: white;
+}

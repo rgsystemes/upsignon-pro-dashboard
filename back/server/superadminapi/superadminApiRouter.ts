@@ -25,6 +25,7 @@ import { extract_emails_for_shared_device } from '../api/extract_emails_for_shar
 import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_unused';
 import { send_email, send_email_precheck } from '../api/send_email';
 import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
+import { get_licences } from '../api/get_licences';
 
 export const superadminApiRouter = express.Router();
 
@@ -99,3 +100,6 @@ superadminApiRouter.get('/get-password-stats', (req, res) => {
   get_password_stats(req, res, true);
 });
 superadminApiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, true));
+
+// Licences
+superadminApiRouter.post('/get-licences', (req, res) => get_licences(req, res, true));

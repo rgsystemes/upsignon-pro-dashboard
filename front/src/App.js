@@ -14,6 +14,7 @@ import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
 import { Other } from './pages/Other';
+import { Licences } from './pages/Licences';
 
 class App extends React.Component {
   state = {
@@ -50,7 +51,7 @@ class App extends React.Component {
       });
     } catch (e) {
       console.error(e);
-      window.location.href = baseFrontUrl + '/login.html';
+      // window.location.href = baseFrontUrl + '/login.html';
     }
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
       groupUrlFetch('/api/count-shared-vaults', 'GET', null)
@@ -138,6 +139,9 @@ class App extends React.Component {
         );
       }
       currentPage = 'settings';
+    } else if (path.startsWith(`/${groupId}/licences`)) {
+      pageContent = <Licences setIsLoading={this.setIsLoading} />;
+      currentPage = 'licences';
     }
 
     const pages = [
@@ -190,6 +194,13 @@ class App extends React.Component {
         href: '/settings/',
         title: i18n.t('menu_settings'),
         isCurrent: currentPage === 'settings',
+        disabledForSuperadmin: false,
+      },
+      {
+        key: 'licences',
+        href: '/licences/',
+        title: `${i18n.t('menu_licences')}`,
+        isCurrent: currentPage === 'licences',
         disabledForSuperadmin: false,
       },
     ];
