@@ -51,7 +51,7 @@ class App extends React.Component {
       });
     } catch (e) {
       console.error(e);
-      // window.location.href = baseFrontUrl + '/login.html';
+      window.location.href = baseFrontUrl + '/login.html';
     }
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
       groupUrlFetch('/api/count-shared-vaults', 'GET', null)
