@@ -56,7 +56,7 @@ const translations = {
   user_nb_devices_value: '$nb devices',
   user_nb_codes_value: '$nb codes',
   user_nb_accounts_value: '$nb accounts',
-  user_nb_shared_items_value: 'of which $nb shared',
+  user_nb_shared_items_value: '$nb shared vaults',
   user_passwords_stats: 'Passwords stats (not shared only)',
   user_settings_override: 'Settings',
   shared_vault_passwords_stats: 'Passwords stats',
