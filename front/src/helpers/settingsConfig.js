@@ -60,6 +60,11 @@ export const settingsConfig = {
     recommendedValue: false,
     userTitle: null,
   },
+  PREVENT_UPDATE_POPUP: {
+    groupsTitle: 'sasettings_prevent_update_popup',
+    recommendedValue: false,
+    userTitle: null,
+  },
 };
 
 // NB :
