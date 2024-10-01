@@ -12,6 +12,14 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
 
     let isAuthorized = false;
     let isAuthorizedError = null;
+    let msUserId: string | null = null;
+    let msUserIdError: string | null = null;
+    try {
+      msUserId = await MicrosoftGraph.getUserId(req.proxyParamsGroupId, safeEmailAddress);
+    } catch (e) {
+      logError('graph.getUserId', e);
+      msUserIdError = '' + e;
+    }
     try {
       isAuthorized = await MicrosoftGraph.isUserAuthorizedForUpSignOn(
         req.proxyParamsGroupId,
@@ -31,6 +39,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     }
     // Return res
     return res.status(200).json({
+      msUserId: { value: msUserId, error: msUserIdError },
       isAuthorized: { value: isAuthorized, error: isAuthorizedError },
       userGroups: { value: userGroups, error: userGroupsError },
     });

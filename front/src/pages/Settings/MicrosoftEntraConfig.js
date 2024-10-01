@@ -185,6 +185,19 @@ export class MicrosoftEntraConfig extends React.Component {
           <div>
             <div
               style={{
+                backgroundColor: this.state.testResult.msUserId.value ? 'green' : 'red',
+                padding: 5,
+                color: 'white',
+                margin: '5px 0',
+              }}
+            >
+              <span style={{ marginRight: 5 }}>
+                {i18n.t('group_setting_microsoft_entra_test_user_id')}
+              </span>
+              <span>{this.state.testResult.msUserId.value}</span>
+            </div>
+            <div
+              style={{
                 backgroundColor: this.state.testResult.isAuthorized.value ? 'green' : 'red',
                 padding: 5,
                 color: 'white',

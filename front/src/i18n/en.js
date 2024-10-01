@@ -318,6 +318,7 @@ const translations = {
   group_setting_microsoft_entra_testing: 'Test',
   group_setting_microsoft_entra_test_start: 'Start test',
   group_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
+  group_setting_microsoft_entra_test_user_id: 'MS user id :',
   group_setting_microsoft_entra_test_user_authorized: 'User authorized :',
   group_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user :',
   licences_bank_name: 'Bank',
