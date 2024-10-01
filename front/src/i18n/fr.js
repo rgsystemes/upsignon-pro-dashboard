@@ -322,6 +322,8 @@ const translations = {
   group_setting_microsoft_entra_client_secret_label: 'Secret Client pour l\'Application "UpSignOn"',
   group_setting_microsoft_entra_app_resource_id_label:
     'ID d\'objet pour l\'Application "UpSignOn" (alias ID principal de service)',
+  group_setting_microsoft_entra_app_resource_id_label_note:
+    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le \"deuxième\" identifiant de l'Application UpSignOn)",
   group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   group_setting_microsoft_entra_testing: 'Tester',
   group_setting_microsoft_entra_test_start: 'Lancer le test',

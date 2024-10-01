@@ -125,6 +125,8 @@ export class MicrosoftEntraConfig extends React.Component {
           <br />
           <label htmlFor="appResourceId">
             {i18n.t('group_setting_microsoft_entra_app_resource_id_label')}
+            <br />
+            {i18n.t('group_setting_microsoft_entra_app_resource_id_label_note')}
           </label>
           <br />
           <input
