@@ -452,10 +452,7 @@ class Users extends React.Component {
                       </td>
                     )}
                     {u.deactivated && (
-                      <td
-                        colSpan={2}
-                        style={{ backgroundColor: 'rgb(168, 50, 50)', color: 'white' }}
-                      >
+                      <td style={{ backgroundColor: 'rgb(168, 50, 50)', color: 'white' }}>
                         <div
                           style={{
                             display: 'flex',
