@@ -40,7 +40,6 @@ export const extract_database = async (
     ${isSuperadmin ? '' : 'WHERE u.group_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
   `;
-    console.log(queryString);
     const dbRes = await db.query(queryString, isSuperadmin ? [] : [req.proxyParamsGroupId]);
 
     let csvContent = '';
