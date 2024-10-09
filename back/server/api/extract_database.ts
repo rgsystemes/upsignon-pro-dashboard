@@ -7,8 +7,7 @@ export const extract_database = async (
   isSuperadmin: boolean,
 ): Promise<void> => {
   try {
-    const dbRes = await db.query(
-      `
+    const queryString = `
     SELECT
       u.email,
       ${isSuperadmin ? 'g.name AS bank_name,' : ''}
@@ -26,13 +25,13 @@ export const extract_database = async (
       (SELECT COUNT(ud.id) FROM user_devices AS ud WHERE ud.user_id=u.id) AS nb_devices,
       (SELECT COUNT(*) FROM shared_vault_recipients AS sau WHERE sau.user_id=u.id) AS nb_shared_vaults,
       u.nb_codes AS nb_codes,
-      u.nb_accounts, AS nb_accounts,
-      u.nb_accounts_weak, AS nb_accounts_weak,
-      u.nb_accounts_medium, AS nb_accounts_medium,
-      u.nb_accounts_strong, AS nb_accounts_strong,
-      u.nb_accounts_red, AS nb_accounts_red,
-      u.nb_accounts_orange, AS nb_accounts_orange,
-      u.nb_accounts_green, AS nb_accounts_green,
+      u.nb_accounts AS nb_accounts,
+      u.nb_accounts_weak AS nb_accounts_weak,
+      u.nb_accounts_medium AS nb_accounts_medium,
+      u.nb_accounts_strong AS nb_accounts_strong,
+      u.nb_accounts_red AS nb_accounts_red,
+      u.nb_accounts_orange AS nb_accounts_orange,
+      u.nb_accounts_green AS nb_accounts_green,
       u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
       u.nb_accounts_with_no_password AS nb_accounts_with_no_password
     FROM users AS u
@@ -40,9 +39,9 @@ export const extract_database = async (
     ${isSuperadmin ? 'INNER JOIN groups AS g ON u.group_id=g.id' : ''}
     ${isSuperadmin ? '' : 'WHERE u.group_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
-  `,
-      isSuperadmin ? [] : [req.proxyParamsGroupId],
-    );
+  `;
+    console.log(queryString);
+    const dbRes = await db.query(queryString, isSuperadmin ? [] : [req.proxyParamsGroupId]);
 
     let csvContent = '';
     if (dbRes.rowCount && dbRes.rowCount > 0) {
