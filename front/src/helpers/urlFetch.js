@@ -14,6 +14,7 @@ export async function baseUrlFetch(route, method, body, useGroup) {
     keepalive: true,
   });
   if (!res.ok) {
+    window.alert(i18n.t('request_error'));
     throw new Error(res.statusText);
   }
   const content = await res.text();

@@ -17,6 +17,7 @@ const translations = {
   pagination_pages: 'pages',
   validate: 'Valider',
   cancel: 'Annuler',
+  request_error: 'La connexion au serveur a échouée, vous devez peut-être vous reconnecter.',
   newsletter_admins:
     'Newsletter administrateurs (notes de versions en avance, information utiles pour le déploiement, autres informations importantes).',
   newsletter_tech:

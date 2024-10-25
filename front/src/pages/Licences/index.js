@@ -42,7 +42,7 @@ export class Licences extends React.Component {
         {!hasLicences ? (
           <div>
             <p>{i18n.t('licences_none')}</p>
-            {window.location.path.indexOf('/superadmin') >= 0 && (
+            {window.location.pathname.indexOf('/superadmin') >= 0 && (
               <p>{i18n.t('licences_none_explanation')}</p>
             )}
           </div>
