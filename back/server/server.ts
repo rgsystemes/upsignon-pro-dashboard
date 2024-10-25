@@ -108,6 +108,7 @@ app.use((req, res, next) => {
     if (req.method !== 'GET') {
       res.status(401).end();
     } else {
+      logInfo('session check failed, redirecting to login page');
       if (env.IS_PRODUCTION) {
         res.redirect(303, env.SERVER_URL + '/login.html');
       } else {

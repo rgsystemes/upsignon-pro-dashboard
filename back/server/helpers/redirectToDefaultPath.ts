@@ -1,6 +1,8 @@
 import env from './env';
+import { logInfo } from './logger';
 
 export const redirectToDefaultPath = (req: any, res: any): void => {
+  logInfo('redirectToDefaultPath', req.method, req.originalUrl);
   let defaultPath = '';
   if (req.session.isSuperadmin) {
     defaultPath = 'superadmin/'; // Keep trailing '/' for cases where dashboard url has a path !

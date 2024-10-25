@@ -9,6 +9,7 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
       if (filteredGroups.length === 0) {
         // this case should not happen
         req.destroy();
+        logError('get_available_groups filteredGroups.length === 0');
         return res.status(401).end();
       }
       return res.status(200).json({ groups: filteredGroups, isSuperadmin: false });
