@@ -19,6 +19,9 @@ async function createTemporaryAdminTable() {
     await db.query(
       "CREATE TABLE IF NOT EXISTS temporary_admins (token VARCHAR, expiration_time TIMESTAMP(0) DEFAULT current_timestamp(0) + interval '5 minutes')",
     );
+    await db.query(
+      'ALTER TABLE temporary_admins ALTER expiration_time TYPE timestamp with time zone',
+    );
   } catch (e) {
     console.error(e); //
     throw e;
