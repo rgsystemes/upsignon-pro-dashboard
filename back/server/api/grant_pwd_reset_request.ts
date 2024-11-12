@@ -11,7 +11,7 @@ export const grant_pwd_reset_request = async (
   try {
     const adminEmail = req.session?.adminEmail;
     const requestId = req.params.requestId;
-    const expDuration = 10 * 60 * 1000; // 10 minutes
+    const expDuration = 60 * 60 * 1000; //  1 hour
     const expDate = Date.now() + expDuration;
     const date = new Date();
     date.setTime(expDate);
