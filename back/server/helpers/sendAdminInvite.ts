@@ -15,7 +15,7 @@ export const sendAdminInvite = async (
     const encodedToken = encodeURIComponent(token);
     const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 
-    const expDate = tokenExpiresAt.toLocaleDateString();
+    const expDate = tokenExpiresAt.toLocaleDateString('fr');
     const expTime = tokenExpiresAt.toLocaleTimeString().split(':').slice(0, 2).join(':');
 
     await transporter.sendMail({
