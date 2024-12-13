@@ -43,7 +43,7 @@ app.use(
       httpOnly: true,
       secure: env.IS_PRODUCTION,
       maxAge: 1800000, // half an hour
-      sameSite: env.IS_PRODUCTION ? 'strict' : 'none',
+      sameSite: env.IS_PRODUCTION ? 'strict' : 'lax',
     },
     name: 'upsignon_dashboard_session',
     // @ts-ignore
