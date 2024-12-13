@@ -10,9 +10,6 @@ export const update_superadmin_status = async (req: any, res: any): Promise<void
       req.body.adminId,
     ]);
 
-    if (req.body.willBeSuperadmin) {
-      await db.query('DELETE FROM admin_groups WHERE admin_id=$1', [req.body.adminId]);
-    }
     // DISCONNECT the target admin
     const targetAdmin = await db.query('SELECT email FROM admins WHERE id=$1', [req.body.adminId]);
     await db.query(`DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1`, [
@@ -20,7 +17,7 @@ export const update_superadmin_status = async (req: any, res: any): Promise<void
     ]);
     res.status(200).end();
   } catch (e) {
-    logError("update_superadmin_status", e);
+    logError('update_superadmin_status', e);
     res.status(400).end();
   }
 };
