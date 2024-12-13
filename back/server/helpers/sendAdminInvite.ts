@@ -2,6 +2,7 @@ import env from './env';
 import { logError } from './logger';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 
+export const ttlMinutes = 20;
 export const sendAdminInvite = async (
   email: string,
   token: string,
@@ -17,7 +18,6 @@ export const sendAdminInvite = async (
     const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 
     const expDate = tokenExpiresAt.toLocaleDateString('fr');
-    const expTime = tokenExpiresAt.toLocaleTimeString().split(':').slice(0, 2).join(':');
 
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
@@ -33,7 +33,7 @@ Prérequis :
 1. Avoir téléchargé l'application UpSignOn sur cet appareil (voir https://upsignon.eu/download).
 2. Avoir créé ou importé votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.
 
-Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera dans ${ttlMinutes} minutes.
 ${link}
 
 Si ce lien a expiré, vous pouvez le regénérer depuis la page ${env.BACKEND_URL + '/login.html'}.
@@ -51,7 +51,7 @@ UpSignOn`,
 <div>2. Avoir créé ou importé votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.</div>
 <br/>
 <div>
-<div>Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+<div>Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera dans ${ttlMinutes} minutes.
 <br/>
 <a href="${link}">${link}</a>
 <br/>
