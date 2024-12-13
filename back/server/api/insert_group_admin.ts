@@ -17,10 +17,12 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
       [newId, email, false],
     );
 
-    await db.query(
-      'INSERT INTO admin_groups (admin_id, group_id) VALUES ($1,$2) ON CONFLICT (admin_id, group_id) DO NOTHING',
-      [insertRes.rows[0].id, groupId],
-    );
+    if (insertRes.rowCount === 1) {
+      await db.query(
+        'INSERT INTO admin_groups (admin_id, group_id) VALUES ($1,$2) ON CONFLICT (admin_id, group_id) DO NOTHING',
+        [insertRes.rows[0].id, groupId],
+      );
+    }
     res.status(200).end();
   } catch (e) {
     logError('insert_group_admin', e);
