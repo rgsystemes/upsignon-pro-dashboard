@@ -1,4 +1,4 @@
-import { cleanForHTMLInjections } from '../helpers/cleanHTMLInjections';
+import { inputSanitizer } from '../helpers/sanitizer';
 import { logError } from '../helpers/logger';
 import { EntraGroup, MicrosoftGraph } from '../helpers/microsoftEntraIdGraph';
 
@@ -8,7 +8,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     if (!userEmail) return res.status(400).end();
 
     // prevent HTML injections
-    const safeEmailAddress = cleanForHTMLInjections(userEmail);
+    const safeEmailAddress = inputSanitizer.cleanForHTMLInjections(userEmail);
 
     let isAuthorized = false;
     let isAuthorizedError = null;

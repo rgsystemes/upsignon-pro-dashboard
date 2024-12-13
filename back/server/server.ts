@@ -17,6 +17,7 @@ import { disconnect } from './helpers/disconnect';
 import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
+import { getAdminInvite } from './login/get_admin_invite';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
@@ -100,6 +101,7 @@ app.get('/no-admin-bank.html', (req, res) => {
 });
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
+app.post('/get_admin_invite', getAdminInvite);
 
 // CHECK SESSION VALIDITY
 app.use((req, res, next) => {

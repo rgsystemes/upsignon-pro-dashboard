@@ -28,10 +28,11 @@ export const sendAdminInvite = async (
     } UpSignOn PRO.
 
     Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.
+Prérequis :
+1. Avoir téléchargé l'application UpSignOn sur cet appareil (voir https://upsignon.eu/download).
+2. Avoir créé ou importé votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.
 
-1. Téléchargez l'application UpSignOn sur cet appareil (voir https://upsignon.eu/download).
-2. Créez ou importez votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.
-3. Cliquez sur ce lien pour devenir administrateur. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
 ${link}
 
 Bonne journée,
@@ -43,9 +44,12 @@ UpSignOn`,
         groupName ? ' la banque de coffres-forts' + groupName : ''
       } UpSignOn PRO.</div>
 <div>Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.</div>
-<div>1. Téléchargez l'application UpSignOn sur cet appareil (voir <a href="https://upsignon.eu/download">cette page</a>).</div>
-<div>2. Créez ou importez votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.</div>
-<div>3. Cliquez sur ce lien pour devenir administrateur. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
+<div>Prérequis :</div>
+<div>1. Avoir téléchargé l'application UpSignOn sur cet appareil (voir <a href="https://upsignon.eu/download">cette page</a>).</div>
+<div>2. Avoir créé ou importé votre espace PRO en utilisant le lien de configuration fourni par un autre administrateur.</div>
+<br/>
+<div>
+<div>Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
 <br/>
 <a href="${link}">${link}</a>
 </div>

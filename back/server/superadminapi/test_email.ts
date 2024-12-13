@@ -1,4 +1,4 @@
-import { cleanForHTMLInjections } from '../helpers/cleanHTMLInjections';
+import { inputSanitizer } from '../helpers/sanitizer';
 import { logError } from '../helpers/logger';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 
@@ -11,7 +11,7 @@ export const test_email = async (req: any, res: any): Promise<void> => {
     const transporter = getMailTransporter(emailConfig, { debug: false });
 
     // prevent HTML injections
-    const safeEmailAddress = cleanForHTMLInjections(userEmail);
+    const safeEmailAddress = inputSanitizer.cleanForHTMLInjections(userEmail);
 
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
