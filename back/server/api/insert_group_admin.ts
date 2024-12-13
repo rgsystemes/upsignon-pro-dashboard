@@ -13,7 +13,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     // Send new invitation
     const newId = v4();
     const insertRes = await db.query(
-      `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) ON CONFLICT (email) DO UPDATE SET token=$4, token_expires_at=$5 RETURNING id`,
+      `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) ON CONFLICT (email) DO NOTHING RETURNING id`,
       [newId, email, false],
     );
 

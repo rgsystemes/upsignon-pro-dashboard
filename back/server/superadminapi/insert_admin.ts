@@ -12,7 +12,7 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
 
     const newId = v4();
     await db.query(
-      `INSERT INTO admins (id, email, is_superadmin, token, token_expires_at) VALUES ($1, lower($2), $3, $4, $5) ON CONFLICT (email) DO UPDATE SET token=$4, token_expires_at=$5, is_superadmin=$3`,
+      `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) ON CONFLICT (email) DO UPDATE SET is_superadmin=$3`,
       [newId, email, isSuperadmin],
     );
     res.status(200).end();
