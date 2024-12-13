@@ -2,7 +2,6 @@
 import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
-import { sendAdminInvite } from '../helpers/sendAdminInvite';
 
 export const insert_admin = async (req: any, res: any): Promise<void> => {
   try {
@@ -12,15 +11,10 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
     const isSuperadmin = req.body.isSuperadmin;
 
     const newId = v4();
-    const token = v4();
-    const tokenExpiresAt = new Date();
-    const ttl = 24 * 3600 * 1000; // one day
-    tokenExpiresAt.setTime(tokenExpiresAt.getTime() + ttl);
     await db.query(
       `INSERT INTO admins (id, email, is_superadmin, token, token_expires_at) VALUES ($1, lower($2), $3, $4, $5) ON CONFLICT (email) DO UPDATE SET token=$4, token_expires_at=$5, is_superadmin=$3`,
-      [newId, email, isSuperadmin, token, tokenExpiresAt],
+      [newId, email, isSuperadmin],
     );
-    sendAdminInvite(email, token, tokenExpiresAt, null);
     res.status(200).end();
   } catch (e) {
     logError('insert_admin', e);

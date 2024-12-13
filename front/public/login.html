@@ -46,7 +46,7 @@
         }),
         keepalive: false,
       });
-      if (!res.ok) {
+      if (!res.ok || !JSON.parse(res.body).success) {
         window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
       } else {
         window.alert("SUCCÈS ! vous allez recevoir un email.");

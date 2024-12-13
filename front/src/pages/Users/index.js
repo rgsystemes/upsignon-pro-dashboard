@@ -480,7 +480,7 @@ class Users extends React.Component {
                   </tr>
                   {u.devices && (
                     <tr className="detailContainer">
-                      <td colSpan={6}>
+                      <td colSpan={7}>
                         <UserDevices
                           setIsLoading={this.props.setIsLoading}
                           devices={u.devices}

@@ -18,12 +18,12 @@ export const getAdminInvite = async (req: any, res: any): Promise<void> => {
     );
     sendAdminInvite(adminEmail, token, tokenExpiresAt, null);
     if (dbRes.rowCount === 1) {
-      return res.status(200).end();
+      return res.status(200).json({ success: true });
     } else {
-      return res.status(400).end();
+      return res.status(200).json({ success: false });
     }
   } catch (e) {
     logError('getAdminInvite', e);
-    res.status(400).end();
+    res.status(200).json({ success: false });
   }
 };

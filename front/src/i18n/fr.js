@@ -125,6 +125,8 @@ const translations = {
   settings_admin_groups: 'Banques de coffres-forts',
   sasettings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
   sasettings_admin_change_rights: 'Changer les droits',
+  settings_admin_send_invite: "Envoyer un email d'invitation",
+  settings_admin_invite_sent: 'Email envoyé',
   settings_urls: 'Sites web pré-renseignés',
   settings_urls_explanation:
     "Les sites que vous renseignez ici seront proposés aux utilisateurs pour simplifier l'enregistrement de leurs mots de passe.",
@@ -141,7 +143,7 @@ const translations = {
     "Si le site utilise une méthode d'authentification HTTP basic, signalez-le ici pour que l'extension de navigateur puisse connecter automatiquement l'utilisateur car le remplissage automatique ne pourra pas fonctionner.",
   settings_urls_delete_warning: 'Êtes-vous sûr ?',
   settings_group_admins_title: 'Administrateurs de cette banque de coffres-forts',
-  settings_group_admins_invite: 'Ajouter et (ré)envoyer une invitation si nécessaire',
+  settings_group_admins_invite: 'Ajouter',
   settings_group_admin_delete_warning:
     "Êtes-vous sûr de vouloir supprimer l'accès de cet administrateur à cette banque de coffres-forts ?",
   settings_group_settings: 'Options',
@@ -253,7 +255,7 @@ const translations = {
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
   sasettings_superadmins: 'Administrateurs',
-  sasettings_superadmins_invite: '(Ré)Envoyer une invitation (valide 24h)',
+  sasettings_superadmins_invite: 'Autoriser',
   sasettings_groups: 'Banques de coffres-forts',
   sasettings_groups_explanation:
     "Les banques de coffres-forts sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur banque. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs banques.",

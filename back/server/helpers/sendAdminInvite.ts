@@ -1,3 +1,4 @@
+import env from './env';
 import { logError } from './logger';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 
@@ -11,7 +12,7 @@ export const sendAdminInvite = async (
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
 
-    const baseUrl = encodeURIComponent(process.env.SERVER_URL?.replace(/\/$/, '') + '/login');
+    const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
     const encodedToken = encodeURIComponent(token);
     const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 
@@ -35,6 +36,7 @@ Prérequis :
 Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
 ${link}
 
+Si ce lien a expiré, vous pouvez le regénérer depuis la page ${env.BACKEND_URL + '/login.html'}.
 Bonne journée,
 UpSignOn`,
       html: `<!DOCTYPE html>
@@ -52,6 +54,8 @@ UpSignOn`,
 <div>Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera le ${expDate} à ${expTime}.
 <br/>
 <a href="${link}">${link}</a>
+<br/>
+<div>Si ce lien a expiré, vous pouvez le regénérer depuis la page ${env.BACKEND_URL + '/login.html'}.</div>
 </div>
 <br/>
 <div>Bonne journée,</div>

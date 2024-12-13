@@ -125,6 +125,8 @@ const translations = {
   settings_admin_groups: 'Banks of safes',
   sasettings_admin_delete_warning: 'Are you sure you want to revoke this admin?',
   sasettings_admin_change_rights: 'Change rights',
+  settings_admin_send_invite: 'Send invitation email',
+  settings_admin_invite_sent: 'Email sent',
   settings_urls: 'Prefilled websites',
   settings_urls_explanation:
     'The websites you enter here will be offered to users to simplify the registration of their passwords.',
@@ -141,7 +143,7 @@ const translations = {
     'If the website uses basic authentication, you need to tell it here so the browser extension can automatically connect the user as autofilling cannot work.',
   settings_urls_delete_warning: 'Are your sure?',
   settings_group_admins_title: 'Administrators of this bank of safes',
-  settings_group_admins_invite: 'Add and (re)send an invitation if needed',
+  settings_group_admins_invite: 'Add',
   settings_group_admin_delete_warning:
     'Are you sure you want to remove the access of this administrator to this bank of safes?',
   settings_group_settings: 'Options',
@@ -250,7 +252,7 @@ const translations = {
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
   sasettings_superadmins: 'Administrators',
-  sasettings_superadmins_invite: '(Re)Send an invite (valid for 24h)',
+  sasettings_superadmins_invite: 'Autoriser',
   sasettings_groups: 'Banks of safes',
   sasettings_groups_explanation:
     'Banks of safes are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',

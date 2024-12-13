@@ -306,6 +306,7 @@ class Groups extends React.Component {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
             </tbody>
           </table>

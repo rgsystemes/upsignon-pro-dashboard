@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading
@@ -53,6 +53,22 @@ class GroupAdmins extends React.Component {
       }
     }
   };
+  sendAdminInvite = async (adminEmail) => {
+    try {
+      this.props.setIsLoading(true);
+      const { success } = await baseUrlFetch('/get_admin_invite', 'POST', { adminEmail });
+      if (success) {
+        window.alert(i18n.t('settings_admin_invite_sent'));
+      } else {
+        window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
+      }
+    } catch (e) {
+      console.error(e);
+      window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e }));
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
 
   componentDidMount() {
     this.fetchGroupAdmins();
@@ -98,6 +114,9 @@ class GroupAdmins extends React.Component {
                     <td>
                       <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
                         {i18n.t('delete')}
+                      </div>
+                      <div className="action" onClick={() => this.sendAdminInvite(admin.email)}>
+                        {i18n.t('settings_admin_send_invite')}
                       </div>
                     </td>
                   </tr>

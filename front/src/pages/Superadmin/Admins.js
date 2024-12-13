@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props : setIsLoading, groups
@@ -109,6 +109,22 @@ class Admins extends React.Component {
       }
     }
   };
+  sendAdminInvite = async (adminEmail) => {
+    try {
+      this.props.setIsLoading(true);
+      const { success } = await baseUrlFetch('/get_admin_invite', 'POST', { adminEmail });
+      if (success) {
+        window.alert(i18n.t('settings_admin_invite_sent'));
+      } else {
+        window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
+      }
+    } catch (e) {
+      console.error(e);
+      window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e }));
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
   openChangeRights = (adminId) => {
     this.setState((s) => ({
       ...s,
@@ -198,8 +214,8 @@ class Admins extends React.Component {
                           backgroundColor: admin.is_superadmin
                             ? 'lightgrey'
                             : admin.groups && admin.groups.length > 0
-                            ? 'white'
-                            : 'red',
+                              ? 'white'
+                              : 'red',
                         }}
                       >
                         {admin.groups?.map((g) => {
@@ -212,6 +228,9 @@ class Admins extends React.Component {
                         </div>
                         <div className="action" onClick={() => this.openChangeRights(admin.id)}>
                           {i18n.t('sasettings_admin_change_rights')}
+                        </div>
+                        <div className="action" onClick={() => this.sendAdminInvite(admin.email)}>
+                          {i18n.t('settings_admin_send_invite')}
                         </div>
                       </td>
                     </tr>
