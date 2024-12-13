@@ -32,7 +32,7 @@ async function createTemporaryAdmin() {
   const token = createToken(20);
   await db.query(`INSERT INTO temporary_admins (token) VALUES ($1)`, [token]);
   console.log('You can log into your dashboard using this one-time link (valid for 5 minutes):');
-  console.log(`${process.env.SERVER_URL.replace(/\/$/, '')}/manualConnect?token=${token}`);
+  console.log(`${process.env.BACKEND_URL.replace(/\/$/, '')}/manualConnect?token=${token}`);
 }
 
 createTemporaryAdminTable()

@@ -43,7 +43,7 @@ app.use(
       httpOnly: true,
       secure: env.IS_PRODUCTION,
       maxAge: 1800000, // half an hour
-      sameSite: env.IS_PRODUCTION ? 'strict' : 'lax',
+      sameSite: env.IS_PRODUCTION ? 'strict' : 'none',
     },
     name: 'upsignon_dashboard_session',
     // @ts-ignore
@@ -59,16 +59,17 @@ app.use(
 // DEV MODE
 if (!env.IS_PRODUCTION) {
   app.use(async (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     try {
       await updateSessionAuthorizations(
         req,
         // @ts-ignore
-        env.DEV_FALLBACK_ADMIN_URL,
+        env.DEV_FALLBACK_ADMIN_EMAIL,
       );
       next();
     } catch (e) {
+      console.error(e);
       res.send(444).end();
     }
   });
@@ -109,11 +110,7 @@ app.use((req, res, next) => {
       res.status(401).end();
     } else {
       logInfo('session check failed, redirecting to login page');
-      if (env.IS_PRODUCTION) {
-        res.redirect(303, env.SERVER_URL + '/login.html');
-      } else {
-        res.redirect(303, `${req.protocol}://${req.headers.host?.replace(/\/$/, '')}/login.html`);
-      }
+      res.redirect(303, env.BACKEND_URL + '/login.html');
     }
   } else {
     next();

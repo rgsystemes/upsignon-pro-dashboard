@@ -12,9 +12,5 @@ export const redirectToDefaultPath = (req: any, res: any): void => {
     defaultPath = req.session.groups[0] + '/'; // Keep trailing '/' for cases where dashboard url has a path !
   }
 
-  if (env.IS_PRODUCTION) {
-    res.redirect(303, env.SERVER_URL + '/' + defaultPath);
-  } else {
-    res.redirect(303, `${req.protocol}://${req.headers.host?.replace(/\/$/, '')}/${defaultPath}`);
-  }
+  res.redirect(303, env.FRONTEND_URL + '/' + defaultPath);
 };
