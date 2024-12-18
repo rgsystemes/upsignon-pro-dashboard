@@ -103,7 +103,7 @@ export class MicrosoftEntraConfig extends React.Component {
               display: 'inline-block',
             }}
           >
-            {i18n.t('group_setting_microsoft_entra_authorizations')}
+            {i18n.t('group_setting_microsoft_entra_pitch_2')}
             <ul>
               <li>User.Read.All</li>
               <li>Group.Read.All</li>
@@ -208,9 +208,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={i18n.t('group_setting_microsoft_entra_permissions_reloaded')}
           />
         </form>
-        <div style={{ fontWeight: 'bold', marginTop: 20 }}>
-          {i18n.t('group_setting_microsoft_entra_testing')}
-        </div>
+        <div style={{ marginTop: 20 }}>{i18n.t('group_setting_microsoft_entra_testing')}</div>
         <form onSubmit={this.testConfigWithEmail}>
           <input
             type="text"

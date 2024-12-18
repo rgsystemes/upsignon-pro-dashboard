@@ -315,8 +315,8 @@ const translations = {
   group_setting_microsoft_entra_title: 'BETA - Configuration Microsoft Entra ID (optionnel)',
   group_setting_microsoft_entra_pitch:
     "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
-  group_setting_microsoft_entra_authorizations:
-    'Si vous choisissez de configurer Microsoft Entra, UpSignOn aura besoin des autorisations suivantes nécessitant une validation administrateur :',
+  group_setting_microsoft_entra_pitch_2:
+    "Pour utiliser cette fonctionnalité, créez une 'Application d'entreprise' dans votre annuaire Microsoft Entra depuis la page 'Enregistrement d'application' et appelez-la UpSignOn. Dans 'Enregistrement d'application' > UpSignOn > 'Certificats & Secrets' ajoutez un secret client et copiez le secret dans le formulaire ci-dessous. Dans 'Enregistrement d'application' > UpSignOn > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur. Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
   group_setting_microsoft_entra_api_list: 'Liste des API utilisées',
   group_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",

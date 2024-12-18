@@ -309,8 +309,8 @@ const translations = {
   group_setting_microsoft_entra_title: 'BETA - Microsoft Entra ID configuration (optionnal)',
   group_setting_microsoft_entra_pitch:
     "UpSignOn can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
-  group_setting_microsoft_entra_authorizations:
-    'If you choose to configure Microsoft Entra, UpSignOn will need the following authorizations requiring admin consent :',
+  group_setting_microsoft_entra_pitch_2:
+    "To use this feature, create an 'Enterprise Application' in your Microsoft Entra directory from the 'App registration' page and call it UpSignOn. In 'App registration' > UpSignOn > 'Certificates & secrets' add a client secret and paste the secret in the form below. In 'App registration' > UpSignOn > 'API permissions' configure the below permissions and have them validated by an administrator. Finally, add users and groups to this enterprise application.",
   group_setting_microsoft_entra_api_list: 'Used API list',
   group_setting_microsoft_entra_tenant_id_label: 'Tenant ID (alias Directory ID)',
   group_setting_microsoft_entra_client_id_label:
