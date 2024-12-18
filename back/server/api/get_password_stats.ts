@@ -48,7 +48,7 @@ export const get_password_stats = async (
     }
 
     if (rawStats.rowCount === 0) {
-      return res.status(400).end();
+      return res.status(204).end();
     }
 
     // Then get the continuous list of days to make sure the graph shows one point per day (otherwise the graph will be shrinked)

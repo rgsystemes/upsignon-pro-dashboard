@@ -66,10 +66,12 @@ class SecurityChart extends React.Component {
   fetchStats = async () => {
     try {
       const stats = await groupUrlFetch(`/api/get-password-stats`, 'GET', null);
-      this.rawStats = stats;
-      this.firstDate = new Date(stats[0]?.day);
-      this.firstDate.setUTCHours(0, 0, 0, 0);
-      this.showStats();
+      if (stats) {
+        this.rawStats = stats;
+        this.firstDate = new Date(stats[0]?.day);
+        this.firstDate.setUTCHours(0, 0, 0, 0);
+        this.showStats();
+      }
     } catch (e) {
       console.error(e);
     }
