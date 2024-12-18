@@ -321,12 +321,12 @@ const translations = {
   group_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
   group_setting_microsoft_entra_client_id_label:
-    'ID d\'application pour l\'Application "UpSignOn" que vous avez créé dans votre annuaire',
+    'ID d\'application pour l\'Application "UpSignOn" que vous avez créée dans votre annuaire',
   group_setting_microsoft_entra_client_secret_label: 'Secret Client pour l\'Application "UpSignOn"',
   group_setting_microsoft_entra_app_resource_id_label:
     'ID d\'objet pour l\'Application "UpSignOn" (alias ID principal de service)',
   group_setting_microsoft_entra_app_resource_id_label_note:
-    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le \"deuxième\" identifiant de l'Application UpSignOn)",
+    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le deuxième identifiant de l'Application UpSignOn)",
   group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   group_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   group_setting_microsoft_entra_testing: 'Tester',
