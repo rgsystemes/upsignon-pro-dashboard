@@ -4,17 +4,15 @@
   "licence": "none",
   "private": true,
   "dependencies": {
-    "@azure/identity": "^4.1.0",
-    "@microsoft/microsoft-graph-client": "^3.0.7",
     "bcrypt": "^5.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "global-agent": "^3.0.0",
+    "ms-entra-for-upsignon": "git+https://github.com/UpSignOn/ms-entra-for-upsignon",
     "nodemailer": "^6.8.0",
     "path": "^0.12.7",
     "pg": "^8.11.5",
-    "typescript": "^5.4.5",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -29,7 +27,8 @@
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
   },
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",

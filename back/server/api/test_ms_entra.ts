@@ -1,6 +1,6 @@
 import { inputSanitizer } from '../helpers/sanitizer';
 import { logError } from '../helpers/logger';
-import { EntraGroup, MicrosoftGraph } from '../helpers/microsoftEntraIdGraph';
+import { EntraGroup, MicrosoftGraph } from 'ms-entra-for-upsignon';
 
 export const test_ms_entra = async (req: any, res: any): Promise<void> => {
   try {
@@ -22,28 +22,40 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
       logError('graph.getUserId', e);
       msUserIdError = '' + e;
     }
-    try {
-      isAuthorized = await MicrosoftGraph.isUserAuthorizedForUpSignOn(
-        req.proxyParamsGroupId,
-        safeEmailAddress,
-      );
-    } catch (e) {
-      logError('graph.isUserAuthorizedForUpSignOn', e);
-      isAuthorizedError = '' + e;
+    if (!msUserId) {
+      isAuthorized: false;
+      isAuthorizedError: 'MS user id not found';
+    } else {
+      try {
+        isAuthorized = await MicrosoftGraph.isUserAuthorizedForUpSignOn(
+          req.proxyParamsGroupId,
+          msUserId,
+        );
+      } catch (e) {
+        logError('graph.isUserAuthorizedForUpSignOn', e);
+        isAuthorizedError = '' + e;
+      }
     }
     try {
-      allUpSignOnUsers = await MicrosoftGraph.getAllUsersAssignedToUpSignOn(req.proxyParamsGroupId);
+      allUpSignOnUsers = await MicrosoftGraph.getAllUsersAssignedToUpSignOn(
+        req.proxyParamsGroupId,
+        false,
+      );
     } catch (e) {
       logError('graph.getAllUsersAssignedToUpSignOn', e);
       allUpSignOnUsersError = '' + e;
     }
     let userGroups: EntraGroup[] = [];
     let userGroupsError = null;
-    try {
-      userGroups = await MicrosoftGraph.getGroupsForUser(req.proxyParamsGroupId, safeEmailAddress);
-    } catch (e) {
-      logError('graph.getGroupsForUser', e);
-      userGroupsError = '' + e;
+    if (!msUserId) {
+      userGroupsError: 'MS user id not found';
+    } else {
+      try {
+        userGroups = await MicrosoftGraph.getGroupsForUser(req.proxyParamsGroupId, msUserId);
+      } catch (e) {
+        logError('graph.getGroupsForUser', e);
+        userGroupsError = '' + e;
+      }
     }
     // Return res
     return res.status(200).json({

@@ -3,6 +3,7 @@ import { db } from './db';
 import https from 'https';
 import fs from 'fs';
 import { logInfo } from './logger';
+import { setupMSGraph } from './init_ms_graph';
 
 if (env.HTTP_PROXY) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -13,6 +14,7 @@ if (env.HTTP_PROXY) {
 }
 
 export const startServer = (app: any, then: any): void => {
+  setupMSGraph();
   if (env.LOCALHOST_SSL_CERTIFICATE_KEY_PATH && env.LOCALHOST_SSL_CERTIFICATE_CRT_PATH) {
     const options = {
       key: fs.readFileSync(env.LOCALHOST_SSL_CERTIFICATE_KEY_PATH),

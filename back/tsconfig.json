@@ -7,8 +7,7 @@
     "rootDir": "server",
     "outDir": "compiledServer",
     "sourceMap": true,
-    "removeComments": true,
-    "build": true
+    "removeComments": true
   },
   "compileOnSave": true
 }
