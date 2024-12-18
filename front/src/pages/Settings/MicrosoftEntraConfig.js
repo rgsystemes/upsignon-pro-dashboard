@@ -9,6 +9,7 @@ export class MicrosoftEntraConfig extends React.Component {
     clientSecret: '',
     appResourceId: '',
     testResult: null,
+    msEntraAPIs: [], // {path: string, docLink: string}[]
   };
   testingEmailInputRef = null;
 
@@ -27,9 +28,29 @@ export class MicrosoftEntraConfig extends React.Component {
       console.error(e);
     }
   };
+  fetchMSEntraAPIs = async () => {
+    try {
+      const apis = await groupUrlFetch('/api/list-ms-entra-apis', 'GET', null);
+      this.setState({ msEntraAPIs: apis });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   componentDidMount() {
     this.fetchMSEntraConfig();
+    this.fetchMSEntraAPIs();
   }
+  reloadMSEntraInstance = async (event) => {
+    try {
+      event.preventDefault();
+      this.props.setIsLoading(true);
+      await groupUrlFetch('/api/reload-ms-entra-instance', 'POST', null);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
 
   submitNewEntraConfig = async (event) => {
     try {
@@ -59,7 +80,6 @@ export class MicrosoftEntraConfig extends React.Component {
       const testRes = await groupUrlFetch('/api/test-ms-entra', 'POST', {
         email: this.testingEmailInputRef.value,
       });
-      console.log(testRes);
       this.setState({ testResult: testRes });
     } catch (e) {
       console.error(e);
@@ -75,16 +95,30 @@ export class MicrosoftEntraConfig extends React.Component {
         <h2>{i18n.t('group_setting_microsoft_entra_title')}</h2>
         <p>{i18n.t('group_setting_microsoft_entra_pitch')}</p>
         <p>
-          {i18n.t('group_setting_microsoft_entra_authorizations')}
-          <ul>
-            <li>User.Read.All</li>
-            <li>AppRoleAssignment.ReadWrite.All</li>
-            <li>GroupMember.Read.All</li>
-          </ul>
-          {i18n.t('or')}
-          <ul>
-            <li>Directory.Read.All</li>
-          </ul>
+          <div
+            style={{
+              backgroundColor: 'rgb(240,240,240)',
+              padding: 10,
+              borderRadius: 5,
+              display: 'inline-block',
+            }}
+          >
+            {i18n.t('group_setting_microsoft_entra_authorizations')}
+            <ul>
+              <li>User.Read.All</li>
+              <li>Group.Read.All</li>
+            </ul>
+            <details>
+              <summary>{i18n.t('group_setting_microsoft_entra_api_list')}</summary>
+              <ul>
+                {this.state.msEntraAPIs.map((api) => (
+                  <li>
+                    <a href={api.docLink}>{api.path}</a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </div>
         </p>
         <form onSubmit={this.submitNewEntraConfig}>
           <label htmlFor="tenantId">
@@ -166,6 +200,13 @@ export class MicrosoftEntraConfig extends React.Component {
             type="submit"
             value={i18n.t('group_setting_microsoft_entra_apply_config')}
           />
+          <br />
+          <input
+            style={{ marginTop: 15 }}
+            type="button"
+            onClick={this.reloadMSEntraInstance}
+            value={i18n.t('group_setting_microsoft_entra_permissions_reloaded')}
+          />
         </form>
         <div style={{ fontWeight: 'bold', marginTop: 20 }}>
           {i18n.t('group_setting_microsoft_entra_testing')}
@@ -196,7 +237,25 @@ export class MicrosoftEntraConfig extends React.Component {
               <span style={{ marginRight: 5 }}>
                 {i18n.t('group_setting_microsoft_entra_test_user_id')}
               </span>
-              <span>{this.state.testResult.msUserId.value}</span>
+              <span>
+                {this.state.testResult.msUserId.error || this.state.testResult.msUserId.value}
+              </span>
+            </div>
+            <div
+              style={{
+                backgroundColor: this.state.testResult.allUpSignOnUsers.value ? 'green' : 'red',
+                padding: 5,
+                color: 'white',
+                margin: '5px 0',
+              }}
+            >
+              <span style={{ marginRight: 5 }}>
+                {i18n.t('group_setting_microsoft_entra_test_all_users')}
+              </span>
+              <span>
+                {this.state.testResult.allUpSignOnUsers.error ||
+                  this.state.testResult.allUpSignOnUsers.value.map((u) => <div>{u}</div>)}
+              </span>
             </div>
             <div
               style={{
@@ -209,7 +268,10 @@ export class MicrosoftEntraConfig extends React.Component {
               <span style={{ marginRight: 5 }}>
                 {i18n.t('group_setting_microsoft_entra_test_user_authorized')}
               </span>
-              <span>{this.state.testResult.isAuthorized.value ? i18n.t('yes') : i18n.t('no')}</span>
+              <span>
+                {this.state.testResult.isAuthorized.error ||
+                  (this.state.testResult.isAuthorized.value ? i18n.t('yes') : i18n.t('no'))}
+              </span>
             </div>
             <div
               style={{
@@ -224,7 +286,9 @@ export class MicrosoftEntraConfig extends React.Component {
               </span>
               <span>
                 {this.state.testResult.userGroups.error ||
-                  this.state.testResult.userGroups.value.map((g) => g.displayName).join(', ')}
+                  this.state.testResult.userGroups.value
+                    .map((g) => g.displayName || g.id)
+                    .join(', ')}
               </span>
             </div>
           </div>

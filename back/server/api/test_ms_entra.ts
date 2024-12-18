@@ -12,6 +12,8 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
 
     let isAuthorized = false;
     let isAuthorizedError = null;
+    let allUpSignOnUsers = null;
+    let allUpSignOnUsersError: string | null = null;
     let msUserId: string | null = null;
     let msUserIdError: string | null = null;
     try {
@@ -29,6 +31,12 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
       logError('graph.isUserAuthorizedForUpSignOn', e);
       isAuthorizedError = '' + e;
     }
+    try {
+      allUpSignOnUsers = await MicrosoftGraph.getAllUsersAssignedToUpSignOn(req.proxyParamsGroupId);
+    } catch (e) {
+      logError('graph.getAllUsersAssignedToUpSignOn', e);
+      allUpSignOnUsersError = '' + e;
+    }
     let userGroups: EntraGroup[] = [];
     let userGroupsError = null;
     try {
@@ -40,6 +48,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     // Return res
     return res.status(200).json({
       msUserId: { value: msUserId, error: msUserIdError },
+      allUpSignOnUsers: { value: allUpSignOnUsers, error: allUpSignOnUsersError },
       isAuthorized: { value: isAuthorized, error: isAuthorizedError },
       userGroups: { value: userGroups, error: userGroupsError },
     });

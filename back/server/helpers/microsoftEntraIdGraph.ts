@@ -29,6 +29,10 @@ export class MicrosoftGraph {
   static _instances: { [groupId: number]: _MicrosoftGraph } = {};
   static _groupConfig: { [groupId: number]: EntraConfig | null } = {};
 
+  static reloadInstanceForGroup(groupId: number): void {
+    delete MicrosoftGraph._instances[groupId];
+  }
+
   static async getUserId(groupId: number, userEmail: string): Promise<string | null> {
     const graph = await MicrosoftGraph._getInstance(groupId);
     if (graph) {
@@ -51,6 +55,15 @@ export class MicrosoftGraph {
     if (graph) {
       const groups = await graph.getGroupsForUser(userEmail);
       return groups;
+    }
+    return [];
+  }
+
+  static async getAllUsersAssignedToUpSignOn(groupId: number): Promise<string[]> {
+    const graph = await MicrosoftGraph._getInstance(groupId);
+    if (graph) {
+      const allUsers = await graph.getAllUsersAssignedToUpSignOn();
+      return allUsers;
     }
     return [];
   }
@@ -97,6 +110,41 @@ export class MicrosoftGraph {
     }
     return false;
   }
+
+  static listNeededAPIs(): { path: string; docLink: string }[] {
+    return [
+      {
+        path: '/users',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/user-list?view=graph-rest-1.0&tabs=http',
+      },
+      {
+        path: '/groups',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/group-list?view=graph-rest-1.0&tabs=http',
+      },
+      {
+        path: '/users/{id | userPrincipalName}/appRoleAssignments',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/user-list-approleassignments?view=graph-rest-1.0&tabs=http',
+      },
+      {
+        path: '/servicePrincipals/{id}/appRoleAssignedTo',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/serviceprincipal-list-approleassignedto?view=graph-rest-1.0&tabs=http',
+      },
+      {
+        path: '/groups/{id}/members/microsoft.graph.user',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/group-list-members?view=graph-rest-1.0&tabs=http',
+      },
+      {
+        path: '/users/{id}/memberOf/microsoft.graph.group',
+        docLink:
+          'https://learn.microsoft.com/en-us/graph/api/user-list-memberof?view=graph-rest-1.0&tabs=http',
+      },
+    ];
+  }
 }
 
 class _MicrosoftGraph {
@@ -138,8 +186,8 @@ class _MicrosoftGraph {
       throw 'Email is malformed';
     }
 
-    // PERMISSION = User.ReadBasic.All
     const users = await this.msGraph
+      // PERMISSION = User.Read.All OR Directory.Read.All
       .api('/users')
       .header('ConsistencyLevel', 'eventual')
       .filter(`mail eq '${email}' or otherMails/any(oe:oe eq '${email}')`)
@@ -153,13 +201,35 @@ class _MicrosoftGraph {
     const userId = await this._getUserIdFromEmail(email);
     if (!userId) return false;
 
-    // PERMISSION = AppRoleAssignment.ReadWrite.All ou Directory.Read.All
+    // PERMISSION = Directory.Read.All
     const appRoleAssignments = await this.msGraph
       .api(`/users/${userId}/appRoleAssignments`)
       .header('ConsistencyLevel', 'eventual')
       .filter(`resourceId eq ${this.appResourceId}`)
       .get();
-    return appRoleAssignments.value.length > 0;
+    return appRoleAssignments.value.filter((as: any) => !as.deletedDateTime).length > 0;
+    // const allAuthorizedUserIds = await this.getAllUsersAssignedToUpSignOn();
+    // return allAuthorizedUserIds.indexOf(userId) >= 0;
+  }
+
+  async getAllUsersAssignedToUpSignOn(): Promise<string[]> {
+    const allPrincipalsRes = await this.msGraph
+      // PERMISSION = Application.Read.All OR Directory.Read.All
+      // https://learn.microsoft.com/en-us/graph/api/serviceprincipal-list-approleassignedto?view=graph-rest-1.0&tabs=http
+      .api(`/servicePrincipals/${this.appResourceId}/appRoleAssignedTo`)
+      .header('ConsistencyLevel', 'eventual')
+      .select(['principalType', 'principalId'])
+      .get();
+    let allUsersId: string[] = allPrincipalsRes.value
+      .filter((u: any) => u.principalType === 'User')
+      .map((u: any) => u.principalId);
+    const allGroups = allPrincipalsRes.value.filter((u: any) => u.principalType === 'Group');
+    for (let i = 0; i < allGroups.length; i++) {
+      const g = allGroups[i];
+      const allGroupUsersRes = await this.listGroupMembers(g.id);
+      allUsersId = [...allUsersId, ...allGroupUsersRes.map((u) => u.id)];
+    }
+    return allUsersId;
   }
 
   /**
@@ -172,14 +242,53 @@ class _MicrosoftGraph {
   async getGroupsForUser(email: string): Promise<EntraGroup[]> {
     const userId = await this._getUserIdFromEmail(email);
     if (!userId) return [];
-    // https://learn.microsoft.com/en-us/graph/api/associatedteaminfo-list?view=graph-rest-1.0&tabs=http
-    // PERMISSION = GroupMember.Read.All
     const groups = await this.msGraph
+      // Get groups, directory roles, and administrative units that the user is a direct member of. This operation isn't transitive. To retrieve groups, directory roles, and administrative units that the user is a member through transitive membership, use the List user transitive memberOf API.
+      // PERMISSION = Directory.Read.All OR GroupMember.Read.All OR Directory.Read.All
+      // https://learn.microsoft.com/en-us/graph/api/user-list-memberof?view=graph-rest-1.0&tabs=http
       .api(`/users/${userId}/memberOf/microsoft.graph.group`) // pour avoir tous les groupes
       .header('ConsistencyLevel', 'eventual')
       .select(['id', 'displayName'])
       .get();
 
     return groups.value;
+  }
+
+  /**
+   * Returns all members of a group
+   * @returns
+   */
+  async listGroupMembers(groupId: string): Promise<{ id: string; displayName: string }[]> {
+    // Get a list of the group's direct members. A group can have users, organizational contacts, devices, service principals and other groups as members. This operation is not transitive.
+    // PERMISSION = GroupMember.Read.All OR Group.Read.All OR Directory.Read.All
+    // https://learn.microsoft.com/en-us/graph/api/group-list-members?view=graph-rest-1.0&tabs=http
+    const groupMembers = await this.msGraph
+      .api(`/groups/${groupId}/members/microsoft.graph.user/`)
+      .header('ConsistencyLevel', 'eventual')
+      .select(['id', 'mail', 'displayName'])
+      .get();
+
+    return groupMembers.value;
+  }
+
+  async checkGroupMembers(groupIds: string[]): Promise<
+    {
+      id: string;
+      displayName: string;
+      members: { '@odata.type': string; id: string; displayName: string; mail: string | null }[];
+    }[]
+  > {
+    // PERMISSION = GroupMember.Read.All OR Group.Read.All
+    const allGroups = await this.msGraph
+      .api(`/groups`)
+      .header('ConsistencyLevel', 'eventual')
+      .filter(`id in ('${groupIds.join("', '")}')`)
+      .expand('members($select=id, displayName, mail)')
+      .select(['id', 'displayName'])
+      .get();
+
+    // beware, that mail could be empty although the user may have another email
+    return allGroups.value;
+    // When sharing to a group, there should be a check that verifies new users in that group and removed users from that group to adapt sharing
   }
 }

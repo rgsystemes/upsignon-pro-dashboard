@@ -49,6 +49,7 @@ import { get_group_entra_config } from './get_group_entra_config';
 import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
+import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
 
 export const apiRouter = express.Router();
 
@@ -162,7 +163,9 @@ apiRouter.post('/set_redirection_url', setRedirectionUrl);
 // Microsoft Entra
 apiRouter.get('/group-entra-config', get_group_entra_config);
 apiRouter.post('/group-entra-config-update', update_group);
+apiRouter.post('/reload-ms-entra-instance', reloadMSEntraInstance);
 apiRouter.post('/test-ms-entra', test_ms_entra);
+apiRouter.get('/list-ms-entra-apis', listMSEntraAPIs);
 
 // Licences
 apiRouter.post('/get-licences', (req, res) => get_licences(req, res, false));

@@ -4,7 +4,6 @@ const translations = {
   no: 'NON',
   default_yes: '(OUI)',
   default_no: '(NON)',
-  or: 'ou',
   edit: 'Modifier',
   see: 'Voir',
   hide: 'Cacher',
@@ -318,6 +317,7 @@ const translations = {
     "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
   group_setting_microsoft_entra_authorizations:
     'Si vous choisissez de configurer Microsoft Entra, UpSignOn aura besoin des autorisations suivantes nécessitant une validation administrateur :',
+  group_setting_microsoft_entra_api_list: 'Liste des API utilisées',
   group_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
   group_setting_microsoft_entra_client_id_label:
@@ -328,10 +328,12 @@ const translations = {
   group_setting_microsoft_entra_app_resource_id_label_note:
     "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le \"deuxième\" identifiant de l'Application UpSignOn)",
   group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
+  group_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   group_setting_microsoft_entra_testing: 'Tester',
   group_setting_microsoft_entra_test_start: 'Lancer le test',
   group_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   group_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
+  group_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignOn:',
   group_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   group_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
   licences_bank_name: 'Banque',
