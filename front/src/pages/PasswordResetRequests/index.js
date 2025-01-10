@@ -6,20 +6,20 @@ import { i18n } from '../../i18n/i18n';
 
 class PasswordResetRequests extends React.Component {
   state = {
-    pendingRequests: [],
+    resetRequests: [],
   };
-  fetchPendingPasswordResetRequests = async () => {
+  fetchPasswordResetRequests = async () => {
     try {
-      const res = await groupUrlFetch('/api/get-pending-password-reset-requests', 'GET', null);
+      const res = await groupUrlFetch('/api/get-password-reset-requests', 'GET', null);
       this.setState({
-        pendingRequests: res,
+        resetRequests: res,
       });
     } catch (e) {
       console.error(e);
     }
   };
   componentDidMount() {
-    this.fetchPendingPasswordResetRequests();
+    this.fetchPasswordResetRequests();
   }
 
   deletePwdResetReqWithWarning = async (pwdResetId) => {
@@ -28,7 +28,7 @@ class PasswordResetRequests extends React.Component {
       try {
         this.props.setIsLoading(true);
         await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
-        await this.fetchPendingPasswordResetRequests();
+        await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
       } finally {
@@ -43,7 +43,7 @@ class PasswordResetRequests extends React.Component {
       try {
         this.props.setIsLoading(true);
         await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
-        await this.fetchPendingPasswordResetRequests();
+        await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
       } finally {
@@ -72,7 +72,7 @@ class PasswordResetRequests extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.pendingRequests.map((d) => {
+            {this.state.resetRequests.map((d) => {
               const requiresAttention = d.status === 'PENDING_ADMIN_CHECK';
               return (
                 <tr key={d.pwd_reset_id}>

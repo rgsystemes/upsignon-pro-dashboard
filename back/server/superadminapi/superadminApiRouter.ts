@@ -8,7 +8,7 @@ import { insert_group } from './insert_group';
 import { insert_admin } from './insert_admin';
 import { update_setting } from './update_setting';
 import { update_admin_group } from './update_admin_group';
-import { get_pending_password_reset_requests } from '../api/get_pending_password_reset_requests';
+import { get_password_reset_requests } from '../api/get_password_reset_requests';
 import { count_password_reset_requests } from '../api/count_password_reset_requests';
 import { delete_pwd_reset_request } from '../api/delete_pwd_reset_request';
 import { grant_pwd_reset_request } from '../api/grant_pwd_reset_request';
@@ -60,8 +60,8 @@ superadminApiRouter.post('/update-setting', update_setting);
 superadminApiRouter.get('/count-password-reset-requests', (req, res) => {
   count_password_reset_requests(req, res, true);
 });
-superadminApiRouter.get('/get-pending-password-reset-requests', (req, res) => {
-  get_pending_password_reset_requests(req, res, true);
+superadminApiRouter.get('/get-password-reset-requests', (req, res) => {
+  get_password_reset_requests(req, res, true);
 });
 superadminApiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) => {
   delete_pwd_reset_request(req, res, true);

@@ -22,7 +22,7 @@ import { get_allowed_emails } from './get_allowed_emails';
 import { get_group_admins } from './get_group_admins';
 import { get_group_settings } from './get_group_settings';
 import { get_password_stats } from './get_password_stats';
-import { get_pending_password_reset_requests } from './get_pending_password_reset_requests';
+import { get_password_reset_requests } from './get_password_reset_requests';
 import { get_shared_devices } from './get_shared_devices';
 import { get_urls } from './get_urls';
 import { get_usage_stats } from './get_usage_stats';
@@ -89,8 +89,8 @@ apiRouter.get('/count-shared-devices', count_shared_devices);
 apiRouter.get('/count-password-reset-requests', (req, res) =>
   count_password_reset_requests(req, res, false),
 );
-apiRouter.get('/get-pending-password-reset-requests', (req, res) =>
-  get_pending_password_reset_requests(req, res, false),
+apiRouter.get('/get-password-reset-requests', (req, res) =>
+  get_password_reset_requests(req, res, false),
 );
 apiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) =>
   delete_pwd_reset_request(req, res, false),

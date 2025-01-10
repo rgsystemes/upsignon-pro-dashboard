@@ -5,6 +5,9 @@ import './userDevice.css';
 
 // PROPS = setIsLoading, devices, email, reloadDevices, close
 class UserDevices extends React.Component {
+  state = {
+    resetRequests: [],
+  };
   deleteDeviceWithWarning = async (deviceId) => {
     const confirmation = window.confirm(i18n.t('device_delete_warning'));
     if (confirmation) {
@@ -65,13 +68,27 @@ class UserDevices extends React.Component {
     }
   };
 
+  fetchPasswordResetRequests = async () => {
+    try {
+      const res = await groupUrlFetch('/api/get-password-reset-requests', 'GET', null);
+      this.setState({
+        resetRequests: res,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  componentDidMount() {
+    this.fetchPasswordResetRequests();
+  }
+
   deletePwdResetReqWithWarning = async (pwdResetId) => {
     const confirmation = window.confirm(i18n.t('password_reset_request_delete_warning'));
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
         await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
-        await this.props.reloadDevices();
+        await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
       } finally {
@@ -86,7 +103,7 @@ class UserDevices extends React.Component {
       try {
         this.props.setIsLoading(true);
         await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
-        await this.props.reloadDevices();
+        await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
       } finally {
@@ -96,7 +113,6 @@ class UserDevices extends React.Component {
   };
 
   render() {
-    const passwordResetRequests = this.props.devices.filter((d) => d.pwd_reset_id);
     return (
       <div style={{ margin: '0 20px 20px 20px', position: 'relative' }}>
         <div
@@ -105,76 +121,7 @@ class UserDevices extends React.Component {
         >
           X
         </div>
-        {passwordResetRequests.length > 0 && (
-          <div>
-            <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
-            <table style={{ marginBottom: 20 }}>
-              <thead>
-                <tr>
-                  <th>{i18n.t('password_reset_request_date')}</th>
-                  <th>{i18n.t('device_name')}</th>
-                  <th>{i18n.t('password_reset_request_status')}</th>
-                  <th>{i18n.t('device_shared_with')}</th>
-                  <th>{i18n.t('actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {passwordResetRequests.map((d) => {
-                  const expTime = new Date(d.pwd_reset_token_expiration_date);
-                  const isExpired = !!d.pwd_reset_token_expiration_date
-                    ? expTime < new Date().getTime()
-                    : false;
-                  return (
-                    <tr key={d.pwd_reset_id}>
-                      <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
-                      <td>{d.device_name}</td>
-                      <td>
-                        <div>{d.pwd_reset_status}</div>
-                        {d.granted_by && (
-                          <div>
-                            {i18n.t('password_reset_request_granted_by')} {d.granted_by || '?'}
-                          </div>
-                        )}
-                        {d.pwd_reset_token_expiration_date && (
-                          <div>
-                            {isExpired
-                              ? i18n.t('password_reset_request_expired')
-                              : i18n.t('password_reset_request_valid_until', {
-                                  date: expTime.toLocaleString(),
-                                })}
-                          </div>
-                        )}
-                      </td>
-                      {!!d.shared_with ? (
-                        <td className="warningCell">
-                          {d.shared_with.split(';').map((email) => (
-                            <div key={email}>{email}</div>
-                          ))}
-                        </td>
-                      ) : (
-                        <td></td>
-                      )}
-                      <td>
-                        <div
-                          className="action"
-                          onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
-                        >
-                          {i18n.t('delete')}
-                        </div>
-                        <div
-                          className="action"
-                          onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
-                        >
-                          {i18n.t('password_reset_request_grant')}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+
         <h5 className="detailsTitle">{i18n.t('devices_for_user', { email: this.props.email })}</h5>
         <table>
           <thead>
@@ -257,6 +204,76 @@ class UserDevices extends React.Component {
             })}
           </tbody>
         </table>
+        {this.state.resetRequests.length > 0 && (
+          <div>
+            <h5 className="detailsTitle">{i18n.t('password_reset_requests')}</h5>
+            <table style={{ marginBottom: 20 }}>
+              <thead>
+                <tr>
+                  <th>{i18n.t('password_reset_request_date')}</th>
+                  <th>{i18n.t('device_name')}</th>
+                  <th>{i18n.t('password_reset_request_status')}</th>
+                  <th>{i18n.t('device_shared_with')}</th>
+                  <th>{i18n.t('actions')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.resetRequests.map((d) => {
+                  const expTime = new Date(d.pwd_reset_token_expiration_date);
+                  const isExpired = !!d.pwd_reset_token_expiration_date
+                    ? expTime < new Date().getTime()
+                    : false;
+                  return (
+                    <tr key={d.pwd_reset_id}>
+                      <td>{new Date(d.pwd_reset_created_at).toLocaleString()}</td>
+                      <td>{d.device_name}</td>
+                      <td>
+                        <div>{d.status}</div>
+                        {d.granted_by && (
+                          <div>
+                            {i18n.t('password_reset_request_granted_by')} {d.granted_by || '?'}
+                          </div>
+                        )}
+                        {d.pwd_reset_token_expiration_date && (
+                          <div>
+                            {isExpired
+                              ? i18n.t('password_reset_request_expired')
+                              : i18n.t('password_reset_request_valid_until', {
+                                  date: expTime.toLocaleString(),
+                                })}
+                          </div>
+                        )}
+                      </td>
+                      {!!d.shared_with ? (
+                        <td className="warningCell">
+                          {d.shared_with.split(';').map((email) => (
+                            <div key={email}>{email}</div>
+                          ))}
+                        </td>
+                      ) : (
+                        <td></td>
+                      )}
+                      <td>
+                        <div
+                          className="action"
+                          onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
+                        >
+                          {i18n.t('delete')}
+                        </div>
+                        <div
+                          className="action"
+                          onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
+                        >
+                          {i18n.t('password_reset_request_grant')}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   }
