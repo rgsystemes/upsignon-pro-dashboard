@@ -312,7 +312,7 @@ const translations = {
   sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
   sasettings_email_config_testing_alert: 'Un email a été envoyé',
   sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
-  group_setting_microsoft_entra_title: 'BETA - Configuration Microsoft Entra ID (optionnel)',
+  group_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
   group_setting_microsoft_entra_pitch:
     "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
   group_setting_microsoft_entra_pitch_2:
@@ -326,7 +326,7 @@ const translations = {
   group_setting_microsoft_entra_app_resource_id_label:
     'ID d\'objet pour l\'Application "UpSignOn" (alias ID principal de service)',
   group_setting_microsoft_entra_app_resource_id_label_note:
-    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le deuxième identifiant de l'Application UpSignOn)",
+    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le deuxième identifiant de l'Application UpSignOn. Vous le trouverez dans la vue d'ensemble de la page \"Applications d'entreprise\" et non de la page \"Inscription des applications\" !)",
   group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   group_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   group_setting_microsoft_entra_testing: 'Tester',

@@ -306,7 +306,7 @@ const translations = {
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
-  group_setting_microsoft_entra_title: 'BETA - Microsoft Entra ID configuration (optionnal)',
+  group_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optionnal)',
   group_setting_microsoft_entra_pitch:
     "UpSignOn can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
   group_setting_microsoft_entra_pitch_2:
@@ -319,7 +319,7 @@ const translations = {
   group_setting_microsoft_entra_app_resource_id_label:
     'Object ID for the "UpSignOn" Application (alias Service principal ID)',
   group_setting_microsoft_entra_app_resource_id_label_note:
-    '(Beware, this is not the identifier of a group, but indeed the second identifier of the UpSignOn Application)',
+    '(Beware, this is not the identifier of a group, but indeed the second identifier of the UpSignOn Application. You will find it in the Overview of the "Enterprise Apps" page and not in the "App registration" page!)',
   group_setting_microsoft_entra_apply_config: 'Apply configuration',
   group_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
   group_setting_microsoft_entra_testing: 'Test',

@@ -106,7 +106,7 @@ export class MicrosoftEntraConfig extends React.Component {
             {i18n.t('group_setting_microsoft_entra_pitch_2')}
             <ul>
               <li>User.Read.All</li>
-              <li>Group.Read.All</li>
+              <li>GroupMember.Read.All</li>
             </ul>
             <details>
               <summary>{i18n.t('group_setting_microsoft_entra_api_list')}</summary>
