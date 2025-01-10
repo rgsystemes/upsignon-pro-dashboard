@@ -243,6 +243,8 @@ class UserDevices extends React.Component {
                                 })}
                           </div>
                         )}
+                        {d.pwd_reset_token && <br />}
+                        {d.pwd_reset_token ?? ''}
                       </td>
                       {!!d.shared_with ? (
                         <td className="warningCell">
