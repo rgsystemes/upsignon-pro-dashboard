@@ -53,7 +53,7 @@ import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instan
 
 export const apiRouter = express.Router();
 
-apiRouter.use(async (req, res, next) => {
+apiRouter.use(async (req: any, res: any, next) => {
   if (
     // @ts-ignore
     !req.session.isSuperadmin &&

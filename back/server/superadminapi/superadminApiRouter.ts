@@ -29,7 +29,7 @@ import { get_licences } from '../api/get_licences';
 
 export const superadminApiRouter = express.Router();
 
-superadminApiRouter.use(async (req, res, next) => {
+superadminApiRouter.use(async (req: any, res: any, next) => {
   // @ts-ignore
   if (!req.session.isSuperadmin) {
     return res.status(401).end();

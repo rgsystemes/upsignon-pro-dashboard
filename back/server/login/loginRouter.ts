@@ -57,7 +57,7 @@ const checkPassword = async (userId: string, password: string): Promise<boolean>
 
 /* ROUTER */
 
-loginRouter.get('/config', async (req, res) => {
+loginRouter.get('/config', async (req: any, res: any) => {
   try {
     return res.status(200).json(config);
   } catch (e) {
@@ -66,7 +66,7 @@ loginRouter.get('/config', async (req, res) => {
   }
 });
 
-loginRouter.get('/button-config', async (req, res) => {
+loginRouter.get('/button-config', async (req: any, res: any) => {
   try {
     const buttonId = req.query.buttonId;
     // @ts-ignore
@@ -81,7 +81,7 @@ loginRouter.get('/button-config', async (req, res) => {
   }
 });
 
-loginRouter.post('/connect', async (req, res) => {
+loginRouter.post('/connect', async (req: any, res: any) => {
   try {
     const password = req.body.password;
     const id = req.body.userId;
@@ -117,7 +117,7 @@ loginRouter.post('/connect', async (req, res) => {
   }
 });
 
-loginRouter.post('/create-account', async (req, res) => {
+loginRouter.post('/create-account', async (req: any, res: any) => {
   return res.status(403).json({ message: 'Account creation is forbidden' });
 });
 
@@ -196,7 +196,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
   }
 });
 
-loginRouter.post('/update-password', async (req, res) => {
+loginRouter.post('/update-password', async (req: any, res: any) => {
   try {
     const password = req.body.password;
     const newPassword = req.body.newPassword;
@@ -219,13 +219,13 @@ loginRouter.post('/update-password', async (req, res) => {
   }
 });
 
-loginRouter.post('/update-data', async (req, res) => {
+loginRouter.post('/update-data', async (req: any, res: any) => {
   return res
     .status(403)
     .send({ message: 'Vous ne pouvez pas modifier votre adresse email pour ce compte.' });
 });
 
-loginRouter.post('/delete-account-and-data', async (req, res) => {
+loginRouter.post('/delete-account-and-data', async (req: any, res: any) => {
   try {
     const password = req.body.password;
     const id = req.body.userId;
