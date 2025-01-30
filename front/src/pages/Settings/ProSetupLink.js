@@ -102,7 +102,6 @@ Foreach($u in $usersPaths){
           <div style={{ fontWeight: 'bold', textDecoration: 'none', color: 'black' }}>
             {i18n.t('link_to_communicate')}
             <span
-              ref
               className="action"
               style={{ marginLeft: 20 }}
               onClick={() => {
