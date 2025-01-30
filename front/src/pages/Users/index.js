@@ -402,7 +402,7 @@ class Users extends React.Component {
                     </td>
                     <td>
                       <div
-                        className={u.nb_devices > 0 && 'action'}
+                        className={u.nb_devices > 0 ? 'action' : null}
                         onClick={() => this.loadUserDevices(u.user_id)}
                       >
                         {i18n.t('user_nb_devices_value', { nb: u.nb_devices || 0 })}

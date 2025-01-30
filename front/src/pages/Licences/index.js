@@ -12,19 +12,21 @@ export class Licences extends React.Component {
   fetchLicences = async () => {
     try {
       const res = await groupUrlFetch('/api/get-licences', 'POST', null);
-      this.setState({
-        licences: res.sort((a, b) => {
-          if (a.bankName < b.bankName) return -1;
-          if (a.bankName > b.bankName) return 1;
-          if (a.masterBank < b.masterBank) return -1;
-          if (a.masterBank > b.masterBank) return 1;
-          if (a.valid_until < b.valid_until) return -1;
-          if (a.valid_until > b.valid_until) return -1;
-          if (a.valid_from < b.valid_from) return -1;
-          if (a.valid_from > b.valid_from) return -1;
-          return 0;
-        }),
-      });
+      if (res) {
+        this.setState({
+          licences: res.sort((a, b) => {
+            if (a.bankName < b.bankName) return -1;
+            if (a.bankName > b.bankName) return 1;
+            if (a.masterBank < b.masterBank) return -1;
+            if (a.masterBank > b.masterBank) return 1;
+            if (a.valid_until < b.valid_until) return -1;
+            if (a.valid_until > b.valid_until) return -1;
+            if (a.valid_from < b.valid_from) return -1;
+            if (a.valid_from > b.valid_from) return -1;
+            return 0;
+          }),
+        });
+      }
     } catch (e) {
       console.error(e);
     }

@@ -94,7 +94,7 @@ export class MicrosoftEntraConfig extends React.Component {
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('group_setting_microsoft_entra_title')}</h2>
         <p>{i18n.t('group_setting_microsoft_entra_pitch')}</p>
-        <p>
+        <div style={{ marginBottom: 15 }}>
           <div
             style={{
               backgroundColor: 'rgb(240,240,240)',
@@ -112,14 +112,14 @@ export class MicrosoftEntraConfig extends React.Component {
               <summary>{i18n.t('group_setting_microsoft_entra_api_list')}</summary>
               <ul>
                 {this.state.msEntraAPIs.map((api) => (
-                  <li>
+                  <li key={api.path}>
                     <a href={api.docLink}>{api.path}</a>
                   </li>
                 ))}
               </ul>
             </details>
           </div>
-        </p>
+        </div>
         <form onSubmit={this.submitNewEntraConfig}>
           <label htmlFor="tenantId">
             {i18n.t('group_setting_microsoft_entra_tenant_id_label')}

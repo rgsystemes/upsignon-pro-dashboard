@@ -63,6 +63,7 @@ class OtherSettings extends React.Component {
             </tr>
             {Object.keys(settingsConfig).map((k) => (
               <SettingTableRow
+                key={k}
                 settingNameInDB={k}
                 stateSettings={this.state.settings}
                 toggleValue={this.updateGroupSetting}

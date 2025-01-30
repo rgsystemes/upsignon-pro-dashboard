@@ -108,7 +108,7 @@ class GroupAdmins extends React.Component {
             <tbody>
               {this.state.admins.map((admin) => {
                 return (
-                  <tr>
+                  <tr key={admin.id}>
                     <td>{admin.email}</td>
                     <td>{new Date(admin.created_at).toLocaleDateString()}</td>
                     <td>
