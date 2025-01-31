@@ -8,18 +8,47 @@ export class ProSetupLink extends React.Component {
   base64Img = null;
 
   setupLinRef = null;
+  proSetupLink = null;
 
   state = {
-    proServerUrlConfig: null,
+    bankUrl: null,
   };
   fetchSetupUrlComponents = async () => {
     try {
       const serverUrl = await baseUrlFetch('/server_url', 'GET');
       if (serverUrl) {
+        // First get link
+        const { url, oidcAuthority, oidcClientId, oidcClientIdForAddons } = serverUrl;
+
+        let link = `https://app.upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
+        if (oidcAuthority && oidcClientId) {
+          link += `&oidcAuthority=${encodeURIComponent(oidcAuthority)}&oidcClientId=${oidcClientId}`;
+          if (oidcClientIdForAddons) {
+            link += `&oidcClientIdForAddons=${oidcClientIdForAddons}`;
+          }
+        }
+        this.proSetupLink = link;
+
+        // Then compute QR code
+        if (!this.qrcodeGenerator) {
+          this.qrcodeGenerator = require('./qrcode_generator').qrcode;
+        }
+        // create QR code
+        const size = 150;
+        const typeNumber = 0; // auto
+        const errorCorrectionLevel = 'L';
+        const qr = this.qrcodeGenerator(typeNumber, errorCorrectionLevel);
+        qr.addData(this.proSetupLink);
+        qr.make();
+        const nbPixels = qr.getModuleCount();
+        const cellSize = Math.round(size / nbPixels);
+        const margin = 0;
+        this.base64Img = qr.createDataURL(cellSize, margin);
+
+        // Force rendering
         this.setState({
-          proServerUrlConfig: serverUrl,
+          bankUrl: serverUrl.url + '/' + groupId,
         });
-        this.computeProSetupLink();
       }
     } catch (e) {
       console.error(e);
@@ -29,46 +58,10 @@ export class ProSetupLink extends React.Component {
     this.fetchSetupUrlComponents();
   }
 
-  computeProSetupLink = () => {
-    if (!this.state.proServerUrlConfig) return '';
-
-    // First get link
-    const { url, oidcAuthority, oidcClientId, oidcClientIdForAddons } =
-      this.state.proServerUrlConfig;
-
-    let link = `https://app.upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
-    if (oidcAuthority && oidcClientId) {
-      link += `&oidcAuthority=${encodeURIComponent(oidcAuthority)}&oidcClientId=${oidcClientId}`;
-      if (oidcClientIdForAddons) {
-        link += `&oidcClientIdForAddons=${oidcClientIdForAddons}`;
-      }
-    }
-    this.proSetupLink = link;
-
-    // Then compute QR code
-    if (!this.qrcodeGenerator) {
-      this.qrcodeGenerator = require('./qrcode_generator').qrcode;
-    }
-    // create QR code
-    const size = 150;
-    const typeNumber = 0; // auto
-    const errorCorrectionLevel = 'L';
-    const qr = this.qrcodeGenerator(typeNumber, errorCorrectionLevel);
-    qr.addData(this.proSetupLink);
-    qr.make();
-    const nbPixels = qr.getModuleCount();
-    const cellSize = Math.round(size / nbPixels);
-    const margin = 0;
-    this.base64Img = qr.createDataURL(cellSize, margin);
-
-    // Force rendering
-    this.forceUpdate();
-  };
-  getBankUrl = () => this.state.proServerUrlConfig.url + '/' + groupId;
   getScript = () => `## RUN AS ADMIN !
 $cUsersPath = "C:\Users"
 $usersPaths = (Get-ChildItem -Path $cUsersPath -Directory -ErrorAction SilentlyContinue).FullName
-$bankUrl = "${this.getBankUrl()}";
+$bankUrl = "${this.state.bankUrl}";
 Foreach($u in $usersPaths){
     if (Get-AppxPackage -Name 'dataSmine.UpSignOn' -AllUsers) {
         # Store package case
@@ -148,7 +141,7 @@ Foreach($u in $usersPaths){
                 borderRadius: 5,
                 display: 'inline-block',
               }}
-            >{`{"proConfigUrl":"${this.getBankUrl()}"}`}</pre>
+            >{`{"proConfigUrl":"${this.state.bankUrl}"}`}</pre>
             <br />
             {i18n.t('preconfig_line2')}
             <ul>
