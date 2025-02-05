@@ -374,10 +374,7 @@ const InlineSetting = (props) => {
 const AutolockDelaySetting = (props) => {
   const { group, settingNameInDB, toggleGroupSetting } = props;
   const settingConf = autolockDelaySettings[settingNameInDB];
-  const resValue =
-    group.settings?.[settingNameInDB] == null
-      ? settingConf.recommendedOption
-      : group.settings?.[settingNameInDB];
+  const resValue = group.settings?.[settingNameInDB] ?? -1;
 
   let maxDuration = null;
   if (settingConf.maxSettingKey != null) {
@@ -424,7 +421,10 @@ const AutolockDelaySetting = (props) => {
             );
           }}
           value={resValue}
+          style={{ width: 60 }}
         >
+          {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
+          <option disabled value={-1}></option>
           {settingConf.options.map((op) => {
             return (
               <option
@@ -433,6 +433,7 @@ const AutolockDelaySetting = (props) => {
                 disabled={maxDuration != null && op.seconds > maxDuration}
               >
                 {op.title}
+                {op.seconds == settingConf.recommendedOption ? ' (sugg.)' : ''}
               </option>
             );
           })}

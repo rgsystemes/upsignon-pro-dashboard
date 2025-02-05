@@ -121,10 +121,7 @@ const SettingTableRow = (props) => {
 const AutolockDelaySettingTableRow = (props) => {
   const { settingNameInDB, toggleValue, stateSettings } = props;
   const settingConf = autolockDelaySettings[settingNameInDB];
-  const resValue =
-    stateSettings?.[settingNameInDB] == null
-      ? settingConf.recommendedValue
-      : stateSettings[settingNameInDB];
+  const resValue = stateSettings?.[settingNameInDB] ?? -1;
 
   let maxDuration = null;
   if (settingConf.maxSettingKey != null) {
@@ -164,7 +161,10 @@ const AutolockDelaySettingTableRow = (props) => {
             );
           }}
           value={resValue}
+          style={{ width: 60 }}
         >
+          {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
+          <option disabled value={-1}></option>
           {settingConf.options.map((op) => {
             return (
               <option
@@ -173,6 +173,7 @@ const AutolockDelaySettingTableRow = (props) => {
                 disabled={maxDuration != null && op.seconds > maxDuration}
               >
                 {op.title}
+                {op.seconds == settingConf.recommendedOption ? ' (sugg.)' : ''}
               </option>
             );
           })}
