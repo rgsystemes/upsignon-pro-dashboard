@@ -408,15 +408,15 @@ const AutolockDelaySetting = (props) => {
               settingConf.defaultSettingKey != null
                 ? {
                     ...group.settings,
-                    [settingNameInDB]: ev.target.value,
+                    [settingNameInDB]: Number.parseInt(ev.target.value),
                     [settingConf.defaultSettingKey]: Math.min(
-                      ev.target.value,
+                      Number.parseInt(ev.target.value),
                       defaultSettingDuration,
                     ),
                   }
                 : {
                     ...group.settings,
-                    [settingNameInDB]: ev.target.value,
+                    [settingNameInDB]: Number.parseInt(ev.target.value),
                   },
             );
           }}

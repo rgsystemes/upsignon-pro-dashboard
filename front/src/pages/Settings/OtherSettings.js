@@ -148,15 +148,15 @@ const AutolockDelaySettingTableRow = (props) => {
               settingConf.defaultSettingKey != null
                 ? {
                     ...stateSettings,
-                    [settingNameInDB]: ev.target.value,
+                    [settingNameInDB]: Number.parseInt(ev.target.value),
                     [settingConf.defaultSettingKey]: Math.min(
-                      ev.target.value,
+                      Number.parseInt(ev.target.value),
                       defaultSettingDuration,
                     ),
                   }
                 : {
                     ...stateSettings,
-                    [settingNameInDB]: ev.target.value,
+                    [settingNameInDB]: Number.parseInt(ev.target.value),
                   },
             );
           }}
