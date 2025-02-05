@@ -69,3 +69,53 @@ export const settingsConfig = {
 
 // NB :
 //  - When null, the value will be considered as "recommendedValue"
+const autolockDelaysDesktop = [
+  { title: '0s', seconds: 0 },
+  { title: '30s', seconds: 30 },
+  { title: '45s', seconds: 45 },
+  { title: '1min', seconds: 60 },
+  { title: '3min', seconds: 180 },
+  { title: '5min', seconds: 300 },
+  { title: '15min', seconds: 900 },
+  { title: '30min', seconds: 1800 },
+  { title: '1h', seconds: 3600 },
+  { title: '3h', seconds: 10800 },
+  { title: '6h', seconds: 21600 },
+  { title: '12h', seconds: 43200 },
+];
+const autolockDelaysMobile = [
+  { title: '0s', seconds: 0 },
+  { title: '30s', seconds: 30 },
+  { title: '45s', seconds: 45 },
+  { title: '1min', seconds: 60 },
+  { title: '3min', seconds: 180 },
+  { title: '5min', seconds: 300 },
+  { title: '15min', seconds: 900 },
+  { title: '30min', seconds: 1800 },
+];
+export const autolockDelaySettings = {
+  DEFAULT_AUTOLOCK_DELAY_DESKTOP: {
+    groupsTitle: 'sasettings_default_autolock_delay_desktop',
+    recommendedOption: 1800, // 30'
+    options: autolockDelaysDesktop,
+    maxSettingKey: 'MAX_AUTOLOCK_DELAY_DESKTOP',
+  },
+  MAX_AUTOLOCK_DELAY_DESKTOP: {
+    groupsTitle: 'sasettings_max_autolock_delay_desktop',
+    recommendedOption: 43200, // 12h
+    options: autolockDelaysDesktop,
+    defaultSettingKey: 'DEFAULT_AUTOLOCK_DELAY_DESKTOP',
+  },
+  DEFAULT_AUTOLOCK_DELAY_MOBILE: {
+    groupsTitle: 'sasettings_default_autolock_delay_mobile',
+    recommendedOption: 30, // 30"
+    options: autolockDelaysMobile,
+    maxSettingKey: 'MAX_AUTOLOCK_DELAY_MOBILE',
+  },
+  MAX_AUTOLOCK_DELAY_MOBILE: {
+    groupsTitle: 'sasettings_max_autolock_delay_mobile',
+    recommendedOption: 1800, // 30'
+    options: autolockDelaysMobile,
+    defaultSettingKey: 'DEFAULT_AUTOLOCK_DELAY_MOBILE',
+  },
+};

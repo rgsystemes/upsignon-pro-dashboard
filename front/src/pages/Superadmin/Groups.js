@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { baseFrontUrl } from '../../helpers/env';
-import { settingsConfig } from '../../helpers/settingsConfig';
+import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
@@ -276,14 +276,26 @@ class Groups extends React.Component {
                       >
                         {i18n.t('settings_group_settings_toggle_group_settings')}
                       </div>
-                      {showSettings &&
-                        Object.keys(settingsConfig).map((k) => (
-                          <InlineSetting
-                            group={group}
-                            settingNameInDB={k}
-                            toggleGroupSetting={this.toggleGroupSetting}
-                          />
-                        ))}
+                      {showSettings && (
+                        <>
+                          {Object.keys(settingsConfig).map((k) => (
+                            <InlineSetting
+                              key={k}
+                              group={group}
+                              settingNameInDB={k}
+                              toggleGroupSetting={this.toggleGroupSetting}
+                            />
+                          ))}
+                          {Object.keys(autolockDelaySettings).map((k) => (
+                            <AutolockDelaySetting
+                              key={k}
+                              group={group}
+                              settingNameInDB={k}
+                              toggleGroupSetting={this.toggleGroupSetting}
+                            />
+                          ))}
+                        </>
+                      )}
                     </td>
                     <td>
                       <div
@@ -354,6 +366,77 @@ const InlineSetting = (props) => {
         >
           {i18n.t('settings_change')}
         </div>
+      </div>
+    </div>
+  );
+};
+
+const AutolockDelaySetting = (props) => {
+  const { group, settingNameInDB, toggleGroupSetting } = props;
+  const settingConf = autolockDelaySettings[settingNameInDB];
+  const resValue =
+    group.settings?.[settingNameInDB] == null
+      ? settingConf.recommendedOption
+      : group.settings?.[settingNameInDB];
+
+  let maxDuration = null;
+  if (settingConf.maxSettingKey != null) {
+    maxDuration =
+      group.settings?.[settingConf.maxSettingKey] == null
+        ? autolockDelaySettings[settingConf.maxSettingKey].recommendedOption
+        : group.settings?.[settingConf.maxSettingKey];
+  }
+  let defaultSettingDuration = null;
+  if (settingConf.defaultSettingKey != null) {
+    defaultSettingDuration =
+      group.settings?.[settingConf.defaultSettingKey] == null
+        ? autolockDelaySettings[settingConf.defaultSettingKey].recommendedOption
+        : group.settings?.[settingConf.defaultSettingKey];
+  }
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        borderBottom: '1px solid grey',
+      }}
+    >
+      <div style={{ flex: 1 }}>{i18n.t(settingConf.groupsTitle)}</div>
+      <div>
+        <select
+          onChange={(ev) => {
+            toggleGroupSetting(
+              group.id,
+              settingConf.defaultSettingKey != null
+                ? {
+                    ...group.settings,
+                    [settingNameInDB]: ev.target.value,
+                    [settingConf.defaultSettingKey]: Math.min(
+                      ev.target.value,
+                      defaultSettingDuration,
+                    ),
+                  }
+                : {
+                    ...group.settings,
+                    [settingNameInDB]: ev.target.value,
+                  },
+            );
+          }}
+          value={resValue}
+        >
+          {settingConf.options.map((op) => {
+            return (
+              <option
+                key={op.seconds}
+                value={op.seconds}
+                disabled={maxDuration != null && op.seconds > maxDuration}
+              >
+                {op.title}
+              </option>
+            );
+          })}
+        </select>
       </div>
     </div>
   );

@@ -270,9 +270,16 @@ const translations = {
   sasettings_disable_reset_pwd_manual_admin_check:
     "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
   sasettings_disable_offline_desktop:
-    'Par défaut, désactiver le mode hors-ligne sur les ordinateurs de bureau',
-  sasettings_disable_offline_mobile:
-    'Par défaut, désactiver le mode hors-ligne sur téléphones et tablettes',
+    'Par défaut, désactiver le mode hors-ligne sur MacOS, Windows, Linux',
+  sasettings_disable_offline_mobile: 'Par défaut, désactiver le mode hors-ligne sur iOS, Android',
+  sasettings_max_autolock_delay_desktop:
+    'Délai de verrouillage automatique MAXIMUM sur MacOS, Windows, Linux',
+  sasettings_max_autolock_delay_mobile:
+    'Délai de verrouillage automatique MAXIMUM sur iOS, Android',
+  sasettings_default_autolock_delay_desktop:
+    'Délai de verrouillage automatique par DÉFAUT sur MacOS, Windows, Linux',
+  sasettings_default_autolock_delay_mobile:
+    'Délai de verrouillage automatique par DÉFAUT sur iOS, Android',
   sasettings_allow_csv_export: "Par défaut, autoriser l'export CSV",
   sasettings_allow_windows: 'Par défaut, autoriser Windows',
   sasettings_allow_ios: 'Par défaut, autoriser iOS',
