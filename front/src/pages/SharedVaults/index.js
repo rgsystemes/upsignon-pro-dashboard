@@ -74,12 +74,12 @@ class SharedVaults extends React.Component {
     }
   };
 
-  toggleManagerRightsForUser = async (sharedVaultId, willBeManager, userId) => {
+  toggleManagerRightsForUser = async (sharedVaultId, selectedAccessLevel, userId) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch(`/api/update-shared-vault-manager`, 'POST', {
         sharedVaultId,
-        willBeManager,
+        accessLevel: selectedAccessLevel,
         userId,
       });
       await this.getSharedVaults();
@@ -140,7 +140,7 @@ class SharedVaults extends React.Component {
         <h1>{`${i18n.t('menu_shared_vaults')} - ${i18n.t('total_count', {
           count: this.props.totalCount,
         })}`}</h1>
-        <p>{i18n.t('shared_vault_manager_note')}</p>
+        <p>{i18n.t('shared_vault_owner_note')}</p>
         <div>
           <div>{i18n.t('shared_vault_search')}</div>
           <input
@@ -171,7 +171,7 @@ class SharedVaults extends React.Component {
               <th style={{ width: 150 }}>{i18n.t('shared_vault_passwords_stats')}</th>
               <th>{i18n.t('shared_account_users')}</th>
               <th>{i18n.t('shared_account_user_creation_date')}</th>
-              <th>{i18n.t('shared_account_user_is_manager')}</th>
+              <th>{i18n.t('shared_account_user_access_level')}</th>
               <th>{i18n.t('shared_account_user_actions')}</th>
             </tr>
           </thead>
@@ -181,19 +181,31 @@ class SharedVaults extends React.Component {
               sv.users?.forEach((u) => {
                 const prevContact = contacts.find((c) => c.user_id === u.user_id);
                 if (!prevContact) {
-                  contacts.push(u);
+                  contacts.push({
+                    ...u,
+                    access_level:
+                      u.access_level === 'owner' ||
+                      u.access_level === 'editor' ||
+                      u.access_level === 'reader' ||
+                      u.access_level === 'blind'
+                        ? u.access_level
+                        : 'blind',
+                  });
                 } else {
                   prevContact.created_at =
-                    prevContact.created_at < u.created_at ? prevContact.created_at : u.created_at;
-                  prevContact.is_manager = prevContact.is_manager && u.is_manager;
+                    prevContact.created_at.getTime() < u.created_at.getTime()
+                      ? prevContact.created_at
+                      : u.created_at;
+                  prevContact.access_level = u.access_level;
                 }
               });
               return (
                 <React.Fragment key={sv.id}>
                   {contacts.map((u, i) => {
-                    const isLastManager =
-                      u.is_manager &&
-                      contacts.filter((c) => c.is_manager && c.user_id !== u.user_id).length === 0;
+                    const isLastOwner =
+                      u.access_level == 'owner' &&
+                      contacts.filter((c) => c.access_level == 'owner' && c.user_id !== u.user_id)
+                        .length === 0;
                     const hasUniqueItem =
                       (sv.content_details?.codes.length || 0) +
                         (sv.content_details?.accounts.length || 0) ===
@@ -255,18 +267,30 @@ class SharedVaults extends React.Component {
                         <td>{new Date(u.created_at).toLocaleDateString()}</td>
                         <td>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <input
-                              type="checkbox"
-                              checked={u.is_manager}
-                              disabled={isLastManager}
-                              onChange={() => {
-                                this.toggleManagerRightsForUser(sv.id, !u.is_manager, u.user_id);
+                            <select
+                              value={u.access_level}
+                              disabled={isLastOwner}
+                              onChange={(ev) => {
+                                this.toggleManagerRightsForUser(sv.id, ev.target.value, u.user_id);
                               }}
-                            ></input>
+                            >
+                              <option value="owner">
+                                {i18n.t('shared_account_user_access_level_owner')}
+                              </option>
+                              <option value="editor">
+                                {i18n.t('shared_account_user_access_level_editor')}
+                              </option>
+                              <option value="reader">
+                                {i18n.t('shared_account_user_access_level_reader')}
+                              </option>
+                              <option value="blind">
+                                {i18n.t('shared_account_user_access_level_blind')}
+                              </option>
+                            </select>
                           </div>
                         </td>
                         <td>
-                          {!isLastManager && (
+                          {!isLastOwner && (
                             <div
                               className="action"
                               onClick={() => {

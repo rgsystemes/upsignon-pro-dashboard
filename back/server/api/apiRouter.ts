@@ -39,7 +39,7 @@ import { update_user_email } from './update_user_email';
 import { get_shared_vaults } from './get_shared_vaults';
 import { count_shared_vaults } from './count_shared_vaults';
 import { delete_shared_vault_user } from './delete_shared_vault_user';
-import { update_shared_vault_manager } from './update_shared_vault_manager';
+import { update_shared_vault_access_level } from './update_shared_vault_access_level';
 import { send_email, send_email_precheck } from './send_email';
 import { update_user_setting } from './update_user_setting';
 import { extract_emails_msi_install } from './extract_emails_msi_install';
@@ -103,7 +103,7 @@ apiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) =>
 apiRouter.get('/shared-vaults', get_shared_vaults);
 apiRouter.get('/count-shared-vaults', count_shared_vaults);
 apiRouter.post('/delete-shared-vault-user', delete_shared_vault_user);
-apiRouter.post('/update-shared-vault-manager', update_shared_vault_manager);
+apiRouter.post('/update-shared-vault-manager', update_shared_vault_access_level);
 
 // Stats
 apiRouter.get('/get-password-stats', (req, res) => get_password_stats(req, res, false));

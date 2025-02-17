@@ -164,7 +164,11 @@ const translations = {
   shared_account_items_summary: '$n éléments',
   shared_account_users: 'Utilisateurs',
   shared_account_user_creation_date: 'Depuis',
-  shared_account_user_is_manager: 'Gestionnaire',
+  shared_account_user_access_level: "Niveau d'accès",
+  shared_account_user_access_level_owner: 'Propriétaire',
+  shared_account_user_access_level_editor: 'Éditeur',
+  shared_account_user_access_level_reader: 'Lecteur',
+  shared_account_user_access_level_blind: 'Aveugle',
   shared_account_user_actions: 'Actions',
   shared_account_user_delete: 'Supprimer du partage',
   shared_account_user_delete_warning:
@@ -179,10 +183,8 @@ const translations = {
   shared_vault_search: "Rechercher par adresse email d'utilisateur",
   shared_account_unit_name: 'Comptes partagés',
   shared_vault_unit_name: 'Coffres-forts partagés',
-  shared_account_manager_note:
-    "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un compte ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
-  shared_vault_manager_note:
-    "Vous ne pouvez pas enlever les droits de gestion au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de gestion à un autre utilisateur.",
+  shared_vault_owner_note:
+    "Vous ne pouvez pas enlever la propriété au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de propriété à un autre utilisateur.",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
   extract_emails_text:

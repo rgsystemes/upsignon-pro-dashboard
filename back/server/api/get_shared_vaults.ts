@@ -63,7 +63,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
           (SELECT
             u.id AS user_id,
             u.email,
-            svr.is_manager,
+            svr.access_level,
             svr.created_at
             FROM shared_vault_recipients AS svr
             LEFT JOIN users AS u ON svr.user_id=u.id

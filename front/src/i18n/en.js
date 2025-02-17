@@ -164,7 +164,11 @@ const translations = {
   shared_account_items_summary: '$n items',
   shared_account_users: 'Users',
   shared_account_user_creation_date: 'Since',
-  shared_account_user_is_manager: 'Manager',
+  shared_account_user_access_level: 'Access Level',
+  shared_account_user_access_level_owner: 'Owner',
+  shared_account_user_access_level_editor: 'Editor',
+  shared_account_user_access_level_reader: 'Reader',
+  shared_account_user_access_level_blind: 'Blind',
   shared_account_user_actions: 'Actions',
   shared_account_user_delete: 'Delete from sharing',
   shared_account_user_delete_warning:
@@ -179,10 +183,8 @@ const translations = {
   shared_vault_search: 'Search by user email address',
   shared_account_unit_name: 'Shared accounts',
   shared_vault_unit_name: 'Shared vaults',
-  shared_account_manager_note:
-    "You can't remove management rights from the last manager of an account or delete him from the share. But you can transfer the management rights to another user.",
-  shared_vault_manager_note:
-    "You can't remove management rights from the last manager of a shared vault or delete him from the share. But you can transfer the management rights to another user.",
+  shared_vault_owner_note:
+    "You can't remove owner rights from the last owner of a shared vault or delete him from the share. But you can transfer the owner rights to another user.",
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
   extract_emails_text: 'Get the list of emails of users matching one of these conditions:',
