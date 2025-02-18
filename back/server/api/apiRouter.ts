@@ -50,6 +50,7 @@ import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
+import { extract_admins } from './extract_admins';
 
 export const apiRouter = express.Router();
 

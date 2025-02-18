@@ -202,13 +202,25 @@ class Other extends React.Component {
         <h1>{i18n.t('menu_other')}</h1>
         <div>
           <h2>{i18n.t('extracts')}</h2>
-          <a
-            className="extractAction"
-            style={{ marginBottom: 20 }}
-            href={`${groupServerUrl}/api/extract-database`}
-          >
-            {i18n.t('extract_database')}
-          </a>
+          <div>
+            <a
+              className="extractAction"
+              style={{ marginBottom: 20 }}
+              href={`${groupServerUrl}/api/extract-database`}
+            >
+              {i18n.t('extract_database')}
+            </a>
+          </div>
+          <div>
+            <a
+              className="extractAction"
+              style={{ marginBottom: 20 }}
+              href={`${groupServerUrl}/api/extract-admins`}
+            >
+              {i18n.t('extract_admins')}
+            </a>
+          </div>
+
           <h2>{i18n.t('extract_emails_text')}</h2>
           <div className="extractorConfig">
             <input

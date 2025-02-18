@@ -187,6 +187,7 @@ const translations = {
     "You can't remove owner rights from the last owner of a shared vault or delete him from the share. But you can transfer the owner rights to another user.",
   extracts: 'Extracts',
   extract_database: 'Download all stats into csv file',
+  extract_admins: 'Download all admins into csv file',
   extract_emails_text: 'Get the list of emails of users matching one of these conditions:',
   extract_emails_duplicates: 'who have at least $n duplicate passwords',
   extract_emails_weak: 'who have at least $n weak passwords',

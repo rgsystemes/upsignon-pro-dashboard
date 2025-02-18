@@ -187,6 +187,7 @@ const translations = {
     "Vous ne pouvez pas enlever la propriété au dernier gestionnaire d'un coffre-fort partagé ou le supprimer du partage. Mais vous pouvez transférer les droits de propriété à un autre utilisateur.",
   extracts: 'Extractions',
   extract_database: 'Télécharger toutes les stats au format csv',
+  extract_admins: 'Télécharger tous les administrateurs au format csv',
   extract_emails_text:
     "Récupérer la liste des emails des utilisateurs remplissant l'une des ces conditions :",
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',

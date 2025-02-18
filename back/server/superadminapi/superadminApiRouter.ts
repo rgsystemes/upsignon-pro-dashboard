@@ -26,6 +26,7 @@ import { extract_emails_for_long_unused } from '../api/extract_emails_for_long_u
 import { send_email, send_email_precheck } from '../api/send_email';
 import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
 import { get_licences } from '../api/get_licences';
+import { extract_admins } from '../api/extract_admins';
 
 export const superadminApiRouter = express.Router();
 
@@ -72,6 +73,7 @@ superadminApiRouter.post('/grant-pwd-reset-request/:requestId', (req, res) => {
 
 // Extracts
 superadminApiRouter.get('/extract-database', (req, res) => extract_database(req, res, true));
+superadminApiRouter.get('/extract-admins', (req, res) => extract_admins(req, res));
 superadminApiRouter.get('/extract-emails-for-duplicate-passwords', (req, res) =>
   extract_emails_for_duplicate_passwords(req, res, true),
 );
