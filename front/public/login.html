@@ -33,15 +33,17 @@
   </div>
 
   <script type="text/javascript">
-    var preventMultipleClicksLock = false;
+    var preventMultipleClicksLock = null;
+    var timer = null;
     document.getElementById("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (preventMultipleClicksLock) return;
-      preventMultipleClicksLock = true;
-      setTimeout(() => {
-        preventMultipleClicksLock = false;
-      }, 30000);
       const adminEmail = document.getElementById('adminEmail').value;
+      if (preventMultipleClicksLock === adminEmail) return;
+      preventMultipleClicksLock = adminEmail;
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        preventMultipleClicksLock = null;
+      }, 10000);
       const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
         method: 'POST',
         body: JSON.stringify({ adminEmail }),
