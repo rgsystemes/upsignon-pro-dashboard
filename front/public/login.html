@@ -33,8 +33,14 @@
   </div>
 
   <script type="text/javascript">
+    var preventMultipleClicksLock = false;
     document.getElementById("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (preventMultipleClicksLock) return;
+      preventMultipleClicksLock = true;
+      setTimeout(() => {
+        preventMultipleClicksLock = false;
+      }, 30000);
       const adminEmail = document.getElementById('adminEmail').value;
       const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
         method: 'POST',
@@ -46,14 +52,16 @@
         }),
         keepalive: false,
       });
-      if (!res.ok || !JSON.parse(res.body).success) {
-        window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
-      } else {
-        window.alert("SUCCÈS ! vous allez recevoir un email.");
-      }
       const content = await res.text();
-      if (!content) return;
-      return JSON.parse(content);
+      if (!content || !res.ok) {
+        window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
+      };
+      const body = JSON.parse(content);
+      if (body.success) {
+        window.alert("SUCCÈS ! vous allez recevoir un email.");
+      } else {
+        window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
+      }
     });
   </script>
   <script type="text/javascript">
