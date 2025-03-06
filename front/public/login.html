@@ -31,6 +31,7 @@
       <input type="submit" value="Envoyer" />
     </form>
   </div>
+  <iframe style="display:none;" id="automaticAppOpener"></iframe>
 
   <script type="text/javascript">
     var preventMultipleClicksLock = null;
@@ -162,12 +163,18 @@
   </script>
   <script type="text/javascript">
     const btn = document.getElementById("UpSignOn");
-    const request = {
-      url: window.location.href.replace('login.html', '') + "login",
-      buttonId: "signin"
+    if (window.location.search.length > 1) {
+      var appLink = 'upsignon://protocol' + window.location.search;
+      UpSignOn.addButtonContent(btn, appLink, {});
+      document.getElementById("automaticAppOpener").src = appLink;
+    } else {
+      const request = {
+        url: window.location.href.replace('login.html', '') + "login",
+        buttonId: "signin"
+      }
+      const protocolURI = UpSignOn.getProtocolURI(request);
+      UpSignOn.addButtonContent(btn, protocolURI, {});
     }
-    const protocolURI = UpSignOn.getProtocolURI(request);
-    UpSignOn.addButtonContent(btn, protocolURI, {});
   </script>
 </body>
 

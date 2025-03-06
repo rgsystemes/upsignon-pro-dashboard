@@ -15,7 +15,7 @@ export const sendAdminInvite = async (
 
     const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
     const encodedToken = encodeURIComponent(token);
-    const link = `upsignon://protocol/?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
+    const link = `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
 
     const expDate = tokenExpiresAt.toLocaleDateString('fr');
 
