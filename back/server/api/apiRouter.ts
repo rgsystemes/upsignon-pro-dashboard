@@ -51,6 +51,7 @@ import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
 import { extract_admins } from './extract_admins';
+import { get_bank_url } from '../helpers/get_bank_url';
 
 export const apiRouter = express.Router();
 
@@ -67,6 +68,9 @@ apiRouter.use(async (req: any, res: any, next) => {
   }
   next();
 });
+
+apiRouter.get('/bank_url', get_bank_url);
+
 // Users
 apiRouter.get('/users', get_users);
 apiRouter.get('/count-users', count_users);

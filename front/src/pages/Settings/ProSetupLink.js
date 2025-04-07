@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 
@@ -15,19 +15,9 @@ export class ProSetupLink extends React.Component {
   };
   fetchSetupUrlComponents = async () => {
     try {
-      const serverUrl = await baseUrlFetch('/server_url', 'GET');
-      if (serverUrl) {
-        // First get link
-        const { url, oidcAuthority, oidcClientId, oidcClientIdForAddons } = serverUrl;
-
-        let link = `https://app.upsignon.eu/pro-setup?url=${encodeURIComponent(url + '/' + groupId)}`;
-        if (oidcAuthority && oidcClientId) {
-          link += `&oidcAuthority=${encodeURIComponent(oidcAuthority)}&oidcClientId=${oidcClientId}`;
-          if (oidcClientIdForAddons) {
-            link += `&oidcClientIdForAddons=${oidcClientIdForAddons}`;
-          }
-        }
-        this.proSetupLink = link;
+      const { url } = await groupUrlFetch('/api/bank_url', 'GET');
+      if (url) {
+        this.proSetupLink = url;
 
         // Then compute QR code
         if (!this.qrcodeGenerator) {
@@ -47,7 +37,7 @@ export class ProSetupLink extends React.Component {
 
         // Force rendering
         this.setState({
-          bankUrl: serverUrl.url + '/' + groupId,
+          bankUrl: url,
         });
       }
     } catch (e) {
