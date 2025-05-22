@@ -290,6 +290,8 @@ const translations = {
   sasettings_require_admin_check_for_second_device:
     'Require a manual administrator validation to add more than one device',
   sasettings_prevent_update_popup: 'Prevent the display of the update popup in the app.',
+  sasettings_allow_unsafe_browser_setup: 'Allow simplified (less safe) browser setup.',
+  user_allow_unsafe_browser_setup: 'Simplified browser setup',
   sasettings_group_name_change_warning:
     'Notice: bank of safes name changes only affect new devices for now.',
   sasettings_group_delete_warning:

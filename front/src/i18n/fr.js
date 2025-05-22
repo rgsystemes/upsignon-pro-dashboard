@@ -298,6 +298,9 @@ const translations = {
     "Exiger une validation manuelle d'un administrateur pour l'ajout de plus d'un appareil",
   sasettings_prevent_update_popup:
     "Empêcher l'affichage de la popup de mise-à-jour dans l'application.",
+  sasettings_allow_unsafe_browser_setup:
+    'Autoriser la configuration simplifiée (moins sécurisée) des navigateurs',
+  user_allow_unsafe_browser_setup: 'Config. navigateurs simplifiée',
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
