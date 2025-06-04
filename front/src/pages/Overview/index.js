@@ -12,7 +12,10 @@ class Overview extends React.Component {
         <h1>{i18n.t('menu_overview')}</h1>
         <h2>{i18n.t('useful_links')}</h2>
         <p>
-          {i18n.t('suggestion')} <a href="mailto:contact@upsignon.eu">contact@upsignon.eu</a>
+          {i18n.t('suggestion')}{' '}
+          <a href="mailto:contact-upsignon-rgsystem@septeo.com">
+            contact-upsignon-rgsystem@septeo.com
+          </a>
         </p>
         <ul className="highlighter">
           <li>

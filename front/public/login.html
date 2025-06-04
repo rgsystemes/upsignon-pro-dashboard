@@ -7,7 +7,7 @@
   <link rel="icon" href="/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
-  <title>UpSignOn PRO dashboard</title>
+  <title>UpSignon PRO dashboard</title>
   <style>
     body {
       margin: auto;
@@ -22,8 +22,8 @@
 <body>
   <noscript>You need to enable JavaScript.</noscript>
   <div style="display:flex; flex-direction: column; align-items: center;">
-    <div style="margin-bottom: 20px;">Cliquez sur ce bouton pour vous connecter (ne fonctionne que si vous avez l'application UpSignOn installée)</div>
-    <div id="UpSignOn"></div>
+    <div style="margin-bottom: 20px;">Cliquez sur ce bouton pour vous connecter (ne fonctionne que si vous avez l'application UpSignon installée)</div>
+    <div id="UpSignon"></div>
 
     <div style="margin: 50px auto 10px auto; width: 600px;">Si vous n'avez pas encore créé votre compte admin ou si vous avez perdu votre accès, saisissez votre adresse email ici. Attention, seules les adresses emails d'administrateur sont acceptées.</div>
     <form id="loginForm">
@@ -79,9 +79,9 @@
           "en": "Confidential connection"
         },
         "download": {
-          "fr": "Télécharger l'application UpSignOn",
-          "es": "Descargar la aplicación UpSignOn",
-          "en": "Download the UpSignOn app"
+          "fr": "Télécharger l'application UpSignon",
+          "es": "Descargar la aplicación UpSignon",
+          "en": "Download the UpSignon app"
         }
       }
         ;
@@ -120,7 +120,7 @@
         logoContainer.style.justifyContent = "center";
         logoContainer.innerHTML = getSVGLogo(uiConfig.logoWidth || 50);
         var textContainer = document.createElement("div");
-        textContainer.innerHTML = "<div>UpSignOn</div><div>" + getButtonText() + "</div>";
+        textContainer.innerHTML = "<div>UpSignon</div><div>" + getButtonText() + "</div>";
         textContainer.style.lineHeight = "1.3em";
         textContainer.style.textAlign = "left";
         textContainer.style.color = "white";
