@@ -94,7 +94,7 @@ apiRouter.get('/count-shared-devices', count_shared_devices);
 apiRouter.get('/count-password-reset-requests', (req, res) =>
   count_password_reset_requests(req, res, false),
 );
-apiRouter.get('/get-password-reset-requests', (req, res) =>
+apiRouter.post('/get-password-reset-requests', (req, res) =>
   get_password_reset_requests(req, res, false),
 );
 apiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) =>

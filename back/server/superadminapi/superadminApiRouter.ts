@@ -61,7 +61,7 @@ superadminApiRouter.post('/update-setting', update_setting);
 superadminApiRouter.get('/count-password-reset-requests', (req, res) => {
   count_password_reset_requests(req, res, true);
 });
-superadminApiRouter.get('/get-password-reset-requests', (req, res) => {
+superadminApiRouter.post('/get-password-reset-requests', (req, res) => {
   get_password_reset_requests(req, res, true);
 });
 superadminApiRouter.post('/delete-pwd-reset-request/:requestId', (req, res) => {
