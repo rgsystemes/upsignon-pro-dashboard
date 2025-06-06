@@ -71,7 +71,7 @@ if (!env.IS_PRODUCTION) {
       next();
     } catch (e) {
       console.error(e);
-      res.send(444).end();
+      res.sendStatus(444).end();
     }
   });
 }
