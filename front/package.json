@@ -4,18 +4,19 @@
   "licence": "none",
   "private": true,
   "dependencies": {
-    "react": "^19.0.0",
-    "react-datepicker": "^7.6.0",
-    "react-dom": "^19.0.0",
-    "recharts": "^2.15.1"
+    "react": "^19.1.0",
+    "react-datepicker": "^8.4.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "eslint": "^9.19.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
+    "@types/react-datepicker": "^7.0.0",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.1",
     "postcss-normalize": "^13.0.1",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
