@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
@@ -7,7 +8,9 @@ export const get_password_reset_requests = async (
   asSuperadmin: boolean,
 ): Promise<void> => {
   try {
-    const userDevicesRequest = await db.query(
+    const email = Joi.attempt(req.body?.email, Joi.string().optional());
+
+    const prrResult = await db.query(
       `SELECT
       groups.name AS group_name,
       u.email,
@@ -27,11 +30,12 @@ export const get_password_reset_requests = async (
     INNER JOIN users AS u ON ud.user_id=u.id
     INNER JOIN groups ON u.group_id=groups.id
     ${asSuperadmin ? '' : 'WHERE prr.group_id=$1'}
+    ${email ? 'AND u.email=$2' : ''}
     ORDER BY prr.created_at DESC
     `,
-      asSuperadmin ? [] : [req.proxyParamsGroupId],
+      asSuperadmin ? [] : [req.proxyParamsGroupId, ...(email ? [email] : [])],
     );
-    res.status(200).send(userDevicesRequest.rows);
+    res.status(200).send(prrResult.rows);
   } catch (e) {
     logError('get_password_reset_requests', e);
     res.status(400).end();

@@ -10,7 +10,7 @@ class PasswordResetRequests extends React.Component {
   };
   fetchPasswordResetRequests = async () => {
     try {
-      const res = await groupUrlFetch('/api/get-password-reset-requests', 'GET', null);
+      const res = await groupUrlFetch('/api/get-password-reset-requests', 'POST', null);
       this.setState({
         resetRequests: res,
       });
