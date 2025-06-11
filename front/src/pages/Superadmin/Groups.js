@@ -4,6 +4,7 @@ import { baseFrontUrl } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import './Groups.css';
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.addWeeks = function (w) {
@@ -18,21 +19,44 @@ class Groups extends React.Component {
     showAllSettings: false,
     showGroupSettings: {},
   };
-  newInputRef = null;
+  newBankNameInputRef = null;
+  newAdminEmailInputRef = null;
+  isTestingCheckboxRef = null;
+  salesEmailRef = null;
 
   insertGroup = async () => {
     try {
       this.props.setIsLoading(true);
-      const newGroup = this.newInputRef.value;
-      if (!newGroup) {
-        this.newInputRef.style.borderColor = 'red';
+      const newBankName = this.newBankNameInputRef.value;
+      const newAdminEmail = this.newAdminEmailInputRef.value;
+      const isTrial = this.isTestingCheckboxRef.checked;
+      const salesEmail = this.salesEmailRef.value;
+      if (!newBankName) {
+        this.newBankNameInputRef.style.borderColor = 'red';
         return;
       } else {
-        this.newInputRef.style.borderColor = null;
+        this.newBankNameInputRef.style.borderColor = null;
       }
-      await groupUrlFetch('/api/insert-group', 'POST', { name: newGroup });
+      if (!newAdminEmail) {
+        this.newAdminEmailInputRef.style.borderColor = 'red';
+        return;
+      } else {
+        this.newAdminEmailInputRef.style.borderColor = null;
+      }
+      if (salesEmail) {
+        localStorage.setItem('newBankSalesEmail', salesEmail);
+      }
+      await groupUrlFetch('/api/insert-group', 'POST', {
+        name: newBankName,
+        adminEmail: newAdminEmail,
+        isTrial,
+        salesEmail,
+      });
       await this.props.fetchGroups();
-      this.newInputRef.value = null;
+      this.newBankNameInputRef.value = null;
+      this.newAdminEmailInputRef.value = null;
+      this.isTestingCheckboxRef.checked = true;
+      window.alert(i18n.t('sasettings_new_bank_form_success'));
     } catch (e) {
       console.error(e);
     } finally {
@@ -147,22 +171,55 @@ class Groups extends React.Component {
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('sasettings_groups')}</h2>
         <p>{i18n.t('sasettings_groups_explanation')}</p>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 20,
-          }}
-        >
-          <input
-            ref={(r) => {
-              this.newInputRef = r;
-            }}
-            placeholder={i18n.t('sasettings_group_name')}
-            style={{ width: 300 }}
-          />
-          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertGroup}>
+        <div className="newBankForm">
+          <div className="newBankFormTitle">{i18n.t('sasettings_new_bank_form_title')}</div>
+          <div className="newBankInputContainer">
+            <label htmlFor="bankNameInput">{i18n.t('sasettings_new_bank_form_bank_name')}</label>
+            <input
+              id="bankNameInput"
+              ref={(r) => {
+                this.newBankNameInputRef = r;
+              }}
+              placeholder={i18n.t('sasettings_new_bank_form_bank_name')}
+            />
+          </div>
+          <div className="newBankInputContainer">
+            <label htmlFor="adminEmailInput">
+              {i18n.t('sasettings_new_bank_form_admin_email')}
+            </label>
+            <input
+              id="adminEmailInput"
+              ref={(r) => {
+                this.newAdminEmailInputRef = r;
+              }}
+              placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
+            />
+          </div>
+          <div className="newBankInputContainer">
+            <label htmlFor="isTestingCheckbox">
+              {i18n.t('sasettings_new_bank_form_is_testing')}
+            </label>
+            <input
+              id="isTestingCheckbox"
+              type="checkbox"
+              defaultChecked
+              ref={(r) => {
+                this.isTestingCheckboxRef = r;
+              }}
+            />
+          </div>
+          <div className="newBankInputContainer">
+            <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}</label>
+            <input
+              id="salesEmail"
+              ref={(r) => {
+                this.salesEmailRef = r;
+              }}
+              placeholder={i18n.t('sasettings_new_bank_form_sales_email_placeholder')}
+              defaultValue={localStorage.getItem('newBankSalesEmail')}
+            />
+          </div>
+          <div className="action" onClick={this.insertGroup}>
             {i18n.t('add')}
           </div>
         </div>
