@@ -11,11 +11,12 @@ import { EmailConfig } from './EmailConfig';
 class Superadmin extends React.Component {
   state = {
     groups: [],
+    adminsBuildCounter: 0,
   };
   fetchGroups = async () => {
     try {
       const groups = await groupUrlFetch('/api/groups', 'GET', null);
-      this.setState({ groups });
+      this.setState((prev) => ({ groups, adminsBuildCounter: prev.adminsBuildCounter + 1 }));
       this.props.updateMenuGroups(groups);
     } catch (e) {
       console.error(e);
@@ -34,7 +35,11 @@ class Superadmin extends React.Component {
           groups={this.state.groups}
           fetchGroups={this.fetchGroups}
         />
-        <Admins setIsLoading={this.props.setIsLoading} groups={this.state.groups} />
+        <Admins
+          key={this.state.adminsBuildCounter}
+          setIsLoading={this.props.setIsLoading}
+          groups={this.state.groups}
+        />
         <EmailConfig setIsLoading={this.props.setIsLoading} />
       </div>
     );

@@ -1,0 +1,20 @@
+.newBankForm {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+.newBankFormTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.newBankInputContainer {
+  margin-bottom: 10px;
+}
+.newBankInputContainer label {
+  margin-right: 20px;
+}
+.newBankInputContainer input[type="checkbox"] {
+  cursor: pointer;
+}
+.newBankInputContainer input:not([type="checkbox"]) {
+  width: 300px;
+}
