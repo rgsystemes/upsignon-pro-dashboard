@@ -2,9 +2,9 @@ import React from 'react';
 import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { groupId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
+import qrcodeGenerator from 'qrcode-generator';
 
 export class ProSetupLink extends React.Component {
-  qrcodeGenerator = null;
   base64Img = null;
 
   setupLinRef = null;
@@ -19,15 +19,11 @@ export class ProSetupLink extends React.Component {
       if (url) {
         this.proSetupLink = url;
 
-        // Then compute QR code
-        if (!this.qrcodeGenerator) {
-          this.qrcodeGenerator = require('./qrcode_generator').qrcode;
-        }
         // create QR code
         const size = 150;
         const typeNumber = 0; // auto
         const errorCorrectionLevel = 'L';
-        const qr = this.qrcodeGenerator(typeNumber, errorCorrectionLevel);
+        const qr = qrcodeGenerator(typeNumber, errorCorrectionLevel);
         qr.addData(this.proSetupLink);
         qr.make();
         const nbPixels = qr.getModuleCount();
