@@ -18,7 +18,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       Joi.object({
         name: Joi.string()
           .required()
-          .pattern(/^\w{2,50}$/),
+          .pattern(/^.{2,50}$/),
         adminEmail: Joi.string().email().required(),
         isTrial: Joi.boolean(),
         salesEmail: Joi.string().email(),
