@@ -65,10 +65,10 @@ export const settingsConfig = {
     recommendedValue: false,
     userTitle: null,
   },
-  ALLOW_UNSAFE_BROWSER_SETUP: {
-    groupsTitle: 'sasettings_allow_unsafe_browser_setup',
+  FORCE_SAFE_BROWSER_SETUP: {
+    groupsTitle: 'sasettings_force_safe_browser_setup',
     recommendedValue: false,
-    userTitle: 'user_allow_unsafe_browser_setup',
+    userTitle: 'user_force_safe_browser_setup',
   },
 };
 

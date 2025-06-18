@@ -299,6 +299,9 @@ const translations = {
   sasettings_allow_unsafe_browser_setup:
     'Autoriser la configuration simplifiée (moins sécurisée) des navigateurs',
   user_allow_unsafe_browser_setup: 'Config. navigateurs simplifiée',
+  sasettings_force_safe_browser_setup:
+    "Utiliser le mode de sécurité renforcée pour l'autorisation des navigateurs",
+  user_force_safe_browser_setup: 'Navigateur mode sécurité renforcée',
   sasettings_group_name_change_warning:
     "NB : les changements de nom de banque n'affectent que les nouveaux appareils pour l'instant.",
   sasettings_group_delete_warning:
