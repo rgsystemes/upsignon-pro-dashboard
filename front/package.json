@@ -13,9 +13,9 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-datepicker": "^7.0.0",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.4.1",
+    "eslint-plugin-prettier": "^5.5.0",
     "postcss-normalize": "^13.0.1",
     "prettier": "^3.5.3",
     "react-scripts": "^5.0.1"
