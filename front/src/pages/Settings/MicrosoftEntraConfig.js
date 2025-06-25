@@ -260,7 +260,7 @@ export class MicrosoftEntraConfig extends React.Component {
               </span>
               <span>
                 {this.state.testResult.allUpSignOnUsers.error ||
-                  this.state.testResult.allUpSignOnUsers.value.map((u) => <div>{u}</div>)}
+                  this.state.testResult.allUpSignOnUsers.value.map((u) => <div key={u}>{u}</div>)}
               </span>
             </div>
             <div
