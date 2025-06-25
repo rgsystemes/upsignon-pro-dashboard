@@ -103,11 +103,21 @@ export class MicrosoftEntraConfig extends React.Component {
               display: 'inline-block',
             }}
           >
-            {i18n.t('group_setting_microsoft_entra_pitch_2')}
-            <ul>
-              <li>User.Read.All</li>
-              <li>GroupMember.Read.All</li>
-            </ul>
+            {i18n.t('group_setting_microsoft_entra_tuto')}
+            <ol>
+              <li>{i18n.t('group_setting_microsoft_entra_tuto_step1')}</li>
+              <li>
+                {i18n.t('group_setting_microsoft_entra_tuto_step2')}
+                <ul>
+                  <li>Microsoft Graph &gt; Autorisations d'application &gt; User.Read.All</li>
+                  <li>
+                    Microsoft Graph &gt; Autorisations d'application &gt; GroupMember.Read.All
+                  </li>
+                </ul>
+              </li>
+              <li>{i18n.t('group_setting_microsoft_entra_tuto_step3')}</li>
+              <li>{i18n.t('group_setting_microsoft_entra_tuto_step4')}</li>
+            </ol>
             <details>
               <summary>{i18n.t('group_setting_microsoft_entra_api_list')}</summary>
               <ul>
@@ -159,8 +169,6 @@ export class MicrosoftEntraConfig extends React.Component {
           <br />
           <label htmlFor="appResourceId">
             {i18n.t('group_setting_microsoft_entra_app_resource_id_label')}
-            <br />
-            {i18n.t('group_setting_microsoft_entra_app_resource_id_label_note')}
           </label>
           <br />
           <input
@@ -184,7 +192,7 @@ export class MicrosoftEntraConfig extends React.Component {
           <input
             id="clientSecret"
             name="clientSecret"
-            type="text"
+            type="password"
             autoComplete="off"
             onChange={(v) => {
               this.setState({ clientSecret: v.target.value });

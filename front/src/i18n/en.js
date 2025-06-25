@@ -316,17 +316,22 @@ const translations = {
   group_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optionnal)',
   group_setting_microsoft_entra_pitch:
     "UpSignon can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
-  group_setting_microsoft_entra_pitch_2:
-    "To use this feature, create an 'Enterprise Application' in your Microsoft Entra directory from the 'App registration' page and call it UpSignon. In 'App registration' > UpSignon > 'Certificates & secrets' add a client secret and paste the secret in the form below. In 'App registration' > UpSignon > 'API permissions' configure the below permissions and have them validated by an administrator. Finally, add users and groups to this enterprise application.",
-  group_setting_microsoft_entra_api_list: 'Used API list',
-  group_setting_microsoft_entra_tenant_id_label: 'Tenant ID (alias Directory ID)',
+  group_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
+  group_setting_microsoft_entra_tuto_step1:
+    "In 'App registrations', clic on 'New registration', choose a name ('UpSignon' for the rest of this documentation), choose the single tenant option, then submit.",
+  group_setting_microsoft_entra_tuto_step2:
+    "In 'App registrations' > UpSignon > 'API permissions' add the following permissiongs and request an administrator approval.",
+  group_setting_microsoft_entra_tuto_step3: 'Fill in this form.',
+  group_setting_microsoft_entra_tuto_step4:
+    'Finally, add users and groups to this enterprise application.',
+  group_setting_microsoft_entra_api_list: 'Liste of used APIs',
+  group_setting_microsoft_entra_tenant_id_label: 'Tenant ID',
   group_setting_microsoft_entra_client_id_label:
-    'Application ID for the "UpSignon" Application that you have created in your directory',
-  group_setting_microsoft_entra_client_secret_label: 'Client Secret for the "UpSignon" Application',
+    'Application ID (Enterprise applications > UpSignon > Overview)',
   group_setting_microsoft_entra_app_resource_id_label:
-    'Object ID for the "UpSignon" Application (alias Service principal ID)',
-  group_setting_microsoft_entra_app_resource_id_label_note:
-    '(Beware, this is not the identifier of a group, but indeed the second identifier of the UpSignon Application. You will find it in the Overview of the "Enterprise Apps" page and not in the "App registration" page!)',
+    "ID d\'objet (Enterprise applications > UpSignon > Overview)",
+  group_setting_microsoft_entra_client_secret_label:
+    'Client secret client (App registrations > UpSignon > Certificates & secrets)',
   group_setting_microsoft_entra_apply_config: 'Apply configuration',
   group_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
   group_setting_microsoft_entra_testing: 'Test',
