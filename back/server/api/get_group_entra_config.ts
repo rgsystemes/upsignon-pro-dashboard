@@ -6,7 +6,12 @@ export const get_group_entra_config = async (req: any, res: any): Promise<void> 
     const dbRes = await db.query(`SELECT ms_entra_config FROM groups WHERE id=$1`, [
       req.proxyParamsGroupId,
     ]);
-    res.status(200).send(dbRes.rows[0].ms_entra_config);
+    const config = dbRes.rows[0].ms_entra_config || {};
+    if (config.clientSecret) {
+      config.clientSecret = '*'.repeat(config.clientSecret.length);
+    }
+
+    res.status(200).send(config);
   } catch (e) {
     logError('get_group_entra_config', e);
     res.status(400).end();
