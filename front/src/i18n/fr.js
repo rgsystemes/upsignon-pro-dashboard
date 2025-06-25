@@ -329,18 +329,24 @@ const translations = {
   group_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
   group_setting_microsoft_entra_pitch:
     "UpSignon peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
-  group_setting_microsoft_entra_pitch_2:
-    "Pour utiliser cette fonctionnalité, créez une 'Application d'entreprise' dans votre annuaire Microsoft Entra depuis la page 'Enregistrement d'application' et appelez-la UpSignon. Dans 'Enregistrement d'application' > UpSignon > 'Certificats & Secrets' ajoutez un secret client et copiez le secret dans le formulaire ci-dessous. Dans 'Enregistrement d'application' > UpSignon > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur. Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
+  group_setting_microsoft_entra_tuto:
+    'Pour utiliser cette fonctionnalité, suivez les étapes ci-dessous :',
+  group_setting_microsoft_entra_tuto_step1:
+    "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignon' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
+  group_setting_microsoft_entra_tuto_step2:
+    "Dans 'Inscriptions d'applications' > UpSignon > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
+  group_setting_microsoft_entra_tuto_step3: 'Remplissez le formulaire ci-dessous.',
+  group_setting_microsoft_entra_tuto_step4:
+    "Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
   group_setting_microsoft_entra_api_list: 'Liste des API utilisées',
   group_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
   group_setting_microsoft_entra_client_id_label:
-    'ID d\'application pour l\'Application "UpSignon" que vous avez créée dans votre annuaire',
-  group_setting_microsoft_entra_client_secret_label: 'Secret Client pour l\'Application "UpSignon"',
+    "ID d\'application (Application d'entreprise > UpSignon > Vue d'ensemble)",
   group_setting_microsoft_entra_app_resource_id_label:
-    'ID d\'objet pour l\'Application "UpSignon" (alias ID principal de service)',
-  group_setting_microsoft_entra_app_resource_id_label_note:
-    "(Attention, ceci n'est pas l'identifiant d'un groupe mais bien le deuxième identifiant de l'Application UpSignon. Vous le trouverez dans la vue d'ensemble de la page \"Applications d'entreprise\" et non de la page \"Inscription des applications\" !)",
+    "ID d\'objet (Application d'entreprise > UpSignon > Vue d'ensemble)",
+  group_setting_microsoft_entra_client_secret_label:
+    "Secret client (Inscriptions d'application > UpSignon > Certificats & secrets)",
   group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   group_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   group_setting_microsoft_entra_testing: 'Tester',
