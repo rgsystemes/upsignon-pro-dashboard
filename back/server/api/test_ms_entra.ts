@@ -48,7 +48,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     let userGroups: EntraGroup[] = [];
     let userGroupsError = null;
     if (!msUserId) {
-      userGroupsError: 'MS user id not found';
+      userGroupsError = 'MS user id not found';
     } else {
       try {
         userGroups = await MicrosoftGraph.getGroupsForUser(req.proxyParamsGroupId, msUserId);
