@@ -7,11 +7,12 @@ export const get_group_entra_config = async (req: any, res: any): Promise<void> 
       req.proxyParamsGroupId,
     ]);
     const config = dbRes.rows[0].ms_entra_config || {};
-    if (config.clientSecret) {
-      config.clientSecret = '*'.repeat(config.clientSecret.length);
+    const maskedConfig = { ...config };
+    if (maskedConfig.clientSecret) {
+      maskedConfig.clientSecret = '*'.repeat(config.clientSecret.length);
     }
 
-    res.status(200).send(config);
+    res.status(200).send(maskedConfig);
   } catch (e) {
     logError('get_group_entra_config', e);
     res.status(400).end();
