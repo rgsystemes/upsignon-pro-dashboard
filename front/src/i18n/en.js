@@ -318,13 +318,13 @@ const translations = {
     "UpSignon can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
   group_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
   group_setting_microsoft_entra_tuto_step1:
-    "In 'App registrations', clic on 'New registration', choose a name ('UpSignon' for the rest of this documentation), choose the single tenant option, then submit.",
+    "In 'App registrations', click on 'New registration', choose a name ('UpSignon' for the rest of this documentation), choose the single tenant option, then submit.",
   group_setting_microsoft_entra_tuto_step2:
-    "In 'App registrations' > UpSignon > 'API permissions' add the following permissiongs and request an administrator approval.",
+    "In 'App registrations' > UpSignon > 'API permissions' add the following permissions and request an administrator approval.",
   group_setting_microsoft_entra_tuto_step3: 'Fill in this form.',
   group_setting_microsoft_entra_tuto_step4:
     'Finally, add users and groups to this enterprise application.',
-  group_setting_microsoft_entra_api_list: 'Liste of used APIs',
+  group_setting_microsoft_entra_api_list: 'List of used APIs',
   group_setting_microsoft_entra_tenant_id_label: 'Tenant ID',
   group_setting_microsoft_entra_client_id_label:
     'Application ID (Enterprise applications > UpSignon > Overview)',
