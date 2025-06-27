@@ -1,6 +1,6 @@
 {
   "name": "upsignon-pro-dashboard-back",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "licence": "none",
   "private": true,
   "dependencies": {
