@@ -1,9 +1,9 @@
 // credit https://loading.io/css/
 import './loader.css';
 
-function Loader() {
+function Loader(p) {
   return (
-    <div className="lds-ripple">
+    <div className={`lds-ripple ${p.small ? 'lds-ripple-small' : ''}`}>
       <div></div>
       <div></div>
     </div>

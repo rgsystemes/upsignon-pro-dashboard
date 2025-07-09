@@ -1,8 +1,14 @@
 .lds-ripple {
+  --loader-size: 80px;
+}
+.lds-ripple.lds-ripple-small {
+  --loader-size: 30px;
+}
+.lds-ripple {
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: var(--loader-size);
+  height: var(--loader-size);
 }
 .lds-ripple div {
   position: absolute;
@@ -16,8 +22,8 @@
 }
 @keyframes lds-ripple {
   0% {
-    top: 36px;
-    left: 36px;
+    top: calc((var(--loader-size) - 6px)/2);
+    left: calc((var(--loader-size) - 6px)/2);
     width: 0;
     height: 0;
     opacity: 1;
@@ -25,8 +31,8 @@
   100% {
     top: 0px;
     left: 0px;
-    width: 72px;
-    height: 72px;
+    width: calc(var(--loader-size) - 6px);
+    height: calc(var(--loader-size) - 6px);
     opacity: 0;
   }
 }
