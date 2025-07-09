@@ -1,0 +1,65 @@
+.ssoChoiceInputContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.ssoChoiceContainerLabel {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.provider-logo {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.check-icon-container {
+  margin-left: 10px;
+}
+
+.customConfigSubmit {
+  cursor: pointer;
+  background-color: rgb(0, 171, 169);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: white;
+  margin-top: 10px;
+}
+.customConfigSubmit:active {
+  background-color: rgb(0, 121, 119);
+}
+.customConfigSubmit:disabled {
+  background-color: rgba(0, 171, 169, 0.4);
+  cursor: not-allowed;
+}
+
+.customConfigContainer {
+  margin-left: 20px;
+}
+
+.customConfigContainer label {
+  font-weight: 500;
+  display: block;
+  margin-top: 5px;
+}
+
+.customConfigInputUrlContainer, .customConfigInputClientIdContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.customConfigInputUrlContainer input {
+  width: 600px;
+}
+.customConfigInputClientIdContainer input {
+  width: 300px;
+}

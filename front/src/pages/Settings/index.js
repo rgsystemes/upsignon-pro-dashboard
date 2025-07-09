@@ -7,6 +7,7 @@ import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
 import { ServerRedirection } from './ServerRedirection';
 import { MicrosoftEntraConfig } from './MicrosoftEntraConfig';
+import { OpenidConfiguration } from './OpenidConfiguration';
 
 // Props setIsLoading, isSuperAdmin, otherGroups
 class Settings extends React.Component {
@@ -22,6 +23,7 @@ class Settings extends React.Component {
           isSuperAdmin={this.props.isSuperAdmin}
           otherGroups={this.props.otherGroups}
         />
+        <OpenidConfiguration setIsLoading={this.props.setIsLoading} />
         <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
         <AllowedEmails setIsLoading={this.props.setIsLoading} />
         <ServerRedirection />

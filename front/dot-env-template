@@ -1,1 +1,2 @@
 PUBLIC_URL=https://upsignonpro.votre-domaine.fr/admin
+NODE_ENV=production

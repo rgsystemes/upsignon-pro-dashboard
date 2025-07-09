@@ -52,6 +52,9 @@ import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
 import { extract_admins } from './extract_admins';
 import { get_bank_url } from '../helpers/get_bank_url';
+import { get_bank_sso_config } from './sso/get_bank_sso_config';
+import { add_bank_sso_config } from './sso/add_bank_sso_config';
+import { delete_bank_sso_config } from './sso/delete_bank_sso_config';
 
 export const apiRouter = express.Router();
 
@@ -171,6 +174,11 @@ apiRouter.post('/group-entra-config-update', update_group);
 apiRouter.post('/reload-ms-entra-instance', reloadMSEntraInstance);
 apiRouter.post('/test-ms-entra', test_ms_entra);
 apiRouter.get('/list-ms-entra-apis', listMSEntraAPIs);
+
+// SSO CONFIG
+apiRouter.get('/sso_configurations', get_bank_sso_config);
+apiRouter.post('/add_sso_configuration', add_bank_sso_config);
+apiRouter.post('/delete_sso_configuration', delete_bank_sso_config);
 
 // Licences
 apiRouter.post('/get-licences', (req, res) => get_licences(req, res, false));
