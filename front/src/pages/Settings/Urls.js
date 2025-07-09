@@ -153,6 +153,7 @@ class Urls extends React.Component {
                 <td>
                   <input
                     type="checkbox"
+                    id="url-uses-basic-auth"
                     name="url-uses-basic-auth"
                     ref={(r) => (this.usesBasicAuthCheckbox = r)}
                   />
@@ -232,7 +233,13 @@ function InputWithLabel(props) {
         </label>
       </td>
       <td>
-        <input name={labelFor} ref={handleRef} style={{ width: 300 }} placeholder={placeholder} />
+        <input
+          id={labelFor}
+          name={labelFor}
+          ref={handleRef}
+          style={{ width: 300 }}
+          placeholder={placeholder}
+        />
       </td>
     </tr>
   );
