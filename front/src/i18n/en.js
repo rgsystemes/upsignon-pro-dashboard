@@ -110,6 +110,20 @@ const translations = {
   settings_server_redirection_new_url_label: 'Redirect this bank to',
   settings_server_redirection_confirm:
     'Are you sure? This action will interrupt service for this bank.',
+  settings_openid_config: 'Single Sign On (optional)',
+  settings_openid_config_pitch:
+    'The SSO parameter enables single sign-on for the selected bank. Choose an identity provider from the options offered, or enter a URL in the provided custom field.',
+  settings_openid_config_details:
+    'Once SSO is activated, all users attached to this bank will automatically be able to enroll their vault on their device using this method, without having to go through e-mail validation.',
+  settings_openid_unset: 'Deactivated',
+  settings_openid_custom_config: 'Custom service',
+  settings_openid_custom_config_submit: 'Validate',
+  settings_openid_custom_config_url: 'openid_configuration file URL',
+  settings_openid_custom_config_client_id: 'Client identifier',
+  settings_openid_confirm_erase_previous_config:
+    'This will erase your current configuration. Are you sure?',
+  settings_openid_invalid_url: 'Invalid URL. Please enter a valid URL.',
+  settings_openid_invalid_url_protocol: 'The URL must start with http:// or https://',
   settings_security: 'Security settings',
   settings_change: 'Change',
   settings_allowed_emails: 'Authorized email addresses',
@@ -313,7 +327,7 @@ const translations = {
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
-  group_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optionnal)',
+  group_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optional)',
   group_setting_microsoft_entra_pitch:
     "UpSignon can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
   group_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',

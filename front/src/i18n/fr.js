@@ -110,6 +110,20 @@ const translations = {
   settings_server_redirection_new_url_label: 'Rediriger cette banque vers',
   settings_server_redirection_confirm:
     'Êtes-vous sûr ? Cette action interrompra le service pour cette banque',
+  settings_openid_config: 'Single Sign On (optionnel)',
+  settings_openid_config_pitch:
+    "Le paramètre SSO permet d'activer l'authentification unique pour la banque sélectionnée. Choisissez un fournisseur d'identité parmi les options proposées, ou bien saisissez une URL via le champ personnalisé prévu à cet effet.",
+  settings_openid_config_details:
+    'Une foix le SSO activé, tous les utilisateurs rattachés à cette banque pourront automatiquement enrôler leur coffre-fort sur leur appareil via cette méthode, sans passer par la validation par e-mail.',
+  settings_openid_unset: 'Désactivé',
+  settings_openid_custom_config: 'Service personnalisé',
+  settings_openid_custom_config_submit: 'Valider',
+  settings_openid_custom_config_url: 'URL du fichier openid_configuration',
+  settings_openid_invalid_url: 'URL invalide. Veuillez saisir une URL correcte.',
+  settings_openid_invalid_url_protocol: "L'URL doit commencer par http:// ou https://",
+  settings_openid_custom_config_client_id: 'Identifiant du client',
+  settings_openid_confirm_erase_previous_config:
+    'Ceci effacera votre configuration actuelle. Êtes-vous sûr ?',
   settings_security: 'Paramètres de sécurité',
   settings_change: 'Changer',
   settings_allowed_emails: 'Adresses email autorisées',
