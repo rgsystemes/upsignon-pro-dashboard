@@ -114,7 +114,7 @@ const translations = {
   settings_openid_config_pitch:
     "Le paramètre SSO permet d'activer l'authentification unique pour la banque sélectionnée. Choisissez un fournisseur d'identité parmi les options proposées, ou bien saisissez une URL via le champ personnalisé prévu à cet effet.",
   settings_openid_config_details:
-    'Une foix le SSO activé, tous les utilisateurs rattachés à cette banque pourront automatiquement enrôler leur coffre-fort sur leur appareil via cette méthode, sans passer par la validation par e-mail.',
+    'Une fois le SSO activé, tous les utilisateurs rattachés à cette banque pourront automatiquement enrôler leur coffre-fort sur leur appareil via cette méthode, sans passer par la validation par e-mail.',
   settings_openid_unset: 'Désactivé',
   settings_openid_custom_config: 'Service personnalisé',
   settings_openid_custom_config_submit: 'Valider',

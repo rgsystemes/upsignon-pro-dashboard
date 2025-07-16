@@ -24,8 +24,8 @@ export const add_bank_sso_config = async (req: any, res: any): Promise<void> => 
       }),
     );
 
-    var configUrl = safeBody.configType == 'microsoft' ? microsoftConfigUrl : safeBody.configUrl;
-    var clientId = safeBody.configType == 'microsoft' ? microsoftClientId : safeBody.clientId;
+    const configUrl = safeBody.configType == 'microsoft' ? microsoftConfigUrl : safeBody.configUrl;
+    const clientId = safeBody.configType == 'microsoft' ? microsoftClientId : safeBody.clientId;
 
     // check if item already exists to avoid readding it
     const selectRes = await db.query(
