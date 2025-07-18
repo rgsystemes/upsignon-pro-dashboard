@@ -237,6 +237,7 @@ class Groups extends React.Component {
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
+                <th>{i18n.t('sasettings_group_test_days_remaining')}</th>
                 <th>{i18n.t('sasettings_group_sales_rep')}</th>
                 <th>
                   <div>{i18n.t('settings_group_settings')}</div>
@@ -337,6 +338,46 @@ class Groups extends React.Component {
                     ) : (
                       <td>N/A</td>
                     )}
+                    <td>
+                      {group.settings?.IS_TESTING && group.settings?.TESTING_EXPIRATION_DATE
+                        ? (() => {
+                            const today = new Date();
+                            const expirationDate = new Date(group.settings.TESTING_EXPIRATION_DATE);
+                            const diffTime = expirationDate - today;
+                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                            if (diffDays <= 0) {
+                              const expiredDays = Math.abs(diffDays);
+                              return (
+                                <span style={{ color: 'red', fontWeight: 'bold' }}>
+                                  {i18n.t('sasettings_group_expired_since', {
+                                    days: expiredDays,
+                                    s: expiredDays > 1 ? 's' : '',
+                                  })}
+                                </span>
+                              );
+                            } else if (diffDays <= 7) {
+                              return (
+                                <span style={{ color: 'orange', fontWeight: 'bold' }}>
+                                  {i18n.t('sasettings_group_days_remaining', {
+                                    days: diffDays,
+                                    s: diffDays > 1 ? 's' : '',
+                                  })}
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span>
+                                  {i18n.t('sasettings_group_days_remaining', {
+                                    days: diffDays,
+                                    s: diffDays > 1 ? 's' : '',
+                                  })}
+                                </span>
+                              );
+                            }
+                          })()
+                        : 'N/A'}
+                    </td>
                     <EditableCell
                       value={group.settings?.SALES_REP || ''}
                       onChange={(newVal) => {
@@ -388,6 +429,7 @@ class Groups extends React.Component {
               <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
                 <td>{i18n.t('total')}</td>
                 <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
