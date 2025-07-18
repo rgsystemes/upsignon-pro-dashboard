@@ -285,6 +285,7 @@ const translations = {
   sasettings_group_days_remaining: '$days jour$s',
   sasettings_group_reseller: 'Revendeur',
   sasettings_group_sales_rep: 'Commercial',
+  sasettings_group_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_group_open: 'Voir',
   sasettings_nb_users: 'Nombre de coffres-forts',
   sasettings_nb_licences_sold: 'Licences vendues',
