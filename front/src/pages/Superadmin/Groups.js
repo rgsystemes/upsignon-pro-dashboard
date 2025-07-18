@@ -28,6 +28,7 @@ class Groups extends React.Component {
   newAdminEmailInputRef = null;
   isTestingCheckboxRef = null;
   salesEmailRef = null;
+  resellerNameInputRef = null;
 
   insertGroup = async () => {
     try {
@@ -36,7 +37,8 @@ class Groups extends React.Component {
       const newAdminEmail = this.newAdminEmailInputRef.value;
       const isTrial = this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
-      if (!newBankName) {
+      const resellerName = this.resellerNameInputRef.value || null;
+      if (!newBankName || newBankName.length < 2) {
         this.newBankNameInputRef.style.borderColor = 'red';
         return;
       } else {
@@ -56,6 +58,7 @@ class Groups extends React.Component {
         adminEmail: newAdminEmail,
         isTrial,
         salesEmail,
+        resellerName,
       });
       await this.props.fetchGroups();
       this.newBankNameInputRef.value = null;
@@ -242,7 +245,7 @@ class Groups extends React.Component {
         <div className="newBankForm">
           <div className="newBankFormTitle">{i18n.t('sasettings_new_bank_form_title')}</div>
           <div className="newBankInputContainer">
-            <label htmlFor="bankNameInput">{i18n.t('sasettings_new_bank_form_bank_name')}</label>
+            <label htmlFor="bankNameInput">{i18n.t('sasettings_new_bank_form_bank_name')}*</label>
             <input
               id="bankNameInput"
               ref={(r) => {
@@ -253,7 +256,7 @@ class Groups extends React.Component {
           </div>
           <div className="newBankInputContainer">
             <label htmlFor="adminEmailInput">
-              {i18n.t('sasettings_new_bank_form_admin_email')}
+              {i18n.t('sasettings_new_bank_form_admin_email')}*
             </label>
             <input
               id="adminEmailInput"
@@ -277,7 +280,7 @@ class Groups extends React.Component {
             />
           </div>
           <div className="newBankInputContainer">
-            <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}</label>
+            <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}*</label>
             <input
               id="salesEmail"
               ref={(r) => {
@@ -287,6 +290,19 @@ class Groups extends React.Component {
               defaultValue={localStorage.getItem('newBankSalesEmail')}
             />
           </div>
+          {isSaasServer && (
+            <div className="newBankInputContainer">
+              <label htmlFor="resellerName">
+                {i18n.t('sasettings_new_bank_form_reseller_name')}
+              </label>
+              <input
+                id="resellerName"
+                ref={(r) => {
+                  this.resellerNameInputRef = r;
+                }}
+              />
+            </div>
+          )}
           <div className="action" onClick={this.insertGroup}>
             {i18n.t('add')}
           </div>
