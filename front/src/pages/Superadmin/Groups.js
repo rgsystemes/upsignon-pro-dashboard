@@ -22,6 +22,7 @@ class Groups extends React.Component {
     filterType: 0, // 0: all, 1: testing only
     sortType: 0, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
+    salesRepFilter: '', // Filter by sales rep name
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -188,7 +189,19 @@ class Groups extends React.Component {
     }
 
     const filteredBanks = this.props.groups
-      .filter((group) => this.state.filterType === 0 || group.settings?.IS_TESTING)
+      .filter((group) => {
+        // Filter by type (all or testing only)
+        const typeFilter = this.state.filterType === 0 || group.settings?.IS_TESTING;
+
+        // Filter by sales rep
+        const salesRepFilter =
+          !this.state.salesRepFilter ||
+          (group.settings?.SALES_REP || '')
+            .toLowerCase()
+            .includes(this.state.salesRepFilter.toLowerCase());
+
+        return typeFilter && salesRepFilter;
+      })
       .sort((a, b) => {
         let comparison = 0;
 
@@ -275,25 +288,47 @@ class Groups extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ marginBottom: 10 }}>
-            <strong>{i18n.t('sasettings_filter_label')}</strong>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '30px',
+            flexWrap: 'wrap',
+            marginBottom: 20,
+          }}
+        >
+          <div>
+            <Toggler
+              choices={[
+                {
+                  key: 0,
+                  title: i18n.t('sasettings_filter_all_banks'),
+                  isCurrent: this.state.filterType === 0,
+                },
+                {
+                  key: 1,
+                  title: i18n.t('sasettings_filter_testing_banks'),
+                  isCurrent: this.state.filterType === 1,
+                },
+              ]}
+              onSelect={(filterType) => this.setState({ filterType })}
+            />
           </div>
-          <Toggler
-            choices={[
-              {
-                key: 0,
-                title: i18n.t('sasettings_filter_all_banks'),
-                isCurrent: this.state.filterType === 0,
-              },
-              {
-                key: 1,
-                title: i18n.t('sasettings_filter_testing_banks'),
-                isCurrent: this.state.filterType === 1,
-              },
-            ]}
-            onSelect={(filterType) => this.setState({ filterType })}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
+              value={this.state.salesRepFilter}
+              onChange={(e) => this.setState({ salesRepFilter: e.target.value })}
+              style={{
+                padding: '8px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px',
+                width: '250px',
+              }}
+            />
+          </div>
         </div>
         {this.props.groups.length > 0 && (
           <table>
