@@ -22,28 +22,6 @@ class Overview extends React.Component {
             <a
               className="link bold"
               target="_blank"
-              href="https://app.upsignon.eu/newsletter-admins"
-              rel="noreferrer"
-            >
-              {i18n.t('newsletter_admins')}
-            </a>
-          </li>
-          {this.props.isSuperadminPage && (
-            <li>
-              <a
-                className="link bold"
-                target="_blank"
-                href="https://app.upsignon.eu/newsletter-tech"
-                rel="noreferrer"
-              >
-                {i18n.t('newsletter_tech')}
-              </a>
-            </li>
-          )}
-          <li>
-            <a
-              className="link bold"
-              target="_blank"
               href="https://upsignon.notion.site/Notice-d-utilisation-d-UpSignOn-de4f8ba200e14ec1adcaba2613b38340"
               rel="noreferrer"
             >
