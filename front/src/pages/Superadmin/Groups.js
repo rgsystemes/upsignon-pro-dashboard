@@ -20,6 +20,8 @@ class Groups extends React.Component {
     showAllSettings: false,
     showGroupSettings: {},
     filterType: 0, // 0: all, 1: testing only
+    sortType: 0, // 0: name, 1: reseller, 2: expiration date
+    sortDirection: 'asc', // 'asc' or 'desc'
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -131,6 +133,21 @@ class Groups extends React.Component {
       return { ...s, showGroupSettings: { [groupId]: !s.showGroupSettings[groupId] } };
     });
   };
+
+  handleSort = (sortType) => {
+    this.setState((prevState) => ({
+      sortType,
+      sortDirection:
+        prevState.sortType === sortType && prevState.sortDirection === 'asc' ? 'desc' : 'asc',
+    }));
+  };
+
+  getSortIcon = (columnSortType) => {
+    if (this.state.sortType !== columnSortType) {
+      return '↕'; // No sort icon when not active
+    }
+    return this.state.sortDirection === 'asc' ? '↑' : '↓';
+  };
   render() {
     const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
@@ -170,9 +187,38 @@ class Groups extends React.Component {
       );
     }
 
-    const filteredBanks = this.props.groups.filter(
-      (group) => this.state.filterType === 0 || group.settings?.IS_TESTING,
-    );
+    const filteredBanks = this.props.groups
+      .filter((group) => this.state.filterType === 0 || group.settings?.IS_TESTING)
+      .sort((a, b) => {
+        let comparison = 0;
+
+        switch (this.state.sortType) {
+          case 1: // Sort by reseller
+            const resellerA = (a.settings?.RESELLER || '').toLowerCase();
+            const resellerB = (b.settings?.RESELLER || '').toLowerCase();
+            comparison = resellerA.localeCompare(resellerB);
+            break;
+
+          case 2: // Sort by expiration date/days remaining
+            const getExpirationValue = (group) => {
+              if (!group.settings?.IS_TESTING || !group.settings?.TESTING_EXPIRATION_DATE) {
+                return Infinity; // Non-testing groups go to the end
+              }
+              const today = new Date();
+              const expirationDate = new Date(group.settings.TESTING_EXPIRATION_DATE);
+              return expirationDate - today; // Sort by time remaining (expired first)
+            };
+            comparison = getExpirationValue(a) - getExpirationValue(b);
+            break;
+
+          case 0: // Sort by bank name (default)
+          default:
+            comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+            break;
+        }
+
+        return this.state.sortDirection === 'desc' ? -comparison : comparison;
+      });
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('sasettings_groups')}</h2>
@@ -230,6 +276,9 @@ class Groups extends React.Component {
           </div>
         </div>
         <div style={{ marginBottom: 20 }}>
+          <div style={{ marginBottom: 10 }}>
+            <strong>{i18n.t('sasettings_filter_label')}</strong>
+          </div>
           <Toggler
             choices={[
               {
@@ -252,14 +301,38 @@ class Groups extends React.Component {
               <tr>
                 <th></th>
                 <th>{i18n.t('sasettings_group_id')}</th>
-                <th>{i18n.t('sasettings_group_reseller')}</th>
-                <th>{i18n.t('sasettings_group_name')}</th>
+                <th
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => this.handleSort(1)}
+                  title={i18n.t('sasettings_click_to_sort')}
+                >
+                  {i18n.t('sasettings_group_reseller')}
+                  <br />
+                  {this.getSortIcon(1)}
+                </th>
+                <th
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => this.handleSort(0)}
+                  title={i18n.t('sasettings_click_to_sort')}
+                >
+                  {i18n.t('sasettings_group_name')}
+                  <br />
+                  {this.getSortIcon(0)}
+                </th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
-                <th>{i18n.t('sasettings_group_test_days_remaining')}</th>
+                <th
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => this.handleSort(2)}
+                  title={i18n.t('sasettings_click_to_sort')}
+                >
+                  {i18n.t('sasettings_group_test_days_remaining')}
+                  <br />
+                  {this.getSortIcon(2)}
+                </th>
                 <th>{i18n.t('sasettings_group_sales_rep')}</th>
                 <th>
                   <div>{i18n.t('settings_group_settings')}</div>

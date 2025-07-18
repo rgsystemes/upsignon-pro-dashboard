@@ -385,6 +385,8 @@ const translations = {
   licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
   sasettings_filter_all_banks: 'Toutes les banques',
   sasettings_filter_testing_banks: 'Banques de test',
+  sasettings_filter_label: 'Filtrer :',
+  sasettings_click_to_sort: 'Cliquer pour trier',
 };
 
 export default translations;
