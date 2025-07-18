@@ -319,6 +319,10 @@ const translations = {
   sasettings_allow_unsafe_browser_setup:
     'Autoriser la configuration simplifiée (moins sécurisée) des navigateurs',
   user_allow_unsafe_browser_setup: 'Config. navigateurs simplifiée',
+  sasettings_filter_all_banks: 'Toutes les banques',
+  sasettings_filter_testing_banks: 'Banques de test',
+  sasettings_sales_rep_filter_placeholder: 'Rechercher un commercial...',
+  sasettings_click_to_sort: 'Cliquer pour trier',
   sasettings_force_safe_browser_setup:
     "Utiliser le mode de sécurité renforcée pour l'autorisation des navigateurs",
   user_force_safe_browser_setup: 'Navigateur mode sécurité renforcée',
@@ -383,10 +387,6 @@ const translations = {
   licences_none_explanation:
     'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
   licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
-  sasettings_filter_all_banks: 'Toutes les banques',
-  sasettings_filter_testing_banks: 'Banques de test',
-  sasettings_filter_label: 'Filtrer :',
-  sasettings_click_to_sort: 'Cliquer pour trier',
 };
 
 export default translations;
