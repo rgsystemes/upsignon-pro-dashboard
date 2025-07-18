@@ -8,25 +8,87 @@ import { Urls } from './Urls';
 import { ServerRedirection } from './ServerRedirection';
 import { MicrosoftEntraConfig } from './MicrosoftEntraConfig';
 import { OpenidConfiguration } from './OpenidConfiguration';
+import './settings.css';
 
 // Props setIsLoading, isSuperAdmin, otherGroups
 class Settings extends React.Component {
+  state = {
+    activeTab: 'setup', // 'setup', 'options', 'admins', 'permissions', 'urls'
+  };
+
+  setActiveTab = (tabName) => {
+    this.setState({ activeTab: tabName });
+  };
+
   render() {
+    const { activeTab } = this.state;
+
     return (
       <div className="page">
         <h1>{i18n.t('menu_settings')}</h1>
-        <ProSetupLink />
-        <OtherSettings setIsLoading={this.props.setIsLoading} />
-        <GroupAdmins setIsLoading={this.props.setIsLoading} />
-        <Urls
-          setIsLoading={this.props.setIsLoading}
-          isSuperAdmin={this.props.isSuperAdmin}
-          otherGroups={this.props.otherGroups}
-        />
-        <OpenidConfiguration setIsLoading={this.props.setIsLoading} />
-        <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
-        <AllowedEmails setIsLoading={this.props.setIsLoading} />
-        <ServerRedirection />
+        {/* Navigation par onglets */}
+        <div className="tabs-navigation">
+          <button
+            className={`tab-button ${activeTab === 'setup' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('setup')}
+          >
+            {i18n.t('settings_tab_setup')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'options' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('options')}
+          >
+            {i18n.t('settings_tab_options')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'admins' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('admins')}
+          >
+            {i18n.t('settings_tab_admins')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'permissions' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('permissions')}
+          >
+            {i18n.t('settings_tab_permissions')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'urls' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('urls')}
+          >
+            {i18n.t('settings_tab_urls')}
+          </button>
+        </div>
+
+        {/* Contenu des onglets */}
+        <div className="tab-content">
+          {activeTab === 'setup' && (
+            <div>
+              <ProSetupLink />
+              <ServerRedirection />
+            </div>
+          )}
+
+          {activeTab === 'options' && <OtherSettings setIsLoading={this.props.setIsLoading} />}
+
+          {activeTab === 'admins' && <GroupAdmins setIsLoading={this.props.setIsLoading} />}
+
+          {activeTab === 'permissions' && (
+            <div>
+              <OpenidConfiguration setIsLoading={this.props.setIsLoading} />
+              <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
+              <AllowedEmails setIsLoading={this.props.setIsLoading} />
+            </div>
+          )}
+
+          {activeTab === 'urls' && (
+            <Urls
+              setIsLoading={this.props.setIsLoading}
+              isSuperAdmin={this.props.isSuperAdmin}
+              otherGroups={this.props.otherGroups}
+            />
+          )}
+        </div>
       </div>
     );
   }

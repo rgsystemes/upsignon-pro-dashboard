@@ -31,11 +31,11 @@ class Superadmin extends React.Component {
   };
   render() {
     const { activeTab } = this.state;
-    
+
     return (
       <div className="page">
         <h1>{i18n.t('menu_superadmin')}</h1>
-        
+
         {/* Navigation par onglets */}
         <div className="tabs-navigation">
           <button
@@ -57,7 +57,7 @@ class Superadmin extends React.Component {
             {i18n.t('menu_settings')}
           </button>
         </div>
-        
+
         {/* Contenu des onglets */}
         <div className="tab-content">
           {activeTab === 'banks' && (
@@ -67,7 +67,7 @@ class Superadmin extends React.Component {
               fetchGroups={this.fetchGroups}
             />
           )}
-          
+
           {activeTab === 'admins' && (
             <Admins
               key={this.state.adminsBuildCounter}
@@ -75,7 +75,7 @@ class Superadmin extends React.Component {
               groups={this.state.groups}
             />
           )}
-          
+
           {activeTab === 'settings' && (
             <div>
               <ProServerUrl />
