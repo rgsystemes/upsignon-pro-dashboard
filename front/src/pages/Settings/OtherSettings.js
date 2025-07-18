@@ -48,7 +48,6 @@ class OtherSettings extends React.Component {
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('settings_group_settings')}</h2>
-        <div>{i18n.t('sasettings_group_name_change_warning')}</div>
         <table>
           <tbody>
             <tr>
