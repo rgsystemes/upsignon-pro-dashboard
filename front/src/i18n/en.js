@@ -282,6 +282,7 @@ const translations = {
   sasettings_group_days_remaining: '$days day$s',
   sasettings_group_reseller: 'Reseller',
   sasettings_group_sales_rep: 'Sales Rep',
+  sasettings_group_sales_rep_must_be_email: 'Sales Rep must be an email address',
   sasettings_group_open: 'See',
   sasettings_nb_users: 'Number of vaults',
   sasettings_nb_licences_sold: 'Licences vendues',

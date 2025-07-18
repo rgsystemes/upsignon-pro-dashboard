@@ -508,6 +508,17 @@ class Groups extends React.Component {
                       <EditableCell
                         value={group.settings?.SALES_REP || ''}
                         onChange={(newVal) => {
+                          if (
+                            newVal &&
+                            !newVal
+                              .toLowerCase()
+                              .match(
+                                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                              )
+                          ) {
+                            window.alert(i18n.t('sasettings_group_sales_rep_must_be_email'));
+                            return;
+                          }
                           this.toggleGroupSetting(group.id, {
                             ...group.settings,
                             SALES_REP: newVal,
