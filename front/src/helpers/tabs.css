@@ -2,8 +2,8 @@
 .tabs-navigation {
   display: flex;
   border-bottom: 2px solid #e0e0e0;
-  margin-bottom: 20px;
   flex-wrap: wrap;
+  margin: 20px 0;
 }
 
 .tab-button {

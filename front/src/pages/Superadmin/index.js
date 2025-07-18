@@ -35,9 +35,7 @@ class Superadmin extends React.Component {
 
     return (
       <div className="page">
-        <h1>{i18n.t('menu_superadmin')}</h1>
-
-        {/* Navigation par onglets */}
+        <h1>{i18n.t('menu_settings')}</h1>
         <div className="tabs-navigation">
           <button
             className={`tab-button large ${activeTab === 'banks' ? 'active' : ''}`}
@@ -59,7 +57,6 @@ class Superadmin extends React.Component {
           </button>
         </div>
 
-        {/* Contenu des onglets */}
         <div className="tab-content">
           {activeTab === 'banks' && (
             <Groups

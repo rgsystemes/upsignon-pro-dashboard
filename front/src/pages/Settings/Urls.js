@@ -101,7 +101,7 @@ class Urls extends React.Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 50 }}>
+      <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('settings_urls')}</h2>
         <div style={{ marginBottom: 10 }}>{i18n.t('settings_urls_explanation')}</div>
         {this.props.isSuperAdmin ? (

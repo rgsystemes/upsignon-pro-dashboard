@@ -159,7 +159,7 @@ class Groups extends React.Component {
     const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
       return (
-        <div className="groups-container">
+        <div>
           <h2>{i18n.t('sasettings_groups')}</h2>
           <div className="delete-confirmation-container">
             <h3>{i18n.t('sasettings_group_delete_warning')}</h3>
@@ -236,7 +236,7 @@ class Groups extends React.Component {
         return this.state.sortDirection === 'desc' ? -comparison : comparison;
       });
     return (
-      <div className="groups-container">
+      <div>
         <h2>{i18n.t('sasettings_groups')}</h2>
         <p>{i18n.t('sasettings_groups_explanation')}</p>
         <div className="newBankForm">

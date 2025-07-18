@@ -18,12 +18,6 @@
 .newBankInputContainer input:not([type="checkbox"]) {
   width: 300px;
 }
-
-/* Layout and Container Styles */
-.groups-container {
-  margin-top: 50px;
-}
-
 .filters-container {
   display: flex;
   align-items: center;
