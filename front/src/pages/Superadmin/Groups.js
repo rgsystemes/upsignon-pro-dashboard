@@ -336,6 +336,22 @@ class Groups extends React.Component {
             />
           </div>
         </div>
+        {(this.state.salesRepFilter || this.state.filterType != 0) && (
+          <div
+            style={{
+              backgroundColor: '#fff3cd',
+              border: '1px solid #ffeaa7',
+              borderRadius: '4px',
+              padding: '10px 15px',
+              marginBottom: '15px',
+              color: '#856404',
+              fontSize: '14px',
+              fontWeight: 'bold',
+            }}
+          >
+            ⚠️ {i18n.t('sasettings_filtered_list_warning')}
+          </div>
+        )}
         {this.props.groups.length > 0 && (
           <table>
             <thead>
