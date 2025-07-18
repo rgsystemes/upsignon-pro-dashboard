@@ -8,6 +8,7 @@ import { Urls } from './Urls';
 import { ServerRedirection } from './ServerRedirection';
 import { MicrosoftEntraConfig } from './MicrosoftEntraConfig';
 import { OpenidConfiguration } from './OpenidConfiguration';
+import '../../helpers/tabs.css';
 import './settings.css';
 
 // Props setIsLoading, isSuperAdmin, otherGroups
