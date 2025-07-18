@@ -33,7 +33,11 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       expDate.setSeconds(0);
       expDate.setMinutes(0);
       expDate.setHours(0);
-      newBankSettings = { IS_TESTING: true, TESTING_EXPIRATION_DATE: expDate };
+      newBankSettings = {
+        IS_TESTING: true,
+        TESTING_EXPIRATION_DATE: expDate,
+        SALES_REP: validatedBody.salesEmail,
+      };
     }
     const groupInsertRes = await db.query(
       'INSERT INTO groups (name, settings) VALUES ($1, $2) RETURNING id, public_id',
