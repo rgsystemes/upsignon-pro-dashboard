@@ -12,6 +12,7 @@ class Superadmin extends React.Component {
   state = {
     groups: [],
     adminsBuildCounter: 0,
+    activeTab: 'banks', // 'banks', 'admins', 'settings'
   };
   fetchGroups = async () => {
     try {
@@ -25,22 +26,63 @@ class Superadmin extends React.Component {
   componentDidMount() {
     this.fetchGroups();
   }
+  setActiveTab = (tabName) => {
+    this.setState({ activeTab: tabName });
+  };
   render() {
+    const { activeTab } = this.state;
+    
     return (
       <div className="page">
         <h1>{i18n.t('menu_superadmin')}</h1>
-        <ProServerUrl />
-        <Groups
-          setIsLoading={this.props.setIsLoading}
-          groups={this.state.groups}
-          fetchGroups={this.fetchGroups}
-        />
-        <Admins
-          key={this.state.adminsBuildCounter}
-          setIsLoading={this.props.setIsLoading}
-          groups={this.state.groups}
-        />
-        <EmailConfig setIsLoading={this.props.setIsLoading} />
+        
+        {/* Navigation par onglets */}
+        <div className="tabs-navigation">
+          <button
+            className={`tab-button ${activeTab === 'banks' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('banks')}
+          >
+            {i18n.t('sasettings_groups')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'admins' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('admins')}
+          >
+            {i18n.t('sasettings_superadmins')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('settings')}
+          >
+            {i18n.t('menu_settings')}
+          </button>
+        </div>
+        
+        {/* Contenu des onglets */}
+        <div className="tab-content">
+          {activeTab === 'banks' && (
+            <Groups
+              setIsLoading={this.props.setIsLoading}
+              groups={this.state.groups}
+              fetchGroups={this.fetchGroups}
+            />
+          )}
+          
+          {activeTab === 'admins' && (
+            <Admins
+              key={this.state.adminsBuildCounter}
+              setIsLoading={this.props.setIsLoading}
+              groups={this.state.groups}
+            />
+          )}
+          
+          {activeTab === 'settings' && (
+            <div>
+              <ProServerUrl />
+              <EmailConfig setIsLoading={this.props.setIsLoading} />
+            </div>
+          )}
+        </div>
       </div>
     );
   }
