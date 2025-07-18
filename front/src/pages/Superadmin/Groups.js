@@ -22,7 +22,7 @@ class Groups extends React.Component {
     filterType: 0, // 0: all, 1: testing only
     sortType: 0, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
-    salesRepFilter: '', // Filter by sales rep name
+    salesRepFilter: localStorage.getItem('groupsSalesRepFilter') || '', // Filter by sales rep name
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -149,6 +149,12 @@ class Groups extends React.Component {
     }
     return this.state.sortDirection === 'asc' ? '↑' : '↓';
   };
+
+  handleSalesRepFilterChange = (value) => {
+    this.setState({ salesRepFilter: value });
+    localStorage.setItem('groupsSalesRepFilter', value);
+  };
+
   render() {
     const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
@@ -319,7 +325,7 @@ class Groups extends React.Component {
               type="text"
               placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
               value={this.state.salesRepFilter}
-              onChange={(e) => this.setState({ salesRepFilter: e.target.value })}
+              onChange={(e) => this.handleSalesRepFilterChange(e.target.value)}
               style={{
                 padding: '8px 12px',
                 borderRadius: '4px',
