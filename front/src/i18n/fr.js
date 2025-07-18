@@ -322,6 +322,7 @@ const translations = {
   sasettings_filter_all_banks: 'Toutes les banques',
   sasettings_filter_testing_banks: 'Banques de test',
   sasettings_sales_rep_filter_placeholder: 'Rechercher un commercial...',
+  sasettings_filtered_list_warning: 'Filtre actif',
   sasettings_click_to_sort: 'Cliquer pour trier',
   sasettings_force_safe_browser_setup:
     "Utiliser le mode de sécurité renforcée pour l'autorisation des navigateurs",
