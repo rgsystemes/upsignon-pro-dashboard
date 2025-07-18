@@ -18,10 +18,6 @@ const translations = {
   cancel: 'Cancel',
   request_error: 'The server connection failed. You may need to reconnect.',
 
-  newsletter_admins:
-    'Administrator newsletter (version notes in advance, useful information for deployment, othe important information).',
-  newsletter_tech:
-    'Technical bulletins (for on premise server maintainers - security alerts, manual maintenance requests).',
   menu_overview: 'Overview',
   menu_password_reset_requests: 'Password reset requests',
   menu_users: 'Vaults',
