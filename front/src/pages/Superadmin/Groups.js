@@ -159,9 +159,9 @@ class Groups extends React.Component {
     const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
       return (
-        <div style={{ marginTop: 50 }}>
+        <div className="groups-container">
           <h2>{i18n.t('sasettings_groups')}</h2>
-          <div style={{ border: '5px solid red', padding: 20 }}>
+          <div className="delete-confirmation-container">
             <h3>{i18n.t('sasettings_group_delete_warning')}</h3>
             <div style={{ marginBottom: 10 }}>
               {i18n.t('sasetting_confirm_group_delete', {
@@ -169,25 +169,22 @@ class Groups extends React.Component {
               })}
             </div>
             <input ref={(r) => (this.deleteGroupInputRef = r)} />
-            <div
-              className="danger-button"
-              style={{ marginLeft: 20 }}
-              onClick={() => {
-                if (this.deleteGroupInputRef.value === groupToDelete.name) {
-                  this.deleteGroup(groupToDelete.id);
-                } else {
-                  this.deleteGroupInputRef.style.borderColor = 'red';
-                }
-              }}
-            >
-              {i18n.t('validate')}
-            </div>
-            <div
-              className="button"
-              style={{ marginLeft: 20 }}
-              onClick={() => this.setState({ groupToDeleteId: null })}
-            >
-              {i18n.t('cancel')}
+            <div className="button-group">
+              <div
+                className="danger-button"
+                onClick={() => {
+                  if (this.deleteGroupInputRef.value === groupToDelete.name) {
+                    this.deleteGroup(groupToDelete.id);
+                  } else {
+                    this.deleteGroupInputRef.style.borderColor = 'red';
+                  }
+                }}
+              >
+                {i18n.t('validate')}
+              </div>
+              <div className="button" onClick={() => this.setState({ groupToDeleteId: null })}>
+                {i18n.t('cancel')}
+              </div>
             </div>
           </div>
         </div>
@@ -239,7 +236,7 @@ class Groups extends React.Component {
         return this.state.sortDirection === 'desc' ? -comparison : comparison;
       });
     return (
-      <div style={{ marginTop: 50 }}>
+      <div className="groups-container">
         <h2>{i18n.t('sasettings_groups')}</h2>
         <p>{i18n.t('sasettings_groups_explanation')}</p>
         <div className="newBankForm">
@@ -294,15 +291,7 @@ class Groups extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '30px',
-            flexWrap: 'wrap',
-            marginBottom: 20,
-          }}
-        >
+        <div className="filters-container">
           <div>
             <Toggler
               choices={[
@@ -323,34 +312,15 @@ class Groups extends React.Component {
           <div>
             <input
               type="text"
+              className="sales-rep-filter-input"
               placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
               value={this.state.salesRepFilter}
               onChange={(e) => this.handleSalesRepFilterChange(e.target.value)}
-              style={{
-                padding: '8px 12px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                fontSize: '14px',
-                width: '250px',
-              }}
             />
           </div>
         </div>
         {(this.state.salesRepFilter || this.state.filterType != 0) && (
-          <div
-            style={{
-              backgroundColor: '#fff3cd',
-              border: '1px solid #ffeaa7',
-              borderRadius: '4px',
-              padding: '10px 15px',
-              marginBottom: '15px',
-              color: '#856404',
-              fontSize: '14px',
-              fontWeight: 'bold',
-            }}
-          >
-            ⚠️ {i18n.t('sasettings_filtered_list_warning')}
-          </div>
+          <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
         {this.props.groups.length > 0 && (
           <table>
@@ -359,7 +329,7 @@ class Groups extends React.Component {
                 <th></th>
                 <th>{i18n.t('sasettings_group_id')}</th>
                 <th
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  className="sortable-header"
                   onClick={() => this.handleSort(1)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
@@ -368,7 +338,7 @@ class Groups extends React.Component {
                   {this.getSortIcon(1)}
                 </th>
                 <th
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  className="sortable-header"
                   onClick={() => this.handleSort(0)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
@@ -382,7 +352,7 @@ class Groups extends React.Component {
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
                 <th
-                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  className="sortable-header"
                   onClick={() => this.handleSort(2)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
@@ -438,10 +408,8 @@ class Groups extends React.Component {
                       }}
                     />
                     <td
-                      style={
-                        group.nb_users > group.nb_licences_sold
-                          ? { backgroundColor: 'orange' }
-                          : null
+                      className={
+                        group.nb_users > group.nb_licences_sold ? 'user-count-warning' : ''
                       }
                     >
                       {group.nb_users}
@@ -456,7 +424,7 @@ class Groups extends React.Component {
                     />
                     <td>{new Date(group.created_at).toLocaleDateString()}</td>
                     <td>
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <div className="testing-checkbox-container">
                         <input
                           type="checkbox"
                           checked={group.settings?.IS_TESTING}
@@ -474,11 +442,11 @@ class Groups extends React.Component {
                       <EditableCell
                         type="date"
                         value={group.settings?.TESTING_EXPIRATION_DATE}
-                        style={
+                        className={
                           !group.settings?.TESTING_EXPIRATION_DATE ||
                           new Date(group.settings?.TESTING_EXPIRATION_DATE) < new Date()
-                            ? { backgroundColor: 'red', color: 'white' }
-                            : null
+                            ? 'expired-date'
+                            : ''
                         }
                         onChange={(newVal) => {
                           this.toggleGroupSetting(group.id, {
@@ -501,7 +469,7 @@ class Groups extends React.Component {
                             if (diffDays <= 0) {
                               const expiredDays = Math.abs(diffDays);
                               return (
-                                <span style={{ color: 'red', fontWeight: 'bold' }}>
+                                <span className="expired-text">
                                   {i18n.t('sasettings_group_expired_since', {
                                     days: expiredDays,
                                     s: expiredDays > 1 ? 's' : '',
@@ -510,7 +478,7 @@ class Groups extends React.Component {
                               );
                             } else if (diffDays <= 7) {
                               return (
-                                <span style={{ color: 'orange', fontWeight: 'bold' }}>
+                                <span className="expiring-soon-text">
                                   {i18n.t('sasettings_group_days_remaining', {
                                     days: diffDays,
                                     s: diffDays > 1 ? 's' : '',
@@ -539,7 +507,7 @@ class Groups extends React.Component {
                         });
                       }}
                     />
-                    <td style={showSettings ? { width: 400 } : {}}>
+                    <td className={showSettings ? 'settings-column-expanded' : ''}>
                       <div
                         className="action"
                         onClick={() => this.toggleShowGroupSettings(group.id)}
@@ -578,7 +546,7 @@ class Groups extends React.Component {
                   </tr>
                 );
               })}
-              <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
+              <tr className="total-row">
                 <td>{i18n.t('total')}</td>
                 <td></td>
                 <td></td>
@@ -610,14 +578,8 @@ const InlineSetting = (props) => {
       : group.settings?.[settingNameInDB];
   const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        borderBottom: '1px solid grey',
-      }}
-    >
-      <div style={{ flex: 1 }}>{i18n.t(settingConf.groupsTitle)}</div>
+    <div className="inline-setting">
+      <div className="inline-setting-content">{i18n.t(settingConf.groupsTitle)}</div>
       <div>
         {isRecommendedValue ? (
           <div className="recommendedParam">
@@ -665,14 +627,8 @@ const AutolockDelaySetting = (props) => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        borderBottom: '1px solid grey',
-      }}
-    >
-      <div style={{ flex: 1 }}>{i18n.t(settingConf.groupsTitle)}</div>
+    <div className="inline-setting">
+      <div className="inline-setting-content">{i18n.t(settingConf.groupsTitle)}</div>
       <div>
         <select
           onChange={(ev) => {
@@ -694,7 +650,7 @@ const AutolockDelaySetting = (props) => {
             );
           }}
           value={resValue}
-          style={{ width: 60 }}
+          className="autolock-setting-select"
         >
           {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
           <option disabled value={-1}></option>
