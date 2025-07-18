@@ -10,4 +10,12 @@ baseServerUrl.replace(/\/$/, '');
 const groupId = window.location.href.replace(baseFrontUrl, '').split('/')[1];
 const frontUrl = baseFrontUrl + '/' + groupId;
 const groupServerUrl = baseServerUrl + '/' + groupId;
-export { baseFrontUrl, frontUrl, groupServerUrl, groupId, baseServerUrl };
+
+let isSaasServer = false;
+try {
+  if (process.env.NODE_ENV === 'development') isSaasServer = true;
+  isSaasServer =
+    new URL(process.env.PUBLIC_URL).hostname.split('.').slice(-2).join('.') === 'upsignon.eu';
+} catch (e) {}
+
+export { baseFrontUrl, frontUrl, groupServerUrl, groupId, baseServerUrl, isSaasServer };

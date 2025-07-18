@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { Toggler } from '../../helpers/Toggler';
-import { baseFrontUrl } from '../../helpers/env';
+import { baseFrontUrl, isSaasServer } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
@@ -291,34 +291,36 @@ class Groups extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-        <div className="filters-container">
-          <div>
-            <Toggler
-              choices={[
-                {
-                  key: 0,
-                  title: i18n.t('sasettings_filter_all_banks'),
-                  isCurrent: this.state.filterType === 0,
-                },
-                {
-                  key: 1,
-                  title: i18n.t('sasettings_filter_testing_banks'),
-                  isCurrent: this.state.filterType === 1,
-                },
-              ]}
-              onSelect={(filterType) => this.setState({ filterType })}
-            />
+        {isSaasServer && (
+          <div className="filters-container">
+            <div>
+              <Toggler
+                choices={[
+                  {
+                    key: 0,
+                    title: i18n.t('sasettings_filter_all_banks'),
+                    isCurrent: this.state.filterType === 0,
+                  },
+                  {
+                    key: 1,
+                    title: i18n.t('sasettings_filter_testing_banks'),
+                    isCurrent: this.state.filterType === 1,
+                  },
+                ]}
+                onSelect={(filterType) => this.setState({ filterType })}
+              />
+            </div>
+            <div>
+              <input
+                type="text"
+                className="sales-rep-filter-input"
+                placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
+                value={this.state.salesRepFilter}
+                onChange={(e) => this.handleSalesRepFilterChange(e.target.value)}
+              />
+            </div>
           </div>
-          <div>
-            <input
-              type="text"
-              className="sales-rep-filter-input"
-              placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
-              value={this.state.salesRepFilter}
-              onChange={(e) => this.handleSalesRepFilterChange(e.target.value)}
-            />
-          </div>
-        </div>
+        )}
         {(this.state.salesRepFilter || this.state.filterType != 0) && (
           <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
@@ -328,15 +330,17 @@ class Groups extends React.Component {
               <tr>
                 <th></th>
                 <th>{i18n.t('sasettings_group_id')}</th>
-                <th
-                  className="sortable-header"
-                  onClick={() => this.handleSort(1)}
-                  title={i18n.t('sasettings_click_to_sort')}
-                >
-                  {i18n.t('sasettings_group_reseller')}
-                  <br />
-                  {this.getSortIcon(1)}
-                </th>
+                {isSaasServer && (
+                  <th
+                    className="sortable-header"
+                    onClick={() => this.handleSort(1)}
+                    title={i18n.t('sasettings_click_to_sort')}
+                  >
+                    {i18n.t('sasettings_group_reseller')}
+                    <br />
+                    {this.getSortIcon(1)}
+                  </th>
+                )}
                 <th
                   className="sortable-header"
                   onClick={() => this.handleSort(0)}
@@ -360,7 +364,7 @@ class Groups extends React.Component {
                   <br />
                   {this.getSortIcon(2)}
                 </th>
-                <th>{i18n.t('sasettings_group_sales_rep')}</th>
+                {isSaasServer && <th>{i18n.t('sasettings_group_sales_rep')}</th>}
                 <th>
                   <div>{i18n.t('settings_group_settings')}</div>
                   <div
@@ -391,15 +395,17 @@ class Groups extends React.Component {
                       </span>
                     </td>
                     <td>{group.id}</td>
-                    <EditableCell
-                      value={group.settings?.RESELLER || ''}
-                      onChange={(newVal) => {
-                        this.toggleGroupSetting(group.id, {
-                          ...group.settings,
-                          RESELLER: newVal,
-                        });
-                      }}
-                    />
+                    {isSaasServer && (
+                      <EditableCell
+                        value={group.settings?.RESELLER || ''}
+                        onChange={(newVal) => {
+                          this.toggleGroupSetting(group.id, {
+                            ...group.settings,
+                            RESELLER: newVal,
+                          });
+                        }}
+                      />
+                    )}
                     <EditableCell
                       value={group.name}
                       onChange={(newVal) => {
@@ -498,15 +504,17 @@ class Groups extends React.Component {
                           })()
                         : 'N/A'}
                     </td>
-                    <EditableCell
-                      value={group.settings?.SALES_REP || ''}
-                      onChange={(newVal) => {
-                        this.toggleGroupSetting(group.id, {
-                          ...group.settings,
-                          SALES_REP: newVal,
-                        });
-                      }}
-                    />
+                    {isSaasServer && (
+                      <EditableCell
+                        value={group.settings?.SALES_REP || ''}
+                        onChange={(newVal) => {
+                          this.toggleGroupSetting(group.id, {
+                            ...group.settings,
+                            SALES_REP: newVal,
+                          });
+                        }}
+                      />
+                    )}
                     <td className={showSettings ? 'settings-column-expanded' : ''}>
                       <div
                         className="action"
@@ -549,7 +557,7 @@ class Groups extends React.Component {
               <tr className="total-row">
                 <td>{i18n.t('total')}</td>
                 <td></td>
-                <td></td>
+                {isSaasServer && <td></td>}
                 <td></td>
                 <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
@@ -557,7 +565,7 @@ class Groups extends React.Component {
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                {isSaasServer && <td></td>}
                 <td></td>
                 <td></td>
               </tr>
