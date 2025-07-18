@@ -1,6 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { Admins } from './Admins';
+import '../../helpers/tabs.css';
 import './superadmin.css';
 import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
@@ -39,19 +40,19 @@ class Superadmin extends React.Component {
         {/* Navigation par onglets */}
         <div className="tabs-navigation">
           <button
-            className={`tab-button ${activeTab === 'banks' ? 'active' : ''}`}
+            className={`tab-button large ${activeTab === 'banks' ? 'active' : ''}`}
             onClick={() => this.setActiveTab('banks')}
           >
             {i18n.t('sasettings_groups')}
           </button>
           <button
-            className={`tab-button ${activeTab === 'admins' ? 'active' : ''}`}
+            className={`tab-button large ${activeTab === 'admins' ? 'active' : ''}`}
             onClick={() => this.setActiveTab('admins')}
           >
             {i18n.t('sasettings_superadmins')}
           </button>
           <button
-            className={`tab-button ${activeTab === 'settings' ? 'active' : ''}`}
+            className={`tab-button large ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => this.setActiveTab('settings')}
           >
             {i18n.t('menu_settings')}
