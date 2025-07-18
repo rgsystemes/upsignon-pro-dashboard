@@ -1,5 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
+import { Toggler } from '../../helpers/Toggler';
 import { baseFrontUrl } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
@@ -18,6 +19,7 @@ class Groups extends React.Component {
     groupToDeleteId: null,
     showAllSettings: false,
     showGroupSettings: {},
+    filterType: 0, // 0: all, 1: testing only
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -167,6 +169,10 @@ class Groups extends React.Component {
         </div>
       );
     }
+
+    const filteredBanks = this.props.groups.filter(
+      (group) => this.state.filterType === 0 || group.settings?.IS_TESTING,
+    );
     return (
       <div style={{ marginTop: 50 }}>
         <h2>{i18n.t('sasettings_groups')}</h2>
@@ -223,6 +229,23 @@ class Groups extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
+        <div style={{ marginBottom: 20 }}>
+          <Toggler
+            choices={[
+              {
+                key: 0,
+                title: i18n.t('sasettings_filter_all_banks'),
+                isCurrent: this.state.filterType === 0,
+              },
+              {
+                key: 1,
+                title: i18n.t('sasettings_filter_testing_banks'),
+                isCurrent: this.state.filterType === 1,
+              },
+            ]}
+            onSelect={(filterType) => this.setState({ filterType })}
+          />
+        </div>
         {this.props.groups.length > 0 && (
           <table>
             <thead>
@@ -252,7 +275,7 @@ class Groups extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.groups.map((group) => {
+              {filteredBanks.map((group) => {
                 const showSettings =
                   this.state.showAllSettings || this.state.showGroupSettings[group.id];
                 return (
@@ -427,10 +450,10 @@ class Groups extends React.Component {
               })}
               <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
                 <td>{i18n.t('total')}</td>
-                <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
                 <td></td>
                 <td></td>
+                <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
                 <td></td>
                 <td></td>

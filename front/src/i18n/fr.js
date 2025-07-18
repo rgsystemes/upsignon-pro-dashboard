@@ -383,6 +383,8 @@ const translations = {
   licences_none_explanation:
     'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
   licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
+  sasettings_filter_all_banks: 'Toutes les banques',
+  sasettings_filter_testing_banks: 'Banques de test',
 };
 
 export default translations;
