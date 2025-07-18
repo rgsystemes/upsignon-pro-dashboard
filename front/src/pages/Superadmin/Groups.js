@@ -223,7 +223,6 @@ class Groups extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-        <div>{i18n.t('sasettings_group_name_change_warning')}</div>
         {this.props.groups.length > 0 && (
           <table>
             <thead>

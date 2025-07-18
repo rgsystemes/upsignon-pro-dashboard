@@ -314,8 +314,6 @@ const translations = {
   sasettings_prevent_update_popup: 'Prevent the display of the update popup in the app.',
   sasettings_force_safe_browser_setup: 'Use strengthened security for browser authorization.',
   user_force_safe_browser_setup: 'Browser strengthened security mode',
-  sasettings_group_name_change_warning:
-    'Notice: bank of vaults name changes only affect new devices for now.',
   sasettings_group_delete_warning:
     'Are you sure you want to delete this bank of vaults? All vaults associated with this bank and the secrets stored in them will be permanently deleted. This action is irreversible!',
   sasetting_confirm_group_delete: 'To confirm, please type exactly "$name"',
