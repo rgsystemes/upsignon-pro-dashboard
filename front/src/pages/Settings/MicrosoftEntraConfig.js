@@ -91,7 +91,7 @@ export class MicrosoftEntraConfig extends React.Component {
 
   render() {
     return (
-      <div style={{ marginTop: 50 }}>
+      <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('group_setting_microsoft_entra_title')}</h2>
         <p>{i18n.t('group_setting_microsoft_entra_pitch')}</p>
         <div style={{ marginBottom: 15 }}>

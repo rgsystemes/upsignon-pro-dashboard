@@ -46,7 +46,7 @@ class OtherSettings extends React.Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 50 }}>
+      <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('settings_group_settings')}</h2>
         <table>
           <tbody>

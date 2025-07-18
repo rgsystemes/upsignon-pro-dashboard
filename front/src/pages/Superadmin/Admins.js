@@ -142,7 +142,7 @@ class Admins extends React.Component {
   }
   render() {
     return (
-      <div style={{ marginTop: 50 }}>
+      <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('sasettings_superadmins')}</h2>
         <div
           style={{
