@@ -274,6 +274,7 @@ const translations = {
   sasettings_new_bank_form_is_testing: 'Test 30 jours',
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
   sasettings_new_bank_form_sales_email_placeholder: 'Vous par défaut',
+  sasettings_new_bank_form_reseller_name: 'MSP',
   sasettings_new_bank_form_success: 'Banque créée et configurée, email envoyé.',
   sasettings_group_name: 'Nom de la banque de coffres-forts',
   sasettings_group_created_at: 'Crée le',

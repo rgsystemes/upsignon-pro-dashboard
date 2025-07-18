@@ -13,6 +13,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       adminEmail: string;
       isTrial: boolean;
       salesEmail: string;
+      resellerName: string | null;
     } = Joi.attempt(
       req.body,
       Joi.object({
@@ -22,6 +23,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
         adminEmail: Joi.string().email().required(),
         isTrial: Joi.boolean(),
         salesEmail: Joi.string().email(),
+        resellerName: Joi.string().allow(null),
       }),
     );
     let newBankSettings = {};
@@ -37,6 +39,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
         IS_TESTING: true,
         TESTING_EXPIRATION_DATE: expDate,
         SALES_REP: validatedBody.salesEmail,
+        RESELLER: validatedBody.resellerName,
       };
     }
     const groupInsertRes = await db.query(

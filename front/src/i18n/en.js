@@ -271,6 +271,7 @@ const translations = {
   sasettings_new_bank_form_is_testing: '30 days trial',
   sasettings_new_bank_form_sales_email: 'Sales referent email',
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
+  sasettings_new_bank_form_reseller_name: 'MSP',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
   sasettings_group_name: 'Bank of vaults name',
   sasettings_group_created_at: 'Created on',
