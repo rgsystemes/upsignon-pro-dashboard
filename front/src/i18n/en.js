@@ -281,6 +281,8 @@ const translations = {
   sasettings_group_is_testing: 'Testing',
   sasettings_group_test_expires_at: 'Test expiration date',
   sasettings_group_test_expires_at_never: 'Never',
+  sasettings_group_reseller: 'Reseller',
+  sasettings_group_sales_rep: 'Sales Rep',
   sasettings_group_open: 'See',
   sasettings_nb_users: 'Number of vaults',
   sasettings_nb_licences_sold: 'Licences vendues',

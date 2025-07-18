@@ -284,6 +284,8 @@ const translations = {
   sasettings_group_is_testing: 'Phase de test',
   sasettings_group_test_expires_at: "Date d'expiration du test",
   sasettings_group_test_expires_at_never: 'Jamais',
+  sasettings_group_reseller: 'Revendeur',
+  sasettings_group_sales_rep: 'Commercial',
   sasettings_group_open: 'Voir',
   sasettings_nb_users: 'Nombre de coffres-forts',
   sasettings_nb_licences_sold: 'Licences vendues',

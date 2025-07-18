@@ -230,12 +230,14 @@ class Groups extends React.Component {
               <tr>
                 <th></th>
                 <th>{i18n.t('sasettings_group_id')}</th>
+                <th>{i18n.t('sasettings_group_reseller')}</th>
                 <th>{i18n.t('sasettings_group_name')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
                 <th>{i18n.t('sasettings_group_created_at')}</th>
                 <th>{i18n.t('sasettings_group_is_testing')}</th>
                 <th>{i18n.t('sasettings_group_test_expires_at')}</th>
+                <th>{i18n.t('sasettings_group_sales_rep')}</th>
                 <th>
                   <div>{i18n.t('settings_group_settings')}</div>
                   <div
@@ -266,6 +268,15 @@ class Groups extends React.Component {
                       </span>
                     </td>
                     <td>{group.id}</td>
+                    <EditableCell
+                      value={group.settings?.RESELLER || ''}
+                      onChange={(newVal) => {
+                        this.toggleGroupSetting(group.id, {
+                          ...group.settings,
+                          RESELLER: newVal,
+                        });
+                      }}
+                    />
                     <EditableCell
                       value={group.name}
                       onChange={(newVal) => {
@@ -326,6 +337,15 @@ class Groups extends React.Component {
                     ) : (
                       <td>N/A</td>
                     )}
+                    <EditableCell
+                      value={group.settings?.SALES_REP || ''}
+                      onChange={(newVal) => {
+                        this.toggleGroupSetting(group.id, {
+                          ...group.settings,
+                          SALES_REP: newVal,
+                        });
+                      }}
+                    />
                     <td style={showSettings ? { width: 400 } : {}}>
                       <div
                         className="action"
@@ -368,6 +388,8 @@ class Groups extends React.Component {
               <tr style={{ backgroundColor: '#eee', fontWeight: 'bold' }}>
                 <td>{i18n.t('total')}</td>
                 <td>{this.props.groups.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
