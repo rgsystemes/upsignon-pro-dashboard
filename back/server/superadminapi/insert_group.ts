@@ -12,7 +12,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       name: string;
       adminEmail: string;
       isTrial: boolean;
-      salesEmail: string;
+      salesEmail: string | null;
       resellerName: string | null;
     } = Joi.attempt(
       req.body,
@@ -22,10 +22,13 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
           .pattern(/^.{2,50}$/),
         adminEmail: Joi.string().email().required(),
         isTrial: Joi.boolean(),
-        salesEmail: Joi.string().email(),
+        salesEmail: Joi.string().email().allow(null, ''),
         resellerName: Joi.string().allow(null),
       }),
     );
+
+    const salesEmail = validatedBody.salesEmail || req.session?.adminEmail;
+
     let newBankSettings = {};
     let expDate = null;
     if (validatedBody.isTrial) {
@@ -38,7 +41,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       newBankSettings = {
         IS_TESTING: true,
         TESTING_EXPIRATION_DATE: expDate,
-        SALES_REP: validatedBody.salesEmail,
+        SALES_REP: salesEmail,
         RESELLER: validatedBody.resellerName,
       };
     }
@@ -104,7 +107,6 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
 
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
-    const salesEmail = validatedBody.salesEmail || req.session?.adminEmail;
     const useBcc = salesEmail !== req.session?.adminEmail;
 
     await transporter.sendMail({

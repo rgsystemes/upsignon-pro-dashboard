@@ -280,7 +280,7 @@ class Groups extends React.Component {
             />
           </div>
           <div className="newBankInputContainer">
-            <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}*</label>
+            <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}</label>
             <input
               id="salesEmail"
               ref={(r) => {
