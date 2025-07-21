@@ -190,7 +190,10 @@ export class EmailConfig extends React.Component {
         <div style={{ fontWeight: 'bold', marginTop: 20 }}>
           {i18n.t('sasettings_email_config_testing')}
         </div>
-        <form onSubmit={this.testEmailSending}>
+        <form
+          onSubmit={this.testEmailSending}
+          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+        >
           <input
             type="text"
             placeholder="prenom.nom@domaine.fr"
