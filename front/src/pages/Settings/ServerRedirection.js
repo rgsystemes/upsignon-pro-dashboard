@@ -73,7 +73,7 @@ export class ServerRedirection extends React.Component {
           ) : (
             <div
               style={{ marginLeft: 20 }}
-              className="action"
+              className="action disabledUI"
               onClick={() => this.setState({ isEditing: true })}
             >
               {i18n.t('edit')}

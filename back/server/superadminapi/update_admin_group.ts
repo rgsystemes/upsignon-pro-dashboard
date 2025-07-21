@@ -3,6 +3,10 @@ import { logError } from '../helpers/logger';
 
 export const update_admin_group = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     if (!req.body.adminId) return res.status(401).end();
 
     if (req.body.willBelongToGroup) {
@@ -23,7 +27,7 @@ export const update_admin_group = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError("update_admin_group", e);
+    logError('update_admin_group', e);
     res.status(400).end();
   }
 };

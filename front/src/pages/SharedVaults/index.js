@@ -4,6 +4,7 @@ import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import { StatsCell } from '../../helpers/statsCell';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 const maxRenderedItems = 20;
 
@@ -274,16 +275,16 @@ class SharedVaults extends React.Component {
                                 this.toggleManagerRightsForUser(sv.id, ev.target.value, u.user_id);
                               }}
                             >
-                              <option value="owner">
+                              <option value="owner" disabled={isReadOnlySuperadmin}>
                                 {i18n.t('shared_account_user_access_level_owner')}
                               </option>
-                              <option value="editor">
+                              <option value="editor" disabled={isReadOnlySuperadmin}>
                                 {i18n.t('shared_account_user_access_level_editor')}
                               </option>
-                              <option value="reader">
+                              <option value="reader" disabled={isReadOnlySuperadmin}>
                                 {i18n.t('shared_account_user_access_level_reader')}
                               </option>
-                              <option value="blind">
+                              <option value="blind" disabled={isReadOnlySuperadmin}>
                                 {i18n.t('shared_account_user_access_level_blind')}
                               </option>
                             </select>
@@ -292,7 +293,7 @@ class SharedVaults extends React.Component {
                         <td>
                           {!isLastOwner && (
                             <div
-                              className="action"
+                              className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
                               onClick={() => {
                                 this.unshareWithUser(
                                   sv.id,

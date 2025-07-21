@@ -6,6 +6,7 @@ import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsCon
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Groups.css';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.addWeeks = function (w) {
@@ -164,7 +165,9 @@ class Groups extends React.Component {
       return (
         <div>
           <h2>{i18n.t('sasettings_groups')}</h2>
-          <div className="delete-confirmation-container">
+          <div
+            className={`delete-confirmation-container ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+          >
             <h3>{i18n.t('sasettings_group_delete_warning')}</h3>
             <div style={{ marginBottom: 10 }}>
               {i18n.t('sasetting_confirm_group_delete', {
@@ -381,17 +384,19 @@ class Groups extends React.Component {
                   {this.getSortIcon(2)}
                 </th>
                 {isSaasServer && <th>{i18n.t('sasettings_group_sales_rep')}</th>}
-                <th>
-                  <div>{i18n.t('settings_group_settings')}</div>
-                  <div
-                    className="action"
-                    style={{ color: 'white' }}
-                    onClick={this.toggleAllSettings}
-                  >
-                    {i18n.t('settings_group_settings_toggle_all_settings')}
-                  </div>
-                </th>
-                <th>{i18n.t('actions')}</th>
+                {!isReadOnlySuperadmin && (
+                  <th>
+                    <div>{i18n.t('settings_group_settings')}</div>
+                    <div
+                      className="action"
+                      style={{ color: 'white' }}
+                      onClick={this.toggleAllSettings}
+                    >
+                      {i18n.t('settings_group_settings_toggle_all_settings')}
+                    </div>
+                  </th>
+                )}
+                {!isReadOnlySuperadmin && <th>{i18n.t('actions')}</th>}
               </tr>
             </thead>
             <tbody>
@@ -420,6 +425,7 @@ class Groups extends React.Component {
                             RESELLER: newVal,
                           });
                         }}
+                        disabled={isReadOnlySuperadmin}
                       />
                     )}
                     <EditableCell
@@ -456,6 +462,7 @@ class Groups extends React.Component {
                               IS_TESTING: !group.settings?.IS_TESTING,
                             });
                           }}
+                          disabled={isReadOnlySuperadmin}
                         ></input>
                         &nbsp;{group.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
                       </div>
@@ -476,6 +483,7 @@ class Groups extends React.Component {
                             TESTING_EXPIRATION_DATE: newVal,
                           });
                         }}
+                        disabled={isReadOnlySuperadmin}
                       />
                     ) : (
                       <td>N/A</td>
@@ -542,42 +550,46 @@ class Groups extends React.Component {
                         }}
                       />
                     )}
-                    <td className={showSettings ? 'settings-column-expanded' : ''}>
-                      <div
-                        className="action"
-                        onClick={() => this.toggleShowGroupSettings(group.id)}
-                      >
-                        {i18n.t('settings_group_settings_toggle_group_settings')}
-                      </div>
-                      {showSettings && (
-                        <>
-                          {Object.keys(settingsConfig).map((k) => (
-                            <InlineSetting
-                              key={k}
-                              group={group}
-                              settingNameInDB={k}
-                              toggleGroupSetting={this.toggleGroupSetting}
-                            />
-                          ))}
-                          {Object.keys(autolockDelaySettings).map((k) => (
-                            <AutolockDelaySetting
-                              key={k}
-                              group={group}
-                              settingNameInDB={k}
-                              toggleGroupSetting={this.toggleGroupSetting}
-                            />
-                          ))}
-                        </>
-                      )}
-                    </td>
-                    <td>
-                      <div
-                        className="action"
-                        onClick={() => this.setState({ groupToDeleteId: group.id })}
-                      >
-                        {i18n.t('delete')}
-                      </div>
-                    </td>
+                    {!isReadOnlySuperadmin && (
+                      <td className={showSettings ? 'settings-column-expanded' : ''}>
+                        <div
+                          className="action"
+                          onClick={() => this.toggleShowGroupSettings(group.id)}
+                        >
+                          {i18n.t('settings_group_settings_toggle_group_settings')}
+                        </div>
+                        {showSettings && (
+                          <>
+                            {Object.keys(settingsConfig).map((k) => (
+                              <InlineSetting
+                                key={k}
+                                group={group}
+                                settingNameInDB={k}
+                                toggleGroupSetting={this.toggleGroupSetting}
+                              />
+                            ))}
+                            {Object.keys(autolockDelaySettings).map((k) => (
+                              <AutolockDelaySetting
+                                key={k}
+                                group={group}
+                                settingNameInDB={k}
+                                toggleGroupSetting={this.toggleGroupSetting}
+                              />
+                            ))}
+                          </>
+                        )}
+                      </td>
+                    )}
+                    {!isReadOnlySuperadmin && (
+                      <td>
+                        <div
+                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          onClick={() => this.setState({ groupToDeleteId: group.id })}
+                        >
+                          {i18n.t('delete')}
+                        </div>
+                      </td>
+                    )}
                   </tr>
                 );
               })}
@@ -593,8 +605,8 @@ class Groups extends React.Component {
                 <td></td>
                 <td></td>
                 {isSaasServer && <td></td>}
-                <td></td>
-                <td></td>
+                {!isReadOnlySuperadmin && <td></td>}
+                {!isReadOnlySuperadmin && <td></td>}
               </tr>
             </tbody>
           </table>
@@ -626,7 +638,7 @@ const InlineSetting = (props) => {
           </div>
         )}
         <div
-          className="action"
+          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
           onClick={() => {
             toggleGroupSetting(group.id, {
               ...group.settings,
@@ -688,13 +700,13 @@ const AutolockDelaySetting = (props) => {
           className="autolock-setting-select"
         >
           {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
-          <option disabled value={-1}></option>
+          <option disabled value={-1} disabled={isReadOnlySuperadmin}></option>
           {settingConf.options.map((op) => {
             return (
               <option
                 key={op.seconds}
                 value={op.seconds}
-                disabled={maxDuration != null && op.seconds > maxDuration}
+                disabled={(maxDuration != null && op.seconds > maxDuration) || isReadOnlySuperadmin}
               >
                 {op.title}
                 {op.seconds == settingConf.recommendedOption ? ' (sugg.)' : ''}

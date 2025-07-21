@@ -1,6 +1,7 @@
 import React from 'react';
 import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // Props : setIsLoading, groups
 class Admins extends React.Component {
@@ -151,6 +152,7 @@ class Admins extends React.Component {
             alignItems: 'center',
             marginBottom: 20,
           }}
+          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
         >
           <input
             ref={(r) => {
@@ -179,7 +181,11 @@ class Admins extends React.Component {
           >
             {this.state.newAdminIsSuperadmin ? i18n.t('yes') : i18n.t('no')}
           </div>
-          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertAdmin}>
+          <div
+            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            style={{ marginLeft: 10 }}
+            onClick={this.insertAdmin}
+          >
             {i18n.t('sasettings_superadmins_invite')}
           </div>
         </div>
@@ -222,7 +228,7 @@ class Admins extends React.Component {
                           return <div key={g.id}>{g.name}</div>;
                         })}
                       </td>
-                      <td>
+                      <td className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}>
                         <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
                           {i18n.t('delete')}
                         </div>
@@ -242,7 +248,7 @@ class Admins extends React.Component {
                           </div>
                           {admin.is_superadmin ? (
                             <div
-                              className="noSelect"
+                              className={`noSelect ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
                               onClick={() => this.changeSuperadminStatus(admin.id, false)}
                               style={{
                                 display: 'inline-block',
@@ -258,7 +264,7 @@ class Admins extends React.Component {
                             </div>
                           ) : (
                             <div
-                              className="noSelect"
+                              className={`noSelect ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
                               onClick={() => this.changeSuperadminStatus(admin.id, true)}
                               style={{
                                 display: 'inline-block',
@@ -287,6 +293,7 @@ class Admins extends React.Component {
                                         this.updateAdminGroup(admin.id, g.id, !doesBelongToGroup);
                                       }}
                                       checked={doesBelongToGroup}
+                                      disabled={isReadOnlySuperadmin}
                                     />
                                     <div style={{ marginLeft: 5 }}>{g.name}</div>
                                   </div>

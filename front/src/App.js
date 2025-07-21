@@ -15,6 +15,7 @@ import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
 import { Other } from './pages/Other';
 import { Licences } from './pages/Licences';
+import { isReadOnlySuperadmin, setIsReadOnlySuperadmin } from './helpers/isReadOnlySuperadmin';
 
 class App extends React.Component {
   state = {
@@ -44,6 +45,7 @@ class App extends React.Component {
           window.location.href = baseFrontUrl + '/' + groupsRes.groups[0].id + '/';
         }
       }
+      setIsReadOnlySuperadmin(groupsRes.isReadOnlySuperadmin);
       this.setState({
         groups: groupsRes.groups,
         isSuperadmin: groupsRes.isSuperadmin,

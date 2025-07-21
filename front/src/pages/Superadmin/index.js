@@ -7,6 +7,7 @@ import { Groups } from './Groups';
 import { ProServerUrl } from './ProServerUrl';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { EmailConfig } from './EmailConfig';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // Props setIsLoading, updateMenuGroups
 class Superadmin extends React.Component {
@@ -50,7 +51,7 @@ class Superadmin extends React.Component {
             {i18n.t('sasettings_superadmins')}
           </button>
           <button
-            className={`tab-button large ${activeTab === 'settings' ? 'active' : ''}`}
+            className={`tab-button large ${activeTab === 'settings' ? 'active' : ''} ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
             onClick={() => this.setActiveTab('settings')}
           >
             {i18n.t('menu_settings')}
