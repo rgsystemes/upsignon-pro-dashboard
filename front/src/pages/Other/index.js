@@ -4,6 +4,7 @@ import { groupUrlFetch } from '../../helpers/urlFetch';
 import { groupServerUrl } from '../../helpers/env';
 
 import './other.css';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // Props = setIsLoading, isSuperadminPage
 class Other extends React.Component {
@@ -348,43 +349,52 @@ class Other extends React.Component {
         </div>
 
         {/* MAIL WRITER */}
-        <h2>{i18n.t('mail_writer')}</h2>
-        <div>
+        <div className={isReadOnlySuperadmin ? 'disabledUI' : null}>
+          <h2>{i18n.t('mail_writer')}</h2>
+          <div>
+            <input
+              type="radio"
+              id="all"
+              name="mailRecipients"
+              value="all"
+              checked={this.state.sendMailToAll}
+              onChange={this.chooseMailRecipients}
+            />
+            <label htmlFor="all">{i18n.t('mail_writer_to_all')}</label>
+          </div>
+          <div style={{ marginBottom: 20 }}>
+            <input
+              type="radio"
+              id="selection"
+              name="mailRecipients"
+              value="selectionOnly"
+              checked={!this.state.sendMailToAll}
+              onChange={this.chooseMailRecipients}
+              disabled={isReadOnlySuperadmin}
+            />
+            <label htmlFor="selection">{i18n.t('mail_writer_to_selection')}</label>
+          </div>
           <input
-            type="radio"
-            id="all"
-            name="mailRecipients"
-            value="all"
-            checked={this.state.sendMailToAll}
-            onChange={this.chooseMailRecipients}
+            type="text"
+            placeholder={i18n.t('mail_writer_subject_placeholder')}
+            value={this.state.mailSubject}
+            onChange={this.onMailSubjectChange}
+            disabled={isReadOnlySuperadmin}
           />
-          <label htmlFor="all">{i18n.t('mail_writer_to_all')}</label>
-        </div>
-        <div style={{ marginBottom: 20 }}>
-          <input
-            type="radio"
-            id="selection"
-            name="mailRecipients"
-            value="selectionOnly"
-            checked={!this.state.sendMailToAll}
-            onChange={this.chooseMailRecipients}
-          />
-          <label htmlFor="selection">{i18n.t('mail_writer_to_selection')}</label>
-        </div>
-        <input
-          type="text"
-          placeholder={i18n.t('mail_writer_subject_placeholder')}
-          value={this.state.mailSubject}
-          onChange={this.onMailSubjectChange}
-        />
-        <textarea
-          value={this.state.mailContent}
-          style={{ width: '100%', height: 300, marginTop: 10 }}
-          placeholder={i18n.t('mail_writer_placeholder')}
-          onChange={this.onMailContentChange}
-        ></textarea>
-        <div style={{ marginTop: 10 }} className="extractAction" onClick={this.sendMail}>
-          {i18n.t('mail_writer_send')}
+          <textarea
+            value={this.state.mailContent}
+            style={{ width: '100%', height: 300, marginTop: 10 }}
+            placeholder={i18n.t('mail_writer_placeholder')}
+            onChange={this.onMailContentChange}
+            disabled={isReadOnlySuperadmin}
+          ></textarea>
+          <div
+            style={{ marginTop: 10 }}
+            className="extractAction"
+            onClick={isReadOnlySuperadmin ? null : this.sendMail}
+          >
+            {i18n.t('mail_writer_send')}
+          </div>
         </div>
       </div>
     );

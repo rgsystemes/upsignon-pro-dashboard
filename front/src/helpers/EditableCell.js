@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { i18n } from '../i18n/i18n';
 
 export function EditableCell(props) {
-  const { value, onChange, placeholder, type, style } = props;
+  const { value, onChange, placeholder, type, style, disabled } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
 
@@ -51,6 +51,9 @@ export function EditableCell(props) {
     <td
       style={{ cursor: 'pointer', ...style }}
       onClick={() => {
+        if (disabled) {
+          return;
+        }
         setIsEditing(true);
         setCurrentValue(value);
       }}

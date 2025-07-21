@@ -10,6 +10,7 @@ import { Toggler } from '../../helpers/Toggler';
 import { getDateBack1Month, getDateBack2Weeks } from '../../helpers/dateHelper';
 import { StatsCell } from '../../helpers/statsCell';
 import { settingsConfig } from '../../helpers/settingsConfig';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 const maxRenderedItems = 50;
 
@@ -382,6 +383,7 @@ class Users extends React.Component {
                         if (!newEmail) return;
                         this.onChangeEmail(u.user_id, u.email, newEmail);
                       }}
+                      disabled={isReadOnlySuperadmin}
                     />
                     <td>
                       <div style={{ fontSize: 12 }}>
@@ -442,6 +444,7 @@ class Users extends React.Component {
                             .filter((k) => settingsConfig[k].userTitle != null)
                             .map((k) => (
                               <UserSettingOverride
+                                key={k}
                                 settingNameInDb={k}
                                 userValue={u}
                                 toggleUserSettingOverride={this.toggleUserSettingOverride}
@@ -466,13 +469,16 @@ class Users extends React.Component {
                     )}
                     <td>
                       <div
-                        className="action"
+                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
                         onClick={() => this.deleteUserWithWarning(u.user_id, u.email)}
                       >
                         {i18n.t('delete')}
                       </div>
                       {u.deactivated && (
-                        <div className="action" onClick={() => this.reactivateUser(u.user_id)}>
+                        <div
+                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          onClick={() => this.reactivateUser(u.user_id)}
+                        >
                           {i18n.t('reactivate')}
                         </div>
                       )}
@@ -533,15 +539,19 @@ const UserSettingOverride = (props) => {
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <div>{i18n.t(settingConf.userTitle)}</div>
       {userSettingValue == null ? (
-        <span onClick={toggleValue} className={`clickable defaultParam`}>
+        <span
+          onClick={toggleValue}
+          className={`clickable defaultParam ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+        >
           {i18n.t(defaultValue ? 'default_yes' : 'default_no')}
         </span>
       ) : (
         <span
           onClick={toggleValue}
-          className={`clickable ${
-            recommendedValue === userSettingValue ? 'recommendedParam' : 'unrecommendedParam'
-          }`}
+          className={`clickable
+            ${recommendedValue === userSettingValue ? 'recommendedParam' : 'unrecommendedParam'}
+            ${isReadOnlySuperadmin ? 'disabledUI' : ''}
+          `}
         >
           {i18n.t(userSettingValue ? 'yes' : 'no')}
         </span>

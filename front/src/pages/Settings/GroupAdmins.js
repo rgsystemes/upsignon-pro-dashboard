@@ -1,6 +1,7 @@
 import React from 'react';
 import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // Props : setIsLoading
 class GroupAdmins extends React.Component {
@@ -91,8 +92,13 @@ class GroupAdmins extends React.Component {
             }}
             placeholder="admin.email@domain.com"
             style={{ width: 300, marginRight: 10 }}
+            disabled={isReadOnlySuperadmin}
           />
-          <div className="action" style={{ marginLeft: 10 }} onClick={this.insertGroupAdmin}>
+          <div
+            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            style={{ marginLeft: 10 }}
+            onClick={this.insertGroupAdmin}
+          >
             {i18n.t('settings_group_admins_invite')}
           </div>
         </div>
@@ -112,7 +118,10 @@ class GroupAdmins extends React.Component {
                     <td>{admin.email}</td>
                     <td>{new Date(admin.created_at).toLocaleDateString()}</td>
                     <td>
-                      <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
+                      <div
+                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        onClick={() => this.deleteAdmin(admin.id)}
+                      >
                         {i18n.t('delete')}
                       </div>
                       <div className="action" onClick={() => this.sendAdminInvite(admin.email)}>

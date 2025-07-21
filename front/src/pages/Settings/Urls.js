@@ -2,6 +2,7 @@ import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
@@ -110,7 +111,7 @@ class Urls extends React.Component {
             <select onChange={this.copyFromGroup}>
               <option value="">{i18n.t('settings_urls_choose_group')}</option>
               {this.props.otherGroups.map((g) => (
-                <option key={g.id} value={g.id}>
+                <option key={g.id} value={g.id} disabled={isReadOnlySuperadmin}>
                   {g.name}
                 </option>
               ))}
@@ -124,7 +125,10 @@ class Urls extends React.Component {
         ) : (
           <div>{i18n.t('settings_urls_copiable')}</div>
         )}
-        <div style={{ marginTop: 20, marginBottom: 20 }}>
+        <div
+          style={{ marginTop: 20, marginBottom: 20 }}
+          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+        >
           <div style={{ fontWeight: 'bold' }}>{i18n.t('settings_urls_new')}</div>
           <table className="invisibleTable">
             <tbody>
@@ -180,7 +184,7 @@ class Urls extends React.Component {
             <tbody>
               {this.state.urls.map((url) => {
                 return (
-                  <tr key={url.id}>
+                  <tr key={url.id} className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}>
                     <EditableCell
                       value={url.displayed_name}
                       placeholder={namePlaceholder}

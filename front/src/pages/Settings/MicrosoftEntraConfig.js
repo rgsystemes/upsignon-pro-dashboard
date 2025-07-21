@@ -1,6 +1,7 @@
 import React from 'react';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 export class MicrosoftEntraConfig extends React.Component {
   state = {
@@ -130,7 +131,7 @@ export class MicrosoftEntraConfig extends React.Component {
             </details>
           </div>
         </div>
-        <form onSubmit={this.submitNewEntraConfig}>
+        <form onSubmit={isReadOnlySuperadmin ? null : this.submitNewEntraConfig}>
           <label htmlFor="tenantId">
             {i18n.t('group_setting_microsoft_entra_tenant_id_label')}
           </label>
@@ -146,6 +147,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.tenantId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
+            disabled={isReadOnlySuperadmin}
           />
 
           <br />
@@ -164,6 +166,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.clientId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
+            disabled={isReadOnlySuperadmin}
           />
 
           <br />
@@ -182,6 +185,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.appResourceId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
+            disabled={isReadOnlySuperadmin}
           />
 
           <br />
@@ -200,6 +204,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.clientSecret}
             placeholder="xxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
+            disabled={isReadOnlySuperadmin}
           />
 
           <br />
@@ -207,6 +212,7 @@ export class MicrosoftEntraConfig extends React.Component {
             style={{ marginTop: 15 }}
             type="submit"
             value={i18n.t('group_setting_microsoft_entra_apply_config')}
+            disabled={isReadOnlySuperadmin}
           />
           <br />
           <input
@@ -214,6 +220,7 @@ export class MicrosoftEntraConfig extends React.Component {
             type="button"
             onClick={this.reloadMSEntraInstance}
             value={i18n.t('group_setting_microsoft_entra_permissions_reloaded')}
+            disabled={isReadOnlySuperadmin}
           />
         </form>
         <div style={{ marginTop: 20 }}>{i18n.t('group_setting_microsoft_entra_testing')}</div>
