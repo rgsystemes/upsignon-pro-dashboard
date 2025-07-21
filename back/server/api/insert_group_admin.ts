@@ -5,6 +5,9 @@ import { logError } from '../helpers/logger';
 
 export const insert_group_admin = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const email = req.body.newEmail;
     if (typeof email !== 'string') return res.status(401).end();
 

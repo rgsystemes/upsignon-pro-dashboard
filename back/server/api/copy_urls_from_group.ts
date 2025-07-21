@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const copy_urls_from_group = async (req: any, res: any): Promise<void> => {
   try {
-    if (!req.session.isSuperadmin) {
+    if (req.session.isReadOnlySuperadmin) {
       return res.status(401).end();
     }
     const dbRes = await db.query(
@@ -12,7 +12,7 @@ export const copy_urls_from_group = async (req: any, res: any): Promise<void> =>
     );
     res.status(200).send({ nbAdded: dbRes.rowCount });
   } catch (e) {
-    logError("copy_urls_from_group", e);
+    logError('copy_urls_from_group', e);
     res.status(400).end();
   }
 };

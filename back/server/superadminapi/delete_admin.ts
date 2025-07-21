@@ -3,6 +3,10 @@ import { logError } from '../helpers/logger';
 
 export const delete_admin = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     const adminId = req.params.id;
     const deletedAdmin = await db.query(`DELETE FROM admins WHERE id=$1 RETURNING email`, [
       adminId,
@@ -15,7 +19,7 @@ export const delete_admin = async (req: any, res: any): Promise<void> => {
     });
     res.status(200).end();
   } catch (e) {
-    logError("delete_admin", e);
+    logError('delete_admin', e);
     res.status(400).end();
   }
 };

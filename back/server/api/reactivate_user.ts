@@ -3,6 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const reactivate_user = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const userId = req.params.userId;
     await db.query(`UPDATE users SET deactivated=null WHERE id=$1 AND group_id=$2`, [
       userId,

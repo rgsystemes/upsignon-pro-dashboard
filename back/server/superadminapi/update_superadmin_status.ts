@@ -3,6 +3,10 @@ import { logError } from '../helpers/logger';
 
 export const update_superadmin_status = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     if (!req.body.adminId) return res.status(401).end();
 
     await db.query('UPDATE admins SET is_superadmin = $1 WHERE id=$2', [

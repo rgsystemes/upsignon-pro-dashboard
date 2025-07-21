@@ -3,6 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const delete_user = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const userId = req.params.userId;
     await db.query(`DELETE FROM users WHERE id=$1 AND group_id=$2`, [
       userId,
@@ -10,7 +13,7 @@ export const delete_user = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError("delete_user", e);
+    logError('delete_user', e);
     res.status(400).end();
   }
 };

@@ -5,6 +5,10 @@ import { logError } from '../helpers/logger';
 
 export const insert_admin = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     const email = req.body.newEmail;
     if (typeof email !== 'string') return res.status(401).end();
 

@@ -9,6 +9,10 @@ export const grant_pwd_reset_request = async (
   asSuperadmin: boolean,
 ): Promise<void> => {
   try {
+    if (asSuperadmin && req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     const adminEmail = req.session?.adminEmail;
     const requestId = req.params.requestId;
     const expDuration = 60 * 60 * 1000; //  1 hour

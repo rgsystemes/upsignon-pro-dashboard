@@ -3,6 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const deactivate_device = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const deviceId = req.params.deviceId;
     await db.query(
       "UPDATE user_devices SET authorization_status='REVOKED_BY_ADMIN', revocation_date=$1 WHERE id=$2 AND group_id=$3",

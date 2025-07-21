@@ -4,6 +4,9 @@ import { logError } from '../helpers/logger';
 
 export const update_shared_vault_access_level = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     let accessLevel = Joi.attempt(
       req.body.accessLevel,
       Joi.string().valid('blind', 'reader', 'editor', 'owner').required(),

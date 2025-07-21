@@ -4,6 +4,10 @@ import { superadminSettingKeys } from '../helpers/superadminSettingKeys';
 
 export const update_setting = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     if (!superadminSettingKeys.includes(req.body.key)) {
       logError(`Attempted to insert ${req.body.key} into settings.`);
       return res.status(400).end();
