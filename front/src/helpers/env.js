@@ -1,5 +1,5 @@
 let baseFrontUrl =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : process.env.PUBLIC_URL;
+  process.env.NODE_ENV === 'development' ? 'http://localhost:8090' : process.env.PUBLIC_URL;
 let baseServerUrl =
   process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.PUBLIC_URL;
 

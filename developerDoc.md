@@ -9,7 +9,7 @@
     -> PUBLIC_URL = https://localhost:3001 (backend)
   - back/.env
     -> BACKEND_URL=http://localhost:3001
-    -> FRONTEND_URL=http://localhost:3000
+    -> FRONTEND_URL=http://localhost:8090
     -> (do not configure SERVER_URL)
     -> DEV_FALLBACK_ADMIN_EMAIL=devadmin@upsignon.eu
 

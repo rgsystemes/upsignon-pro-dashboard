@@ -21,7 +21,7 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "start-front": "NODE_ENV=development && react-scripts start",
+    "start-front": "NODE_ENV=development PORT=8090 react-scripts start",
     "build-front": "npx react-scripts build",
     "test-front": "react-scripts test",
     "eject-front": "react-scripts eject",
