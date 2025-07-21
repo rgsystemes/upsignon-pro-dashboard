@@ -3,6 +3,9 @@ import { logError } from '../helpers/logger';
 
 export const update_url = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const { id, displayedName, signinUrl, usesBasicAuth } = req.body;
     if (!id) return res.status(400).end();
     if (displayedName != null) {

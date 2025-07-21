@@ -32,7 +32,7 @@ export const superadminApiRouter = express.Router();
 
 superadminApiRouter.use(async (req: any, res: any, next) => {
   // @ts-ignore
-  if (!req.session.isSuperadmin) {
+  if (!req.session.isSuperadmin && !req.session.isReadOnlySuperadmin) {
     return res.status(401).end();
   }
   next();

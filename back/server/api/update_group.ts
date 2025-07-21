@@ -10,12 +10,18 @@ export const update_group = async (req: any, res: any): Promise<void> => {
       ]);
     }
     if (req.body.settings) {
+      if (req.session.isReadOnlySuperadmin) {
+        return res.status(401).end();
+      }
       await db.query('UPDATE groups SET settings=$1 WHERE id=$2', [
         req.body.settings,
         req.proxyParamsGroupId,
       ]);
     }
     if (req.body.msEntraConfig) {
+      if (req.session.isReadOnlySuperadmin) {
+        return res.status(401).end();
+      }
       if (
         typeof req.body.msEntraConfig.clientSecret === 'string' &&
         /^[*]+$/.test(req.body.msEntraConfig.clientSecret)

@@ -50,7 +50,6 @@ import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
-import { extract_admins } from './extract_admins';
 import { get_bank_url } from '../helpers/get_bank_url';
 import { get_bank_sso_config } from './sso/get_bank_sso_config';
 import { add_bank_sso_config } from './sso/add_bank_sso_config';
@@ -60,8 +59,8 @@ export const apiRouter = express.Router();
 
 apiRouter.use(async (req: any, res: any, next) => {
   if (
-    // @ts-ignore
     !req.session.isSuperadmin &&
+    !req.session.isReadOnlySuperadmin &&
     // @ts-ignore
     !req.session.groups?.includes(req.proxyParamsGroupId)
   ) {

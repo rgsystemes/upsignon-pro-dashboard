@@ -4,6 +4,9 @@ import { logError } from '../helpers/logger';
 
 export const update_allowed_email = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const joiValidatedNewEmailPattern = req.body.updatedPattern;
     try {
       Joi.assert(joiValidatedNewEmailPattern, Joi.string().required());

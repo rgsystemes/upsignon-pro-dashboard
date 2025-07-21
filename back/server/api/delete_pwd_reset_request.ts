@@ -7,6 +7,10 @@ export const delete_pwd_reset_request = async (
   asSuperadmin: boolean,
 ): Promise<void> => {
   try {
+    if (asSuperadmin && req.session.isReadOnlySuperadmin) {
+      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+      return;
+    }
     const requestId = req.params.requestId;
     await db.query(
       `DELETE FROM password_reset_request WHERE id=$1 ${asSuperadmin ? '' : 'AND group_id=$2'}`,
@@ -14,7 +18,7 @@ export const delete_pwd_reset_request = async (
     );
     res.status(200).end();
   } catch (e) {
-    logError("delete_pwd_reset_request", e);
+    logError('delete_pwd_reset_request', e);
     res.status(400).end();
   }
 };

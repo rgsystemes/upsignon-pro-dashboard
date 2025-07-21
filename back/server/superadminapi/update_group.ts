@@ -16,6 +16,22 @@ export const update_group = async (req: any, res: any): Promise<void> => {
         );
         safeSettings.SALES_REP = safeSalesRep;
       }
+
+      // PREVENT SOME ACTIONS FOR READ ONLY SUPERADMINS
+      if (req.session.isReadOnlySuperadmin) {
+        const prevSettingsRes = await db.query('SELECT settings FROM groups WHERE id=$1', [
+          req.body.id,
+        ]);
+        const prevSettings = prevSettingsRes.rows[0].settings;
+        if (
+          prevSettings.IS_TESTING != safeSettings.IS_TESTING ||
+          prevSettings.TESTING_EXPIRATION_DATE != safeSettings.TESTING_EXPIRATION_DATE
+        ) {
+          res.status(401).json({ error: 'Not allowed for read only superadmin' });
+          return;
+        }
+      }
+
       await db.query(`UPDATE groups SET settings=$1 WHERE id=$2`, [safeSettings, req.body.id]);
     }
     if (typeof req.body.nb_licences_sold === 'number') {

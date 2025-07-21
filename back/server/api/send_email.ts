@@ -145,6 +145,9 @@ export const send_email_precheck = async (
 
 export const send_email = async (req: any, res: any, isSuperadmin: boolean): Promise<void> => {
   try {
+    if (req.session.isReadOnlySuperadmin) {
+      return res.status(401).end();
+    }
     const mailContent = typeof req.body.mailContent === 'string' ? req.body.mailContent : null;
     const mailSubject = typeof req.body.mailSubject === 'string' ? req.body.mailSubject : null;
 
