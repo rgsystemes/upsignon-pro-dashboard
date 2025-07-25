@@ -340,7 +340,7 @@ class Groups extends React.Component {
             </div>
           </div>
         )}
-        {(this.state.salesRepFilter || this.state.filterType != 0) && (
+        {(this.state.salesRepFilter || this.state.filterType !== 0) && (
           <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
         {this.props.groups.length > 0 && (
