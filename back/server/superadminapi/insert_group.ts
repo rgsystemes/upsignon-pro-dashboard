@@ -76,7 +76,12 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
     /////////////////////
     // SEND EMAIL
     /////////////////////
-    const bankLink = `https://pro.upsignon.eu/${insertedGroup.public_id}`;
+    const settingsRes = await db.query(
+      "SELECT value FROM settings WHERE key='PRO_SERVER_URL_CONFIG'",
+    );
+    if (settingsRes.rowCount === 0) return res.status(400).end();
+    const { url } = settingsRes.rows[0].value;
+    const bankLink = `${url}/${insertedGroup.public_id}`;
     const qr = qrcode(0, 'L');
     qr.addData(bankLink);
     qr.make();
