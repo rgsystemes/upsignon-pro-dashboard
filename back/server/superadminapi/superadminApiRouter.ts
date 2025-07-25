@@ -12,7 +12,7 @@ import { get_password_reset_requests } from '../api/get_password_reset_requests'
 import { count_password_reset_requests } from '../api/count_password_reset_requests';
 import { delete_pwd_reset_request } from '../api/delete_pwd_reset_request';
 import { grant_pwd_reset_request } from '../api/grant_pwd_reset_request';
-import { update_superadmin_status } from './update_superadmin_status';
+import { update_admin_role } from './update_admin_role';
 import { get_password_stats } from '../api/get_password_stats';
 import { get_usage_stats } from '../api/get_usage_stats';
 import { get_setting } from './get_setting';
@@ -45,7 +45,7 @@ superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-group', update_admin_group);
-superadminApiRouter.post('/update-superadmin-status', update_superadmin_status);
+superadminApiRouter.post('/update-admin-role', update_admin_role);
 
 // GROUPS
 superadminApiRouter.get('/groups', get_groups);

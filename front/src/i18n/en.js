@@ -260,6 +260,10 @@ const translations = {
   pro_server_status_running: 'Server running.',
   pro_server_status_stopped: 'Server stopped or misconfigured.',
   sasettings_superadmins: 'Administrators',
+  sasettings_superadmin_role: 'Role',
+  sasettings_superadmin_role_admin: 'Admin',
+  sasettings_superadmin_role_read_only_superadmin: 'Read only superadmin',
+  sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
   sasettings_groups: 'Banks of vaults',
   sasettings_groups_explanation:
@@ -320,8 +324,6 @@ const translations = {
   sasettings_group_delete_warning:
     'Are you sure you want to delete this bank of vaults? All vaults associated with this bank and the secrets stored in them will be permanently deleted. This action is irreversible!',
   sasetting_confirm_group_delete: 'To confirm, please type exactly "$name"',
-  sasettings_admin_make_superadmin: 'Give super-admin rights',
-  sasettings_admin_make_non_superadmin: 'Remove super-admin rights',
   sasettings_email_config: 'Sending email configuration',
   sasettings_email_config_use_postfix:
     'Postfix is used to send emails. You have nothing else to configure.',

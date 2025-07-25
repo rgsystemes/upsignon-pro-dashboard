@@ -263,6 +263,10 @@ const translations = {
   pro_server_status_running: "Serveur en cours d'exécution",
   pro_server_status_stopped: 'Serveur arrêté ou mal configuré.',
   sasettings_superadmins: 'Administrateurs',
+  sasettings_superadmin_role: 'Rôle',
+  sasettings_superadmin_role_admin: 'Admin',
+  sasettings_superadmin_role_read_only_superadmin: 'Superadmin en lecture seule',
+  sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
   sasettings_groups: 'Banques de coffres-forts',
   sasettings_groups_explanation:
@@ -332,8 +336,6 @@ const translations = {
   sasettings_group_delete_warning:
     'Êtes-vous sûr de vouloir supprimer cette banque ? Tous les coffres-forts associés à cette banque et les secrets qui y sont stockés seront définitivement supprimés. Cette action est irréversible !',
   sasetting_confirm_group_delete: 'Pour confirmer, saisissez exactement "$name"',
-  sasettings_admin_make_superadmin: 'Donner les droits super-admin',
-  sasettings_admin_make_non_superadmin: 'Enlever les droits super-admin',
   sasettings_email_config: "Configuration de l'envoi d'emails",
   sasettings_email_config_use_postfix:
     "Postfix est utilisé pour l'envoi des emails. Vous n'avez rien d'autre à configurer.",
