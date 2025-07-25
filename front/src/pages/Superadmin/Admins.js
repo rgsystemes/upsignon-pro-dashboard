@@ -11,28 +11,11 @@ class Admins extends React.Component {
     visibleAdminChangeRightsView: [],
   };
   newInputRef = null;
-  adminOrder = null;
 
   fetchAdmins = async () => {
     try {
-      const adminEmails = await groupUrlFetch('/api/admins', 'GET', null);
-      if (!this.adminOrder) {
-        this.adminOrder = [];
-      }
-      this.setState({
-        admins: adminEmails.sort((a, b) => {
-          if (this.adminOrder.indexOf(a.id) === -1) {
-            this.adminOrder.push(a.id);
-          }
-          if (this.adminOrder.indexOf(b.id) === -1) {
-            this.adminOrder.push(b.id);
-          }
-          const idxA = this.adminOrder.indexOf(a.id);
-          const idxB = this.adminOrder.indexOf(b.id);
-          if (idxA < idxB) return -1;
-          else return 1;
-        }),
-      });
+      const admins = await groupUrlFetch('/api/admins', 'GET', null);
+      this.setState({ admins: admins });
     } catch (e) {
       console.error(e);
     }
