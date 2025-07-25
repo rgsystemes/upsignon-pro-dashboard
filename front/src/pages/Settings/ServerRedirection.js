@@ -1,6 +1,7 @@
 import React from 'react';
 import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
+import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 export class ServerRedirection extends React.Component {
   urlInputRef = null;
@@ -73,7 +74,7 @@ export class ServerRedirection extends React.Component {
           ) : (
             <div
               style={{ marginLeft: 20 }}
-              className="action disabledUI"
+              className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
               onClick={() => this.setState({ isEditing: true })}
             >
               {i18n.t('edit')}
