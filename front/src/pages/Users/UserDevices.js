@@ -163,6 +163,7 @@ class UserDevices extends React.Component {
                     {!isAuthorized && d.revocation_date != null && (
                       <div>{new Date(d.revocation_date).toLocaleString()}</div>
                     )}
+                    <div>{`${i18n.t('device_enrollment_method')} ${d.enrollment_method}`}</div>
                   </td>
                   <td>{d.last_sync_date && new Date(d.last_sync_date).toLocaleString()}</td>
                   {!!d.shared_with ? (

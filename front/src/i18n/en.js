@@ -82,6 +82,7 @@ const translations = {
   device_app_version: 'App version',
   device_type: 'Type',
   device_status: 'Status',
+  device_enrollment_method: 'Enrollment:',
   device_last_sync_date: 'Last sync',
   device_deactivate: 'Deactivate',
   device_deactive_all: 'Deactivate all vaults on this devices',
