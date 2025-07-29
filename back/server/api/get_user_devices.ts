@@ -17,6 +17,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
       ud.app_version AS app_version,
       ud.install_type AS install_type,
       ud.last_sync_date AS last_sync_date,
+      ud.enrollment_method AS enrollment_method,
       (SELECT STRING_AGG(users.email,';') FROM user_devices AS udbis INNER JOIN users ON udbis.user_id=users.id WHERE udbis.device_unique_id=ud.device_unique_id AND udbis.id!=ud.id) AS shared_with
     FROM user_devices AS ud
     WHERE user_id=$1

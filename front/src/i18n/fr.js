@@ -82,6 +82,7 @@ const translations = {
   device_app_version: "Version de l'app",
   device_type: 'Type',
   device_status: 'Statut',
+  device_enrollment_method: 'Enrôlement :',
   device_last_sync_date: 'Dernière synchro',
   device_deactivate: 'Désactiver',
   device_deactive_all: 'Désactiver tous les coffres-forts sur cet appareil',
