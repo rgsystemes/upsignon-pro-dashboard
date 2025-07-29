@@ -111,7 +111,8 @@ const translations = {
   settings_server_redirection_new_url_label: 'Rediriger cette banque vers',
   settings_server_redirection_confirm:
     'Êtes-vous sûr ? Cette action interrompra le service pour cette banque',
-  settings_openid_config: 'Single Sign On (optionnel)',
+  settings_openid_config:
+    'Single Sign On (optionnel) - enrôlement et mot de passe oublié - app v7.13.0 et plus',
   settings_openid_config_pitch:
     "Le paramètre SSO permet d'activer l'authentification unique pour la banque sélectionnée. Choisissez un fournisseur d'identité parmi les options proposées, ou bien saisissez une URL via le champ personnalisé prévu à cet effet.",
   settings_openid_config_details:
