@@ -22,7 +22,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
           .pattern(/^.{2,50}$/),
         adminEmail: Joi.string().email().required(),
         isTrial: Joi.boolean(),
-        salesEmail: Joi.string().email().allow(null, ''),
+        salesEmail: Joi.string().allow(null, '').email(),
         resellerName: Joi.string().allow(null),
       }),
     );
