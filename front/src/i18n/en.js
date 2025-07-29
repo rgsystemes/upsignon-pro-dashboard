@@ -111,7 +111,8 @@ const translations = {
   settings_server_redirection_new_url_label: 'Redirect this bank to',
   settings_server_redirection_confirm:
     'Are you sure? This action will interrupt service for this bank.',
-  settings_openid_config: 'Single Sign On (optional)',
+  settings_openid_config:
+    'Single Sign On (optional) - enrollement and forgotten password - app v7.13.0 and next',
   settings_openid_config_pitch:
     'The SSO parameter enables single sign-on for the selected bank. Choose an identity provider from the options offered, or enter a URL in the provided custom field.',
   settings_openid_config_details:
