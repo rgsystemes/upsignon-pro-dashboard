@@ -33,7 +33,16 @@ export const extract_database = async (
       u.nb_accounts_orange AS nb_accounts_orange,
       u.nb_accounts_green AS nb_accounts_green,
       u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
-      u.nb_accounts_with_no_password AS nb_accounts_with_no_password
+      u.nb_accounts_with_no_password AS nb_accounts_with_no_password,
+      u.allowed_to_export AS allowed_to_export,
+      u.allowed_offline_desktop AS allowed_offline_desktop,
+      u.allowed_offline_mobile AS allowed_offline_mobile,
+      u.settings_override::text AS settings_override,
+      u.ms_entra_id AS ms_entra_id,
+      u.deactivated AS deactivated,
+      ud.revocation_date AS revocation_date,
+      ud.use_safe_browser_setup AS use_safe_browser_setup,
+      ud.enrollment_method AS enrollment_method
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
     ${isSuperadmin ? 'INNER JOIN groups AS g ON u.group_id=g.id' : ''}
