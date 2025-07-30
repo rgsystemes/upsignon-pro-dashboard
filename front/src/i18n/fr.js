@@ -270,8 +270,8 @@ const translations = {
   sasettings_superadmin_role_read_only_superadmin: 'Superadmin en lecture seule',
   sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
-  sasettings_groups: 'Banques de coffres-forts',
-  sasettings_groups_explanation:
+  sasettings_banks: 'Banques de coffres-forts',
+  sasettings_banks_explanation:
     "Les banques de coffres-forts sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur banque. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs banques.",
   sasettings_group_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
