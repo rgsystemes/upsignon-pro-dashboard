@@ -3,7 +3,7 @@ import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
-// Props : setIsLoading, groups
+// Props : setIsLoading, banks
 class Admins extends React.Component {
   state = {
     admins: [],
@@ -231,7 +231,7 @@ class Admins extends React.Component {
                           </div>
                           {!admin.is_superadmin && (
                             <div style={{ marginTop: 15, margin: 'auto' }}>
-                              {this.props.groups.map((g) => {
+                              {this.props.banks.map((g) => {
                                 const doesBelongToGroup = admin.groups?.some(
                                   (ag) => ag.id === g.id,
                                 );

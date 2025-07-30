@@ -9,7 +9,7 @@ baseServerUrl.replace(/\/$/, '');
 
 const bankId = window.location.href.replace(baseFrontUrl, '').split('/')[1];
 const frontUrl = baseFrontUrl + '/' + bankId;
-const groupServerUrl = baseServerUrl + '/' + bankId;
+const bankServerUrl = baseServerUrl + '/' + bankId;
 
 let isSaasServer = false;
 try {
@@ -18,4 +18,4 @@ try {
     new URL(process.env.PUBLIC_URL).hostname.split('.').slice(-2).join('.') === 'upsignon.eu';
 } catch (e) {}
 
-export { baseFrontUrl, frontUrl, groupServerUrl, bankId, baseServerUrl, isSaasServer };
+export { baseFrontUrl, frontUrl, bankServerUrl, bankId, baseServerUrl, isSaasServer };

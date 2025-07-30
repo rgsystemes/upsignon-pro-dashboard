@@ -3,30 +3,30 @@ import { i18n } from '../../i18n/i18n';
 import { Admins } from './Admins';
 import '../../helpers/tabs.css';
 import './superadmin.css';
-import { Groups } from './Groups';
+import { Banks } from './Banks';
 import { ProServerUrl } from './ProServerUrl';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { EmailConfig } from './EmailConfig';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
-// Props setIsLoading, updateMenuGroups
+// Props setIsLoading, updateMenuBanks
 class Superadmin extends React.Component {
   state = {
-    groups: [],
+    banks: [],
     adminsBuildCounter: 0,
     activeTab: 'banks', // 'banks', 'admins', 'settings'
   };
-  fetchGroups = async () => {
+  fetchBanks = async () => {
     try {
-      const groups = await groupUrlFetch('/api/groups', 'GET', null);
-      this.setState((prev) => ({ groups, adminsBuildCounter: prev.adminsBuildCounter + 1 }));
-      this.props.updateMenuGroups(groups);
+      const banks = await groupUrlFetch('/api/groups', 'GET', null);
+      this.setState((prev) => ({ banks, adminsBuildCounter: prev.adminsBuildCounter + 1 }));
+      this.props.updateMenuBanks(banks);
     } catch (e) {
       console.error(e);
     }
   };
   componentDidMount() {
-    this.fetchGroups();
+    this.fetchBanks();
   }
   setActiveTab = (tabName) => {
     this.setState({ activeTab: tabName });
@@ -60,10 +60,10 @@ class Superadmin extends React.Component {
 
         <div className="tab-content">
           {activeTab === 'banks' && (
-            <Groups
+            <Banks
               setIsLoading={this.props.setIsLoading}
-              groups={this.state.groups}
-              fetchGroups={this.fetchGroups}
+              banks={this.state.banks}
+              fetchBanks={this.fetchBanks}
             />
           )}
 
@@ -71,7 +71,7 @@ class Superadmin extends React.Component {
             <Admins
               key={this.state.adminsBuildCounter}
               setIsLoading={this.props.setIsLoading}
-              groups={this.state.groups}
+              banks={this.state.banks}
             />
           )}
 

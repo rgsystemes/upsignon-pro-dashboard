@@ -11,7 +11,7 @@ import { OpenidConfiguration } from './OpenidConfiguration';
 import '../../helpers/tabs.css';
 import './settings.css';
 
-// Props setIsLoading, isSuperAdmin, otherGroups
+// Props setIsLoading, isSuperAdmin, otherBanks
 class Settings extends React.Component {
   state = {
     activeTab: 'setup', // 'setup', 'options', 'admins', 'permissions', 'urls'
@@ -86,7 +86,7 @@ class Settings extends React.Component {
             <Urls
               setIsLoading={this.props.setIsLoading}
               isSuperAdmin={this.props.isSuperAdmin}
-              otherGroups={this.props.otherGroups}
+              otherBanks={this.props.otherBanks}
             />
           )}
         </div>

@@ -7,7 +7,7 @@ import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
 
-// Props = setIsLoading, isSuperAdmin, otherGroups
+// Props = setIsLoading, isSuperAdmin, otherBanks
 class Urls extends React.Component {
   state = {
     urls: [],
@@ -110,7 +110,7 @@ class Urls extends React.Component {
             <div>{i18n.t('settings_urls_copy')}</div>
             <select onChange={this.copyFromGroup}>
               <option value="">{i18n.t('settings_urls_choose_group')}</option>
-              {this.props.otherGroups.map((g) => (
+              {this.props.otherBanks.map((g) => (
                 <option key={g.id} value={g.id} disabled={isReadOnlySuperadmin}>
                   {g.name}
                 </option>
