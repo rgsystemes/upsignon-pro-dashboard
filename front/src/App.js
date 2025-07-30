@@ -33,22 +33,22 @@ class App extends React.Component {
   };
   async componentDidMount() {
     try {
-      const groupsRes = await baseUrlFetch('/get_available_banks', 'GET', null);
+      const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
       // eslint-disable-next-line eqeqeq
-      const isGroupInList = groupsRes.groups.some((g) => g.id == bankId);
-      if (groupsRes.isSuperadmin) {
+      const isGroupInList = banksRes.groups.some((g) => g.id == bankId);
+      if (banksRes.isSuperadmin) {
         if (!bankId || (bankId !== 'superadmin' && !isGroupInList)) {
           window.location.href = baseFrontUrl + '/superadmin/';
         }
       } else {
         if (!bankId || !isGroupInList) {
-          window.location.href = baseFrontUrl + '/' + groupsRes.groups[0].id + '/';
+          window.location.href = baseFrontUrl + '/' + banksRes.groups[0].id + '/';
         }
       }
-      setIsReadOnlySuperadmin(groupsRes.isReadOnlySuperadmin);
+      setIsReadOnlySuperadmin(banksRes.isReadOnlySuperadmin);
       this.setState({
-        groups: groupsRes.groups,
-        isSuperadmin: groupsRes.isSuperadmin,
+        groups: banksRes.groups,
+        isSuperadmin: banksRes.isSuperadmin,
         isReady: true,
       });
     } catch (e) {
