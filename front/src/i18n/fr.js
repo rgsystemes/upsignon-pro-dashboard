@@ -293,7 +293,7 @@ const translations = {
   sasettings_bank_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_bank_open: 'Voir',
   sasettings_nb_users: 'Nombre de coffres-forts',
-  sasettings_nb_licences_sold: 'Licences vendues',
+  sasettings_nb_associated_licences: 'Licences associées',
   sasettings_disable_reset_pwd_manual_admin_check:
     "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
   sasettings_disable_offline_desktop:

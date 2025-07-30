@@ -291,7 +291,7 @@ const translations = {
   sasettings_bank_sales_rep_must_be_email: 'Sales Rep must be an email address',
   sasettings_bank_open: 'See',
   sasettings_nb_users: 'Number of vaults',
-  sasettings_nb_licences_sold: 'Licences vendues',
+  sasettings_nb_associated_licences: 'Associated licences',
   sasettings_disable_reset_pwd_manual_admin_check:
     'Deactivate manual admin check for password reset requests',
   sasettings_disable_offline_desktop:
