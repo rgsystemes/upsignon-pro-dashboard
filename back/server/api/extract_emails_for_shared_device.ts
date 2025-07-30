@@ -14,7 +14,7 @@ export const extract_emails_for_shared_device = async (
     FROM user_devices AS ud
     INNER JOIN users ON ud.user_id=users.id
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
-    ${isSuperadmin ? '' : 'AND ud.group_id=$1'}
+    ${isSuperadmin ? '' : 'AND ud.bank_id=$1'}
   `,
       isSuperadmin ? [] : [req.proxyParamsBankId],
     );

@@ -7,7 +7,7 @@ export const delete_shared_vault_user = async (req: any, res: any): Promise<void
       return res.status(401).end();
     }
     await db.query(
-      `DELETE FROM shared_vault_recipients WHERE user_id=$1 AND shared_vault_id=$2 AND group_id=$3`,
+      `DELETE FROM shared_vault_recipients WHERE user_id=$1 AND shared_vault_id=$2 AND bank_id=$3`,
       [req.body.userId, req.body.sharedVaultId, req.proxyParamsBankId],
     );
     res.status(200).end();

@@ -7,7 +7,7 @@ export const delete_url = async (req: any, res: any): Promise<void> => {
       return res.status(401).end();
     }
     const urlId = req.params.id;
-    await db.query(`DELETE FROM url_list WHERE id=$1 AND group_id=$2`, [
+    await db.query(`DELETE FROM url_list WHERE id=$1 AND bank_id=$2`, [
       urlId,
       req.proxyParamsBankId,
     ]);

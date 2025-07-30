@@ -21,7 +21,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
       (SELECT STRING_AGG(users.email,';') FROM user_devices AS udbis INNER JOIN users ON udbis.user_id=users.id WHERE udbis.device_unique_id=ud.device_unique_id AND udbis.id!=ud.id) AS shared_with
     FROM user_devices AS ud
     WHERE user_id=$1
-    AND ud.group_id=$2
+    AND ud.bank_id=$2
     ORDER BY ud.created_at DESC
     `,
       [userId, req.proxyParamsBankId],

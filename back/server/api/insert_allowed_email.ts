@@ -14,7 +14,7 @@ export const insert_allowed_email = async (req: any, res: any): Promise<void> =>
       console.error(e);
       return res.status(400).end();
     }
-    await db.query(`INSERT INTO allowed_emails (pattern, group_id) VALUES (lower($1), $2)`, [
+    await db.query(`INSERT INTO allowed_emails (pattern, bank_id) VALUES (lower($1), $2)`, [
       joiValidatedNewEmailPattern.trim().toLowerCase(),
       req.proxyParamsBankId,
     ]);

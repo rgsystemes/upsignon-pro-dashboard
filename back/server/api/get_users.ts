@@ -16,14 +16,14 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     let userCount;
     if (isSearching) {
       const countUsersReq = await db.query(
-        `SELECT COUNT(id) FROM users WHERE (email LIKE '%' || $1 || '%' OR id::varchar(5) LIKE $1 || '%') AND users.group_id=$2
+        `SELECT COUNT(id) FROM users WHERE (email LIKE '%' || $1 || '%' OR id::varchar(5) LIKE $1 || '%') AND users.bank_id=$2
         ${sortingType === 2 ? 'AND deactivated' : ''}`,
         [search, req.proxyParamsBankId],
       );
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     } else {
       const countUsersReq = await db.query(
-        `SELECT COUNT(id) FROM users WHERE users.group_id=$1 ${sortingType === 2 ? 'AND deactivated' : ''}`,
+        `SELECT COUNT(id) FROM users WHERE users.bank_id=$1 ${sortingType === 2 ? 'AND deactivated' : ''}`,
         [req.proxyParamsBankId],
       );
       userCount = parseInt(countUsersReq.rows[0].count, 10);
@@ -70,8 +70,8 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.allowed_offline_desktop AS allowed_offline_desktop,
     u.settings_override AS settings_override
   FROM users AS u
-  INNER JOIN groups AS g ON u.group_id=g.id
-  WHERE u.group_id=$3
+  INNER JOIN groups AS g ON u.bank_id=g.id
+  WHERE u.bank_id=$3
   ${isSearching ? "AND (u.email LIKE '%' || $4 || '%' OR u.id::varchar(5) LIKE $4 || '%')" : ''}
   ${
     sortingType === 0

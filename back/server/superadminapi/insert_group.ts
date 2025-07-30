@@ -56,7 +56,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
 
     // add allowed emails
     const emailPattern = '*@' + validatedBody.adminEmail.split('@')[1].trim().toLowerCase();
-    await db.query('INSERT INTO allowed_emails (pattern, group_id) VALUES (lower($1), $2)', [
+    await db.query('INSERT INTO allowed_emails (pattern, bank_id) VALUES (lower($1), $2)', [
       emailPattern,
       insertedGroup.id,
     ]);
@@ -79,7 +79,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
     }
 
     await db.query(
-      'INSERT INTO admin_banks (admin_id, group_id) VALUES ($1,$2) ON CONFLICT (admin_id, group_id) DO NOTHING',
+      'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
       [adminId, insertedGroup.id],
     );
 

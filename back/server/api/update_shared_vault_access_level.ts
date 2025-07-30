@@ -13,7 +13,7 @@ export const update_shared_vault_access_level = async (req: any, res: any): Prom
     );
     const willBeManager = accessLevel == 'owner';
     await db.query(
-      `UPDATE shared_vault_recipients SET is_manager=$1, access_level=$2 WHERE user_id=$3 AND shared_vault_id=$4 AND group_id=$5`,
+      `UPDATE shared_vault_recipients SET is_manager=$1, access_level=$2 WHERE user_id=$3 AND shared_vault_id=$4 AND bank_id=$5`,
       [willBeManager, accessLevel, req.body.userId, req.body.sharedVaultId, req.proxyParamsBankId],
     );
     res.status(200).end();

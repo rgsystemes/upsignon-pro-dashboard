@@ -11,7 +11,7 @@ export const extract_emails_msi_install = async (
       `SELECT email FROM users AS u
         INNER JOIN user_devices AS ud ON ud.user_id=u.id
         WHERE ud.install_type='msi'
-        ${isSuperadmin ? '' : 'AND u.group_id=$1'}
+        ${isSuperadmin ? '' : 'AND u.bank_id=$1'}
       `,
       isSuperadmin ? [] : [req.proxyParamsBankId],
     );

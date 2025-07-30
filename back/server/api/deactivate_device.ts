@@ -8,7 +8,7 @@ export const deactivate_device = async (req: any, res: any): Promise<void> => {
     }
     const deviceId = req.params.deviceId;
     await db.query(
-      "UPDATE user_devices SET authorization_status='REVOKED_BY_ADMIN', revocation_date=$1 WHERE id=$2 AND group_id=$3",
+      "UPDATE user_devices SET authorization_status='REVOKED_BY_ADMIN', revocation_date=$1 WHERE id=$2 AND bank_id=$3",
       [new Date().toISOString(), deviceId, req.proxyParamsBankId],
     );
     res.status(200).end();

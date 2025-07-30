@@ -7,7 +7,7 @@ export const delete_device = async (req: any, res: any): Promise<void> => {
       return res.status(401).end();
     }
     const deviceId = req.params.deviceId;
-    await db.query('DELETE FROM user_devices WHERE id=$1 AND group_id=$2', [
+    await db.query('DELETE FROM user_devices WHERE id=$1 AND bank_id=$2', [
       deviceId,
       req.proxyParamsBankId,
     ]);

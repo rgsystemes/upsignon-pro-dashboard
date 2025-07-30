@@ -7,10 +7,7 @@ export const delete_user = async (req: any, res: any): Promise<void> => {
       return res.status(401).end();
     }
     const userId = req.params.userId;
-    await db.query(`DELETE FROM users WHERE id=$1 AND group_id=$2`, [
-      userId,
-      req.proxyParamsBankId,
-    ]);
+    await db.query(`DELETE FROM users WHERE id=$1 AND bank_id=$2`, [userId, req.proxyParamsBankId]);
     res.status(200).end();
   } catch (e) {
     logError('delete_user', e);

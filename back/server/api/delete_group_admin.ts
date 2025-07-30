@@ -8,7 +8,7 @@ export const delete_group_admin = async (req: any, res: any): Promise<void> => {
     }
     const adminId = req.params.id;
     const deletedAdmin = await db.query(
-      `DELETE FROM admin_banks WHERE admin_id=$1 AND group_id=$2`,
+      `DELETE FROM admin_banks WHERE admin_id=$1 AND bank_id=$2`,
       [adminId, req.proxyParamsBankId],
     );
     // DISCONNECT

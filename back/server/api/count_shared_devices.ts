@@ -8,7 +8,7 @@ export const count_shared_devices = async (req: any, res: any): Promise<void> =>
     SELECT
       COUNT(DISTINCT ud.device_unique_id) as count
     FROM user_devices AS ud
-    WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1 AND ud.group_id=$1
+    WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1 AND ud.bank_id=$1
   `,
       [req.proxyParamsBankId || 1],
     );
