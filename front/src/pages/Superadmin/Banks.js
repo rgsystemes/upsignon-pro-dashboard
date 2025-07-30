@@ -623,7 +623,15 @@ const InlineSetting = (props) => {
   return (
     <div className="inline-setting">
       <div className="inline-setting-content">{i18n.t(settingConf.banksTitle)}</div>
-      <div>
+      <div
+        onClick={() => {
+          toggleGroupSetting(group.id, {
+            ...group.settings,
+            [settingNameInDB]: !resValue,
+          });
+        }}
+        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
+      >
         {isRecommendedValue ? (
           <div className="recommendedParam">
             {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
@@ -633,17 +641,6 @@ const InlineSetting = (props) => {
             {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
           </div>
         )}
-        <div
-          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
-          onClick={() => {
-            toggleBankSetting(bank.id, {
-              ...bank.settings,
-              [settingNameInDB]: !resValue,
-            });
-          }}
-        >
-          {i18n.t('settings_change')}
-        </div>
       </div>
     </div>
   );
