@@ -1,7 +1,7 @@
 import { db } from './db';
 import { logError } from './logger';
 
-export const get_available_groups = async (req: any, res: any): Promise<void> => {
+export const get_available_banks = async (req: any, res: any): Promise<void> => {
   try {
     const allGroups = await db.query('SELECT id, name FROM groups ORDER BY NAME ASC');
     if (!req.session.isSuperadmin && !req.session.isReadOnlySuperadmin) {
@@ -9,7 +9,7 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
       if (filteredGroups.length === 0) {
         // this case should not happen
         req.destroy();
-        logError('get_available_groups filteredGroups.length === 0');
+        logError('get_available_banks filteredGroups.length === 0');
         return res.status(401).end();
       }
       return res.status(200).json({
@@ -25,7 +25,7 @@ export const get_available_groups = async (req: any, res: any): Promise<void> =>
       isReadOnlySuperadmin: req.session.isReadOnlySuperadmin,
     });
   } catch (e) {
-    logError('get_available_groups', e);
+    logError('get_available_banks', e);
     res.status(400).end();
   }
 };

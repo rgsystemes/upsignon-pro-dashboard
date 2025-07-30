@@ -10,7 +10,7 @@ import env from './helpers/env';
 import expressSession from 'express-session';
 import SessionStore from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
-import { get_available_groups } from './helpers/get_available_groups';
+import { get_available_banks } from './helpers/get_available_banks';
 import { superadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
@@ -122,7 +122,7 @@ app.use((req, res, next) => {
 // ALL ROUTES BELOW ARE ONLY ACCESSIBLE WITH A VALID SESSION
 
 // ROUTES THAT ARE AVAILABLE TO BOTH GROUP ADMINS AND SUPERADMINS
-app.get('/get_available_groups', get_available_groups);
+app.get('/get_available_banks', get_available_banks);
 app.get('/server_url', get_server_url);
 app.use('/disconnect/', disconnect);
 

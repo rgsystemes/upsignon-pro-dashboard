@@ -33,7 +33,7 @@ class App extends React.Component {
   };
   async componentDidMount() {
     try {
-      const groupsRes = await baseUrlFetch('/get_available_groups', 'GET', null);
+      const groupsRes = await baseUrlFetch('/get_available_banks', 'GET', null);
       // eslint-disable-next-line eqeqeq
       const isGroupInList = groupsRes.groups.some((g) => g.id == groupId);
       if (groupsRes.isSuperadmin) {
