@@ -6,17 +6,13 @@ import { frontUrl, baseFrontUrl } from '../helpers/env';
 import { GroupChooser } from './GroupChooser';
 import bySepteoLogo from './bySepteoLogo.svg';
 
-// PROPS pages, groups, isSuperadmin, isSuperadminPage
+// PROPS pages, banks, isSuperadmin, isSuperadminPage
 function Menu(props) {
-  const { pages, groups, isSuperadmin, isSuperadminPage } = props;
+  const { pages, banks, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
-      <GroupChooser
-        groups={groups}
-        isSuperadminPage={isSuperadminPage}
-        isSuperadmin={isSuperadmin}
-      />
+      <GroupChooser banks={banks} isSuperadminPage={isSuperadminPage} isSuperadmin={isSuperadmin} />
       <React.Fragment>
         {pages
           .filter((p) => !isSuperadminPage || !p.disabledForSuperadmin)

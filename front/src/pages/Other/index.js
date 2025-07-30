@@ -1,7 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { groupUrlFetch } from '../../helpers/urlFetch';
-import { groupServerUrl } from '../../helpers/env';
+import { bankServerUrl } from '../../helpers/env';
 
 import './other.css';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
@@ -207,7 +207,7 @@ class Other extends React.Component {
             <a
               className="extractAction"
               style={{ marginBottom: 20 }}
-              href={`${groupServerUrl}/api/extract-database`}
+              href={`${bankServerUrl}/api/extract-database`}
             >
               {i18n.t('extract_database')}
             </a>
@@ -216,7 +216,7 @@ class Other extends React.Component {
             <a
               className="extractAction"
               style={{ marginBottom: 20 }}
-              href={`${groupServerUrl}/api/extract-admins`}
+              href={`${bankServerUrl}/api/extract-admins`}
             >
               {i18n.t('extract_admins')}
             </a>

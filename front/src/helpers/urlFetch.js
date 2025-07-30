@@ -1,12 +1,12 @@
 import { i18n } from '../i18n/i18n';
-import { groupServerUrl, baseServerUrl } from './env';
+import { bankServerUrl, baseServerUrl } from './env';
 
 export async function baseUrlFetch(route, method, body, useGroup) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(`${useGroup ? groupServerUrl : baseServerUrl}${route}`, {
+  const res = await fetch(`${useGroup ? bankServerUrl : baseServerUrl}${route}`, {
     method,
     body: bodyText,
     cache: 'no-store',

@@ -5,7 +5,7 @@ import { baseFrontUrl, isSaasServer } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import './Groups.css';
+import './Banks.css';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // eslint-disable-next-line no-extend-native
@@ -14,8 +14,8 @@ Date.prototype.addWeeks = function (w) {
   return this;
 };
 
-// Props : setIsLoading, groups, fetchGroups
-class Groups extends React.Component {
+// Props : setIsLoading, banks, fetchBanks
+class Banks extends React.Component {
   state = {
     groupToDeleteId: null,
     showAllSettings: false,
@@ -23,7 +23,7 @@ class Groups extends React.Component {
     filterType: 0, // 0: all, 1: testing only
     sortType: 0, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
-    salesRepFilter: localStorage.getItem('groupsSalesRepFilter') || '', // Filter by sales rep name
+    salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -61,7 +61,7 @@ class Groups extends React.Component {
         salesEmail,
         resellerName,
       });
-      await this.props.fetchGroups();
+      await this.props.fetchBanks();
       this.newBankNameInputRef.value = null;
       this.newAdminEmailInputRef.value = null;
       this.isTestingCheckboxRef.checked = true;
@@ -79,7 +79,7 @@ class Groups extends React.Component {
         name: newName,
         id: bankId,
       });
-      await this.props.fetchGroups();
+      await this.props.fetchBanks();
     } catch (e) {
       console.error(e);
     } finally {
@@ -93,7 +93,7 @@ class Groups extends React.Component {
         nb_licences_sold: parseInt(newNb),
         id: bankId,
       });
-      await this.props.fetchGroups();
+      await this.props.fetchBanks();
     } catch (e) {
       console.error(e);
     } finally {
@@ -107,7 +107,7 @@ class Groups extends React.Component {
         id: bankId,
         settings: newSettings,
       });
-      await this.props.fetchGroups();
+      await this.props.fetchBanks();
     } catch (e) {
       console.error(e);
     } finally {
@@ -118,7 +118,7 @@ class Groups extends React.Component {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch(`/api/delete-group/${id}`, 'POST', null);
-      await this.props.fetchGroups();
+      await this.props.fetchBanks();
     } catch (e) {
       console.error(e);
     } finally {
@@ -156,11 +156,11 @@ class Groups extends React.Component {
 
   handleSalesRepFilterChange = (value) => {
     this.setState({ salesRepFilter: value });
-    localStorage.setItem('groupsSalesRepFilter', value);
+    localStorage.setItem('banksSalesRepFilter', value);
   };
 
   render() {
-    const groupToDelete = this.props.groups.find((g) => g.id === this.state.groupToDeleteId);
+    const groupToDelete = this.props.banks.find((g) => g.id === this.state.groupToDeleteId);
     if (groupToDelete) {
       return (
         <div>
@@ -197,7 +197,7 @@ class Groups extends React.Component {
       );
     }
 
-    const filteredBanks = this.props.groups
+    const filteredBanks = this.props.banks
       .filter((group) => {
         // Filter by type (all or testing only)
         const typeFilter = this.state.filterType === 0 || group.settings?.IS_TESTING;
@@ -224,7 +224,7 @@ class Groups extends React.Component {
           case 2: // Sort by expiration date/days remaining
             const getExpirationValue = (group) => {
               if (!group.settings?.IS_TESTING || !group.settings?.TESTING_EXPIRATION_DATE) {
-                return Infinity; // Non-testing groups go to the end
+                return Infinity; // Non-testing banks go to the end
               }
               const today = new Date();
               const expirationDate = new Date(group.settings.TESTING_EXPIRATION_DATE);
@@ -343,7 +343,7 @@ class Groups extends React.Component {
         {(this.state.salesRepFilter || this.state.filterType !== 0) && (
           <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
-        {this.props.groups.length > 0 && (
+        {this.props.banks.length > 0 && (
           <table>
             <thead>
               <tr>
@@ -719,4 +719,4 @@ const AutolockDelaySetting = (props) => {
   );
 };
 
-export { Groups };
+export { Banks };

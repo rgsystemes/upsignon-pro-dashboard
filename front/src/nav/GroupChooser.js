@@ -2,7 +2,7 @@ import React from 'react';
 import { baseFrontUrl, bankId } from '../helpers/env';
 import { i18n } from '../i18n/i18n';
 
-// Props: groups, isSuperadmin, isSuperadminPage
+// Props: banks, isSuperadmin, isSuperadminPage
 class GroupChooser extends React.Component {
   state = {
     showList: false,
@@ -13,7 +13,7 @@ class GroupChooser extends React.Component {
   };
   render() {
     // eslint-disable-next-line eqeqeq
-    const currentGroup = this.props.groups.find((g) => g.id == bankId);
+    const currentGroup = this.props.banks.find((g) => g.id == bankId);
     return (
       <div
         style={{
@@ -49,7 +49,7 @@ class GroupChooser extends React.Component {
                 {i18n.t('menu_superadmin')}
               </a>
             )}
-            {this.props.groups.map((g) => {
+            {this.props.banks.map((g) => {
               return (
                 <a key={g.id} className="groupLink" href={baseFrontUrl + '/' + g.id + '/'}>
                   {g.name}

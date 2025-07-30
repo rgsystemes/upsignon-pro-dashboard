@@ -24,12 +24,12 @@ class App extends React.Component {
     nb_shared_vaults: null,
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
-    groups: [],
+    banks: [],
     isSuperadmin: false,
     isReady: false,
   };
-  updateMenuGroups = (newGroups) => {
-    this.setState({ groups: newGroups });
+  updateMenuBanks = (newBanks) => {
+    this.setState({ banks: newBanks });
   };
   async componentDidMount() {
     try {
@@ -47,7 +47,7 @@ class App extends React.Component {
       }
       setIsReadOnlySuperadmin(banksRes.isReadOnlySuperadmin);
       this.setState({
-        groups: banksRes.groups,
+        banks: banksRes.groups,
         isSuperadmin: banksRes.isSuperadmin,
         isReady: true,
       });
@@ -127,7 +127,7 @@ class App extends React.Component {
     } else if (path.startsWith(`/${bankId}/settings`)) {
       if (bankId === 'superadmin') {
         pageContent = (
-          <Superadmin setIsLoading={this.setIsLoading} updateMenuGroups={this.updateMenuGroups} />
+          <Superadmin setIsLoading={this.setIsLoading} updateMenuBanks={this.updateMenuBanks} />
         );
       } else {
         pageContent = (
@@ -135,7 +135,7 @@ class App extends React.Component {
             setIsLoading={this.setIsLoading}
             isSuperAdmin={this.state.isSuperadmin}
             // eslint-disable-next-line eqeqeq
-            otherGroups={this.state.groups.filter((g) => g.id != bankId)}
+            otherBanks={this.state.banks.filter((g) => g.id != bankId)}
           />
         );
       }
@@ -210,7 +210,7 @@ class App extends React.Component {
       <div className="App">
         <Menu
           pages={pages}
-          groups={this.state.groups}
+          banks={this.state.banks}
           isSuperadmin={this.state.isSuperadmin}
           isSuperadminPage={bankId === 'superadmin'}
         />
