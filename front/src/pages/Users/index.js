@@ -524,8 +524,8 @@ const UserSettingOverride = (props) => {
     return null;
   }
   var defaultValue =
-    userValue.group_settings?.[settingNameInDb] != null
-      ? userValue.group_settings?.[settingNameInDb]
+    userValue.bank_settings?.[settingNameInDb] != null
+      ? userValue.bank_settings?.[settingNameInDb]
       : settingConf.recommendedValue;
   var recommendedValue = settingConf.recommendedValue;
   if (settingConf.reverseMeaningForUser) {

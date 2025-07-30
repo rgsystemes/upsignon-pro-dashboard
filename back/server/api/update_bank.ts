@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const update_group = async (req: any, res: any): Promise<void> => {
+export const update_bank = async (req: any, res: any): Promise<void> => {
   try {
     if (req.body.name) {
       await db.query('UPDATE banks SET name=$1 WHERE id=$2', [
@@ -41,7 +41,7 @@ export const update_group = async (req: any, res: any): Promise<void> => {
     }
     res.status(200).end();
   } catch (e) {
-    logError('update_group', e);
+    logError('update_bank', e);
     res.status(400).end();
   }
 };

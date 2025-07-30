@@ -291,7 +291,7 @@ export class MicrosoftEntraConfig extends React.Component {
               }}
             >
               <span style={{ marginRight: 5 }}>
-                {i18n.t('bank_setting_microsoft_entra_test_user_groupes')}
+                {i18n.t('bank_setting_microsoft_entra_test_user_banks')}
               </span>
               <span>
                 {this.state.testResult.userGroups.error ||

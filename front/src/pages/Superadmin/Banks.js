@@ -168,9 +168,9 @@ class Banks extends React.Component {
           <div
             className={`delete-confirmation-container ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
           >
-            <h3>{i18n.t('sasettings_group_delete_warning')}</h3>
+            <h3>{i18n.t('sasettings_bank_delete_warning')}</h3>
             <div style={{ marginBottom: 10 }}>
-              {i18n.t('sasetting_confirm_group_delete', {
+              {i18n.t('sasetting_confirm_bank_delete', {
                 name: groupToDelete.name,
               })}
             </div>
@@ -371,19 +371,19 @@ class Banks extends React.Component {
                 </th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
-                <th>{i18n.t('sasettings_group_created_at')}</th>
-                <th>{i18n.t('sasettings_group_is_testing')}</th>
-                <th>{i18n.t('sasettings_group_test_expires_at')}</th>
+                <th>{i18n.t('sasettings_bank_created_at')}</th>
+                <th>{i18n.t('sasettings_bank_is_testing')}</th>
+                <th>{i18n.t('sasettings_bank_test_expires_at')}</th>
                 <th
                   className="sortable-header"
                   onClick={() => this.handleSort(2)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
-                  {i18n.t('sasettings_group_test_days_remaining')}
+                  {i18n.t('sasettings_bank_test_days_remaining')}
                   <br />
                   {this.getSortIcon(2)}
                 </th>
-                {isSaasServer && <th>{i18n.t('sasettings_group_sales_rep')}</th>}
+                {isSaasServer && <th>{i18n.t('sasettings_bank_sales_rep')}</th>}
                 {!isReadOnlySuperadmin && (
                   <th>
                     <div>{i18n.t('settings_bank_settings')}</div>
@@ -412,7 +412,7 @@ class Banks extends React.Component {
                           window.location.href = baseFrontUrl + '/' + group.id + '/';
                         }}
                       >
-                        {i18n.t('sasettings_group_open')}
+                        {i18n.t('sasettings_bank_open')}
                       </span>
                     </td>
                     <td>{group.id}</td>
@@ -500,7 +500,7 @@ class Banks extends React.Component {
                               const expiredDays = Math.abs(diffDays);
                               return (
                                 <span className="expired-text">
-                                  {i18n.t('sasettings_group_expired_since', {
+                                  {i18n.t('sasettings_bank_expired_since', {
                                     days: expiredDays,
                                     s: expiredDays > 1 ? 's' : '',
                                   })}
@@ -509,7 +509,7 @@ class Banks extends React.Component {
                             } else if (diffDays <= 7) {
                               return (
                                 <span className="expiring-soon-text">
-                                  {i18n.t('sasettings_group_days_remaining', {
+                                  {i18n.t('sasettings_bank_days_remaining', {
                                     days: diffDays,
                                     s: diffDays > 1 ? 's' : '',
                                   })}
@@ -518,7 +518,7 @@ class Banks extends React.Component {
                             } else {
                               return (
                                 <span>
-                                  {i18n.t('sasettings_group_days_remaining', {
+                                  {i18n.t('sasettings_bank_days_remaining', {
                                     days: diffDays,
                                     s: diffDays > 1 ? 's' : '',
                                   })}
@@ -540,7 +540,7 @@ class Banks extends React.Component {
                                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                               )
                           ) {
-                            window.alert(i18n.t('sasettings_group_sales_rep_must_be_email'));
+                            window.alert(i18n.t('sasettings_bank_sales_rep_must_be_email'));
                             return;
                           }
                           this.toggleBankSetting(group.id, {

@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const delete_group_admin = async (req: any, res: any): Promise<void> => {
+export const delete_bank_admin = async (req: any, res: any): Promise<void> => {
   try {
     if (req.session.isReadOnlySuperadmin) {
       return res.status(401).end();
@@ -20,7 +20,7 @@ export const delete_group_admin = async (req: any, res: any): Promise<void> => {
     });
     res.status(200).end();
   } catch (e) {
-    logError('delete_group_admin', e);
+    logError('delete_bank_admin', e);
     res.status(400).end();
   }
 };

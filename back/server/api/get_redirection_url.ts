@@ -8,7 +8,7 @@ export const getRedirectionUrl = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).json({ redirectionUrl: dbRes.rows[0].redirect_url || '' });
   } catch (e) {
-    logError('update_group', e);
+    logError('update_bank', e);
     res.status(400).end();
   }
 };

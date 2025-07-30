@@ -62,7 +62,7 @@ class PasswordResetRequests extends React.Component {
         <table style={{ marginBottom: 20 }}>
           <thead>
             <tr>
-              {this.props.isSuperAdmin && <th>{i18n.t('password_reset_request_group')}</th>}
+              {this.props.isSuperAdmin && <th>{i18n.t('password_reset_request_bank')}</th>}
               <th>{i18n.t('password_reset_request_status')}</th>
               <th>{i18n.t('password_reset_request_date')}</th>
               <th>{i18n.t('user_email')}</th>
@@ -77,7 +77,7 @@ class PasswordResetRequests extends React.Component {
               const requiresAttention = d.status === 'PENDING_ADMIN_CHECK';
               return (
                 <tr key={d.pwd_reset_id}>
-                  {this.props.isSuperAdmin && <td>{d.group_name}</td>}
+                  {this.props.isSuperAdmin && <td>{d.bank_name}</td>}
                   <td className={requiresAttention ? 'requires_attention' : null}>
                     {d.status}
                     {d.granted_by && (

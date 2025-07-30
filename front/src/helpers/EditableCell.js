@@ -61,7 +61,7 @@ export function EditableCell(props) {
       {type === 'date'
         ? !!value
           ? new Date(value).toLocaleDateString()
-          : i18n.t('sasettings_group_test_expires_at_never')
+          : i18n.t('sasettings_bank_test_expires_at_never')
         : value}
     </td>
   );

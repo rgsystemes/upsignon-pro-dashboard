@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const get_group_admins = async (req: any, res: any): Promise<void> => {
+export const get_bank_admins = async (req: any, res: any): Promise<void> => {
   try {
     const dbRes = await db.query(
       `SELECT
@@ -16,7 +16,7 @@ export const get_group_admins = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
-    logError('get_group_admins', e);
+    logError('get_bank_admins', e);
     res.status(400).end();
   }
 };

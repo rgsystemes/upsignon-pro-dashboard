@@ -6,7 +6,7 @@ import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 import env from '../helpers/env';
 import qrcode from 'qrcode-generator';
 
-export const insert_group = async (req: any, res: any): Promise<void> => {
+export const insert_bank = async (req: any, res: any): Promise<void> => {
   try {
     const validatedBody: {
       name: string;
@@ -123,7 +123,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
 
     res.status(200).end();
   } catch (e) {
-    logError('insert_group', e);
+    logError('insert_bank', e);
     res.status(400).end();
   }
 };
