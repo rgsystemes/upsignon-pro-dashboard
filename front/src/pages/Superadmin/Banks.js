@@ -360,6 +360,7 @@ class Banks extends React.Component {
                 )}
                 <th
                   className="sortable-header"
+                  style={{ minWidth: 100 }}
                   onClick={() => this.handleSort(0)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
@@ -367,8 +368,8 @@ class Banks extends React.Component {
                   <br />
                   {this.getSortIcon(0)}
                 </th>
-                <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_nb_licences_sold')}</th>
+                <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_bank_created_at')}</th>
                 <th>{i18n.t('sasettings_bank_is_testing')}</th>
                 <th>{i18n.t('sasettings_bank_test_expires_at')}</th>
@@ -383,7 +384,7 @@ class Banks extends React.Component {
                 </th>
                 {isSaasServer && <th>{i18n.t('sasettings_bank_sales_rep')}</th>}
                 {!isRestrictedSuperadmin && (
-                  <th>
+                  <th style={{ minWidth: 200 }}>
                     <div>{i18n.t('settings_bank_settings')}</div>
                     <div
                       className="action"
@@ -432,11 +433,6 @@ class Banks extends React.Component {
                         this.updateBankName(bank.id, newVal);
                       }}
                     />
-                    <td
-                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
-                    >
-                      {bank.nb_users}
-                    </td>
                     <EditableCell
                       type="number"
                       value={bank.nb_licences_sold}
@@ -445,6 +441,11 @@ class Banks extends React.Component {
                         this.updateNbLicences(bank.id, newVal);
                       }}
                     />
+                    <td
+                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
+                    >
+                      {bank.nb_users}
+                    </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
                     <td>
                       <div className="testing-checkbox-container">
@@ -593,8 +594,8 @@ class Banks extends React.Component {
                 <td></td>
                 {isSaasServer && <td></td>}
                 <td></td>
-                <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
+                <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
                 <td></td>
                 <td></td>
