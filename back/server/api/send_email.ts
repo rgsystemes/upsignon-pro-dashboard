@@ -48,7 +48,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
     uniqueEmails = (
       await db.query(
         `SELECT DISTINCT email FROM users ${isSuperadmin ? '' : 'WHERE group_id=$1'}`,
-        isSuperadmin ? [] : [req.proxyParamsGroupId],
+        isSuperadmin ? [] : [req.proxyParamsBankId],
       )
     ).rows.map((u) => u.email);
   } else {
@@ -59,7 +59,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           `SELECT email FROM users WHERE nb_accounts_with_duplicated_password >= $1 ${
             isSuperadmin ? '' : 'AND group_id=$2'
           }`,
-          isSuperadmin ? [extractorDuplicateMin] : [extractorDuplicateMin, req.proxyParamsGroupId],
+          isSuperadmin ? [extractorDuplicateMin] : [extractorDuplicateMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
 
@@ -71,7 +71,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
             isSuperadmin ? '' : 'AND group_id=$2'
           }`,
-          isSuperadmin ? [extractorWeakMin] : [extractorWeakMin, req.proxyParamsGroupId],
+          isSuperadmin ? [extractorWeakMin] : [extractorWeakMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(weakEmails);
@@ -82,7 +82,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
             isSuperadmin ? '' : 'AND group_id=$2'
           }`,
-          isSuperadmin ? [extractorMediumMin] : [extractorMediumMin, req.proxyParamsGroupId],
+          isSuperadmin ? [extractorMediumMin] : [extractorMediumMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(mediumEmails);
@@ -96,9 +96,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
             WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
           ${isSuperadmin ? '' : 'AND u.group_id=$2'}
       `,
-          isSuperadmin
-            ? [extractorUnusedDaysMin]
-            : [extractorUnusedDaysMin, req.proxyParamsGroupId],
+          isSuperadmin ? [extractorUnusedDaysMin] : [extractorUnusedDaysMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(longUnusedEmails);
@@ -111,9 +109,7 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
         WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
         ${isSuperadmin ? '' : 'AND ud.group_id=$1'}
       `,
-          isSuperadmin
-            ? [extractorUnusedDaysMin]
-            : [extractorUnusedDaysMin, req.proxyParamsGroupId],
+          isSuperadmin ? [extractorUnusedDaysMin] : [extractorUnusedDaysMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(deviceSharedEmail);

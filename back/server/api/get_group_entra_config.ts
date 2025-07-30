@@ -4,7 +4,7 @@ import { logError } from '../helpers/logger';
 export const get_group_entra_config = async (req: any, res: any): Promise<void> => {
   try {
     const dbRes = await db.query(`SELECT ms_entra_config FROM groups WHERE id=$1`, [
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ]);
     const config = dbRes.rows[0].ms_entra_config || {};
     const maskedConfig = { ...config };

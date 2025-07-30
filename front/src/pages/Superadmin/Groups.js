@@ -72,12 +72,12 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateGroupName = async (groupId, newName) => {
+  updateGroupName = async (bankId, newName) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
         name: newName,
-        id: groupId,
+        id: bankId,
       });
       await this.props.fetchGroups();
     } catch (e) {
@@ -86,12 +86,12 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateNbLicences = async (groupId, newNb) => {
+  updateNbLicences = async (bankId, newNb) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
         nb_licences_sold: parseInt(newNb),
-        id: groupId,
+        id: bankId,
       });
       await this.props.fetchGroups();
     } catch (e) {
@@ -100,11 +100,11 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  toggleGroupSetting = async (groupId, newSettings) => {
+  toggleGroupSetting = async (bankId, newSettings) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
-        id: groupId,
+        id: bankId,
         settings: newSettings,
       });
       await this.props.fetchGroups();
@@ -133,9 +133,9 @@ class Groups extends React.Component {
       return { ...s, showAllSettings: true };
     });
   };
-  toggleShowGroupSettings = (groupId) => {
+  toggleShowGroupSettings = (bankId) => {
     this.setState((s) => {
-      return { ...s, showGroupSettings: { [groupId]: !s.showGroupSettings[groupId] } };
+      return { ...s, showGroupSettings: { [bankId]: !s.showGroupSettings[bankId] } };
     });
   };
 

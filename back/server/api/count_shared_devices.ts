@@ -10,7 +10,7 @@ export const count_shared_devices = async (req: any, res: any): Promise<void> =>
     FROM user_devices AS ud
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1 AND ud.group_id=$1
   `,
-      [req.proxyParamsGroupId || 1],
+      [req.proxyParamsBankId || 1],
     );
     res.status(200).send(dbRes.rows[0].count);
   } catch (e) {

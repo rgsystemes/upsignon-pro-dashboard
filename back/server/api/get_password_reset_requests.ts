@@ -33,7 +33,7 @@ export const get_password_reset_requests = async (
     ${!asSuperadmin && email ? 'AND u.email=$2' : ''}
     ORDER BY prr.created_at DESC
     `,
-      asSuperadmin ? [] : [req.proxyParamsGroupId, ...(email ? [email] : [])],
+      asSuperadmin ? [] : [req.proxyParamsBankId, ...(email ? [email] : [])],
     );
     res.status(200).send(prrResult.rows);
   } catch (e) {

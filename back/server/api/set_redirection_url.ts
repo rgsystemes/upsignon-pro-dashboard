@@ -9,7 +9,7 @@ export const setRedirectionUrl = async (req: any, res: any): Promise<void> => {
     await db.query('UPDATE groups SET redirect_url=$1, stop_this_instance=$2 WHERE id=$3', [
       req.body.redirectionUrl,
       !!req.body.redirectionUrl,
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ]);
     res.status(200).end();
   } catch (e) {

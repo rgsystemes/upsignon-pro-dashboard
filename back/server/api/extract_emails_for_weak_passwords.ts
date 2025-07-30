@@ -12,7 +12,7 @@ export const extract_emails_for_weak_passwords = async (
       `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
         isSuperadmin ? '' : 'AND group_id=$2'
       }`,
-      isSuperadmin ? [nb] : [nb, req.proxyParamsGroupId],
+      isSuperadmin ? [nb] : [nb, req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

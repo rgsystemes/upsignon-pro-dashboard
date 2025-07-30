@@ -5,11 +5,11 @@ export const get_allowed_emails = async (req: any, res: any): Promise<void> => {
   try {
     const dbRes = await db.query(
       'SELECT id, pattern FROM allowed_emails WHERE group_id=$1 ORDER BY id ASC',
-      [req.proxyParamsGroupId],
+      [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
-    logError("get_allowed_emails",e);
+    logError('get_allowed_emails', e);
     res.status(400).end();
   }
 };

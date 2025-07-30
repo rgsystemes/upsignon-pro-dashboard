@@ -27,13 +27,13 @@ export const grant_pwd_reset_request = async (
       }`,
       asSuperadmin
         ? [requestToken, expirationDate, adminEmail, requestId]
-        : [requestToken, expirationDate, adminEmail, requestId, req.proxyParamsGroupId],
+        : [requestToken, expirationDate, adminEmail, requestId, req.proxyParamsBankId],
     );
     const userReq = await db.query(
       `SELECT u.email, ud.device_name FROM users AS u INNER JOIN user_devices AS ud ON u.id=ud.user_id INNER JOIN password_reset_request AS prr ON prr.device_id=ud.id WHERE prr.id=$1 ${
         asSuperadmin ? '' : 'AND u.group_id=$2'
       }`,
-      asSuperadmin ? [requestId] : [requestId, req.proxyParamsGroupId],
+      asSuperadmin ? [requestId] : [requestId, req.proxyParamsBankId],
     );
     const emailAddress = userReq.rows[0].email;
     const deviceName = userReq.rows[0].device_name;

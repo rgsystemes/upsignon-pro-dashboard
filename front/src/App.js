@@ -9,7 +9,7 @@ import { Settings } from './pages/Settings';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
-import { baseFrontUrl, groupId } from './helpers/env';
+import { baseFrontUrl, bankId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
@@ -35,13 +35,13 @@ class App extends React.Component {
     try {
       const groupsRes = await baseUrlFetch('/get_available_banks', 'GET', null);
       // eslint-disable-next-line eqeqeq
-      const isGroupInList = groupsRes.groups.some((g) => g.id == groupId);
+      const isGroupInList = groupsRes.groups.some((g) => g.id == bankId);
       if (groupsRes.isSuperadmin) {
-        if (!groupId || (groupId !== 'superadmin' && !isGroupInList)) {
+        if (!bankId || (bankId !== 'superadmin' && !isGroupInList)) {
           window.location.href = baseFrontUrl + '/superadmin/';
         }
       } else {
-        if (!groupId || !isGroupInList) {
+        if (!bankId || !isGroupInList) {
           window.location.href = baseFrontUrl + '/' + groupsRes.groups[0].id + '/';
         }
       }
@@ -95,22 +95,22 @@ class App extends React.Component {
     let path = window.location.href.replace(baseFrontUrl, '');
 
     let pageContent = (
-      <Overview setIsLoading={this.setIsLoading} isSuperadminPage={groupId === 'superadmin'} />
+      <Overview setIsLoading={this.setIsLoading} isSuperadminPage={bankId === 'superadmin'} />
     );
     let currentPage = 'overview';
 
-    if (path.startsWith(`/${groupId}/users`)) {
+    if (path.startsWith(`/${bankId}/users`)) {
       pageContent = <Users setIsLoading={this.setIsLoading} totalCount={this.state.nb_users} />;
       currentPage = 'users';
-    } else if (path.startsWith(`/${groupId}/other`)) {
+    } else if (path.startsWith(`/${bankId}/other`)) {
       pageContent = <Other setIsLoading={this.setIsLoading} />;
       currentPage = 'other';
-    } else if (path.startsWith(`/${groupId}/shared_devices`)) {
+    } else if (path.startsWith(`/${bankId}/shared_devices`)) {
       pageContent = (
         <SharedDevices setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_devices} />
       );
       currentPage = 'shared_devices';
-    } else if (path.startsWith(`/${groupId}/password_reset_requests`)) {
+    } else if (path.startsWith(`/${bankId}/password_reset_requests`)) {
       pageContent = (
         <PasswordResetRequests
           setIsLoading={this.setIsLoading}
@@ -119,13 +119,13 @@ class App extends React.Component {
         />
       );
       currentPage = 'password_reset_requests';
-    } else if (path.startsWith(`/${groupId}/shared_vaults`)) {
+    } else if (path.startsWith(`/${bankId}/shared_vaults`)) {
       pageContent = (
         <SharedVaults setIsLoading={this.setIsLoading} totalCount={this.state.nb_shared_vaults} />
       );
       currentPage = 'shared_vaults';
-    } else if (path.startsWith(`/${groupId}/settings`)) {
-      if (groupId === 'superadmin') {
+    } else if (path.startsWith(`/${bankId}/settings`)) {
+      if (bankId === 'superadmin') {
         pageContent = (
           <Superadmin setIsLoading={this.setIsLoading} updateMenuGroups={this.updateMenuGroups} />
         );
@@ -135,12 +135,12 @@ class App extends React.Component {
             setIsLoading={this.setIsLoading}
             isSuperAdmin={this.state.isSuperadmin}
             // eslint-disable-next-line eqeqeq
-            otherGroups={this.state.groups.filter((g) => g.id != groupId)}
+            otherGroups={this.state.groups.filter((g) => g.id != bankId)}
           />
         );
       }
       currentPage = 'settings';
-    } else if (path.startsWith(`/${groupId}/licences`)) {
+    } else if (path.startsWith(`/${bankId}/licences`)) {
       pageContent = <Licences setIsLoading={this.setIsLoading} />;
       currentPage = 'licences';
     }
@@ -212,7 +212,7 @@ class App extends React.Component {
           pages={pages}
           groups={this.state.groups}
           isSuperadmin={this.state.isSuperadmin}
-          isSuperadminPage={groupId === 'superadmin'}
+          isSuperadminPage={bankId === 'superadmin'}
         />
         {pageContent}
         <div

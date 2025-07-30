@@ -13,7 +13,7 @@ export const extract_emails_msi_install = async (
         WHERE ud.install_type='msi'
         ${isSuperadmin ? '' : 'AND u.group_id=$1'}
       `,
-      isSuperadmin ? [] : [req.proxyParamsGroupId],
+      isSuperadmin ? [] : [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

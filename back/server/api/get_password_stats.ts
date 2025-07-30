@@ -27,7 +27,7 @@ export const get_password_stats = async (
         nb_accounts_orange,
         nb_accounts_green
         FROM pwd_stats_evolution WHERE group_id=$1 ORDER BY day ASC`,
-        [req.proxyParamsGroupId],
+        [req.proxyParamsBankId],
       );
     } else {
       rawStats = await db.query(

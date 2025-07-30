@@ -3,7 +3,7 @@ import { MicrosoftGraph } from 'ms-entra-for-upsignon';
 
 export const reloadMSEntraInstance = async (req: any, res: any): Promise<void> => {
   try {
-    MicrosoftGraph.reloadInstanceForGroup(req.proxyParamsGroupId);
+    MicrosoftGraph.reloadInstanceForGroup(req.proxyParamsBankId);
     res.status(200).end();
   } catch (e) {
     logError('reloadMSEntraInstance', e);

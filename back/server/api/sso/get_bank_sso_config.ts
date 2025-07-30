@@ -5,7 +5,7 @@ import { microsoftConfigUrl } from './sso_constants';
 export const get_bank_sso_config = async (req: any, res: any): Promise<void> => {
   try {
     const dbRes = await db.query(`SELECT * FROM bank_sso_config WHERE bank_id=$1 ORDER BY id`, [
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ]);
 
     const openidConfigs = dbRes.rows.map((r) => ({

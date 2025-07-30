@@ -20,7 +20,7 @@ export const extract_emails_for_long_unused = async (
           WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
         ${isSuperadmin ? '' : 'AND u.group_id=$2'}
       `,
-      isSuperadmin ? [nbDays] : [nbDays, req.proxyParamsGroupId],
+      isSuperadmin ? [nbDays] : [nbDays, req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

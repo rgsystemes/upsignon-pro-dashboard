@@ -78,8 +78,8 @@ class Urls extends React.Component {
     }
   };
   copyFromGroup = async (event) => {
-    const groupId = event.target.value;
-    if (!groupId) {
+    const bankId = event.target.value;
+    if (!bankId) {
       this.nbCopiedFromTargetGroup = null;
       this.forceUpdate();
       return;
@@ -87,7 +87,7 @@ class Urls extends React.Component {
     try {
       this.props.setIsLoading(true);
       const { nbAdded } = await groupUrlFetch('/api/copy_urls_from_group', 'POST', {
-        fromGroup: groupId,
+        fromGroup: bankId,
       });
       this.nbCopiedFromTargetGroup = nbAdded;
       await this.fetchUrls();

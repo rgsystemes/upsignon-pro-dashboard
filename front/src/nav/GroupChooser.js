@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseFrontUrl, groupId } from '../helpers/env';
+import { baseFrontUrl, bankId } from '../helpers/env';
 import { i18n } from '../i18n/i18n';
 
 // Props: groups, isSuperadmin, isSuperadminPage
@@ -13,7 +13,7 @@ class GroupChooser extends React.Component {
   };
   render() {
     // eslint-disable-next-line eqeqeq
-    const currentGroup = this.props.groups.find((g) => g.id == groupId);
+    const currentGroup = this.props.groups.find((g) => g.id == bankId);
     return (
       <div
         style={{

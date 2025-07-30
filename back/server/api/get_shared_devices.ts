@@ -22,7 +22,7 @@ export const get_shared_devices = async (req: any, res: any): Promise<void> => {
     AND ud.group_id=$1
     ORDER BY ud.device_unique_id
   `,
-      [req.proxyParamsGroupId],
+      [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {

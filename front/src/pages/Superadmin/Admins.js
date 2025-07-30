@@ -43,12 +43,12 @@ class Admins extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateAdminGroup = async (adminId, groupId, willBelongToGroup) => {
+  updateAdminGroup = async (adminId, bankId, willBelongToGroup) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-admin-group', 'POST', {
         adminId,
-        groupId,
+        bankId,
         willBelongToGroup,
       });
       await this.fetchAdmins();

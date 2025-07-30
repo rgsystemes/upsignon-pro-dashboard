@@ -18,13 +18,13 @@ export const get_users = async (req: any, res: any): Promise<void> => {
       const countUsersReq = await db.query(
         `SELECT COUNT(id) FROM users WHERE (email LIKE '%' || $1 || '%' OR id::varchar(5) LIKE $1 || '%') AND users.group_id=$2
         ${sortingType === 2 ? 'AND deactivated' : ''}`,
-        [search, req.proxyParamsGroupId],
+        [search, req.proxyParamsBankId],
       );
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     } else {
       const countUsersReq = await db.query(
         `SELECT COUNT(id) FROM users WHERE users.group_id=$1 ${sortingType === 2 ? 'AND deactivated' : ''}`,
-        [req.proxyParamsGroupId],
+        [req.proxyParamsBankId],
       );
       userCount = parseInt(countUsersReq.rows[0].count, 10);
     }
@@ -39,7 +39,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     const queryInputs: string[] = [
       limit.toString(),
       (pageOffset * limit).toString(),
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ];
     if (isSearching) {
       queryInputs.push(search);
