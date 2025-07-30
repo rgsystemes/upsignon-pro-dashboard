@@ -162,9 +162,9 @@ const translations = {
   settings_group_admins_invite: 'Ajouter',
   settings_group_admin_delete_warning:
     "Êtes-vous sûr de vouloir supprimer l'accès de cet administrateur à cette banque de coffres-forts ?",
-  settings_group_settings: 'Options',
-  settings_group_settings_toggle_all_settings: 'Montrer/cacher tous les paramètres',
-  settings_group_settings_toggle_group_settings: 'Montrer/cacher',
+  settings_bank_settings: 'Options',
+  settings_bank_settings_toggle_all_settings: 'Montrer/cacher tous les paramètres',
+  settings_bank_settings_toggle_bank_settings: 'Montrer/cacher',
   shared_devices_explanation:
     'Voici la liste des appareils sur lesquels au moins deux utilisateurs ont autorisé leur coffre-fort PRO.',
   shared_devices_uid: "Identifiant unique de l'appareil",
@@ -282,7 +282,7 @@ const translations = {
   sasettings_new_bank_form_sales_email_placeholder: 'Vous par défaut',
   sasettings_new_bank_form_reseller_name: 'MSP',
   sasettings_new_bank_form_success: 'Banque créée et configurée, email envoyé.',
-  sasettings_group_name: 'Nom de la banque de coffres-forts',
+  sasettings_bank_name: 'Nom de la banque de coffres-forts',
   sasettings_group_created_at: 'Crée le',
   sasettings_group_is_testing: 'Phase de test',
   sasettings_group_test_expires_at: "Date d'expiration du test",
@@ -290,7 +290,7 @@ const translations = {
   sasettings_group_test_days_remaining: 'Jours restants',
   sasettings_group_expired_since: 'Expiré depuis $days jour$s',
   sasettings_group_days_remaining: '$days jour$s',
-  sasettings_group_reseller: 'Revendeur',
+  sasettings_bank_reseller: 'Revendeur',
   sasettings_group_sales_rep: 'Commercial',
   sasettings_group_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_group_open: 'Voir',
@@ -355,36 +355,36 @@ const translations = {
   sasettings_email_config_testing_button: 'Envoyer un email à cette adresse',
   sasettings_email_config_testing_alert: 'Un email a été envoyé',
   sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
-  group_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
-  group_setting_microsoft_entra_pitch:
+  bank_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
+  bank_setting_microsoft_entra_pitch:
     "UpSignon peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
-  group_setting_microsoft_entra_tuto:
+  bank_setting_microsoft_entra_tuto:
     'Pour utiliser cette fonctionnalité, suivez les étapes ci-dessous :',
-  group_setting_microsoft_entra_tuto_step1:
+  bank_setting_microsoft_entra_tuto_step1:
     "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignon' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
-  group_setting_microsoft_entra_tuto_step2:
+  bank_setting_microsoft_entra_tuto_step2:
     "Dans 'Inscriptions d'applications' > UpSignon > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
-  group_setting_microsoft_entra_tuto_step3: 'Remplissez le formulaire ci-dessous.',
-  group_setting_microsoft_entra_tuto_step4:
+  bank_setting_microsoft_entra_tuto_step3: 'Remplissez le formulaire ci-dessous.',
+  bank_setting_microsoft_entra_tuto_step4:
     "Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
-  group_setting_microsoft_entra_api_list: 'Liste des API utilisées',
-  group_setting_microsoft_entra_tenant_id_label:
+  bank_setting_microsoft_entra_api_list: 'Liste des API utilisées',
+  bank_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
-  group_setting_microsoft_entra_client_id_label:
+  bank_setting_microsoft_entra_client_id_label:
     "ID d\'application (Application d'entreprise > UpSignon > Vue d'ensemble)",
-  group_setting_microsoft_entra_app_resource_id_label:
+  bank_setting_microsoft_entra_app_resource_id_label:
     "ID d\'objet (Application d'entreprise > UpSignon > Vue d'ensemble)",
-  group_setting_microsoft_entra_client_secret_label:
+  bank_setting_microsoft_entra_client_secret_label:
     "Secret client (Inscriptions d'application > UpSignon > Certificats & secrets)",
-  group_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
-  group_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
-  group_setting_microsoft_entra_testing: 'Tester',
-  group_setting_microsoft_entra_test_start: 'Lancer le test',
-  group_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
-  group_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
-  group_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignon:',
-  group_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
-  group_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
+  bank_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
+  bank_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
+  bank_setting_microsoft_entra_testing: 'Tester',
+  bank_setting_microsoft_entra_test_start: 'Lancer le test',
+  bank_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
+  bank_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
+  bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignon:',
+  bank_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
+  bank_setting_microsoft_entra_test_user_groupes: 'Groupes associés à cet utilisateur :',
   licences_bank_name: 'Banque',
   licences_nb: 'Nombre de licences',
   licences_valid_from: 'Valides à partir de',

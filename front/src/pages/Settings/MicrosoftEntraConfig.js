@@ -84,7 +84,7 @@ export class MicrosoftEntraConfig extends React.Component {
       this.setState({ testResult: testRes });
     } catch (e) {
       console.error(e);
-      alert(i18n.t('group_setting_microsoft_entra_test_error', { e }));
+      alert(i18n.t('bank_setting_microsoft_entra_test_error', { e }));
     } finally {
       this.props.setIsLoading(false);
     }
@@ -93,8 +93,8 @@ export class MicrosoftEntraConfig extends React.Component {
   render() {
     return (
       <div style={{ marginTop: 20 }}>
-        <h2>{i18n.t('group_setting_microsoft_entra_title')}</h2>
-        <p>{i18n.t('group_setting_microsoft_entra_pitch')}</p>
+        <h2>{i18n.t('bank_setting_microsoft_entra_title')}</h2>
+        <p>{i18n.t('bank_setting_microsoft_entra_pitch')}</p>
         <div style={{ marginBottom: 15 }}>
           <div
             style={{
@@ -104,11 +104,11 @@ export class MicrosoftEntraConfig extends React.Component {
               display: 'inline-block',
             }}
           >
-            {i18n.t('group_setting_microsoft_entra_tuto')}
+            {i18n.t('bank_setting_microsoft_entra_tuto')}
             <ol>
-              <li>{i18n.t('group_setting_microsoft_entra_tuto_step1')}</li>
+              <li>{i18n.t('bank_setting_microsoft_entra_tuto_step1')}</li>
               <li>
-                {i18n.t('group_setting_microsoft_entra_tuto_step2')}
+                {i18n.t('bank_setting_microsoft_entra_tuto_step2')}
                 <ul>
                   <li>Microsoft Graph &gt; Autorisations d'application &gt; User.Read.All</li>
                   <li>
@@ -116,11 +116,11 @@ export class MicrosoftEntraConfig extends React.Component {
                   </li>
                 </ul>
               </li>
-              <li>{i18n.t('group_setting_microsoft_entra_tuto_step3')}</li>
-              <li>{i18n.t('group_setting_microsoft_entra_tuto_step4')}</li>
+              <li>{i18n.t('bank_setting_microsoft_entra_tuto_step3')}</li>
+              <li>{i18n.t('bank_setting_microsoft_entra_tuto_step4')}</li>
             </ol>
             <details>
-              <summary>{i18n.t('group_setting_microsoft_entra_api_list')}</summary>
+              <summary>{i18n.t('bank_setting_microsoft_entra_api_list')}</summary>
               <ul>
                 {this.state.msEntraAPIs.map((api) => (
                   <li key={api.path}>
@@ -132,9 +132,7 @@ export class MicrosoftEntraConfig extends React.Component {
           </div>
         </div>
         <form onSubmit={isReadOnlySuperadmin ? null : this.submitNewEntraConfig}>
-          <label htmlFor="tenantId">
-            {i18n.t('group_setting_microsoft_entra_tenant_id_label')}
-          </label>
+          <label htmlFor="tenantId">{i18n.t('bank_setting_microsoft_entra_tenant_id_label')}</label>
           <br />
           <input
             id="tenantId"
@@ -151,9 +149,7 @@ export class MicrosoftEntraConfig extends React.Component {
           />
 
           <br />
-          <label htmlFor="clientId">
-            {i18n.t('group_setting_microsoft_entra_client_id_label')}
-          </label>
+          <label htmlFor="clientId">{i18n.t('bank_setting_microsoft_entra_client_id_label')}</label>
           <br />
           <input
             id="clientId"
@@ -171,7 +167,7 @@ export class MicrosoftEntraConfig extends React.Component {
 
           <br />
           <label htmlFor="appResourceId">
-            {i18n.t('group_setting_microsoft_entra_app_resource_id_label')}
+            {i18n.t('bank_setting_microsoft_entra_app_resource_id_label')}
           </label>
           <br />
           <input
@@ -190,7 +186,7 @@ export class MicrosoftEntraConfig extends React.Component {
 
           <br />
           <label htmlFor="clientSecret">
-            {i18n.t('group_setting_microsoft_entra_client_secret_label')}
+            {i18n.t('bank_setting_microsoft_entra_client_secret_label')}
           </label>
           <br />
           <input
@@ -211,7 +207,7 @@ export class MicrosoftEntraConfig extends React.Component {
           <input
             style={{ marginTop: 15 }}
             type="submit"
-            value={i18n.t('group_setting_microsoft_entra_apply_config')}
+            value={i18n.t('bank_setting_microsoft_entra_apply_config')}
             disabled={isReadOnlySuperadmin}
           />
           <br />
@@ -219,11 +215,11 @@ export class MicrosoftEntraConfig extends React.Component {
             style={{ marginTop: 15 }}
             type="button"
             onClick={this.reloadMSEntraInstance}
-            value={i18n.t('group_setting_microsoft_entra_permissions_reloaded')}
+            value={i18n.t('bank_setting_microsoft_entra_permissions_reloaded')}
             disabled={isReadOnlySuperadmin}
           />
         </form>
-        <div style={{ marginTop: 20 }}>{i18n.t('group_setting_microsoft_entra_testing')}</div>
+        <div style={{ marginTop: 20 }}>{i18n.t('bank_setting_microsoft_entra_testing')}</div>
         <form onSubmit={this.testConfigWithEmail}>
           <input
             type="text"
@@ -235,7 +231,7 @@ export class MicrosoftEntraConfig extends React.Component {
             required
             style={{ minWidth: 350, marginRight: 15 }}
           />
-          <input type="submit" value={i18n.t('group_setting_microsoft_entra_test_start')} />
+          <input type="submit" value={i18n.t('bank_setting_microsoft_entra_test_start')} />
         </form>
         {this.state.testResult != null && (
           <div>
@@ -248,7 +244,7 @@ export class MicrosoftEntraConfig extends React.Component {
               }}
             >
               <span style={{ marginRight: 5 }}>
-                {i18n.t('group_setting_microsoft_entra_test_user_id')}
+                {i18n.t('bank_setting_microsoft_entra_test_user_id')}
               </span>
               <span>
                 {this.state.testResult.msUserId.error || this.state.testResult.msUserId.value}
@@ -263,7 +259,7 @@ export class MicrosoftEntraConfig extends React.Component {
               }}
             >
               <span style={{ marginRight: 5 }}>
-                {i18n.t('group_setting_microsoft_entra_test_all_users')}
+                {i18n.t('bank_setting_microsoft_entra_test_all_users')}
               </span>
               <span>
                 {this.state.testResult.allUpSignOnUsers.error ||
@@ -279,7 +275,7 @@ export class MicrosoftEntraConfig extends React.Component {
               }}
             >
               <span style={{ marginRight: 5 }}>
-                {i18n.t('group_setting_microsoft_entra_test_user_authorized')}
+                {i18n.t('bank_setting_microsoft_entra_test_user_authorized')}
               </span>
               <span>
                 {this.state.testResult.isAuthorized.error ||
@@ -295,7 +291,7 @@ export class MicrosoftEntraConfig extends React.Component {
               }}
             >
               <span style={{ marginRight: 5 }}>
-                {i18n.t('group_setting_microsoft_entra_test_user_groupes')}
+                {i18n.t('bank_setting_microsoft_entra_test_user_groupes')}
               </span>
               <span>
                 {this.state.testResult.userGroups.error ||

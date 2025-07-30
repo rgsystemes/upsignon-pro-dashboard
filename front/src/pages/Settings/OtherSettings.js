@@ -48,11 +48,11 @@ class OtherSettings extends React.Component {
   render() {
     return (
       <div style={{ marginTop: 20 }}>
-        <h2>{i18n.t('settings_group_settings')}</h2>
+        <h2>{i18n.t('settings_bank_settings')}</h2>
         <table className={isReadOnlySuperadmin ? 'disabledUI' : null}>
           <tbody>
             <tr>
-              <td>{i18n.t('sasettings_group_name')}</td>
+              <td>{i18n.t('sasettings_bank_name')}</td>
               <EditableCell
                 value={this.state.name}
                 onChange={(newVal) => {
