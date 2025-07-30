@@ -3,7 +3,7 @@ import { EditableCell } from '../../helpers/EditableCell';
 import { Toggler } from '../../helpers/Toggler';
 import { baseFrontUrl, isSaasServer } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Banks.css';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
@@ -17,7 +17,7 @@ Date.prototype.addWeeks = function (w) {
 // Props : setIsLoading, banks, fetchBanks
 class Banks extends React.Component {
   state = {
-    groupToDeleteId: null,
+    bankToDeleteId: null,
     showAllSettings: false,
     showBankSettings: {},
     filterType: 0, // 0: all, 1: testing only
@@ -31,7 +31,7 @@ class Banks extends React.Component {
   salesEmailRef = null;
   resellerNameInputRef = null;
 
-  insertGroup = async () => {
+  insertBank = async () => {
     try {
       this.props.setIsLoading(true);
       const newBankName = this.newBankNameInputRef.value;
@@ -54,7 +54,7 @@ class Banks extends React.Component {
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
       }
-      await groupUrlFetch('/api/insert-group', 'POST', {
+      await bankUrlFetch('/api/insert-bank', 'POST', {
         name: newBankName,
         adminEmail: newAdminEmail,
         isTrial,
@@ -72,10 +72,10 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateGroupName = async (bankId, newName) => {
+  updateBankName = async (bankId, newName) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-group', 'POST', {
+      await bankUrlFetch('/api/update-bank', 'POST', {
         name: newName,
         id: bankId,
       });
@@ -89,7 +89,7 @@ class Banks extends React.Component {
   updateNbLicences = async (bankId, newNb) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-group', 'POST', {
+      await bankUrlFetch('/api/update-bank', 'POST', {
         nb_licences_sold: parseInt(newNb),
         id: bankId,
       });
@@ -103,7 +103,7 @@ class Banks extends React.Component {
   toggleBankSetting = async (bankId, newSettings) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-group', 'POST', {
+      await bankUrlFetch('/api/update-bank', 'POST', {
         id: bankId,
         settings: newSettings,
       });
@@ -114,10 +114,10 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  deleteGroup = async (id) => {
+  deleteBank = async (id) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch(`/api/delete-group/${id}`, 'POST', null);
+      await bankUrlFetch(`/api/delete-bank/${id}`, 'POST', null);
       await this.props.fetchBanks();
     } catch (e) {
       console.error(e);
@@ -160,8 +160,8 @@ class Banks extends React.Component {
   };
 
   render() {
-    const groupToDelete = this.props.banks.find((g) => g.id === this.state.groupToDeleteId);
-    if (groupToDelete) {
+    const bankToDelete = this.props.banks.find((g) => g.id === this.state.bankToDeleteId);
+    if (bankToDelete) {
       return (
         <div>
           <h2>{i18n.t('sasettings_banks')}</h2>
@@ -171,24 +171,24 @@ class Banks extends React.Component {
             <h3>{i18n.t('sasettings_bank_delete_warning')}</h3>
             <div style={{ marginBottom: 10 }}>
               {i18n.t('sasetting_confirm_bank_delete', {
-                name: groupToDelete.name,
+                name: bankToDelete.name,
               })}
             </div>
-            <input ref={(r) => (this.deleteGroupInputRef = r)} />
+            <input ref={(r) => (this.deleteBankInputRef = r)} />
             <div className="button-group">
               <div
                 className="danger-button"
                 onClick={() => {
-                  if (this.deleteGroupInputRef.value === groupToDelete.name) {
-                    this.deleteGroup(groupToDelete.id);
+                  if (this.deleteBankInputRef.value === bankToDelete.name) {
+                    this.deleteBank(bankToDelete.id);
                   } else {
-                    this.deleteGroupInputRef.style.borderColor = 'red';
+                    this.deleteBankInputRef.style.borderColor = 'red';
                   }
                 }}
               >
                 {i18n.t('validate')}
               </div>
-              <div className="button" onClick={() => this.setState({ groupToDeleteId: null })}>
+              <div className="button" onClick={() => this.setState({ bankToDeleteId: null })}>
                 {i18n.t('cancel')}
               </div>
             </div>
@@ -198,14 +198,14 @@ class Banks extends React.Component {
     }
 
     const filteredBanks = this.props.banks
-      .filter((group) => {
+      .filter((bank) => {
         // Filter by type (all or testing only)
-        const typeFilter = this.state.filterType === 0 || group.settings?.IS_TESTING;
+        const typeFilter = this.state.filterType === 0 || bank.settings?.IS_TESTING;
 
         // Filter by sales rep
         const salesRepFilter =
           !this.state.salesRepFilter ||
-          (group.settings?.SALES_REP || '')
+          (bank.settings?.SALES_REP || '')
             .toLowerCase()
             .includes(this.state.salesRepFilter.toLowerCase());
 
@@ -222,12 +222,12 @@ class Banks extends React.Component {
             break;
 
           case 2: // Sort by expiration date/days remaining
-            const getExpirationValue = (group) => {
-              if (!group.settings?.IS_TESTING || !group.settings?.TESTING_EXPIRATION_DATE) {
+            const getExpirationValue = (bank) => {
+              if (!bank.settings?.IS_TESTING || !bank.settings?.TESTING_EXPIRATION_DATE) {
                 return Infinity; // Non-testing banks go to the end
               }
               const today = new Date();
-              const expirationDate = new Date(group.settings.TESTING_EXPIRATION_DATE);
+              const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
               return expirationDate - today; // Sort by time remaining (expired first)
             };
             comparison = getExpirationValue(a) - getExpirationValue(b);
@@ -306,7 +306,7 @@ class Banks extends React.Component {
               />
             </div>
           )}
-          <div className="action" onClick={this.insertGroup}>
+          <div className="action" onClick={this.insertBank}>
             {i18n.t('add')}
           </div>
         </div>
@@ -400,28 +400,28 @@ class Banks extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {filteredBanks.map((group) => {
+              {filteredBanks.map((bank) => {
                 const showSettings =
-                  this.state.showAllSettings || this.state.showBankSettings[group.id];
+                  this.state.showAllSettings || this.state.showBankSettings[bank.id];
                 return (
-                  <tr key={group.id}>
+                  <tr key={bank.id}>
                     <td>
                       <span
                         className="action"
                         onClick={() => {
-                          window.location.href = baseFrontUrl + '/' + group.id + '/';
+                          window.location.href = baseFrontUrl + '/' + bank.id + '/';
                         }}
                       >
                         {i18n.t('sasettings_bank_open')}
                       </span>
                     </td>
-                    <td>{group.id}</td>
+                    <td>{bank.id}</td>
                     {isSaasServer && (
                       <EditableCell
-                        value={group.settings?.RESELLER || ''}
+                        value={bank.settings?.RESELLER || ''}
                         onChange={(newVal) => {
-                          this.toggleBankSetting(group.id, {
-                            ...group.settings,
+                          this.toggleBankSetting(bank.id, {
+                            ...bank.settings,
                             RESELLER: newVal,
                           });
                         }}
@@ -429,57 +429,55 @@ class Banks extends React.Component {
                       />
                     )}
                     <EditableCell
-                      value={group.name}
+                      value={bank.name}
                       onChange={(newVal) => {
                         if (!newVal) return;
-                        this.updateGroupName(group.id, newVal);
+                        this.updateBankName(bank.id, newVal);
                       }}
                     />
                     <td
-                      className={
-                        group.nb_users > group.nb_licences_sold ? 'user-count-warning' : ''
-                      }
+                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
                     >
-                      {group.nb_users}
+                      {bank.nb_users}
                     </td>
                     <EditableCell
                       type="number"
-                      value={group.nb_licences_sold}
+                      value={bank.nb_licences_sold}
                       onChange={(newVal) => {
                         if (newVal == null || newVal < 0) return;
-                        this.updateNbLicences(group.id, newVal);
+                        this.updateNbLicences(bank.id, newVal);
                       }}
                     />
-                    <td>{new Date(group.created_at).toLocaleDateString()}</td>
+                    <td>{new Date(bank.created_at).toLocaleDateString()}</td>
                     <td>
                       <div className="testing-checkbox-container">
                         <input
                           type="checkbox"
-                          checked={group.settings?.IS_TESTING}
+                          checked={bank.settings?.IS_TESTING}
                           onChange={() => {
-                            this.toggleBankSetting(group.id, {
-                              ...group.settings,
-                              IS_TESTING: !group.settings?.IS_TESTING,
+                            this.toggleBankSetting(bank.id, {
+                              ...bank.settings,
+                              IS_TESTING: !bank.settings?.IS_TESTING,
                             });
                           }}
                           disabled={isReadOnlySuperadmin}
                         ></input>
-                        &nbsp;{group.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
+                        &nbsp;{bank.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
                       </div>
                     </td>
-                    {group.settings?.IS_TESTING ? (
+                    {bank.settings?.IS_TESTING ? (
                       <EditableCell
                         type="date"
-                        value={group.settings?.TESTING_EXPIRATION_DATE}
+                        value={bank.settings?.TESTING_EXPIRATION_DATE}
                         className={
-                          !group.settings?.TESTING_EXPIRATION_DATE ||
-                          new Date(group.settings?.TESTING_EXPIRATION_DATE) < new Date()
+                          !bank.settings?.TESTING_EXPIRATION_DATE ||
+                          new Date(bank.settings?.TESTING_EXPIRATION_DATE) < new Date()
                             ? 'expired-date'
                             : ''
                         }
                         onChange={(newVal) => {
-                          this.toggleBankSetting(group.id, {
-                            ...group.settings,
+                          this.toggleBankSetting(bank.id, {
+                            ...bank.settings,
                             TESTING_EXPIRATION_DATE: newVal,
                           });
                         }}
@@ -489,10 +487,10 @@ class Banks extends React.Component {
                       <td>N/A</td>
                     )}
                     <td>
-                      {group.settings?.IS_TESTING && group.settings?.TESTING_EXPIRATION_DATE
+                      {bank.settings?.IS_TESTING && bank.settings?.TESTING_EXPIRATION_DATE
                         ? (() => {
                             const today = new Date();
-                            const expirationDate = new Date(group.settings.TESTING_EXPIRATION_DATE);
+                            const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
                             const diffTime = expirationDate - today;
                             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
@@ -530,7 +528,7 @@ class Banks extends React.Component {
                     </td>
                     {isSaasServer && (
                       <EditableCell
-                        value={group.settings?.SALES_REP || ''}
+                        value={bank.settings?.SALES_REP || ''}
                         onChange={(newVal) => {
                           if (
                             newVal &&
@@ -543,8 +541,8 @@ class Banks extends React.Component {
                             window.alert(i18n.t('sasettings_bank_sales_rep_must_be_email'));
                             return;
                           }
-                          this.toggleBankSetting(group.id, {
-                            ...group.settings,
+                          this.toggleBankSetting(bank.id, {
+                            ...bank.settings,
                             SALES_REP: newVal,
                           });
                         }}
@@ -554,7 +552,7 @@ class Banks extends React.Component {
                       <td className={showSettings ? 'settings-column-expanded' : ''}>
                         <div
                           className="action"
-                          onClick={() => this.toggleShowBankSettings(group.id)}
+                          onClick={() => this.toggleShowBankSettings(bank.id)}
                         >
                           {i18n.t('settings_bank_settings_toggle_bank_settings')}
                         </div>
@@ -563,7 +561,7 @@ class Banks extends React.Component {
                             {Object.keys(settingsConfig).map((k) => (
                               <InlineSetting
                                 key={k}
-                                group={group}
+                                bank={bank}
                                 settingNameInDB={k}
                                 toggleBankSetting={this.toggleBankSetting}
                               />
@@ -571,7 +569,7 @@ class Banks extends React.Component {
                             {Object.keys(autolockDelaySettings).map((k) => (
                               <AutolockDelaySetting
                                 key={k}
-                                group={group}
+                                bank={bank}
                                 settingNameInDB={k}
                                 toggleBankSetting={this.toggleBankSetting}
                               />
@@ -584,7 +582,7 @@ class Banks extends React.Component {
                       <td>
                         <div
                           className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
-                          onClick={() => this.setState({ groupToDeleteId: group.id })}
+                          onClick={() => this.setState({ bankToDeleteId: bank.id })}
                         >
                           {i18n.t('delete')}
                         </div>
@@ -617,12 +615,12 @@ class Banks extends React.Component {
 }
 
 const InlineSetting = (props) => {
-  const { group, settingNameInDB, toggleBankSetting } = props;
+  const { bank, settingNameInDB, toggleBankSetting } = props;
   const settingConf = settingsConfig[settingNameInDB];
   const resValue =
-    group.settings?.[settingNameInDB] == null
+    bank.settings?.[settingNameInDB] == null
       ? settingConf.recommendedValue
-      : group.settings?.[settingNameInDB];
+      : bank.settings?.[settingNameInDB];
   const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
     <div className="inline-setting">
@@ -640,8 +638,8 @@ const InlineSetting = (props) => {
         <div
           className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
           onClick={() => {
-            toggleBankSetting(group.id, {
-              ...group.settings,
+            toggleBankSetting(bank.id, {
+              ...bank.settings,
               [settingNameInDB]: !resValue,
             });
           }}
@@ -654,23 +652,23 @@ const InlineSetting = (props) => {
 };
 
 const AutolockDelaySetting = (props) => {
-  const { group, settingNameInDB, toggleBankSetting } = props;
+  const { bank, settingNameInDB, toggleBankSetting } = props;
   const settingConf = autolockDelaySettings[settingNameInDB];
-  const resValue = group.settings?.[settingNameInDB] ?? -1;
+  const resValue = bank.settings?.[settingNameInDB] ?? -1;
 
   let maxDuration = null;
   if (settingConf.maxSettingKey != null) {
     maxDuration =
-      group.settings?.[settingConf.maxSettingKey] == null
+      bank.settings?.[settingConf.maxSettingKey] == null
         ? autolockDelaySettings[settingConf.maxSettingKey].recommendedOption
-        : group.settings?.[settingConf.maxSettingKey];
+        : bank.settings?.[settingConf.maxSettingKey];
   }
   let defaultSettingDuration = null;
   if (settingConf.defaultSettingKey != null) {
     defaultSettingDuration =
-      group.settings?.[settingConf.defaultSettingKey] == null
+      bank.settings?.[settingConf.defaultSettingKey] == null
         ? autolockDelaySettings[settingConf.defaultSettingKey].recommendedOption
-        : group.settings?.[settingConf.defaultSettingKey];
+        : bank.settings?.[settingConf.defaultSettingKey];
   }
 
   return (
@@ -680,10 +678,10 @@ const AutolockDelaySetting = (props) => {
         <select
           onChange={(ev) => {
             toggleBankSetting(
-              group.id,
+              bank.id,
               settingConf.defaultSettingKey != null
                 ? {
-                    ...group.settings,
+                    ...bank.settings,
                     [settingNameInDB]: Number.parseInt(ev.target.value),
                     [settingConf.defaultSettingKey]: Math.min(
                       Number.parseInt(ev.target.value),
@@ -691,7 +689,7 @@ const AutolockDelaySetting = (props) => {
                     ),
                   }
                 : {
-                    ...group.settings,
+                    ...bank.settings,
                     [settingNameInDB]: Number.parseInt(ev.target.value),
                   },
             );

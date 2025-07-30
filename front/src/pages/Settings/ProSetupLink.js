@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { bankId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import qrcodeGenerator from 'qrcode-generator';
@@ -15,7 +15,7 @@ export class ProSetupLink extends React.Component {
   };
   fetchSetupUrlComponents = async () => {
     try {
-      const { url } = await groupUrlFetch('/api/bank_url', 'GET');
+      const { url } = await bankUrlFetch('/api/bank_url', 'GET');
       if (url) {
         this.proSetupLink = url;
 

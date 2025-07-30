@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
@@ -35,7 +35,7 @@ class SharedVaults extends React.Component {
       const queryParams = this.getCurrentQueryParameters();
       const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
-      const { sharedVaults, sharedVaultsCount } = await groupUrlFetch(
+      const { sharedVaults, sharedVaultsCount } = await bankUrlFetch(
         `/api/shared-vaults?pageIndex=${pageIndex}&limit=${limit}`,
         'GET',
         null,
@@ -63,7 +63,7 @@ class SharedVaults extends React.Component {
         }),
       );
       if (!confirmation) return;
-      await groupUrlFetch(`/api/delete-shared-vault-user`, 'POST', {
+      await bankUrlFetch(`/api/delete-shared-vault-user`, 'POST', {
         sharedVaultId,
         userId,
       });
@@ -78,7 +78,7 @@ class SharedVaults extends React.Component {
   toggleManagerRightsForUser = async (sharedVaultId, selectedAccessLevel, userId) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch(`/api/update-shared-vault-manager`, 'POST', {
+      await bankUrlFetch(`/api/update-shared-vault-manager`, 'POST', {
         sharedVaultId,
         accessLevel: selectedAccessLevel,
         userId,
@@ -101,7 +101,7 @@ class SharedVaults extends React.Component {
       this.props.setIsLoading(true);
       const limit = 50;
       const pageIndex = 1;
-      const { sharedVaults, sharedVaultsCount } = await groupUrlFetch(
+      const { sharedVaults, sharedVaultsCount } = await bankUrlFetch(
         `/api/shared-vaults?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}`,
         'GET',
         null,

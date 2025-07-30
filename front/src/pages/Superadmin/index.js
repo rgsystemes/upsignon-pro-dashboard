@@ -5,7 +5,7 @@ import '../../helpers/tabs.css';
 import './superadmin.css';
 import { Banks } from './Banks';
 import { ProServerUrl } from './ProServerUrl';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { EmailConfig } from './EmailConfig';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -18,7 +18,7 @@ class Superadmin extends React.Component {
   };
   fetchBanks = async () => {
     try {
-      const banks = await groupUrlFetch('/api/banks', 'GET', null);
+      const banks = await bankUrlFetch('/api/banks', 'GET', null);
       this.setState((prev) => ({ banks, adminsBuildCounter: prev.adminsBuildCounter + 1 }));
       this.props.updateMenuBanks(banks);
     } catch (e) {

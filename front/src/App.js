@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { baseUrlFetch, groupUrlFetch } from './helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from './helpers/urlFetch';
 import { Loader } from './helpers/loader';
 import './helpers/tableStyle.css';
 import { Menu } from './nav/Menu';
@@ -35,13 +35,13 @@ class App extends React.Component {
     try {
       const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
       // eslint-disable-next-line eqeqeq
-      const isGroupInList = banksRes.banks.some((g) => g.id == bankId);
+      const isBankInList = banksRes.banks.some((g) => g.id == bankId);
       if (banksRes.isSuperadmin) {
-        if (!bankId || (bankId !== 'superadmin' && !isGroupInList)) {
+        if (!bankId || (bankId !== 'superadmin' && !isBankInList)) {
           window.location.href = baseFrontUrl + '/superadmin/';
         }
       } else {
-        if (!bankId || !isGroupInList) {
+        if (!bankId || !isBankInList) {
           window.location.href = baseFrontUrl + '/' + banksRes.banks[0].id + '/';
         }
       }
@@ -55,13 +55,13 @@ class App extends React.Component {
       console.error(e);
     }
     if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
-      groupUrlFetch('/api/count-shared-vaults', 'GET', null)
+      bankUrlFetch('/api/count-shared-vaults', 'GET', null)
         .then((res) => this.setState({ nb_shared_vaults: res }))
         .catch(() => {});
-      groupUrlFetch('/api/count-shared-devices', 'GET', null)
+      bankUrlFetch('/api/count-shared-devices', 'GET', null)
         .then((res) => this.setState({ nb_shared_devices: res }))
         .catch(() => {});
-      groupUrlFetch('/api/count-users', 'GET', null)
+      bankUrlFetch('/api/count-users', 'GET', null)
         .then((res) =>
           this.setState({
             nb_users: res.allUsersCount,
@@ -69,7 +69,7 @@ class App extends React.Component {
         )
         .catch(() => {});
     }
-    groupUrlFetch('/api/count-password-reset-requests', 'GET', null)
+    bankUrlFetch('/api/count-password-reset-requests', 'GET', null)
       .then((res) => this.setState({ nb_pwd_reset_requests: res }))
       .catch(() => {});
   }

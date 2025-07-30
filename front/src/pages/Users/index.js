@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { frontUrl } from '../../helpers/env';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
 import { UserDevices } from './UserDevices';
@@ -45,7 +45,7 @@ class Users extends React.Component {
       const limit = parseInt(queryParams.limit, 10) || maxRenderedItems;
       const pageIndex = parseInt(queryParams.pageIndex, 10) || 1;
       const sortingType = parseInt(queryParams.sortingType, 10) || 0;
-      const { users, userCount } = await groupUrlFetch(
+      const { users, userCount } = await bankUrlFetch(
         `/api/users?pageIndex=${pageIndex}&limit=${limit}&sortingType=${sortingType}`,
         'GET',
         null,
@@ -63,7 +63,7 @@ class Users extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-user/${userId}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-user/${userId}`, 'POST', null);
         await this.loadUsers();
       } catch (e) {
         console.error(e);
@@ -75,7 +75,7 @@ class Users extends React.Component {
   reactivateUser = async (userId) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch(`/api/reactivate-user/${userId}`, 'POST', null);
+      await bankUrlFetch(`/api/reactivate-user/${userId}`, 'POST', null);
       await this.loadUsers();
     } catch (e) {
       console.error(e);
@@ -87,7 +87,7 @@ class Users extends React.Component {
   loadUserDevices = async (userId) => {
     try {
       this.props.setIsLoading(true);
-      const devices = await groupUrlFetch(`/api/user-devices/${userId}`, 'GET', null);
+      const devices = await bankUrlFetch(`/api/user-devices/${userId}`, 'GET', null);
       this.setState((s) => {
         return {
           ...s,
@@ -142,7 +142,7 @@ class Users extends React.Component {
       this.props.setIsLoading(true);
       const limit = 50;
       const pageIndex = 1;
-      const { users, userCount } = await groupUrlFetch(
+      const { users, userCount } = await bankUrlFetch(
         `/api/users?search=${searchText}&pageIndex=${pageIndex}&limit=${limit}&sortingType=${this.state.sortingType}`,
         'GET',
         null,
@@ -162,7 +162,7 @@ class Users extends React.Component {
       );
       if (confirmation) {
         try {
-          await groupUrlFetch('/api/update-user-email', 'POST', { userId, oldEmail, newEmail });
+          await bankUrlFetch('/api/update-user-email', 'POST', { userId, oldEmail, newEmail });
           this.setState((s) => ({
             ...s,
             users: s.users.map((u) => {
@@ -199,7 +199,7 @@ class Users extends React.Component {
         } else {
           nextValue = null;
         }
-        await groupUrlFetch(`/api/update-user-setting`, 'POST', {
+        await bankUrlFetch(`/api/update-user-setting`, 'POST', {
           userId,
           [settingName]: nextValue,
         });
@@ -230,7 +230,7 @@ class Users extends React.Component {
         if (nextVal == null) {
           delete newUserSettings[settingName];
         }
-        await groupUrlFetch(`/api/update-user-setting`, 'POST', {
+        await bankUrlFetch(`/api/update-user-setting`, 'POST', {
           userId,
           settings_override: newUserSettings,
         });

@@ -9,7 +9,7 @@ export const update_admin_bank = async (req: any, res: any): Promise<void> => {
     }
     if (!req.body.adminId) return res.status(401).end();
 
-    if (req.body.willBelongToGroup) {
+    if (req.body.willBelongToBank) {
       await db.query('INSERT INTO admin_banks(admin_id, bank_id) VALUES ($1,$2)', [
         req.body.adminId,
         req.body.bankId,

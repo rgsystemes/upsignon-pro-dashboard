@@ -44,14 +44,14 @@ superadminApiRouter.get('/test-email', test_email);
 superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
-superadminApiRouter.post('/update-admin-group', update_admin_bank);
+superadminApiRouter.post('/update-admin-bank', update_admin_bank);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
 
 // BANKS
 superadminApiRouter.get('/banks', get_banks);
-superadminApiRouter.post('/insert-group', insert_bank);
-superadminApiRouter.post('/update-group', update_bank);
-superadminApiRouter.post('/delete-group/:id', delete_bank);
+superadminApiRouter.post('/insert-bank', insert_bank);
+superadminApiRouter.post('/update-bank', update_bank);
+superadminApiRouter.post('/delete-bank/:id', delete_bank);
 
 // SETTINGS
 superadminApiRouter.post('/get-setting', get_setting);

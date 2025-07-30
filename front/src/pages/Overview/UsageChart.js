@@ -9,7 +9,7 @@ import {
   Legend,
   Area,
 } from 'recharts';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 class UsageChart extends React.Component {
@@ -18,7 +18,7 @@ class UsageChart extends React.Component {
   };
   fetchStats = async () => {
     try {
-      const stats = await groupUrlFetch('/api/get-usage-stats', 'GET', null);
+      const stats = await bankUrlFetch('/api/get-usage-stats', 'GET', null);
       this.setState({
         stats: stats.map((s) => ({
           ...s,

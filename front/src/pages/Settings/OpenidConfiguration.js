@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './OpenidConfiguration.css';
 import { Loader } from '../../helpers/loader';
@@ -38,7 +38,7 @@ export class OpenidConfiguration extends React.Component {
   fetchBankSSOConfig = async () => {
     try {
       this.props.setIsLoading(true);
-      const { openidConfigs } = await groupUrlFetch('/api/sso_configurations', 'GET', null);
+      const { openidConfigs } = await bankUrlFetch('/api/sso_configurations', 'GET', null);
       if (openidConfigs && openidConfigs[0]) {
         this.setState({
           openidConfig: openidConfigs[0],
@@ -78,7 +78,7 @@ export class OpenidConfiguration extends React.Component {
         }
       }
 
-      await groupUrlFetch('/api/add_sso_configuration', 'POST', {
+      await bankUrlFetch('/api/add_sso_configuration', 'POST', {
         configType,
         configUrl,
         clientId,
@@ -98,7 +98,7 @@ export class OpenidConfiguration extends React.Component {
       }
       this.lock = true;
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/delete_sso_configuration', 'POST', {
+      await bankUrlFetch('/api/delete_sso_configuration', 'POST', {
         configId,
       });
       await this.fetchBankSSOConfig();

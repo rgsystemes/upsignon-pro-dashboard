@@ -3,7 +3,7 @@ import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
 import { frontUrl, baseFrontUrl } from '../helpers/env';
-import { GroupChooser } from './GroupChooser';
+import { BankChooser } from './BankChooser';
 import bySepteoLogo from './bySepteoLogo.svg';
 
 // PROPS pages, banks, isSuperadmin, isSuperadminPage
@@ -12,7 +12,7 @@ function Menu(props) {
   const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
-      <GroupChooser banks={banks} isSuperadminPage={isSuperadminPage} isSuperadmin={isSuperadmin} />
+      <BankChooser banks={banks} isSuperadminPage={isSuperadminPage} isSuperadmin={isSuperadmin} />
       <React.Fragment>
         {pages
           .filter((p) => !isSuperadminPage || !p.disabledForSuperadmin)

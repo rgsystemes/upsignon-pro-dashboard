@@ -1,7 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import './ServerStatus.css';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 
 // PROPS proServerUrl
 export class ServerStatus extends React.Component {

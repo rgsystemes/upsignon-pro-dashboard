@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 
 // Props = setIsLoading
@@ -10,7 +10,7 @@ class SharedDevices extends React.Component {
   getSharedDevices = async () => {
     try {
       this.props.setIsLoading(true);
-      const devices = await groupUrlFetch('/api/shared-devices', 'GET', null);
+      const devices = await bankUrlFetch('/api/shared-devices', 'GET', null);
       const deviceGroups = {};
       devices.forEach((d) => {
         if (!deviceGroups[d.unique_id]) {

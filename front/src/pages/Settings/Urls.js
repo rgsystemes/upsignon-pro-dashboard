@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -14,12 +14,12 @@ class Urls extends React.Component {
   };
   nameInput = null;
   signinUrlInput = null;
-  nbCopiedFromTargetGroup = null;
+  nbCopiedFromTargetBank = null;
   usesBasicAuthCheckbox = false;
 
   fetchUrls = async () => {
     try {
-      const urls = await groupUrlFetch('/api/urls', 'GET', null);
+      const urls = await bankUrlFetch('/api/urls', 'GET', null);
       this.setState({ urls });
     } catch (e) {
       console.error(e);
@@ -28,7 +28,7 @@ class Urls extends React.Component {
   submitUrlEdition = async (id, valObject) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-url', 'POST', { id, ...valObject });
+      await bankUrlFetch('/api/update-url', 'POST', { id, ...valObject });
       await this.fetchUrls();
     } catch (e) {
       console.error(e);
@@ -48,7 +48,7 @@ class Urls extends React.Component {
       } else {
         this.nameInput.style.borderColor = null;
       }
-      await groupUrlFetch('/api/insert-url', 'POST', {
+      await bankUrlFetch('/api/insert-url', 'POST', {
         displayedName,
         signinUrl,
         usesBasicAuth,
@@ -68,7 +68,7 @@ class Urls extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-url/${id}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-url/${id}`, 'POST', null);
         await this.fetchUrls();
       } catch (e) {
         console.error(e);
@@ -77,19 +77,19 @@ class Urls extends React.Component {
       }
     }
   };
-  copyFromGroup = async (event) => {
+  copyFromBank = async (event) => {
     const bankId = event.target.value;
     if (!bankId) {
-      this.nbCopiedFromTargetGroup = null;
+      this.nbCopiedFromTargetBank = null;
       this.forceUpdate();
       return;
     }
     try {
       this.props.setIsLoading(true);
-      const { nbAdded } = await groupUrlFetch('/api/copy_urls_from_bank', 'POST', {
-        fromGroup: bankId,
+      const { nbAdded } = await bankUrlFetch('/api/copy_urls_from_bank', 'POST', {
+        fromBank: bankId,
       });
-      this.nbCopiedFromTargetGroup = nbAdded;
+      this.nbCopiedFromTargetBank = nbAdded;
       await this.fetchUrls();
     } catch (e) {
       console.error(e);
@@ -108,7 +108,7 @@ class Urls extends React.Component {
         {this.props.isSuperAdmin ? (
           <div>
             <div>{i18n.t('settings_urls_copy')}</div>
-            <select onChange={this.copyFromGroup}>
+            <select onChange={this.copyFromBank}>
               <option value="">{i18n.t('settings_urls_choose_bank')}</option>
               {this.props.otherBanks.map((g) => (
                 <option key={g.id} value={g.id} disabled={isReadOnlySuperadmin}>
@@ -116,10 +116,8 @@ class Urls extends React.Component {
                 </option>
               ))}
             </select>
-            {this.nbCopiedFromTargetGroup !== null && (
-              <div>
-                {i18n.t('settings_urls_copied_number', { n: this.nbCopiedFromTargetGroup })}
-              </div>
+            {this.nbCopiedFromTargetBank !== null && (
+              <div>{i18n.t('settings_urls_copied_number', { n: this.nbCopiedFromTargetBank })}</div>
             )}
           </div>
         ) : (

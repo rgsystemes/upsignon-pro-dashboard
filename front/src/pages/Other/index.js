@@ -1,6 +1,6 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { bankServerUrl } from '../../helpers/env';
 
 import './other.css';
@@ -59,7 +59,7 @@ class Other extends React.Component {
     if (this.state.extractedEmails) {
       try {
         this.props.setIsLoading(true);
-        const res = await groupUrlFetch('/api/send-email', 'POST', {
+        const res = await bankUrlFetch('/api/send-email', 'POST', {
           emailList: this.state.extractedEmails,
           mailContent: this.state.mailContent,
           mailSubject: this.state.mailSubject,
@@ -76,7 +76,7 @@ class Other extends React.Component {
       }
       return;
     }
-    const resPrecheck = await groupUrlFetch('/api/send-email-precheck', 'POST', {
+    const resPrecheck = await bankUrlFetch('/api/send-email-precheck', 'POST', {
       extractorDuplicateSelect: this.state.extractorDuplicateSelect,
       extractorWeakSelect: this.state.extractorWeakSelect,
       extractorMediumSelect: this.state.extractorMediumSelect,
@@ -93,7 +93,7 @@ class Other extends React.Component {
     if (window.confirm(i18n.t('mail_writer_confirm_send', { n: resPrecheck.n }))) {
       try {
         this.props.setIsLoading(true);
-        const res = await groupUrlFetch('/api/send-email', 'POST', {
+        const res = await bankUrlFetch('/api/send-email', 'POST', {
           extractorDuplicateSelect: this.state.extractorDuplicateSelect,
           extractorWeakSelect: this.state.extractorWeakSelect,
           extractorMediumSelect: this.state.extractorMediumSelect,
@@ -124,7 +124,7 @@ class Other extends React.Component {
     const requests = [];
     if (this.state.extractorDuplicateSelect) {
       requests.push(
-        groupUrlFetch(
+        bankUrlFetch(
           `/api/extract-emails-for-duplicate-passwords?minDuplicates=${this.state.extractorDuplicateMin}`,
           'GET',
           null,
@@ -133,7 +133,7 @@ class Other extends React.Component {
     }
     if (this.state.extractorWeakSelect) {
       requests.push(
-        groupUrlFetch(
+        bankUrlFetch(
           `/api/extract-emails-for-weak-passwords?minWeak=${this.state.extractorWeakMin}`,
           'GET',
           null,
@@ -142,7 +142,7 @@ class Other extends React.Component {
     }
     if (this.state.extractorMediumSelect) {
       requests.push(
-        groupUrlFetch(
+        bankUrlFetch(
           `/api/extract-emails-for-medium-passwords?minMedium=${this.state.extractorMediumMin}`,
           'GET',
           null,
@@ -151,7 +151,7 @@ class Other extends React.Component {
     }
     if (this.state.extractorLongUnusedSelect) {
       requests.push(
-        groupUrlFetch(
+        bankUrlFetch(
           `/api/extract-emails-for-long-unused?unusedDays=${this.state.extractorUnusedDaysMin}`,
           'GET',
           null,
@@ -159,7 +159,7 @@ class Other extends React.Component {
       );
     }
     if (this.state.extractorSharingDeviceSelect) {
-      requests.push(groupUrlFetch('/api/extract-emails-for-shared-device', 'GET', null));
+      requests.push(bankUrlFetch('/api/extract-emails-for-shared-device', 'GET', null));
     }
     const emails = await Promise.all(requests);
     const uniqueEmails = [];
@@ -188,7 +188,7 @@ class Other extends React.Component {
   extractEmailsMsiInstall = async () => {
     try {
       this.props.setIsLoading(true);
-      const emailList = await groupUrlFetch('/api/extract-emails-msi-install', 'GET', null);
+      const emailList = await bankUrlFetch('/api/extract-emails-msi-install', 'GET', null);
       this.setState({ extractedEmails: emailList.join(' ; ') });
     } catch (e) {
       console.error(e);

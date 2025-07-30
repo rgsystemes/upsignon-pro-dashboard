@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { ServerStatus } from './ServerStatus';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
@@ -50,7 +50,7 @@ export class ProServerUrl extends React.Component {
         oidcClientId: this.state.proServerUrlConfig.oidcClientId?.trim(),
         oidcClientIdForAddons: this.state.proServerUrlConfig.oidcClientIdForAddons?.trim(),
       };
-      await groupUrlFetch('/api/update-setting', 'POST', {
+      await bankUrlFetch('/api/update-setting', 'POST', {
         key: 'PRO_SERVER_URL_CONFIG',
         value: newStateUrl,
       });

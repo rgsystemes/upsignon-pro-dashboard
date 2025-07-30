@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -11,7 +11,7 @@ export class ServerRedirection extends React.Component {
   };
   fetchRedirectionUrl = async () => {
     try {
-      const { redirectionUrl } = await groupUrlFetch('/api/redirection_url', 'POST', null);
+      const { redirectionUrl } = await bankUrlFetch('/api/redirection_url', 'POST', null);
       if (redirectionUrl) {
         this.setState({
           redirectionUrl: redirectionUrl,
@@ -30,7 +30,7 @@ export class ServerRedirection extends React.Component {
       if (!window.confirm(i18n.t('settings_server_redirection_confirm'))) return;
       let redirectionUrl = this.state.redirectionUrl?.trim() || '';
       redirectionUrl = redirectionUrl.replace(/\/$/, '');
-      await groupUrlFetch('/api/set_redirection_url', 'POST', {
+      await bankUrlFetch('/api/set_redirection_url', 'POST', {
         redirectionUrl: redirectionUrl,
       });
       this.setState({ isEditing: false, redirectionUrl: redirectionUrl });

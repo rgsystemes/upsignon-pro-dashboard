@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
@@ -16,7 +16,7 @@ class OtherSettings extends React.Component {
   fetchBankSettings = async () => {
     try {
       this.props.setIsLoading(true);
-      const res = await groupUrlFetch('/api/group-settings', 'GET', null);
+      const res = await bankUrlFetch('/api/bank-settings', 'GET', null);
       this.setState(res);
     } catch (e) {
       console.error(e);
@@ -27,7 +27,7 @@ class OtherSettings extends React.Component {
   updateBankSetting = async (newSettings, newName) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/group-settings-update', 'POST', {
+      await bankUrlFetch('/api/bank-settings-update', 'POST', {
         settings: {
           ...this.state.settings,
           ...newSettings,

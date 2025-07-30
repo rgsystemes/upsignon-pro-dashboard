@@ -1,25 +1,25 @@
 import React from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
 // Props : setIsLoading
-class GroupAdmins extends React.Component {
+class BankAdmins extends React.Component {
   state = {
     admins: [],
   };
   newInputRef = null;
 
-  fetchGroupAdmins = async () => {
+  fetchBankAdmins = async () => {
     try {
-      const adminEmails = await groupUrlFetch('/api/group-admins', 'GET', null);
+      const adminEmails = await bankUrlFetch('/api/bank-admins', 'GET', null);
       this.setState({ admins: adminEmails });
     } catch (e) {
       console.error(e);
     }
   };
 
-  insertGroupAdmin = async () => {
+  insertBankAdmin = async () => {
     try {
       this.props.setIsLoading(true);
       const newEmail = this.newInputRef.value;
@@ -29,10 +29,10 @@ class GroupAdmins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await groupUrlFetch('/api/insert-admin', 'POST', {
+      await bankUrlFetch('/api/insert-admin', 'POST', {
         newEmail,
       });
-      await this.fetchGroupAdmins();
+      await this.fetchBankAdmins();
       this.newInputRef.value = null;
     } catch (e) {
       console.error(e);
@@ -45,8 +45,8 @@ class GroupAdmins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
-        await this.fetchGroupAdmins();
+        await bankUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
+        await this.fetchBankAdmins();
       } catch (e) {
         console.error(e);
       } finally {
@@ -72,7 +72,7 @@ class GroupAdmins extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchGroupAdmins();
+    this.fetchBankAdmins();
   }
   render() {
     return (
@@ -97,7 +97,7 @@ class GroupAdmins extends React.Component {
           <div
             className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
             style={{ marginLeft: 10 }}
-            onClick={this.insertGroupAdmin}
+            onClick={this.insertBankAdmin}
           >
             {i18n.t('settings_bank_admins_invite')}
           </div>
@@ -139,4 +139,4 @@ class GroupAdmins extends React.Component {
   }
 }
 
-export { GroupAdmins };
+export { BankAdmins };

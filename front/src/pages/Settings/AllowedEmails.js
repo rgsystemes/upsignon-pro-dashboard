@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -15,7 +15,7 @@ class AllowedEmails extends React.Component {
 
   fetchAllowedEmails = async () => {
     try {
-      const emails = await groupUrlFetch('/api/allowed-emails', 'GET', null);
+      const emails = await bankUrlFetch('/api/allowed-emails', 'GET', null);
       this.setState({
         allowedEmails: emails,
       });
@@ -27,7 +27,7 @@ class AllowedEmails extends React.Component {
     if (this.state.updatedPattern !== null) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch('/api/update-allowed-email', 'POST', {
+        await bankUrlFetch('/api/update-allowed-email', 'POST', {
           allowedEmailId: this.state.editingEmailId,
           updatedPattern: this.state.updatedPattern.trim().toLowerCase(),
         });
@@ -50,7 +50,7 @@ class AllowedEmails extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await groupUrlFetch('/api/insert-allowed-email', 'POST', { newPattern });
+      await bankUrlFetch('/api/insert-allowed-email', 'POST', { newPattern });
       await this.fetchAllowedEmails();
       this.newInputRef.value = null;
     } catch (e) {
@@ -64,7 +64,7 @@ class AllowedEmails extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-allowed-email/${id}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-allowed-email/${id}`, 'POST', null);
         await this.fetchAllowedEmails();
       } catch (e) {
         console.error(e);
