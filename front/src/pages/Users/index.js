@@ -346,7 +346,7 @@ class Users extends React.Component {
               <th>
                 <div>{i18n.t('user_settings_override')}</div>
                 <div className="action" style={{ color: 'white' }} onClick={this.toggleAllSettings}>
-                  {i18n.t('settings_group_settings_toggle_all_settings')}
+                  {i18n.t('settings_bank_settings_toggle_all_settings')}
                 </div>
               </th>
               <th>{i18n.t('actions')}</th>
@@ -437,7 +437,7 @@ class Users extends React.Component {
                           className="action"
                           onClick={() => this.toggleShowUserSettings(u.user_id)}
                         >
-                          {i18n.t('settings_group_settings_toggle_group_settings')}
+                          {i18n.t('settings_bank_settings_toggle_bank_settings')}
                         </div>
                         <div>
                           {Object.keys(settingsConfig)

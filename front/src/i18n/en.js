@@ -162,9 +162,9 @@ const translations = {
   settings_group_admins_invite: 'Add',
   settings_group_admin_delete_warning:
     'Are you sure you want to remove the access of this administrator to this bank of vaults?',
-  settings_group_settings: 'Options',
-  settings_group_settings_toggle_all_settings: 'Show/hide all settings',
-  settings_group_settings_toggle_group_settings: 'SHow/hide',
+  settings_bank_settings: 'Options',
+  settings_bank_settings_toggle_all_settings: 'Show/hide all settings',
+  settings_bank_settings_toggle_bank_settings: 'SHow/hide',
   shared_devices_explanation:
     'This is the list of devices where at least two users have authorized their PRO vault.',
   shared_devices_uid: 'Device unique id',
@@ -279,7 +279,7 @@ const translations = {
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
   sasettings_new_bank_form_reseller_name: 'MSP',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
-  sasettings_group_name: 'Bank of vaults name',
+  sasettings_bank_name: 'Bank of vaults name',
   sasettings_group_created_at: 'Created on',
   sasettings_group_is_testing: 'Testing',
   sasettings_group_test_expires_at: 'Test expiration date',
@@ -287,7 +287,7 @@ const translations = {
   sasettings_group_test_days_remaining: 'Days remaining',
   sasettings_group_expired_since: 'Expired $days day$s ago',
   sasettings_group_days_remaining: '$days day$s',
-  sasettings_group_reseller: 'Reseller',
+  sasettings_bank_reseller: 'Reseller',
   sasettings_group_sales_rep: 'Sales Rep',
   sasettings_group_sales_rep_must_be_email: 'Sales Rep must be an email address',
   sasettings_group_open: 'See',
@@ -342,34 +342,34 @@ const translations = {
   sasettings_email_config_testing_button: 'Send an email to this address',
   sasettings_email_config_testing_alert: 'An email has been sent',
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
-  group_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optional)',
-  group_setting_microsoft_entra_pitch:
+  bank_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optional)',
+  bank_setting_microsoft_entra_pitch:
     "UpSignon can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
-  group_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
-  group_setting_microsoft_entra_tuto_step1:
+  bank_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
+  bank_setting_microsoft_entra_tuto_step1:
     "In 'App registrations', click on 'New registration', choose a name ('UpSignon' for the rest of this documentation), choose the single tenant option, then submit.",
-  group_setting_microsoft_entra_tuto_step2:
+  bank_setting_microsoft_entra_tuto_step2:
     "In 'App registrations' > UpSignon > 'API permissions' add the following permissions and request an administrator approval.",
-  group_setting_microsoft_entra_tuto_step3: 'Fill in this form.',
-  group_setting_microsoft_entra_tuto_step4:
+  bank_setting_microsoft_entra_tuto_step3: 'Fill in this form.',
+  bank_setting_microsoft_entra_tuto_step4:
     'Finally, add users and groups to this enterprise application.',
-  group_setting_microsoft_entra_api_list: 'List of used APIs',
-  group_setting_microsoft_entra_tenant_id_label: 'Tenant ID',
-  group_setting_microsoft_entra_client_id_label:
+  bank_setting_microsoft_entra_api_list: 'List of used APIs',
+  bank_setting_microsoft_entra_tenant_id_label: 'Tenant ID',
+  bank_setting_microsoft_entra_client_id_label:
     'Application ID (Enterprise applications > UpSignon > Overview)',
-  group_setting_microsoft_entra_app_resource_id_label:
+  bank_setting_microsoft_entra_app_resource_id_label:
     "ID d\'objet (Enterprise applications > UpSignon > Overview)",
-  group_setting_microsoft_entra_client_secret_label:
+  bank_setting_microsoft_entra_client_secret_label:
     'Client secret client (App registrations > UpSignon > Certificates & secrets)',
-  group_setting_microsoft_entra_apply_config: 'Apply configuration',
-  group_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
-  group_setting_microsoft_entra_testing: 'Test',
-  group_setting_microsoft_entra_test_start: 'Start test',
-  group_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
-  group_setting_microsoft_entra_test_user_id: 'MS user id:',
-  group_setting_microsoft_entra_test_all_users: 'UpSignon users:',
-  group_setting_microsoft_entra_test_user_authorized: 'User authorized:',
-  group_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user:',
+  bank_setting_microsoft_entra_apply_config: 'Apply configuration',
+  bank_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
+  bank_setting_microsoft_entra_testing: 'Test',
+  bank_setting_microsoft_entra_test_start: 'Start test',
+  bank_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
+  bank_setting_microsoft_entra_test_user_id: 'MS user id:',
+  bank_setting_microsoft_entra_test_all_users: 'UpSignon users:',
+  bank_setting_microsoft_entra_test_user_authorized: 'User authorized:',
+  bank_setting_microsoft_entra_test_user_groupes: 'Groups associated with this user:',
   licences_bank_name: 'Bank',
   licences_nb: 'Number of licences',
   licences_valid_from: 'Valid from',

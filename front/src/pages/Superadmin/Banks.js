@@ -355,7 +355,7 @@ class Banks extends React.Component {
                     onClick={() => this.handleSort(1)}
                     title={i18n.t('sasettings_click_to_sort')}
                   >
-                    {i18n.t('sasettings_group_reseller')}
+                    {i18n.t('sasettings_bank_reseller')}
                     <br />
                     {this.getSortIcon(1)}
                   </th>
@@ -365,7 +365,7 @@ class Banks extends React.Component {
                   onClick={() => this.handleSort(0)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
-                  {i18n.t('sasettings_group_name')}
+                  {i18n.t('sasettings_bank_name')}
                   <br />
                   {this.getSortIcon(0)}
                 </th>
@@ -386,13 +386,13 @@ class Banks extends React.Component {
                 {isSaasServer && <th>{i18n.t('sasettings_group_sales_rep')}</th>}
                 {!isReadOnlySuperadmin && (
                   <th>
-                    <div>{i18n.t('settings_group_settings')}</div>
+                    <div>{i18n.t('settings_bank_settings')}</div>
                     <div
                       className="action"
                       style={{ color: 'white' }}
                       onClick={this.toggleAllSettings}
                     >
-                      {i18n.t('settings_group_settings_toggle_all_settings')}
+                      {i18n.t('settings_bank_settings_toggle_all_settings')}
                     </div>
                   </th>
                 )}
@@ -556,7 +556,7 @@ class Banks extends React.Component {
                           className="action"
                           onClick={() => this.toggleShowBankSettings(group.id)}
                         >
-                          {i18n.t('settings_group_settings_toggle_group_settings')}
+                          {i18n.t('settings_bank_settings_toggle_bank_settings')}
                         </div>
                         {showSettings && (
                           <>
