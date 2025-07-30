@@ -18,7 +18,7 @@ export const extract_emails_for_long_unused = async (
         WHERE (SELECT AGE(last_sync_date)
           FROM user_devices AS ud
           WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
-        ${isSuperadmin ? '' : 'AND u.group_id=$2'}
+        ${isSuperadmin ? '' : 'AND u.bank_id=$2'}
       `,
       isSuperadmin ? [nbDays] : [nbDays, req.proxyParamsBankId],
     );

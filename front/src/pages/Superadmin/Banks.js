@@ -348,7 +348,7 @@ class Banks extends React.Component {
             <thead>
               <tr>
                 <th></th>
-                <th>{i18n.t('sasettings_group_id')}</th>
+                <th>{i18n.t('sasettings_bank_id')}</th>
                 {isSaasServer && (
                   <th
                     className="sortable-header"

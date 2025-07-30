@@ -28,8 +28,8 @@ export const get_password_reset_requests = async (
     FROM password_reset_request AS prr
     INNER JOIN user_devices AS ud ON prr.device_id=ud.id
     INNER JOIN users AS u ON ud.user_id=u.id
-    INNER JOIN groups ON u.group_id=groups.id
-    ${!asSuperadmin ? 'WHERE prr.group_id=$1' : ''}
+    INNER JOIN groups ON u.bank_id=groups.id
+    ${!asSuperadmin ? 'WHERE prr.bank_id=$1' : ''}
     ${!asSuperadmin && email ? 'AND u.email=$2' : ''}
     ORDER BY prr.created_at DESC
     `,

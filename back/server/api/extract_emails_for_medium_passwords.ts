@@ -10,7 +10,7 @@ export const extract_emails_for_medium_passwords = async (
     const nb = parseInt(req.query.minMedium, 10) || 1;
     const dbRes = await db.query(
       `SELECT email FROM users WHERE nb_accounts_medium >= $1 ${
-        isSuperadmin ? '' : 'AND group_id=$2'
+        isSuperadmin ? '' : 'AND bank_id=$2'
       }`,
       isSuperadmin ? [nb] : [nb, req.proxyParamsBankId],
     );

@@ -14,7 +14,7 @@ export const count_password_reset_requests = async (
       res.status(200).send(dbRes.rows[0]?.count || 0);
     } else {
       const dbRes = await db.query(
-        "SELECT COUNT(id) AS count FROM password_reset_request WHERE status='PENDING_ADMIN_CHECK' AND group_id=$1",
+        "SELECT COUNT(id) AS count FROM password_reset_request WHERE status='PENDING_ADMIN_CHECK' AND bank_id=$1",
         [req.proxyParamsBankId],
       );
       res.status(200).send(dbRes.rows[0]?.count || 0);

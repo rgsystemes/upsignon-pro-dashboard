@@ -10,10 +10,10 @@ export const get_admins = async (req: any, res: any): Promise<void> => {
         admins.created_at,
         admins.is_superadmin,
         admins.is_read_only_superadmin,
-        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(json_build_object('id', admin_banks.group_id, 'name', groups.name)) END AS groups
+        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(json_build_object('id', admin_banks.bank_id, 'name', groups.name)) END AS groups
       FROM admins
       LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
-      LEFT JOIN groups ON admin_banks.group_id=groups.id
+      LEFT JOIN groups ON admin_banks.bank_id=groups.id
       GROUP BY admins.id
       ORDER BY admins.is_superadmin DESC, admins.is_read_only_superadmin DESC, admins.created_at ASC`,
     );

@@ -45,8 +45,8 @@ export const extract_database = async (
       ud.enrollment_method AS enrollment_method
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
-    ${isSuperadmin ? 'INNER JOIN groups AS g ON u.group_id=g.id' : ''}
-    ${isSuperadmin ? '' : 'WHERE u.group_id=$1'}
+    ${isSuperadmin ? 'INNER JOIN groups AS g ON u.bank_id=g.id' : ''}
+    ${isSuperadmin ? '' : 'WHERE u.bank_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
   `;
     const dbRes = await db.query(queryString, isSuperadmin ? [] : [req.proxyParamsBankId]);
