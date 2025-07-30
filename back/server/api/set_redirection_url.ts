@@ -6,7 +6,7 @@ export const setRedirectionUrl = async (req: any, res: any): Promise<void> => {
     if (req.session.isReadOnlySuperadmin || !req.session.isSuperadmin) {
       return res.status(401).end();
     }
-    await db.query('UPDATE groups SET redirect_url=$1, stop_this_instance=$2 WHERE id=$3', [
+    await db.query('UPDATE banks SET redirect_url=$1, stop_this_instance=$2 WHERE id=$3', [
       req.body.redirectionUrl,
       !!req.body.redirectionUrl,
       req.proxyParamsBankId,

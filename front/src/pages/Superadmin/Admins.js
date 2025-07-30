@@ -199,13 +199,13 @@ class Admins extends React.Component {
                         style={{
                           backgroundColor: admin.is_superadmin
                             ? 'lightgrey'
-                            : admin.groups && admin.groups.length > 0
+                            : admin.banks && admin.banks.length > 0
                               ? 'white'
                               : 'red',
                         }}
                       >
                         {admin.adminRole === 'admin' &&
-                          admin.groups?.map((g) => {
+                          admin.banks?.map((g) => {
                             return <div key={g.id}>{g.name}</div>;
                           })}
                       </td>
@@ -232,9 +232,7 @@ class Admins extends React.Component {
                           {!admin.is_superadmin && (
                             <div style={{ marginTop: 15, margin: 'auto' }}>
                               {this.props.banks.map((g) => {
-                                const doesBelongToGroup = admin.groups?.some(
-                                  (ag) => ag.id === g.id,
-                                );
+                                const doesBelongToGroup = admin.banks?.some((ag) => ag.id === g.id);
                                 return (
                                   <div key={g.id} style={{ display: 'flex', alignItems: 'center' }}>
                                     <input

@@ -46,7 +46,7 @@ export const insert_group = async (req: any, res: any): Promise<void> => {
       };
     }
     const groupInsertRes = await db.query(
-      'INSERT INTO groups (name, settings) VALUES ($1, $2) RETURNING id, public_id',
+      'INSERT INTO banks (name, settings) VALUES ($1, $2) RETURNING id, public_id',
       [validatedBody.name, newBankSettings],
     );
     if (groupInsertRes.rowCount === 0) {

@@ -10,7 +10,7 @@ export const extract_database = async (
     const queryString = `
     SELECT
       u.email,
-      ${isSuperadmin ? 'g.name AS bank_name,' : ''}
+      ${isSuperadmin ? 'b.name AS bank_name,' : ''}
       ud.device_unique_id AS device_uid,
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
@@ -45,7 +45,7 @@ export const extract_database = async (
       ud.enrollment_method AS enrollment_method
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
-    ${isSuperadmin ? 'INNER JOIN groups AS g ON u.bank_id=g.id' : ''}
+    ${isSuperadmin ? 'INNER JOIN banks AS b ON u.bank_id=b.id' : ''}
     ${isSuperadmin ? '' : 'WHERE u.bank_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
   `;
