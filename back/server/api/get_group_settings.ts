@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const get_group_settings = async (req: any, res: any): Promise<void> => {
   try {
-    const dbRes = await db.query(`SELECT name, settings FROM groups WHERE id=$1`, [
+    const dbRes = await db.query(`SELECT name, settings FROM banks WHERE id=$1`, [
       req.proxyParamsBankId,
     ]);
     res.status(200).send(dbRes.rows[0]);

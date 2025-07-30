@@ -64,13 +64,13 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.nb_accounts_green AS nb_accounts_green,
     u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
     u.nb_accounts_with_no_password AS nb_accounts_with_no_password,
-    g.settings AS group_settings,
+    b.settings AS group_settings,
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
     u.allowed_offline_desktop AS allowed_offline_desktop,
     u.settings_override AS settings_override
   FROM users AS u
-  INNER JOIN groups AS g ON u.bank_id=g.id
+  INNER JOIN banks AS b ON u.bank_id=b.id
   WHERE u.bank_id=$3
   ${isSearching ? "AND (u.email LIKE '%' || $4 || '%' OR u.id::varchar(5) LIKE $4 || '%')" : ''}
   ${

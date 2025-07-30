@@ -8,7 +8,7 @@ export const get_licences = async (
 ): Promise<void> => {
   try {
     const dbRes = await db.query("SELECT value FROM settings WHERE key='LICENCES'", []);
-    const banksRes = await db.query('SELECT id, name FROM groups');
+    const banksRes = await db.query('SELECT id, name FROM banks');
     const licencesRes: any[] = dbRes.rows[0]?.value.map((l: any) => {
       return {
         ...l,

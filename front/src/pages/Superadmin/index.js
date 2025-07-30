@@ -18,7 +18,7 @@ class Superadmin extends React.Component {
   };
   fetchBanks = async () => {
     try {
-      const banks = await groupUrlFetch('/api/groups', 'GET', null);
+      const banks = await groupUrlFetch('/api/banks', 'GET', null);
       this.setState((prev) => ({ banks, adminsBuildCounter: prev.adminsBuildCounter + 1 }));
       this.props.updateMenuBanks(banks);
     } catch (e) {

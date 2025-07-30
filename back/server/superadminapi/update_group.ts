@@ -5,7 +5,7 @@ import { logError } from '../helpers/logger';
 export const update_group = async (req: any, res: any): Promise<void> => {
   try {
     if (req.body.name && typeof req.body.name === 'string') {
-      await db.query(`UPDATE groups SET name=$1 WHERE id=$2`, [req.body.name, req.body.id]);
+      await db.query(`UPDATE banks SET name=$1 WHERE id=$2`, [req.body.name, req.body.id]);
     }
     if (req.body.settings) {
       const safeSettings = { ...req.body.settings };
@@ -19,7 +19,7 @@ export const update_group = async (req: any, res: any): Promise<void> => {
 
       // PREVENT SOME ACTIONS FOR READ ONLY SUPERADMINS
       if (req.session.isReadOnlySuperadmin) {
-        const prevSettingsRes = await db.query('SELECT settings FROM groups WHERE id=$1', [
+        const prevSettingsRes = await db.query('SELECT settings FROM banks WHERE id=$1', [
           req.body.id,
         ]);
         const prevSettings = prevSettingsRes.rows[0].settings;
@@ -32,10 +32,10 @@ export const update_group = async (req: any, res: any): Promise<void> => {
         }
       }
 
-      await db.query(`UPDATE groups SET settings=$1 WHERE id=$2`, [safeSettings, req.body.id]);
+      await db.query(`UPDATE banks SET settings=$1 WHERE id=$2`, [safeSettings, req.body.id]);
     }
     if (typeof req.body.nb_licences_sold === 'number') {
-      await db.query(`UPDATE groups SET nb_licences_sold=$1 WHERE id=$2`, [
+      await db.query(`UPDATE banks SET nb_licences_sold=$1 WHERE id=$2`, [
         req.body.nb_licences_sold,
         req.body.id,
       ]);

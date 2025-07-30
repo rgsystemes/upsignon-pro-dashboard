@@ -1,7 +1,7 @@
 import express from 'express';
 import { delete_admin } from './delete_admin';
 import { delete_group } from './delete_group';
-import { get_groups } from './get_groups';
+import { get_banks } from './get_banks';
 import { update_group } from './update_group';
 import { get_admins } from './get_admins';
 import { insert_group } from './insert_group';
@@ -47,8 +47,8 @@ superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-group', update_admin_group);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
 
-// GROUPS
-superadminApiRouter.get('/groups', get_groups);
+// BANKS
+superadminApiRouter.get('/banks', get_banks);
 superadminApiRouter.post('/insert-group', insert_group);
 superadminApiRouter.post('/update-group', update_group);
 superadminApiRouter.post('/delete-group/:id', delete_group);

@@ -12,7 +12,7 @@ export const get_password_reset_requests = async (
 
     const prrResult = await db.query(
       `SELECT
-      groups.name AS group_name,
+      banks.name AS group_name,
       u.email,
       ud.device_name,
       ud.os_family AS os_family,
@@ -28,7 +28,7 @@ export const get_password_reset_requests = async (
     FROM password_reset_request AS prr
     INNER JOIN user_devices AS ud ON prr.device_id=ud.id
     INNER JOIN users AS u ON ud.user_id=u.id
-    INNER JOIN groups ON u.bank_id=groups.id
+    INNER JOIN banks ON u.bank_id=banks.id
     ${!asSuperadmin ? 'WHERE prr.bank_id=$1' : ''}
     ${!asSuperadmin && email ? 'AND u.email=$2' : ''}
     ORDER BY prr.created_at DESC
