@@ -19,7 +19,7 @@ class Groups extends React.Component {
   state = {
     groupToDeleteId: null,
     showAllSettings: false,
-    showGroupSettings: {},
+    showBankSettings: {},
     filterType: 0, // 0: all, 1: testing only
     sortType: 0, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
@@ -100,7 +100,7 @@ class Groups extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  toggleGroupSetting = async (bankId, newSettings) => {
+  toggleBankSetting = async (bankId, newSettings) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/update-group', 'POST', {
@@ -128,14 +128,14 @@ class Groups extends React.Component {
   toggleAllSettings = () => {
     this.setState((s) => {
       if (s.showAllSettings) {
-        return { ...s, showAllSettings: false, showGroupSettings: {} };
+        return { ...s, showAllSettings: false, showBankSettings: {} };
       }
       return { ...s, showAllSettings: true };
     });
   };
-  toggleShowGroupSettings = (bankId) => {
+  toggleShowBankSettings = (bankId) => {
     this.setState((s) => {
-      return { ...s, showGroupSettings: { [bankId]: !s.showGroupSettings[bankId] } };
+      return { ...s, showBankSettings: { [bankId]: !s.showBankSettings[bankId] } };
     });
   };
 
@@ -402,7 +402,7 @@ class Groups extends React.Component {
             <tbody>
               {filteredBanks.map((group) => {
                 const showSettings =
-                  this.state.showAllSettings || this.state.showGroupSettings[group.id];
+                  this.state.showAllSettings || this.state.showBankSettings[group.id];
                 return (
                   <tr key={group.id}>
                     <td>
@@ -420,7 +420,7 @@ class Groups extends React.Component {
                       <EditableCell
                         value={group.settings?.RESELLER || ''}
                         onChange={(newVal) => {
-                          this.toggleGroupSetting(group.id, {
+                          this.toggleBankSetting(group.id, {
                             ...group.settings,
                             RESELLER: newVal,
                           });
@@ -457,7 +457,7 @@ class Groups extends React.Component {
                           type="checkbox"
                           checked={group.settings?.IS_TESTING}
                           onChange={() => {
-                            this.toggleGroupSetting(group.id, {
+                            this.toggleBankSetting(group.id, {
                               ...group.settings,
                               IS_TESTING: !group.settings?.IS_TESTING,
                             });
@@ -478,7 +478,7 @@ class Groups extends React.Component {
                             : ''
                         }
                         onChange={(newVal) => {
-                          this.toggleGroupSetting(group.id, {
+                          this.toggleBankSetting(group.id, {
                             ...group.settings,
                             TESTING_EXPIRATION_DATE: newVal,
                           });
@@ -543,7 +543,7 @@ class Groups extends React.Component {
                             window.alert(i18n.t('sasettings_group_sales_rep_must_be_email'));
                             return;
                           }
-                          this.toggleGroupSetting(group.id, {
+                          this.toggleBankSetting(group.id, {
                             ...group.settings,
                             SALES_REP: newVal,
                           });
@@ -554,7 +554,7 @@ class Groups extends React.Component {
                       <td className={showSettings ? 'settings-column-expanded' : ''}>
                         <div
                           className="action"
-                          onClick={() => this.toggleShowGroupSettings(group.id)}
+                          onClick={() => this.toggleShowBankSettings(group.id)}
                         >
                           {i18n.t('settings_group_settings_toggle_group_settings')}
                         </div>
@@ -565,7 +565,7 @@ class Groups extends React.Component {
                                 key={k}
                                 group={group}
                                 settingNameInDB={k}
-                                toggleGroupSetting={this.toggleGroupSetting}
+                                toggleBankSetting={this.toggleBankSetting}
                               />
                             ))}
                             {Object.keys(autolockDelaySettings).map((k) => (
@@ -573,7 +573,7 @@ class Groups extends React.Component {
                                 key={k}
                                 group={group}
                                 settingNameInDB={k}
-                                toggleGroupSetting={this.toggleGroupSetting}
+                                toggleBankSetting={this.toggleBankSetting}
                               />
                             ))}
                           </>
@@ -617,7 +617,7 @@ class Groups extends React.Component {
 }
 
 const InlineSetting = (props) => {
-  const { group, settingNameInDB, toggleGroupSetting } = props;
+  const { group, settingNameInDB, toggleBankSetting } = props;
   const settingConf = settingsConfig[settingNameInDB];
   const resValue =
     group.settings?.[settingNameInDB] == null
@@ -640,7 +640,7 @@ const InlineSetting = (props) => {
         <div
           className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
           onClick={() => {
-            toggleGroupSetting(group.id, {
+            toggleBankSetting(group.id, {
               ...group.settings,
               [settingNameInDB]: !resValue,
             });
@@ -654,7 +654,7 @@ const InlineSetting = (props) => {
 };
 
 const AutolockDelaySetting = (props) => {
-  const { group, settingNameInDB, toggleGroupSetting } = props;
+  const { group, settingNameInDB, toggleBankSetting } = props;
   const settingConf = autolockDelaySettings[settingNameInDB];
   const resValue = group.settings?.[settingNameInDB] ?? -1;
 
@@ -679,7 +679,7 @@ const AutolockDelaySetting = (props) => {
       <div>
         <select
           onChange={(ev) => {
-            toggleGroupSetting(
+            toggleBankSetting(
               group.id,
               settingConf.defaultSettingKey != null
                 ? {
