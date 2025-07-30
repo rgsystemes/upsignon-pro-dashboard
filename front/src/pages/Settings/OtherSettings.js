@@ -94,7 +94,7 @@ const SettingTableRow = (props) => {
   const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
     <tr>
-      <td>{i18n.t(settingConf.groupsTitle)}</td>
+      <td>{i18n.t(settingConf.banksTitle)}</td>
       <td>
         {isRecommendedValue ? (
           <span className="recommendedParam">
@@ -140,7 +140,7 @@ const AutolockDelaySettingTableRow = (props) => {
 
   return (
     <tr>
-      <td>{i18n.t(settingConf.groupsTitle)}</td>
+      <td>{i18n.t(settingConf.banksTitle)}</td>
       <td>
         <select
           onChange={(ev) => {

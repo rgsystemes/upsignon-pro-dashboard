@@ -626,7 +626,7 @@ const InlineSetting = (props) => {
   const isRecommendedValue = resValue === settingConf.recommendedValue;
   return (
     <div className="inline-setting">
-      <div className="inline-setting-content">{i18n.t(settingConf.groupsTitle)}</div>
+      <div className="inline-setting-content">{i18n.t(settingConf.banksTitle)}</div>
       <div>
         {isRecommendedValue ? (
           <div className="recommendedParam">
@@ -675,7 +675,7 @@ const AutolockDelaySetting = (props) => {
 
   return (
     <div className="inline-setting">
-      <div className="inline-setting-content">{i18n.t(settingConf.groupsTitle)}</div>
+      <div className="inline-setting-content">{i18n.t(settingConf.banksTitle)}</div>
       <div>
         <select
           onChange={(ev) => {
