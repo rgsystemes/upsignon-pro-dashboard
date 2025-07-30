@@ -8,11 +8,11 @@ export const get_licences = async (
 ): Promise<void> => {
   try {
     const dbRes = await db.query("SELECT value FROM settings WHERE key='LICENCES'", []);
-    const groupsRes = await db.query('SELECT id, name FROM groups');
+    const banksRes = await db.query('SELECT id, name FROM groups');
     const licencesRes: any[] = dbRes.rows[0]?.value.map((l: any) => {
       return {
         ...l,
-        bankName: groupsRes.rows.find((g) => g.id === l.masterBank)?.name,
+        bankName: banksRes.rows.find((g) => g.id === l.masterBank)?.name,
       };
     });
     if (isSuperadminPage) {
