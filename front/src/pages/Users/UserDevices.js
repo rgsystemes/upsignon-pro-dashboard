@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
@@ -14,7 +14,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-device/${deviceId}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -28,7 +28,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/deactivate-device/${deviceId}`, 'POST', null);
+        await bankUrlFetch(`/api/deactivate-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -42,7 +42,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/deactivate-device-all-users/${deviceId}`, 'POST', null);
+        await bankUrlFetch(`/api/deactivate-device-all-users/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -59,7 +59,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/authorize-device/${deviceId}`, 'POST', null);
+        await bankUrlFetch(`/api/authorize-device/${deviceId}`, 'POST', null);
         await this.props.reloadDevices();
       } catch (e) {
         console.error(e);
@@ -71,7 +71,7 @@ class UserDevices extends React.Component {
 
   fetchPasswordResetRequests = async () => {
     try {
-      const res = await groupUrlFetch('/api/get-password-reset-requests', 'POST', {
+      const res = await bankUrlFetch('/api/get-password-reset-requests', 'POST', {
         email: this.props.email,
       });
       this.setState({
@@ -90,7 +90,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
@@ -105,7 +105,7 @@ class UserDevices extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await bankUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);

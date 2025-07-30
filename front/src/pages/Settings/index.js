@@ -1,7 +1,7 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
 import { AllowedEmails } from './AllowedEmails';
-import { GroupAdmins } from './GroupAdmins';
+import { BankAdmins } from './BankAdmins';
 import { OtherSettings } from './OtherSettings';
 import { ProSetupLink } from './ProSetupLink';
 import { Urls } from './Urls';
@@ -72,7 +72,7 @@ class Settings extends React.Component {
 
           {activeTab === 'options' && <OtherSettings setIsLoading={this.props.setIsLoading} />}
 
-          {activeTab === 'admins' && <GroupAdmins setIsLoading={this.props.setIsLoading} />}
+          {activeTab === 'admins' && <BankAdmins setIsLoading={this.props.setIsLoading} />}
 
           {activeTab === 'permissions' && (
             <div>

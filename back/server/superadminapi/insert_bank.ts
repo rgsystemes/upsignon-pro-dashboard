@@ -45,23 +45,23 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
         RESELLER: validatedBody.resellerName,
       };
     }
-    const groupInsertRes = await db.query(
+    const bankInsertRes = await db.query(
       'INSERT INTO banks (name, settings) VALUES ($1, $2) RETURNING id, public_id',
       [validatedBody.name, newBankSettings],
     );
-    if (groupInsertRes.rowCount === 0) {
+    if (bankInsertRes.rowCount === 0) {
       return res.status(500).end();
     }
-    const insertedGroup = groupInsertRes.rows[0];
+    const insertedBank = bankInsertRes.rows[0];
 
     // add allowed emails
     const emailPattern = '*@' + validatedBody.adminEmail.split('@')[1].trim().toLowerCase();
     await db.query('INSERT INTO allowed_emails (pattern, bank_id) VALUES (lower($1), $2)', [
       emailPattern,
-      insertedGroup.id,
+      insertedBank.id,
     ]);
 
-    // add group admin
+    // add bank admin
     const selectRes = await db.query('SELECT id FROM admins WHERE email=$1', [
       validatedBody.adminEmail,
     ]);
@@ -80,7 +80,7 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
 
     await db.query(
       'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
-      [adminId, insertedGroup.id],
+      [adminId, insertedBank.id],
     );
 
     /////////////////////
@@ -91,7 +91,7 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
     );
     if (settingsRes.rowCount === 0) return res.status(400).end();
     const { url } = settingsRes.rows[0].value;
-    const bankLink = `${url}/${insertedGroup.public_id}`;
+    const bankLink = `${url}/${insertedBank.public_id}`;
     const qr = qrcode(0, 'L');
     qr.addData(bankLink);
     qr.make();

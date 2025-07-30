@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
+import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -14,7 +14,7 @@ class Admins extends React.Component {
 
   fetchAdmins = async () => {
     try {
-      const admins = await groupUrlFetch('/api/admins', 'GET', null);
+      const admins = await bankUrlFetch('/api/admins', 'GET', null);
       this.setState({ admins: admins });
     } catch (e) {
       console.error(e);
@@ -30,7 +30,7 @@ class Admins extends React.Component {
       } else {
         this.newInputRef.style.borderColor = null;
       }
-      await groupUrlFetch('/api/insert-admin', 'POST', {
+      await bankUrlFetch('/api/insert-admin', 'POST', {
         newEmail,
         adminRole: this.state.adminRole,
       });
@@ -43,13 +43,13 @@ class Admins extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateAdminGroup = async (adminId, bankId, willBelongToGroup) => {
+  updateAdminBank = async (adminId, bankId, willBelongToBank) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-admin-group', 'POST', {
+      await bankUrlFetch('/api/update-admin-bank', 'POST', {
         adminId,
         bankId,
-        willBelongToGroup,
+        willBelongToBank,
       });
       await this.fetchAdmins();
     } catch (e) {
@@ -61,7 +61,7 @@ class Admins extends React.Component {
   changeSuperadminRole = async (adminId, adminRole) => {
     try {
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/update-admin-role', 'POST', {
+      await bankUrlFetch('/api/update-admin-role', 'POST', {
         adminId,
         adminRole,
       });
@@ -84,7 +84,7 @@ class Admins extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-admin/${id}`, 'POST', null);
         await this.fetchAdmins();
       } catch (e) {
         console.error(e);
@@ -232,15 +232,15 @@ class Admins extends React.Component {
                           {!admin.is_superadmin && (
                             <div style={{ marginTop: 15, margin: 'auto' }}>
                               {this.props.banks.map((g) => {
-                                const doesBelongToGroup = admin.banks?.some((ag) => ag.id === g.id);
+                                const doesBelongToBank = admin.banks?.some((ag) => ag.id === g.id);
                                 return (
                                   <div key={g.id} style={{ display: 'flex', alignItems: 'center' }}>
                                     <input
                                       type="checkbox"
                                       onChange={(v) => {
-                                        this.updateAdminGroup(admin.id, g.id, !doesBelongToGroup);
+                                        this.updateAdminBank(admin.id, g.id, !doesBelongToBank);
                                       }}
-                                      checked={doesBelongToGroup}
+                                      checked={doesBelongToBank}
                                       disabled={isReadOnlySuperadmin}
                                     />
                                     <div style={{ marginLeft: 5 }}>{g.name}</div>

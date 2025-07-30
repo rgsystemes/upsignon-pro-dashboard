@@ -65,7 +65,7 @@ apiRouter.use(async (req: any, res: any, next) => {
     !req.session.banks?.includes(req.proxyParamsBankId)
   ) {
     // @ts-ignore
-    console.error('Unauthorized for group ' + req.proxyParamsBankId);
+    console.error('Unauthorized for bank ' + req.proxyParamsBankId);
     return res.status(401).end();
   }
   next();
@@ -157,19 +157,19 @@ apiRouter.post('/copy_urls_from_bank', copy_urls_from_bank);
 // Admins
 apiRouter.post('/delete-admin/:id', delete_bank_admin);
 apiRouter.post('/insert-admin', insert_bank_admin);
-apiRouter.get('/group-admins', get_bank_admins);
+apiRouter.get('/bank-admins', get_bank_admins);
 
 // Settings
-apiRouter.get('/group-settings', get_bank_settings);
-apiRouter.post('/group-settings-update', update_bank);
+apiRouter.get('/bank-settings', get_bank_settings);
+apiRouter.post('/bank-settings-update', update_bank);
 
 // SERVER REDIRECTION
 apiRouter.post('/redirection_url', getRedirectionUrl);
 apiRouter.post('/set_redirection_url', setRedirectionUrl);
 
 // Microsoft Entra
-apiRouter.get('/group-entra-config', get_bank_entra_config);
-apiRouter.post('/group-entra-config-update', update_bank);
+apiRouter.get('/bank-entra-config', get_bank_entra_config);
+apiRouter.post('/bank-entra-config-update', update_bank);
 apiRouter.post('/reload-ms-entra-instance', reloadMSEntraInstance);
 apiRouter.post('/test-ms-entra', test_ms_entra);
 apiRouter.get('/list-ms-entra-apis', listMSEntraAPIs);

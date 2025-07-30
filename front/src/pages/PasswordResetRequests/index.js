@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -11,7 +11,7 @@ class PasswordResetRequests extends React.Component {
   };
   fetchPasswordResetRequests = async () => {
     try {
-      const res = await groupUrlFetch('/api/get-password-reset-requests', 'POST', null);
+      const res = await bankUrlFetch('/api/get-password-reset-requests', 'POST', null);
       this.setState({
         resetRequests: res,
       });
@@ -28,7 +28,7 @@ class PasswordResetRequests extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await bankUrlFetch(`/api/delete-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);
@@ -43,7 +43,7 @@ class PasswordResetRequests extends React.Component {
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
-        await groupUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
+        await bankUrlFetch(`/api/grant-pwd-reset-request/${pwdResetId}`, 'POST', null);
         await this.fetchPasswordResetRequests();
       } catch (e) {
         console.error(e);

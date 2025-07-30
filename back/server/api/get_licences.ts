@@ -18,8 +18,8 @@ export const get_licences = async (
     if (isSuperadminPage) {
       res.status(200).send(licencesRes);
     } else {
-      const groupLicences = licencesRes?.filter((r) => r.masterBank == req.proxyParamsBankId);
-      res.status(200).send(groupLicences);
+      const bankLicences = licencesRes?.filter((r) => r.masterBank == req.proxyParamsBankId);
+      res.status(200).send(bankLicences);
     }
   } catch (e) {
     logError('get_licences', e);

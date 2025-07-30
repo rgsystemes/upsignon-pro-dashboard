@@ -7,7 +7,7 @@ export const sendAdminInvite = async (
   email: string,
   token: string,
   tokenExpiresAt: Date,
-  groupName: null | string,
+  bankName: null | string,
 ): Promise<void> => {
   try {
     const emailConfig = await getEmailConfig();
@@ -25,7 +25,7 @@ export const sendAdminInvite = async (
       subject: "Administration d'UpSignon",
       text: `Bonjour,
     Vous avez été invité à administrer${
-      groupName ? ' la banque de coffres-forts ' + groupName : ''
+      bankName ? ' la banque de coffres-forts ' + bankName : ''
     } UpSignon PRO.
 
     Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.
@@ -43,7 +43,7 @@ UpSignon`,
     <html><body>
 <div>Bonjour,</div>
 <div>Vous avez été invité à administrer${
-        groupName ? ' la banque de coffres-forts' + groupName : ''
+        bankName ? ' la banque de coffres-forts' + bankName : ''
       } UpSignon PRO.</div>
 <div>Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.</div>
 <div>Prérequis :</div>

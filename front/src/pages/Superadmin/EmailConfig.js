@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -17,7 +17,7 @@ export class EmailConfig extends React.Component {
 
   fetchEmailConfig = async () => {
     try {
-      const settings = await groupUrlFetch('/api/get-setting', 'POST', { key: 'EMAIL_CONFIG' });
+      const settings = await bankUrlFetch('/api/get-setting', 'POST', { key: 'EMAIL_CONFIG' });
       this.setState({
         emailHost: settings.EMAIL_CONFIG?.EMAIL_HOST || '',
         emailPort: settings.EMAIL_CONFIG?.EMAIL_PORT || '',
@@ -47,7 +47,7 @@ export class EmailConfig extends React.Component {
         EMAIL_SENDING_ADDRESS: this.state.emailSendingAddress,
         EMAIL_ALLOW_INVALID_CERTIFICATE: this.state.emailAllowInvalidCertificate,
       };
-      await groupUrlFetch('/api/update-setting', 'POST', {
+      await bankUrlFetch('/api/update-setting', 'POST', {
         key: 'EMAIL_CONFIG',
         value: emailConfig,
       });
@@ -62,7 +62,7 @@ export class EmailConfig extends React.Component {
     try {
       event.preventDefault();
       this.props.setIsLoading(true);
-      await groupUrlFetch(`/api/test-email?email=${this.testingEmailInputRef.value}`, 'GET');
+      await bankUrlFetch(`/api/test-email?email=${this.testingEmailInputRef.value}`, 'GET');
       alert(i18n.t('sasettings_email_config_testing_alert'));
     } catch (e) {
       console.log(e);

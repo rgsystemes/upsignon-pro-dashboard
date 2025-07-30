@@ -1,7 +1,7 @@
 import React from 'react';
 import { bankId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 
 // Props setIsLoading, totalCount, isSuperAdmin
 
@@ -11,7 +11,7 @@ export class Licences extends React.Component {
   };
   fetchLicences = async () => {
     try {
-      const res = await groupUrlFetch('/api/get-licences', 'POST', null);
+      const res = await bankUrlFetch('/api/get-licences', 'POST', null);
       if (res) {
         this.setState({
           licences: res.sort((a, b) => {

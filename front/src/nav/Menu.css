@@ -38,22 +38,22 @@ nav {
   margin-bottom: 5px;
 }
 
-.groupLink {
+.bankLink {
   display: block;
   padding: 10px 20px;
   color: rgb(44, 82, 132);
   cursor: pointer;
   text-decoration: none;
 }
-.groupLink:not(:last-child) {
+.bankLink:not(:last-child) {
   border-bottom: 1px solid rgb(44, 82, 132);
 }
-.groupLink:hover {
+.bankLink:hover {
   background-color: rgb(44, 82, 132);
   color: white;
 }
 
-.currentGroup {
+.currentBank {
   text-align: center;
   border-radius: 5px;
   padding: 5px 10px;
@@ -65,6 +65,6 @@ nav {
 .superadmin {
   background-color: rgb(246, 164, 0);
 }
-.groupLink.superadmin:hover {
+.bankLink.superadmin:hover {
   background-color: rgb(207, 140, 5);
 }

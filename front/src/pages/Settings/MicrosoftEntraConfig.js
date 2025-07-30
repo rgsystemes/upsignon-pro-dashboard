@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupUrlFetch } from '../../helpers/urlFetch';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
 
@@ -16,7 +16,7 @@ export class MicrosoftEntraConfig extends React.Component {
 
   fetchMSEntraConfig = async () => {
     try {
-      const entraConfig = await groupUrlFetch('/api/group-entra-config', 'GET', null);
+      const entraConfig = await bankUrlFetch('/api/bank-entra-config', 'GET', null);
       if (entraConfig) {
         this.setState({
           tenantId: entraConfig.tenantId || '',
@@ -31,7 +31,7 @@ export class MicrosoftEntraConfig extends React.Component {
   };
   fetchMSEntraAPIs = async () => {
     try {
-      const apis = await groupUrlFetch('/api/list-ms-entra-apis', 'GET', null);
+      const apis = await bankUrlFetch('/api/list-ms-entra-apis', 'GET', null);
       this.setState({ msEntraAPIs: apis });
     } catch (e) {
       console.error(e);
@@ -45,7 +45,7 @@ export class MicrosoftEntraConfig extends React.Component {
     try {
       event.preventDefault();
       this.props.setIsLoading(true);
-      await groupUrlFetch('/api/reload-ms-entra-instance', 'POST', null);
+      await bankUrlFetch('/api/reload-ms-entra-instance', 'POST', null);
     } catch (e) {
       console.error(e);
     } finally {
@@ -63,7 +63,7 @@ export class MicrosoftEntraConfig extends React.Component {
         clientSecret: this.state.clientSecret,
         appResourceId: this.state.appResourceId,
       };
-      await groupUrlFetch('/api/group-settings-update', 'POST', {
+      await bankUrlFetch('/api/bank-settings-update', 'POST', {
         msEntraConfig: entraConfig,
       });
     } catch (e) {
@@ -78,7 +78,7 @@ export class MicrosoftEntraConfig extends React.Component {
       event.preventDefault();
       this.props.setIsLoading(true);
       this.setState({ testResult: null });
-      const testRes = await groupUrlFetch('/api/test-ms-entra', 'POST', {
+      const testRes = await bankUrlFetch('/api/test-ms-entra', 'POST', {
         email: this.testingEmailInputRef.value,
       });
       this.setState({ testResult: testRes });
