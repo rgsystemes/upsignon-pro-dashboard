@@ -9,8 +9,8 @@ export const get_group_admins = async (req: any, res: any): Promise<void> => {
         admins.email,
         admins.created_at
       FROM admins
-      LEFT JOIN admin_groups ON admins.id=admin_groups.admin_id
-      WHERE admin_groups.group_id = $1
+      LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
+      WHERE admin_banks.group_id = $1
       ORDER BY admins.created_at ASC`,
       [req.proxyParamsBankId],
     );

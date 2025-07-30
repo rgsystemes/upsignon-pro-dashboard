@@ -10,12 +10,12 @@ export const update_admin_group = async (req: any, res: any): Promise<void> => {
     if (!req.body.adminId) return res.status(401).end();
 
     if (req.body.willBelongToGroup) {
-      await db.query('INSERT INTO admin_groups(admin_id, group_id) VALUES ($1,$2)', [
+      await db.query('INSERT INTO admin_banks(admin_id, group_id) VALUES ($1,$2)', [
         req.body.adminId,
         req.body.bankId,
       ]);
     } else {
-      await db.query('DELETE FROM admin_groups WHERE admin_id=$1 AND group_id=$2', [
+      await db.query('DELETE FROM admin_banks WHERE admin_id=$1 AND group_id=$2', [
         req.body.adminId,
         req.body.bankId,
       ]);

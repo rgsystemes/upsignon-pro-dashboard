@@ -138,7 +138,7 @@ const translations = {
     "Ceci ne supprimera pas les coffres-forts pour les utilisateurs correspondant à ce modèle d'adresse email.\n\nSupprimer ?",
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Ajouté le',
-  settings_admin_groups: 'Banques de coffres-forts',
+  settings_admin_banks: 'Banques de coffres-forts',
   sasettings_admin_delete_warning: 'Êtes-vous sûr de vouloir révoquer cet admin ?',
   sasettings_admin_change_rights: 'Changer les droits',
   settings_admin_send_invite: "Envoyer un email d'invitation",

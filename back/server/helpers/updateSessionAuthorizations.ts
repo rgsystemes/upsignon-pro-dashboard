@@ -11,9 +11,9 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
       `SELECT
         admins.is_superadmin,
         admins.is_read_only_superadmin,
-        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(admin_groups.group_id) END AS groups
+        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(admin_banks.group_id) END AS groups
       FROM admins
-      LEFT JOIN admin_groups ON admins.id=admin_groups.admin_id
+      LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
       WHERE admins.email=$1
       GROUP BY admins.id`,
       [email],

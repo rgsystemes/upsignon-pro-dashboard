@@ -138,7 +138,7 @@ const translations = {
     'This will not delete the vaults for users matching this email address template.\n\nDelete ?',
   settings_admin_email: 'Email',
   settings_admin_created_at: 'Added on',
-  settings_admin_groups: 'Banks of vaults',
+  settings_admin_banks: 'Banks of vaults',
   sasettings_admin_delete_warning: 'Are you sure you want to revoke this admin?',
   sasettings_admin_change_rights: 'Change rights',
   settings_admin_send_invite: 'Send invitation email',
