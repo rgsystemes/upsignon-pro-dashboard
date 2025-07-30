@@ -13,7 +13,7 @@ class OtherSettings extends React.Component {
   };
   newInputRef = null;
 
-  fetchGroupSettings = async () => {
+  fetchBankSettings = async () => {
     try {
       this.props.setIsLoading(true);
       const res = await groupUrlFetch('/api/group-settings', 'GET', null);
@@ -24,7 +24,7 @@ class OtherSettings extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateGroupSetting = async (newSettings, newName) => {
+  updateBankSetting = async (newSettings, newName) => {
     try {
       this.props.setIsLoading(true);
       await groupUrlFetch('/api/group-settings-update', 'POST', {
@@ -34,7 +34,7 @@ class OtherSettings extends React.Component {
         },
         name: newName,
       });
-      await this.fetchGroupSettings();
+      await this.fetchBankSettings();
     } catch (e) {
       console.error(e);
     } finally {
@@ -43,7 +43,7 @@ class OtherSettings extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchGroupSettings();
+    this.fetchBankSettings();
   }
   render() {
     return (
@@ -57,7 +57,7 @@ class OtherSettings extends React.Component {
                 value={this.state.name}
                 onChange={(newVal) => {
                   if (!newVal) return;
-                  this.updateGroupSetting(null, newVal);
+                  this.updateBankSetting(null, newVal);
                 }}
               />
             </tr>
@@ -66,7 +66,7 @@ class OtherSettings extends React.Component {
                 key={k}
                 settingNameInDB={k}
                 stateSettings={this.state.settings}
-                toggleValue={this.updateGroupSetting}
+                toggleValue={this.updateBankSetting}
               />
             ))}
             {Object.keys(autolockDelaySettings).map((k) => (
@@ -74,7 +74,7 @@ class OtherSettings extends React.Component {
                 key={k}
                 settingNameInDB={k}
                 stateSettings={this.state.settings}
-                toggleValue={this.updateGroupSetting}
+                toggleValue={this.updateBankSetting}
               />
             ))}
           </tbody>
