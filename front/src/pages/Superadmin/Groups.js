@@ -164,7 +164,7 @@ class Groups extends React.Component {
     if (groupToDelete) {
       return (
         <div>
-          <h2>{i18n.t('sasettings_groups')}</h2>
+          <h2>{i18n.t('sasettings_banks')}</h2>
           <div
             className={`delete-confirmation-container ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
           >
@@ -243,8 +243,8 @@ class Groups extends React.Component {
       });
     return (
       <div>
-        <h2>{i18n.t('sasettings_groups')}</h2>
-        <p>{i18n.t('sasettings_groups_explanation')}</p>
+        <h2>{i18n.t('sasettings_banks')}</h2>
+        <p>{i18n.t('sasettings_banks_explanation')}</p>
         <div className="newBankForm">
           <div className="newBankFormTitle">{i18n.t('sasettings_new_bank_form_title')}</div>
           <div className="newBankInputContainer">

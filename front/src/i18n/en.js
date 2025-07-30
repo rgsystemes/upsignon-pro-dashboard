@@ -267,8 +267,8 @@ const translations = {
   sasettings_superadmin_role_read_only_superadmin: 'Read only superadmin',
   sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
-  sasettings_groups: 'Banks of vaults',
-  sasettings_groups_explanation:
+  sasettings_banks: 'Banks of vaults',
+  sasettings_banks_explanation:
     'Banks of vaults are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
   sasettings_group_id: 'ID',
   sasettings_new_bank_form_title: 'Create a bank',

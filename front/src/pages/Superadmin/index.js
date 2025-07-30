@@ -42,7 +42,7 @@ class Superadmin extends React.Component {
             className={`tab-button large ${activeTab === 'banks' ? 'active' : ''}`}
             onClick={() => this.setActiveTab('banks')}
           >
-            {i18n.t('sasettings_groups')}
+            {i18n.t('sasettings_banks')}
           </button>
           <button
             className={`tab-button large ${activeTab === 'admins' ? 'active' : ''}`}
