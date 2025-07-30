@@ -166,7 +166,7 @@ class Admins extends React.Component {
                 <th>{i18n.t('settings_admin_email')}</th>
                 <th>{i18n.t('settings_admin_created_at')}</th>
                 <th>{i18n.t('menu_superadmin')}</th>
-                <th>{i18n.t('settings_admin_groups')}</th>
+                <th>{i18n.t('settings_admin_banks')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
