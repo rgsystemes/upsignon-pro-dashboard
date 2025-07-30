@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const update_admin_group = async (req: any, res: any): Promise<void> => {
+export const update_admin_bank = async (req: any, res: any): Promise<void> => {
   try {
     if (req.session.isReadOnlySuperadmin) {
       res.status(401).json({ error: 'Not allowed for read only superadmin' });
@@ -27,7 +27,7 @@ export const update_admin_group = async (req: any, res: any): Promise<void> => {
     ]);
     res.status(200).end();
   } catch (e) {
-    logError('update_admin_group', e);
+    logError('update_admin_bank', e);
     res.status(400).end();
   }
 };

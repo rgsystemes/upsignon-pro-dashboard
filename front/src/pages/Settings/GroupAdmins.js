@@ -41,7 +41,7 @@ class GroupAdmins extends React.Component {
     }
   };
   deleteAdmin = async (id) => {
-    const confirmation = window.confirm(i18n.t('settings_group_admin_delete_warning'));
+    const confirmation = window.confirm(i18n.t('settings_bank_admin_delete_warning'));
     if (confirmation) {
       try {
         this.props.setIsLoading(true);
@@ -77,7 +77,7 @@ class GroupAdmins extends React.Component {
   render() {
     return (
       <div style={{ marginTop: 20 }}>
-        <h2>{i18n.t('settings_group_admins_title')}</h2>
+        <h2>{i18n.t('settings_bank_admins_title')}</h2>
         <div
           style={{
             display: 'flex',
@@ -99,7 +99,7 @@ class GroupAdmins extends React.Component {
             style={{ marginLeft: 10 }}
             onClick={this.insertGroupAdmin}
           >
-            {i18n.t('settings_group_admins_invite')}
+            {i18n.t('settings_bank_admins_invite')}
           </div>
         </div>
         {this.state.admins.length > 0 && (

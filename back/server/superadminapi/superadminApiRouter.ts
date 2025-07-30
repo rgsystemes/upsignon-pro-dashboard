@@ -1,13 +1,13 @@
 import express from 'express';
 import { delete_admin } from './delete_admin';
-import { delete_group } from './delete_group';
+import { delete_bank } from './delete_bank';
 import { get_banks } from './get_banks';
-import { update_group } from './update_group';
+import { update_bank } from './update_bank';
 import { get_admins } from './get_admins';
-import { insert_group } from './insert_group';
+import { insert_bank } from './insert_bank';
 import { insert_admin } from './insert_admin';
 import { update_setting } from './update_setting';
-import { update_admin_group } from './update_admin_group';
+import { update_admin_bank } from './update_admin_bank';
 import { get_password_reset_requests } from '../api/get_password_reset_requests';
 import { count_password_reset_requests } from '../api/count_password_reset_requests';
 import { delete_pwd_reset_request } from '../api/delete_pwd_reset_request';
@@ -44,14 +44,14 @@ superadminApiRouter.get('/test-email', test_email);
 superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
-superadminApiRouter.post('/update-admin-group', update_admin_group);
+superadminApiRouter.post('/update-admin-group', update_admin_bank);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
 
 // BANKS
 superadminApiRouter.get('/banks', get_banks);
-superadminApiRouter.post('/insert-group', insert_group);
-superadminApiRouter.post('/update-group', update_group);
-superadminApiRouter.post('/delete-group/:id', delete_group);
+superadminApiRouter.post('/insert-group', insert_bank);
+superadminApiRouter.post('/update-group', update_bank);
+superadminApiRouter.post('/delete-group/:id', delete_bank);
 
 // SETTINGS
 superadminApiRouter.post('/get-setting', get_setting);

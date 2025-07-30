@@ -63,7 +63,7 @@ Foreach($u in $usersPaths){
     return (
       <div>
         <h2>{i18n.t('setup_link')}</h2>
-        <div>{i18n.t('setup_link_is_group_specific')}</div>
+        <div>{i18n.t('setup_link_is_bank_specific')}</div>
         <div
           style={{
             margin: 20,

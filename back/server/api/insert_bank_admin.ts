@@ -3,7 +3,7 @@ import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const insert_group_admin = async (req: any, res: any): Promise<void> => {
+export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
   try {
     if (req.session.isReadOnlySuperadmin) {
       return res.status(401).end();
@@ -33,7 +33,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     );
     res.status(200).end();
   } catch (e) {
-    logError('insert_group_admin', e);
+    logError('insert_bank_admin', e);
     res.status(400).end();
   }
 };

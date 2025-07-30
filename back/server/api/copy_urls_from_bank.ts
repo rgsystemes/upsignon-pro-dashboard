@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 
-export const copy_urls_from_group = async (req: any, res: any): Promise<void> => {
+export const copy_urls_from_bank = async (req: any, res: any): Promise<void> => {
   try {
     if (req.session.isReadOnlySuperadmin) {
       return res.status(401).end();
@@ -12,7 +12,7 @@ export const copy_urls_from_group = async (req: any, res: any): Promise<void> =>
     );
     res.status(200).send({ nbAdded: dbRes.rowCount });
   } catch (e) {
-    logError('copy_urls_from_group', e);
+    logError('copy_urls_from_bank', e);
     res.status(400).end();
   }
 };

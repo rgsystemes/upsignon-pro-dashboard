@@ -64,7 +64,7 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.nb_accounts_green AS nb_accounts_green,
     u.nb_accounts_with_duplicated_password AS nb_accounts_with_duplicated_password,
     u.nb_accounts_with_no_password AS nb_accounts_with_no_password,
-    b.settings AS group_settings,
+    b.settings AS bank_settings,
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
     u.allowed_offline_desktop AS allowed_offline_desktop,

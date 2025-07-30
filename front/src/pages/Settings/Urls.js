@@ -86,7 +86,7 @@ class Urls extends React.Component {
     }
     try {
       this.props.setIsLoading(true);
-      const { nbAdded } = await groupUrlFetch('/api/copy_urls_from_group', 'POST', {
+      const { nbAdded } = await groupUrlFetch('/api/copy_urls_from_bank', 'POST', {
         fromGroup: bankId,
       });
       this.nbCopiedFromTargetGroup = nbAdded;
@@ -109,7 +109,7 @@ class Urls extends React.Component {
           <div>
             <div>{i18n.t('settings_urls_copy')}</div>
             <select onChange={this.copyFromGroup}>
-              <option value="">{i18n.t('settings_urls_choose_group')}</option>
+              <option value="">{i18n.t('settings_urls_choose_bank')}</option>
               {this.props.otherBanks.map((g) => (
                 <option key={g.id} value={g.id} disabled={isReadOnlySuperadmin}>
                   {g.name}

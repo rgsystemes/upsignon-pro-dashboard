@@ -1,6 +1,6 @@
 import express from 'express';
 import { authorize_device } from './authorize_device';
-import { copy_urls_from_group } from './copy_urls_from_group';
+import { copy_urls_from_bank } from './copy_urls_from_bank';
 import { count_password_reset_requests } from './count_password_reset_requests';
 import { count_shared_devices } from './count_shared_devices';
 import { count_users } from './count_users';
@@ -8,7 +8,7 @@ import { deactivate_device } from './deactivate_device';
 import { deactivate_device_all_users } from './deactivate_device_all_users';
 import { delete_allowed_email } from './delete_allowed_email';
 import { delete_device } from './delete_device';
-import { delete_group_admin } from './delete_group_admin';
+import { delete_bank_admin } from './delete_bank_admin';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
@@ -19,8 +19,8 @@ import { extract_emails_for_medium_passwords } from './extract_emails_for_medium
 import { extract_emails_for_shared_device } from './extract_emails_for_shared_device';
 import { extract_emails_for_weak_passwords } from './extract_emails_for_weak_passwords';
 import { get_allowed_emails } from './get_allowed_emails';
-import { get_group_admins } from './get_group_admins';
-import { get_group_settings } from './get_group_settings';
+import { get_bank_admins } from './get_bank_admins';
+import { get_bank_settings } from './get_bank_settings';
 import { get_password_stats } from './get_password_stats';
 import { get_password_reset_requests } from './get_password_reset_requests';
 import { get_shared_devices } from './get_shared_devices';
@@ -30,10 +30,10 @@ import { get_users } from './get_users';
 import { get_user_devices } from './get_user_devices';
 import { grant_pwd_reset_request } from './grant_pwd_reset_request';
 import { insert_allowed_email } from './insert_allowed_email';
-import { insert_group_admin } from './insert_group_admin';
+import { insert_bank_admin } from './insert_bank_admin';
 import { insert_url } from './insert_url';
 import { update_allowed_email } from './update_allowed_email';
-import { update_group } from './update_group';
+import { update_bank } from './update_bank';
 import { update_url } from './update_url';
 import { update_user_email } from './update_user_email';
 import { get_shared_vaults } from './get_shared_vaults';
@@ -45,7 +45,7 @@ import { update_user_setting } from './update_user_setting';
 import { extract_emails_msi_install } from './extract_emails_msi_install';
 import { getRedirectionUrl } from './get_redirection_url';
 import { setRedirectionUrl } from './set_redirection_url';
-import { get_group_entra_config } from './get_group_entra_config';
+import { get_bank_entra_config } from './get_bank_entra_config';
 import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
@@ -152,24 +152,24 @@ apiRouter.get('/urls', get_urls);
 apiRouter.post('/delete-url/:id', delete_url);
 apiRouter.post('/update-url', update_url);
 apiRouter.post('/insert-url', insert_url);
-apiRouter.post('/copy_urls_from_group', copy_urls_from_group);
+apiRouter.post('/copy_urls_from_bank', copy_urls_from_bank);
 
 // Admins
-apiRouter.post('/delete-admin/:id', delete_group_admin);
-apiRouter.post('/insert-admin', insert_group_admin);
-apiRouter.get('/group-admins', get_group_admins);
+apiRouter.post('/delete-admin/:id', delete_bank_admin);
+apiRouter.post('/insert-admin', insert_bank_admin);
+apiRouter.get('/group-admins', get_bank_admins);
 
 // Settings
-apiRouter.get('/group-settings', get_group_settings);
-apiRouter.post('/group-settings-update', update_group);
+apiRouter.get('/group-settings', get_bank_settings);
+apiRouter.post('/group-settings-update', update_bank);
 
 // SERVER REDIRECTION
 apiRouter.post('/redirection_url', getRedirectionUrl);
 apiRouter.post('/set_redirection_url', setRedirectionUrl);
 
 // Microsoft Entra
-apiRouter.get('/group-entra-config', get_group_entra_config);
-apiRouter.post('/group-entra-config-update', update_group);
+apiRouter.get('/group-entra-config', get_bank_entra_config);
+apiRouter.post('/group-entra-config-update', update_bank);
 apiRouter.post('/reload-ms-entra-instance', reloadMSEntraInstance);
 apiRouter.post('/test-ms-entra', test_ms_entra);
 apiRouter.get('/list-ms-entra-apis', listMSEntraAPIs);

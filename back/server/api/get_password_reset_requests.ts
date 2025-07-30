@@ -12,7 +12,7 @@ export const get_password_reset_requests = async (
 
     const prrResult = await db.query(
       `SELECT
-      banks.name AS group_name,
+      banks.name AS bank_name,
       u.email,
       ud.device_name,
       ud.os_family AS os_family,
