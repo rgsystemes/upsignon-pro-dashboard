@@ -121,16 +121,16 @@ app.use((req, res, next) => {
 
 // ALL ROUTES BELOW ARE ONLY ACCESSIBLE WITH A VALID SESSION
 
-// ROUTES THAT ARE AVAILABLE TO BOTH GROUP ADMINS AND SUPERADMINS
+// ROUTES THAT ARE AVAILABLE TO BOTH BANK ADMINS AND SUPERADMINS
 app.get('/get_available_banks', get_available_banks);
 app.get('/server_url', get_server_url);
 app.use('/disconnect/', disconnect);
 
 app.use('/superadmin/api/', superadminApiRouter);
-app.use('/:groupId/api/', (req, res, next) => {
-  const groupId = req.params.groupId;
+app.use('/:bankId/api/', (req, res, next) => {
+  const bankId = req.params.bankId;
   // @ts-ignore
-  req.proxyParamsGroupId = parseInt(groupId);
+  req.proxyParamsBankId = parseInt(bankId);
   return apiRouter(req, res, next);
 });
 
@@ -141,14 +141,14 @@ app.use(
     '/superadmin/settings/',
     '/superadmin/licences/',
     '/superadmin/',
-    '/:groupId/users/',
-    '/:groupId/shared_devices/',
-    '/:groupId/shared_vaults/',
-    '/:groupId/password_reset_requests/',
-    '/:groupId/settings/',
-    '/:groupId/other/',
-    '/:groupId/licences/',
-    '/:groupId/', // BEWARE ! this route would match any other route => keep it at the end !
+    '/:bankId/users/',
+    '/:bankId/shared_devices/',
+    '/:bankId/shared_vaults/',
+    '/:bankId/password_reset_requests/',
+    '/:bankId/settings/',
+    '/:bankId/other/',
+    '/:bankId/licences/',
+    '/:bankId/', // BEWARE ! this route would match any other route => keep it at the end !
   ],
   express.static(frontBuildDir),
 );

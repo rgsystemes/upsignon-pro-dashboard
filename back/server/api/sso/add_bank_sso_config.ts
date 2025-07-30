@@ -30,18 +30,18 @@ export const add_bank_sso_config = async (req: any, res: any): Promise<void> => 
     // check if item already exists to avoid readding it
     const selectRes = await db.query(
       `SELECT 1 FROM bank_sso_config WHERE bank_id=$1 AND openid_configuration_url=$2 AND client_id=$3`,
-      [req.proxyParamsGroupId, configUrl, clientId],
+      [req.proxyParamsBankId, configUrl, clientId],
     );
     if (selectRes.rows.length > 0) {
       return res.status(200).end();
     }
 
     // for now, make sure there is only one config per bank by deleting previous configs
-    await db.query(`DELETE FROM bank_sso_config WHERE bank_id=$1`, [req.proxyParamsGroupId]);
+    await db.query(`DELETE FROM bank_sso_config WHERE bank_id=$1`, [req.proxyParamsBankId]);
 
     await db.query(
       `INSERT INTO bank_sso_config (bank_id, openid_configuration_url, client_id) VALUES ($1,$2,$3)`,
-      [req.proxyParamsGroupId, configUrl, clientId],
+      [req.proxyParamsBankId, configUrl, clientId],
     );
 
     res.status(200).end();

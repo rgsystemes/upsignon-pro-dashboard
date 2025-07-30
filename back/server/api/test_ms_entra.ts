@@ -17,7 +17,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     let msUserId: string | null = null;
     let msUserIdError: string | null = null;
     try {
-      msUserId = await MicrosoftGraph.getUserId(req.proxyParamsGroupId, safeEmailAddress);
+      msUserId = await MicrosoftGraph.getUserId(req.proxyParamsBankId, safeEmailAddress);
     } catch (e) {
       logError('graph.getUserId', e);
       msUserIdError = '' + e;
@@ -28,7 +28,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     } else {
       try {
         isAuthorized = await MicrosoftGraph.isUserAuthorizedForUpSignOn(
-          req.proxyParamsGroupId,
+          req.proxyParamsBankId,
           msUserId,
         );
       } catch (e) {
@@ -38,7 +38,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
     }
     try {
       allUpSignOnUsers = await MicrosoftGraph.getAllUsersAssignedToUpSignOn(
-        req.proxyParamsGroupId,
+        req.proxyParamsBankId,
         false,
       );
     } catch (e) {
@@ -51,7 +51,7 @@ export const test_ms_entra = async (req: any, res: any): Promise<void> => {
       userGroupsError = 'MS user id not found';
     } else {
       try {
-        userGroups = await MicrosoftGraph.getGroupsForUser(req.proxyParamsGroupId, msUserId);
+        userGroups = await MicrosoftGraph.getGroupsForUser(req.proxyParamsBankId, msUserId);
       } catch (e) {
         logError('graph.getGroupsForUser', e);
         userGroupsError = '' + e;

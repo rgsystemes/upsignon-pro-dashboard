@@ -12,21 +12,21 @@ export const update_url = async (req: any, res: any): Promise<void> => {
       await db.query(`UPDATE url_list SET displayed_name=$1 WHERE id=$2 AND group_id=$3`, [
         displayedName,
         id,
-        req.proxyParamsGroupId,
+        req.proxyParamsBankId,
       ]);
     }
     if (signinUrl != null) {
       await db.query(`UPDATE url_list SET signin_url=$1 WHERE id=$2 AND group_id=$3`, [
         signinUrl,
         id,
-        req.proxyParamsGroupId,
+        req.proxyParamsBankId,
       ]);
     }
     if (usesBasicAuth != null) {
       await db.query(`UPDATE url_list SET uses_basic_auth=$1 WHERE id=$2 AND group_id=$3`, [
         usesBasicAuth,
         id,
-        req.proxyParamsGroupId,
+        req.proxyParamsBankId,
       ]);
     }
     res.status(200).end();

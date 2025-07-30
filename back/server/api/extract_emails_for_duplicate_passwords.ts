@@ -10,7 +10,7 @@ export const extract_emails_for_duplicate_passwords = async (
     const nb = parseInt(req.query.minDuplicates, 10) || 1;
     const dbRes = await db.query(
       `SELECT email FROM users WHERE nb_accounts_with_duplicated_password >= $1 ${isSuperadmin ? '' : 'AND group_id=$2'}`,
-      isSuperadmin ? [nb] : [nb, req.proxyParamsGroupId],
+      isSuperadmin ? [nb] : [nb, req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

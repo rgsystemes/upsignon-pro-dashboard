@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupId } from '../../helpers/env';
+import { bankId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import { groupUrlFetch } from '../../helpers/urlFetch';
 

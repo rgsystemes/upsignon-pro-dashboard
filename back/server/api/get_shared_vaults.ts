@@ -18,12 +18,12 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
       LEFT JOIN users AS u ON svr.user_id=u.id
       WHERE u.email LIKE '%' || $1 || '%'
       AND sv.group_id=$2`,
-        [search, req.proxyParamsGroupId],
+        [search, req.proxyParamsBankId],
       );
       sharedVaultsCount = parseInt(countReq.rows[0]?.count || 0, 10);
     } else {
       const countReq = await db.query('SELECT COUNT(id) FROM shared_vaults WHERE group_id=$1', [
-        req.proxyParamsGroupId,
+        req.proxyParamsBankId,
       ]);
       sharedVaultsCount = parseInt(countReq.rows[0]?.count || 0, 10);
     }
@@ -37,7 +37,7 @@ export const get_shared_vaults = async (req: any, res: any): Promise<void> => {
     const queryInputs: string[] = [
       limit.toString(),
       (pageOffset * limit).toString(),
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ];
     if (isSearching) {
       queryInputs.push(search);

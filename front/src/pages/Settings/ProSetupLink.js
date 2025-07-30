@@ -1,6 +1,6 @@
 import React from 'react';
 import { baseUrlFetch, groupUrlFetch } from '../../helpers/urlFetch';
-import { groupId } from '../../helpers/env';
+import { bankId } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import qrcodeGenerator from 'qrcode-generator';
 

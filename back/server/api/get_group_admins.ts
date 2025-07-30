@@ -12,11 +12,11 @@ export const get_group_admins = async (req: any, res: any): Promise<void> => {
       LEFT JOIN admin_groups ON admins.id=admin_groups.admin_id
       WHERE admin_groups.group_id = $1
       ORDER BY admins.created_at ASC`,
-      [req.proxyParamsGroupId],
+      [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
-    logError("get_group_admins", e);
+    logError('get_group_admins', e);
     res.status(400).end();
   }
 };

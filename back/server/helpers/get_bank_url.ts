@@ -12,7 +12,7 @@ export const get_bank_url = async (req: any, res: any): Promise<void> => {
     // NB: settingsRes.rows[0].value because it used to contain also oidcAuthority, oidcClientId, oidcClientIdForAddons
 
     const bankRes = await db.query('SELECT public_id FROM groups WHERE id=$1', [
-      req.proxyParamsGroupId,
+      req.proxyParamsBankId,
     ]);
     const link = url + '/' + bankRes.rows[0].public_id;
 

@@ -11,7 +11,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
     const email = req.body.newEmail;
     if (typeof email !== 'string') return res.status(401).end();
 
-    const groupId = req.proxyParamsGroupId;
+    const bankId = req.proxyParamsBankId;
 
     const selectRes = await db.query('SELECT id FROM admins WHERE email=$1', [email]);
     var id = '';
@@ -29,7 +29,7 @@ export const insert_group_admin = async (req: any, res: any): Promise<void> => {
 
     await db.query(
       'INSERT INTO admin_groups (admin_id, group_id) VALUES ($1,$2) ON CONFLICT (admin_id, group_id) DO NOTHING',
-      [id, groupId],
+      [id, bankId],
     );
     res.status(200).end();
   } catch (e) {

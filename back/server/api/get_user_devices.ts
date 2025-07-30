@@ -24,7 +24,7 @@ export const get_user_devices = async (req: any, res: any): Promise<void> => {
     AND ud.group_id=$2
     ORDER BY ud.created_at DESC
     `,
-      [userId, req.proxyParamsGroupId],
+      [userId, req.proxyParamsBankId],
     );
     res.status(200).send(userDevicesRequest.rows);
   } catch (e) {
