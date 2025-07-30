@@ -368,7 +368,7 @@ class Banks extends React.Component {
                   <br />
                   {this.getSortIcon(0)}
                 </th>
-                <th>{i18n.t('sasettings_nb_licences_sold')}</th>
+                <th>{i18n.t('sasettings_nb_associated_licences')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_bank_created_at')}</th>
                 <th>{i18n.t('sasettings_bank_is_testing')}</th>
