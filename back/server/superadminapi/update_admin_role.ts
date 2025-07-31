@@ -1,5 +1,6 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
+import { updateSessionRole } from '../helpers/sessionStore';
 
 export const update_admin_role = async (req: any, res: any): Promise<void> => {
   try {
@@ -20,9 +21,7 @@ export const update_admin_role = async (req: any, res: any): Promise<void> => {
 
     // DISCONNECT the target admin
     const targetAdmin = await db.query('SELECT email FROM admins WHERE id=$1', [req.body.adminId]);
-    await db.query(`DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1`, [
-      targetAdmin.rows[0].email,
-    ]);
+    await updateSessionRole(targetAdmin.rows[0].email, isSuperadmin, isReadOnlySuperadmin);
     res.status(200).end();
   } catch (e) {
     logError('update_admin_role', e);

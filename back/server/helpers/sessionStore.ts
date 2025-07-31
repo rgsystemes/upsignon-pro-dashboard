@@ -17,7 +17,7 @@ export default class PostgreSQLStore extends expressSession.Store {
         'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data JSON NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
       );
     } catch (e) {
-      logError("sessionStore", "createTable", e);
+      logError('sessionStore', 'createTable', e);
       throw e;
     }
   };
@@ -111,3 +111,73 @@ export default class PostgreSQLStore extends expressSession.Store {
     }
   };
 }
+
+export const updateSessionAddBank = async (adminEmail: string, bankId: number): Promise<void> => {
+  try {
+    const prevSessionRes = await db.query(
+      "SELECT session_data->>'banks' as banks FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1",
+      [adminEmail],
+    );
+    if (prevSessionRes.rows[0]) {
+      const newBankList = [...(JSON.parse(prevSessionRes.rows[0].banks) ?? []), bankId];
+      await db.query(
+        `UPDATE admin_sessions
+        SET session_data = jsonb_set(session_data, '{banks}', $2, true)
+        WHERE session_data ->> 'adminEmail' = $1`,
+        [adminEmail, JSON.stringify(newBankList)],
+      );
+    }
+  } catch (e) {
+    logError('sessionStore', 'updateSessionAddBank', e);
+  }
+};
+export const updateSessionDropBank = async (adminEmail: string, bankId: number): Promise<void> => {
+  try {
+    const prevSessionRes = await db.query(
+      "SELECT session_data->>'banks' as banks FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1",
+      [adminEmail],
+    );
+    if (prevSessionRes.rows[0]) {
+      const newBankList = (JSON.parse(prevSessionRes.rows[0].banks) ?? []).filter(
+        (b: number) => b != bankId,
+      );
+      await db.query(
+        `UPDATE admin_sessions
+        SET session_data = jsonb_set(session_data, '{banks}', $2)
+        WHERE session_data ->> 'adminEmail' = $1`,
+        [adminEmail, JSON.stringify(newBankList)],
+      );
+    }
+  } catch (e) {
+    logError('sessionStore', 'updateSessionDropBank', e);
+  }
+};
+export const updateSessionRole = async (
+  adminEmail: string,
+  isSuperadmin: boolean,
+  isReadOnlySuperadmin: boolean,
+): Promise<void> => {
+  try {
+    await db.query(
+      `UPDATE admin_sessions
+       SET session_data = jsonb_set(
+         jsonb_set(session_data, '{isSuperadmin}', $2),
+         '{isReadOnlySuperadmin}', $3
+       )
+       WHERE session_data ->> 'adminEmail' = $1`,
+      [adminEmail, JSON.stringify(isSuperadmin), JSON.stringify(isReadOnlySuperadmin)],
+    );
+  } catch (e) {
+    logError('sessionStore', 'updateSessionRole', e);
+  }
+};
+
+export const deleteSession = async (adminEmail: string): Promise<void> => {
+  try {
+    await db.query("DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1", [
+      adminEmail,
+    ]);
+  } catch (e) {
+    logError('sessionStore', 'deleteSession', e);
+  }
+};

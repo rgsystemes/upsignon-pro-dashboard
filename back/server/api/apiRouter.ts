@@ -61,10 +61,8 @@ apiRouter.use(async (req: any, res: any, next) => {
   if (
     !req.session.isSuperadmin &&
     !req.session.isReadOnlySuperadmin &&
-    // @ts-ignore
     !req.session.banks?.includes(req.proxyParamsBankId)
   ) {
-    // @ts-ignore
     console.error('Unauthorized for bank ' + req.proxyParamsBankId);
     return res.status(401).end();
   }
