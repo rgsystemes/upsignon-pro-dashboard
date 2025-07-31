@@ -272,6 +272,14 @@ const translations = {
   sasettings_banks: 'Banques de coffres-forts',
   sasettings_banks_explanation:
     "Les banques de coffres-forts sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur banque. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs banques.",
+  sasettings_resellers: 'Revendeurs',
+  sasettings_reseller_name: 'Nom du revendeur',
+  sasettings_reseller_created_at: 'Créé le',
+  sasettings_reseller_bank_count: 'Nombre de banques',
+  sasettings_reseller_name_placeholder: 'Saisir le nom du revendeur',
+  sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce revendeur ?',
+  sasettings_reseller_delete_error_banks_associated:
+    'Impossible de supprimer ce revendeur car des banques lui sont encore associées. Veuillez réassigner ou supprimer les banques associées en premier.',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
   sasettings_new_bank_form_bank_name: 'Nom de la banque (2 à 50 caractères)',
