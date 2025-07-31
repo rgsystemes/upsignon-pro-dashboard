@@ -27,6 +27,10 @@ import { send_email, send_email_precheck } from '../api/send_email';
 import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
 import { get_licences } from '../api/get_licences';
 import { extract_admins } from '../api/extract_admins';
+import { get_resellers } from './reseller/get_resellers';
+import { add_reseller } from './reseller/add_reseller';
+import { update_reseller } from './reseller/update_reseller';
+import { delete_reseller } from './reseller/delete_reseller';
 
 export const superadminApiRouter = express.Router();
 
@@ -51,6 +55,12 @@ superadminApiRouter.get('/banks', get_banks);
 superadminApiRouter.post('/insert-bank', insert_bank);
 superadminApiRouter.post('/update-bank', update_bank);
 superadminApiRouter.post('/delete-bank/:id', delete_bank);
+
+// RESELLERS
+superadminApiRouter.get('/resellers', get_resellers);
+superadminApiRouter.post('/add-reseller', add_reseller);
+superadminApiRouter.post('/update-reseller', update_reseller);
+superadminApiRouter.post('/delete-reseller/:id', delete_reseller);
 
 // SETTINGS
 superadminApiRouter.post('/get-setting', get_setting);
