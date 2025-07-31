@@ -2,6 +2,7 @@ import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { baseFrontUrl } from '../../helpers/env';
 
 // Props : setIsLoading
 class Resellers extends React.Component {
@@ -112,7 +113,7 @@ class Resellers extends React.Component {
               <tr>
                 <th>{i18n.t('sasettings_reseller_name')}</th>
                 <th>{i18n.t('sasettings_reseller_created_at')}</th>
-                <th>{i18n.t('sasettings_reseller_bank_count')}</th>
+                <th>{i18n.t('sasettings_reseller_banks')}</th>
                 <th>{i18n.t('actions')}</th>
               </tr>
             </thead>
@@ -130,7 +131,24 @@ class Resellers extends React.Component {
                       />
                     </td>
                     <td>{new Date(reseller.created_at).toLocaleDateString()}</td>
-                    <td>{reseller.bank_count}</td>
+                    <td>
+                      <div>
+                        {reseller.banks &&
+                          reseller.banks.map((b) => {
+                            return (
+                              <div
+                                key={b.id}
+                                className="action"
+                                onClick={() => {
+                                  window.location.href = baseFrontUrl + '/' + b.id + '/';
+                                }}
+                              >
+                                {b.name}
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </td>
                     <td className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
                       {parseInt(reseller.bank_count) === 0 && (
                         <div className="action" onClick={() => this.deleteReseller(reseller.id)}>
