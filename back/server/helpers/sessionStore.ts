@@ -5,7 +5,7 @@ import { AdminRoles } from './adminRoles';
 
 const oneHour = 3600; // seconds
 
-export default class PostgreSQLStore extends expressSession.Store {
+export class PostgreSQLStore extends expressSession.Store {
   constructor() {
     super();
     this.createTable();

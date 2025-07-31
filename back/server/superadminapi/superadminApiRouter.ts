@@ -31,6 +31,7 @@ import { get_resellers } from './reseller/get_resellers';
 import { add_reseller } from './reseller/add_reseller';
 import { update_reseller } from './reseller/update_reseller';
 import { delete_reseller } from './reseller/delete_reseller';
+import { update_admin_reseller } from './update_admin_reseller';
 
 export const superadminApiRouter = express.Router();
 
@@ -48,6 +49,7 @@ superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-bank', update_admin_bank);
+superadminApiRouter.post('/update-admin-reseller', update_admin_reseller);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
 
 // BANKS
