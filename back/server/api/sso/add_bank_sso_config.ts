@@ -5,6 +5,9 @@ import { microsoftClientId, microsoftConfigUrl } from './sso_constants';
 
 export const add_bank_sso_config = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.adminRole === 'restricted_superadmin') {
+      return res.status(401).end();
+    }
     const safeBody: {
       configType: 'microsoft' | 'custom';
       configUrl: string | null;

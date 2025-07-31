@@ -3,8 +3,8 @@ import { logError } from '../helpers/logger';
 
 export const delete_bank = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
-      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+    if (req.session.adminRole !== 'superadmin') {
+      res.status(401).json({ error: 'Not allowed for restricted superadmin' });
       return;
     }
     await db.query(`DELETE FROM banks WHERE id=$1`, [req.params.id]);

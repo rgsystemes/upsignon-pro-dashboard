@@ -7,7 +7,7 @@ import { Banks } from './Banks';
 import { ProServerUrl } from './ProServerUrl';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { EmailConfig } from './EmailConfig';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props setIsLoading, updateMenuBanks
 class Superadmin extends React.Component {
@@ -51,7 +51,7 @@ class Superadmin extends React.Component {
             {i18n.t('sasettings_superadmins')}
           </button>
           <button
-            className={`tab-button large ${activeTab === 'settings' ? 'active' : ''} ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`tab-button large ${activeTab === 'settings' ? 'active' : ''} ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
             onClick={() => this.setActiveTab('settings')}
           >
             {i18n.t('menu_settings')}

@@ -4,6 +4,10 @@ import { EntraGroup, MicrosoftGraph } from 'ms-entra-for-upsignon';
 
 export const test_ms_entra = async (req: any, res: any): Promise<void> => {
   try {
+    if (req.session.adminRole === 'restricted_superadmin') {
+      res.status(401).end();
+      return;
+    }
     const userEmail = req.body.email;
     if (!userEmail) return res.status(400).end();
 

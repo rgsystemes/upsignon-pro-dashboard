@@ -1,7 +1,7 @@
 import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props : setIsLoading
 class AllowedEmails extends React.Component {
@@ -97,10 +97,10 @@ class AllowedEmails extends React.Component {
             ref={(r) => {
               this.newInputRef = r;
             }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
           <div
-            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
             style={{ marginLeft: 10 }}
             onClick={this.insertAllowedEmail}
           >
@@ -122,7 +122,7 @@ class AllowedEmails extends React.Component {
                     <tr key={ae.id}>
                       <td
                         style={{ cursor: 'pointer' }}
-                        className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                         onClick={() =>
                           this.setState((s) => {
                             return {
@@ -137,7 +137,7 @@ class AllowedEmails extends React.Component {
                       </td>
                       <td>
                         <div
-                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.deleteAllowedEmail(ae.id)}
                         >
                           {i18n.t('delete')}
@@ -165,11 +165,11 @@ class AllowedEmails extends React.Component {
                                 this.setState({ isEditing: false });
                               }, 150);
                             }}
-                            disabled={isReadOnlySuperadmin}
+                            disabled={isRestrictedSuperadmin}
                           />
                           <span
                             style={{ marginLeft: 20 }}
-                            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                            className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                             onClick={() => this.submitAllowedEmailEdition()}
                           >
                             {i18n.t('validate')}

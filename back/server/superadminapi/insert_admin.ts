@@ -5,19 +5,19 @@ import { logError } from '../helpers/logger';
 
 export const insert_admin = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
-      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+    if (req.session.adminRole !== 'superadmin') {
+      res.status(401).json({ error: 'Not allowed for restricted superadmin' });
       return;
     }
     const email = req.body.newEmail;
     if (typeof email !== 'string') return res.status(401).end();
 
-    const isSuperadmin = req.body.isSuperadmin;
+    const adminRole = req.body.adminRole;
 
     const newId = v4();
     await db.query(
-      `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) ON CONFLICT (email) DO UPDATE SET is_superadmin=$3`,
-      [newId, email, isSuperadmin],
+      `INSERT INTO admins (id, email, admin_role) VALUES ($1, lower($2), $3) ON CONFLICT (email) DO UPDATE SET admin_role=$3`,
+      [newId, email, adminRole],
     );
     res.status(200).end();
   } catch (e) {

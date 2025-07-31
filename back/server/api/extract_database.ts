@@ -4,13 +4,13 @@ import { logError } from '../helpers/logger';
 export const extract_database = async (
   req: any,
   res: any,
-  isSuperadmin: boolean,
+  isSuperadminPage: boolean,
 ): Promise<void> => {
   try {
     const queryString = `
     SELECT
       u.email,
-      ${isSuperadmin ? 'b.name AS bank_name,' : ''}
+      ${isSuperadminPage ? 'b.name AS bank_name,' : ''}
       ud.device_unique_id AS device_uid,
       ud.device_name AS device_name,
       ud.authorization_status AS authorization_status,
@@ -45,11 +45,11 @@ export const extract_database = async (
       ud.enrollment_method AS enrollment_method
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
-    ${isSuperadmin ? 'INNER JOIN banks AS b ON u.bank_id=b.id' : ''}
-    ${isSuperadmin ? '' : 'WHERE u.bank_id=$1'}
+    ${isSuperadminPage ? 'INNER JOIN banks AS b ON u.bank_id=b.id' : ''}
+    ${isSuperadminPage ? '' : 'WHERE u.bank_id=$1'}
     ORDER BY u.email ASC, ud.created_at DESC
   `;
-    const dbRes = await db.query(queryString, isSuperadmin ? [] : [req.proxyParamsBankId]);
+    const dbRes = await db.query(queryString, isSuperadminPage ? [] : [req.proxyParamsBankId]);
 
     let csvContent = '';
     if (dbRes.rowCount && dbRes.rowCount > 0) {

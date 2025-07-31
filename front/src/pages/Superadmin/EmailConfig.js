@@ -1,7 +1,7 @@
 import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 export class EmailConfig extends React.Component {
   state = {
@@ -86,7 +86,7 @@ export class EmailConfig extends React.Component {
         {!this.state.usePostfix && (
           <form
             onSubmit={this.submitNewEmailConfig}
-            className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
           >
             <label htmlFor="emailHost">{i18n.t('sasettings_email_config_label_host')}</label>
             <br />
@@ -192,7 +192,7 @@ export class EmailConfig extends React.Component {
         </div>
         <form
           onSubmit={this.testEmailSending}
-          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
         >
           <input
             type="text"

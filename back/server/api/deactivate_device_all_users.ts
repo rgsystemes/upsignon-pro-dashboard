@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const deactivate_device_all_users = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
     const deviceId = req.params.deviceId;

@@ -7,8 +7,8 @@ export const delete_pwd_reset_request = async (
   asSuperadmin: boolean,
 ): Promise<void> => {
   try {
-    if (asSuperadmin && req.session.isReadOnlySuperadmin) {
-      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+    if (req.session.adminRole === 'restricted_superadmin') {
+      res.status(401).json({ error: 'Not allowed for restricted superadmin' });
       return;
     }
     const requestId = req.params.requestId;

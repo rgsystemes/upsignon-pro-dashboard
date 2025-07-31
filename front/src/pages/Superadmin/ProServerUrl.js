@@ -2,7 +2,7 @@ import React from 'react';
 import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { ServerStatus } from './ServerStatus';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 export class ProServerUrl extends React.Component {
   urlInputRef = null;
@@ -104,7 +104,7 @@ export class ProServerUrl extends React.Component {
           {this.state.isEditing ? (
             <div
               style={{ marginLeft: 20 }}
-              className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+              className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
               onClick={this.submitNewProServerUrl}
             >
               {i18n.t('validate')}
@@ -112,7 +112,7 @@ export class ProServerUrl extends React.Component {
           ) : (
             <div
               style={{ marginLeft: 20 }}
-              className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+              className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
               onClick={() => this.setState({ isEditing: true })}
             >
               {i18n.t('edit')}

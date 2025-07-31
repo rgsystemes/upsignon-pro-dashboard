@@ -1,7 +1,7 @@
 import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props setIsLoading, totalCount, isSuperAdmin
 
@@ -106,13 +106,13 @@ class PasswordResetRequests extends React.Component {
                   )}
                   <td>
                     <div
-                      className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                      className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                       onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
                     >
                       {i18n.t('delete')}
                     </div>
                     <div
-                      className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                      className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                       onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
                     >
                       {i18n.t('password_reset_request_grant')}

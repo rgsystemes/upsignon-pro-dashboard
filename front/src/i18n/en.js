@@ -264,7 +264,7 @@ const translations = {
   sasettings_superadmins: 'Administrators',
   sasettings_superadmin_role: 'Role',
   sasettings_superadmin_role_admin: 'Admin',
-  sasettings_superadmin_role_read_only_superadmin: 'Read only superadmin',
+  sasettings_superadmin_role_restricted_superadmin: 'Restricted superadmin',
   sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
   sasettings_banks: 'Banks of vaults',

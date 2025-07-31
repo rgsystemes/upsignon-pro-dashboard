@@ -15,7 +15,10 @@ import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
 import { Other } from './pages/Other';
 import { Licences } from './pages/Licences';
-import { isReadOnlySuperadmin, setIsReadOnlySuperadmin } from './helpers/isReadOnlySuperadmin';
+import {
+  isRestrictedSuperadmin,
+  setIsRestrictedSuperadmin,
+} from './helpers/isRestrictedSuperadmin';
 
 class App extends React.Component {
   state = {
@@ -25,7 +28,7 @@ class App extends React.Component {
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
     banks: [],
-    isSuperadmin: false,
+    isSuperadminOrRestricted: false,
     isReady: false,
   };
   updateMenuBanks = (newBanks) => {
@@ -36,7 +39,9 @@ class App extends React.Component {
       const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
       // eslint-disable-next-line eqeqeq
       const isBankInList = banksRes.banks.some((g) => g.id == bankId);
-      if (banksRes.isSuperadmin) {
+      const isSuperadminOrRestricted =
+        banksRes.adminRole === 'superadmin' || banksRes.adminRole === 'restricted_superadmin';
+      if (isSuperadminOrRestricted) {
         if (!bankId || (bankId !== 'superadmin' && !isBankInList)) {
           window.location.href = baseFrontUrl + '/superadmin/';
         }
@@ -45,10 +50,10 @@ class App extends React.Component {
           window.location.href = baseFrontUrl + '/' + banksRes.banks[0].id + '/';
         }
       }
-      setIsReadOnlySuperadmin(banksRes.isReadOnlySuperadmin);
+      setIsRestrictedSuperadmin(banksRes.adminRole === 'restricted_superadmin');
       this.setState({
         banks: banksRes.banks,
-        isSuperadmin: banksRes.isSuperadmin,
+        isSuperadminOrRestricted: isSuperadminOrRestricted,
         isReady: true,
       });
     } catch (e) {
@@ -211,7 +216,7 @@ class App extends React.Component {
         <Menu
           pages={pages}
           banks={this.state.banks}
-          isSuperadmin={this.state.isSuperadmin}
+          isSuperadmin={this.state.isSuperadminOrRestricted}
           isSuperadminPage={bankId === 'superadmin'}
         />
         {pageContent}

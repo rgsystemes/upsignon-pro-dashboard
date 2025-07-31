@@ -1,7 +1,7 @@
 import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 export class MicrosoftEntraConfig extends React.Component {
   state = {
@@ -131,7 +131,7 @@ export class MicrosoftEntraConfig extends React.Component {
             </details>
           </div>
         </div>
-        <form onSubmit={isReadOnlySuperadmin ? null : this.submitNewEntraConfig}>
+        <form onSubmit={isRestrictedSuperadmin ? null : this.submitNewEntraConfig}>
           <label htmlFor="tenantId">{i18n.t('bank_setting_microsoft_entra_tenant_id_label')}</label>
           <br />
           <input
@@ -145,7 +145,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.tenantId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
 
           <br />
@@ -162,7 +162,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.clientId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
 
           <br />
@@ -181,7 +181,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.appResourceId}
             placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
 
           <br />
@@ -200,7 +200,7 @@ export class MicrosoftEntraConfig extends React.Component {
             value={this.state.clientSecret}
             placeholder="xxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             style={{ minWidth: 350, marginBottom: 15 }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
 
           <br />
@@ -208,7 +208,7 @@ export class MicrosoftEntraConfig extends React.Component {
             style={{ marginTop: 15 }}
             type="submit"
             value={i18n.t('bank_setting_microsoft_entra_apply_config')}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
           <br />
           <input
@@ -216,11 +216,14 @@ export class MicrosoftEntraConfig extends React.Component {
             type="button"
             onClick={this.reloadMSEntraInstance}
             value={i18n.t('bank_setting_microsoft_entra_permissions_reloaded')}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
         </form>
         <div style={{ marginTop: 20 }}>{i18n.t('bank_setting_microsoft_entra_testing')}</div>
-        <form onSubmit={this.testConfigWithEmail}>
+        <form
+          className={isRestrictedSuperadmin ? 'disabledUI' : null}
+          onSubmit={this.testConfigWithEmail}
+        >
           <input
             type="text"
             placeholder="prenom.nom@domaine.fr"

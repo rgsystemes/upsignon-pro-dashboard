@@ -4,16 +4,16 @@ import { logError } from '../helpers/logger';
 export const extract_emails_msi_install = async (
   req: any,
   res: any,
-  isSuperadmin: boolean,
+  isSuperadminPage: boolean,
 ): Promise<void> => {
   try {
     const dbRes = await db.query(
       `SELECT email FROM users AS u
         INNER JOIN user_devices AS ud ON ud.user_id=u.id
         WHERE ud.install_type='msi'
-        ${isSuperadmin ? '' : 'AND u.bank_id=$1'}
+        ${isSuperadminPage ? '' : 'AND u.bank_id=$1'}
       `,
-      isSuperadmin ? [] : [req.proxyParamsBankId],
+      isSuperadminPage ? [] : [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

@@ -266,7 +266,7 @@ const translations = {
   sasettings_superadmins: 'Administrateurs',
   sasettings_superadmin_role: 'Rôle',
   sasettings_superadmin_role_admin: 'Admin',
-  sasettings_superadmin_role_read_only_superadmin: 'Superadmin en lecture seule',
+  sasettings_superadmin_role_restricted_superadmin: 'Superadmin restreint',
   sasettings_superadmin_role_superadmin: 'Superadmin',
   sasettings_superadmins_invite: 'Autoriser',
   sasettings_banks: 'Banques de coffres-forts',

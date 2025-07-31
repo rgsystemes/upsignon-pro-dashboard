@@ -4,7 +4,7 @@ import { PaginationBar } from '../../helpers/paginationBar';
 import { frontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import { StatsCell } from '../../helpers/statsCell';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 const maxRenderedItems = 20;
 
@@ -275,16 +275,16 @@ class SharedVaults extends React.Component {
                                 this.toggleManagerRightsForUser(sv.id, ev.target.value, u.user_id);
                               }}
                             >
-                              <option value="owner" disabled={isReadOnlySuperadmin}>
+                              <option value="owner" disabled={isRestrictedSuperadmin}>
                                 {i18n.t('shared_account_user_access_level_owner')}
                               </option>
-                              <option value="editor" disabled={isReadOnlySuperadmin}>
+                              <option value="editor" disabled={isRestrictedSuperadmin}>
                                 {i18n.t('shared_account_user_access_level_editor')}
                               </option>
-                              <option value="reader" disabled={isReadOnlySuperadmin}>
+                              <option value="reader" disabled={isRestrictedSuperadmin}>
                                 {i18n.t('shared_account_user_access_level_reader')}
                               </option>
-                              <option value="blind" disabled={isReadOnlySuperadmin}>
+                              <option value="blind" disabled={isRestrictedSuperadmin}>
                                 {i18n.t('shared_account_user_access_level_blind')}
                               </option>
                             </select>
@@ -293,7 +293,7 @@ class SharedVaults extends React.Component {
                         <td>
                           {!isLastOwner && (
                             <div
-                              className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                              className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                               onClick={() => {
                                 this.unshareWithUser(
                                   sv.id,

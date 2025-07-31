@@ -59,8 +59,8 @@ export const apiRouter = express.Router();
 
 apiRouter.use(async (req: any, res: any, next) => {
   if (
-    !req.session.isSuperadmin &&
-    !req.session.isReadOnlySuperadmin &&
+    req.session.adminRole !== 'superadmin' &&
+    req.session.adminRole !== 'restricted_superadmin' &&
     !req.session.banks?.includes(req.proxyParamsBankId)
   ) {
     console.error('Unauthorized for bank ' + req.proxyParamsBankId);

@@ -4,7 +4,7 @@ import { logError } from '../helpers/logger';
 export const extract_emails_for_long_unused = async (
   req: any,
   res: any,
-  isSuperadmin: boolean,
+  isSuperadminPage: boolean,
 ): Promise<void> => {
   try {
     let nbDays = parseInt(req.query.unusedDays, 10);
@@ -18,9 +18,9 @@ export const extract_emails_for_long_unused = async (
         WHERE (SELECT AGE(last_sync_date)
           FROM user_devices AS ud
           WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
-        ${isSuperadmin ? '' : 'AND u.bank_id=$2'}
+        ${isSuperadminPage ? '' : 'AND u.bank_id=$2'}
       `,
-      isSuperadmin ? [nbDays] : [nbDays, req.proxyParamsBankId],
+      isSuperadminPage ? [nbDays] : [nbDays, req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {
