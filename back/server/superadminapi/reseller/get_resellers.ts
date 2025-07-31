@@ -10,7 +10,7 @@ export const get_resellers = async (req: Request, res: Response): Promise<void> 
         id,
         name,
         created_at,
-        (SELECT count(1) FROM banks WHERE banks.reseller_id=resellers.id) as bank_count
+        (SELECT ARRAY_AGG(JSON_BUILD_OBJECT('id', banks.id, 'name', banks.name)) FROM banks WHERE banks.reseller_id=resellers.id) as banks
       FROM resellers
       ORDER BY name ASC`,
     );
