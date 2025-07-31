@@ -4,9 +4,6 @@ import { microsoftConfigUrl } from './sso_constants';
 
 export const get_bank_sso_config = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.adminRole === 'restricted_superadmin') {
-      return res.status(401).end();
-    }
     const dbRes = await db.query(`SELECT * FROM bank_sso_config WHERE bank_id=$1 ORDER BY id`, [
       req.proxyParamsBankId,
     ]);
