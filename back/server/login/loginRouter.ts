@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
 import { logError } from '../helpers/logger';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
-import { updateSessionAuthorizations } from '../helpers/updateSessionAuthorizations';
+import { recomputeSessionAuthorizationsForAdminById } from '../helpers/updateSessionAuthorizations';
 
 export const loginRouter = express.Router();
 
@@ -188,7 +188,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
       return res.status(401).send('CONNECTION ERROR');
     await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
-    await updateSessionAuthorizations(req, dbRes.rows[0].email);
+    await recomputeSessionAuthorizationsForAdminById(userId, req);
     redirectToDefaultPath(req, res);
   } catch (e) {
     logError('/redirection/', e);
