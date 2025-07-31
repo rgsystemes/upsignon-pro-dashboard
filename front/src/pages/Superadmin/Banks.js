@@ -295,9 +295,7 @@ class Banks extends React.Component {
           </div>
           {isSaasServer && (
             <div className="newBankInputContainer">
-              <label htmlFor="resellerName">
-                {i18n.t('sasettings_new_bank_form_reseller_name')}
-              </label>
+              <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
               <input
                 id="resellerName"
                 ref={(r) => {
