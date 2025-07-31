@@ -270,6 +270,14 @@ const translations = {
   sasettings_banks: 'Banks of vaults',
   sasettings_banks_explanation:
     'Banks of vaults are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
+  sasettings_resellers: 'Resellers',
+  sasettings_reseller_name: 'Reseller name',
+  sasettings_reseller_created_at: 'Created on',
+  sasettings_reseller_bank_count: 'Nombre de banques',
+  sasettings_reseller_name_placeholder: 'Enter reseller name',
+  sasettings_reseller_delete_warning: 'Are you sure you want to delete this reseller?',
+  sasettings_reseller_delete_error_banks_associated:
+    'Cannot delete this reseller because there are still banks associated with it. Please reassign or delete the associated banks first.',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Create a bank',
   sasettings_new_bank_form_bank_name: 'Name of the bank (between 2 and 50 characters)',

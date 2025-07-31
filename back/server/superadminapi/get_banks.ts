@@ -10,8 +10,12 @@ export const get_banks = async (req: any, res: any): Promise<void> => {
         banks.name,
         banks.settings,
         (SELECT count(users.id) FROM users WHERE users.bank_id=banks.id) AS nb_users,
-        banks.nb_licences_sold
-      FROM banks ORDER BY name ASC`,
+        banks.nb_licences_sold,
+        banks.reseller_id,
+        resellers.name as reseller_name
+      FROM banks
+      LEFT JOIN resellers ON resellers.id=banks.reseller_id
+      ORDER BY name ASC`,
     );
     res.status(200).send(dbRes.rows);
   } catch (e) {
