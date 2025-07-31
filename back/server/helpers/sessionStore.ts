@@ -144,7 +144,7 @@ export const updateSessionDropBank = async (adminEmail: string, bankId: number):
       );
       await db.query(
         `UPDATE admin_sessions
-        SET session_data = jsonb_set(session_data, '{banks}', $2)
+        SET session_data = jsonb_set(session_data, '{banks}', $2, true)
         WHERE session_data ->> 'adminEmail' = $1`,
         [adminEmail, JSON.stringify(newBankList)],
       );
@@ -160,7 +160,7 @@ export const updateSessionRole = async (
   try {
     await db.query(
       `UPDATE admin_sessions
-       SET session_data = jsonb_set('{adminRole}', $2)
+       SET session_data = jsonb_set(session_data, '{adminRole}', $2)
        WHERE session_data ->> 'adminEmail' = $1`,
       [adminEmail, JSON.stringify(adminRole)],
     );

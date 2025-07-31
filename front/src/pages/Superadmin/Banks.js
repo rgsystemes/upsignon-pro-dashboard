@@ -423,7 +423,6 @@ class Banks extends React.Component {
                             RESELLER: newVal,
                           });
                         }}
-                        disabled={isRestrictedSuperadmin}
                       />
                     )}
                     <EditableCell

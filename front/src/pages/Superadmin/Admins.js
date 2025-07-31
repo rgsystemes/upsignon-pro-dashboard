@@ -7,7 +7,7 @@ import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 class Admins extends React.Component {
   state = {
     admins: [],
-    adminRole: 'admin', // 'admin' | 'RestrictedSuperadmin' | 'superadmin'
+    adminRole: 'admin', // 'admin' | 'restricted_superadmin' | 'superadmin'
     visibleAdminChangeRightsView: [],
   };
   newInputRef = null;
@@ -67,7 +67,7 @@ class Admins extends React.Component {
       });
       await this.fetchAdmins();
 
-      if (adminRole === 'superadmin' || adminRole === 'RestrictedSuperadmin') {
+      if (adminRole === 'superadmin' || adminRole === 'restricted_superadmin') {
         this.setState((s) => ({
           ...s,
           visibleAdminChangeRightsView: s.visibleAdminChangeRightsView.filter((v) => v !== adminId),
@@ -275,7 +275,7 @@ const AdminRoleSelect = (p) => {
       disabled={isRestrictedSuperadmin}
     >
       <option value="admin">{i18n.t('sasettings_superadmin_role_admin')}</option>
-      <option value="RestrictedSuperadmin">
+      <option value="restricted_superadmin">
         {i18n.t('sasettings_superadmin_role_restricted_superadmin')}
       </option>
       <option value="superadmin">{i18n.t('sasettings_superadmin_role_superadmin')}</option>

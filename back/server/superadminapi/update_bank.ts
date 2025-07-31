@@ -8,7 +8,7 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
       await db.query(`UPDATE banks SET name=$1 WHERE id=$2`, [req.body.name, req.body.id]);
     }
     if (req.body.settings) {
-      const safeSettings = { ...req.body.settings };
+      let safeSettings = { ...req.body.settings };
       if (req.body.settings.SALES_REP) {
         const safeSalesRep = Joi.attempt(
           req.body.settings.SALES_REP,
@@ -23,13 +23,11 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
           req.body.id,
         ]);
         const prevSettings = prevSettingsRes.rows[0].settings;
-        if (
-          prevSettings.IS_TESTING != safeSettings.IS_TESTING ||
-          prevSettings.TESTING_EXPIRATION_DATE != safeSettings.TESTING_EXPIRATION_DATE
-        ) {
-          res.status(401).json({ error: 'Not allowed for restricted superadmin' });
-          return;
-        }
+        const newSettings = { ...prevSettings };
+        // whitelist settings that restricted superadmins can edit
+        newSettings.SALES_REP = safeSettings.SALES_REP;
+        newSettings.RESELLER = safeSettings.RESELLER;
+        safeSettings = newSettings;
       }
 
       await db.query(`UPDATE banks SET settings=$1 WHERE id=$2`, [safeSettings, req.body.id]);
