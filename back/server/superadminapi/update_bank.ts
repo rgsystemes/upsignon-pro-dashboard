@@ -26,11 +26,17 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
         const newSettings = { ...prevSettings };
         // whitelist settings that restricted superadmins can edit
         newSettings.SALES_REP = safeSettings.SALES_REP;
-        newSettings.RESELLER = safeSettings.RESELLER;
         safeSettings = newSettings;
       }
 
       await db.query(`UPDATE banks SET settings=$1 WHERE id=$2`, [safeSettings, req.body.id]);
+    }
+
+    if (typeof req.body.resellerId === 'string') {
+      await db.query(`UPDATE banks SET reseller_id=$1 WHERE id=$2`, [
+        req.body.resellerId || null, // force null instead of empty string
+        req.body.id,
+      ]);
     }
     if (typeof req.body.nb_licences_sold === 'number') {
       await db.query(`UPDATE banks SET nb_licences_sold=$1 WHERE id=$2`, [
