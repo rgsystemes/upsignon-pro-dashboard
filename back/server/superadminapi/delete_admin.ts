@@ -1,5 +1,6 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
+import { deleteSession } from '../helpers/sessionStore';
 
 export const delete_admin = async (req: any, res: any): Promise<void> => {
   try {
@@ -13,9 +14,7 @@ export const delete_admin = async (req: any, res: any): Promise<void> => {
     ]);
     // DISCONNECT
     deletedAdmin.rows.forEach(async (a) => {
-      await db.query(`DELETE FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1`, [
-        a.email,
-      ]);
+      await deleteSession(a.email);
     });
     res.status(200).end();
   } catch (e) {

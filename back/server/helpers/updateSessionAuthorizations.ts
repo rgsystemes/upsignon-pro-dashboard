@@ -30,7 +30,7 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
       }
       req.session.isSuperadmin = isSuperadmin && !isReadOnlySuperadmin;
       req.session.isReadOnlySuperadmin = isReadOnlySuperadmin;
-      req.session.banks = adminRes.rows[0].banks?.filter((g: any) => g != null);
+      req.session.banks = adminRes.rows[0].banks?.filter((g: any) => g != null) ?? [];
     }
   } catch (e) {
     logError('updateSessionAuthorizations', e);
