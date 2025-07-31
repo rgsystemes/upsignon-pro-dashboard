@@ -275,7 +275,7 @@ const translations = {
   sasettings_resellers: 'Revendeurs',
   sasettings_reseller_name: 'Nom du revendeur',
   sasettings_reseller_created_at: 'Créé le',
-  sasettings_reseller_bank_count: 'Nombre de banques',
+  sasettings_reseller_banks: 'Banques',
   sasettings_reseller_name_placeholder: 'Saisir le nom du revendeur',
   sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce revendeur ?',
   sasettings_reseller_delete_error_banks_associated:

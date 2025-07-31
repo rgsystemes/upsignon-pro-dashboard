@@ -273,7 +273,7 @@ const translations = {
   sasettings_resellers: 'Resellers',
   sasettings_reseller_name: 'Reseller name',
   sasettings_reseller_created_at: 'Created on',
-  sasettings_reseller_bank_count: 'Nombre de banques',
+  sasettings_reseller_banks: 'Banques',
   sasettings_reseller_name_placeholder: 'Enter reseller name',
   sasettings_reseller_delete_warning: 'Are you sure you want to delete this reseller?',
   sasettings_reseller_delete_error_banks_associated:
