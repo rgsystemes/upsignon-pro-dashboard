@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const update_user_setting = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
     if (Object.keys(req.body).indexOf('allowed_offline_desktop') != -1) {

@@ -4,8 +4,8 @@ import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 
 export const test_email = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
-      res.status(401).json({ error: 'Not allowed for read only superadmin' });
+    if (req.session.adminRole !== 'superadmin') {
+      res.status(401).json({ error: 'Not allowed for restricted superadmin' });
       return;
     }
     const userEmail = req.query.email;

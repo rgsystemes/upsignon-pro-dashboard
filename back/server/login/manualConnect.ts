@@ -18,13 +18,13 @@ export const manualConnect = async (req: any, res: any): Promise<void> => {
 
     if (dbRes.rowCount === 1) {
       req.session.adminEmail = 'temporaryAdmin';
-      req.session.isSuperadmin = true;
+      req.session.adminRole = 'superadmin';
       redirectToDefaultPath(req, res);
     } else {
       return res.status(400).send('Token expired.');
     }
   } catch (e) {
-    logError("manualConnect", e);
+    logError('manualConnect', e);
     res.status(400).end();
   }
 };

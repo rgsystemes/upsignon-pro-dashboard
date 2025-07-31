@@ -2,7 +2,7 @@ import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 const namePlaceholder = 'Service';
 const signinUrlPlaceholder = 'https://service.com/signin';
@@ -111,7 +111,7 @@ class Urls extends React.Component {
             <select onChange={this.copyFromBank}>
               <option value="">{i18n.t('settings_urls_choose_bank')}</option>
               {this.props.otherBanks.map((g) => (
-                <option key={g.id} value={g.id} disabled={isReadOnlySuperadmin}>
+                <option key={g.id} value={g.id} disabled={isRestrictedSuperadmin}>
                   {g.name}
                 </option>
               ))}
@@ -125,7 +125,7 @@ class Urls extends React.Component {
         )}
         <div
           style={{ marginTop: 20, marginBottom: 20 }}
-          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
         >
           <div style={{ fontWeight: 'bold' }}>{i18n.t('settings_urls_new')}</div>
           <table className="invisibleTable">
@@ -182,7 +182,7 @@ class Urls extends React.Component {
             <tbody>
               {this.state.urls.map((url) => {
                 return (
-                  <tr key={url.id} className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}>
+                  <tr key={url.id} className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
                     <EditableCell
                       value={url.displayed_name}
                       placeholder={namePlaceholder}

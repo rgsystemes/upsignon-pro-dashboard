@@ -1,7 +1,7 @@
 import React from 'react';
 import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props : setIsLoading
 class BankAdmins extends React.Component {
@@ -92,10 +92,10 @@ class BankAdmins extends React.Component {
             }}
             placeholder="admin.email@domain.com"
             style={{ width: 300, marginRight: 10 }}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
           <div
-            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
             style={{ marginLeft: 10 }}
             onClick={this.insertBankAdmin}
           >
@@ -119,7 +119,7 @@ class BankAdmins extends React.Component {
                     <td>{new Date(admin.created_at).toLocaleDateString()}</td>
                     <td>
                       <div
-                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                         onClick={() => this.deleteAdmin(admin.id)}
                       >
                         {i18n.t('delete')}

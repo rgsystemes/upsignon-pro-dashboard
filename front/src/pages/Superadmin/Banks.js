@@ -6,7 +6,7 @@ import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsCon
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Banks.css';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.addWeeks = function (w) {
@@ -166,7 +166,7 @@ class Banks extends React.Component {
         <div>
           <h2>{i18n.t('sasettings_banks')}</h2>
           <div
-            className={`delete-confirmation-container ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`delete-confirmation-container ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
           >
             <h3>{i18n.t('sasettings_bank_delete_warning')}</h3>
             <div style={{ marginBottom: 10 }}>
@@ -384,7 +384,7 @@ class Banks extends React.Component {
                   {this.getSortIcon(2)}
                 </th>
                 {isSaasServer && <th>{i18n.t('sasettings_bank_sales_rep')}</th>}
-                {!isReadOnlySuperadmin && (
+                {!isRestrictedSuperadmin && (
                   <th>
                     <div>{i18n.t('settings_bank_settings')}</div>
                     <div
@@ -396,7 +396,7 @@ class Banks extends React.Component {
                     </div>
                   </th>
                 )}
-                {!isReadOnlySuperadmin && <th>{i18n.t('actions')}</th>}
+                {!isRestrictedSuperadmin && <th>{i18n.t('actions')}</th>}
               </tr>
             </thead>
             <tbody>
@@ -425,7 +425,7 @@ class Banks extends React.Component {
                             RESELLER: newVal,
                           });
                         }}
-                        disabled={isReadOnlySuperadmin}
+                        disabled={isRestrictedSuperadmin}
                       />
                     )}
                     <EditableCell
@@ -460,7 +460,7 @@ class Banks extends React.Component {
                               IS_TESTING: !bank.settings?.IS_TESTING,
                             });
                           }}
-                          disabled={isReadOnlySuperadmin}
+                          disabled={isRestrictedSuperadmin}
                         ></input>
                         &nbsp;{bank.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
                       </div>
@@ -481,7 +481,7 @@ class Banks extends React.Component {
                             TESTING_EXPIRATION_DATE: newVal,
                           });
                         }}
-                        disabled={isReadOnlySuperadmin}
+                        disabled={isRestrictedSuperadmin}
                       />
                     ) : (
                       <td>N/A</td>
@@ -548,7 +548,7 @@ class Banks extends React.Component {
                         }}
                       />
                     )}
-                    {!isReadOnlySuperadmin && (
+                    {!isRestrictedSuperadmin && (
                       <td className={showSettings ? 'settings-column-expanded' : ''}>
                         <div
                           className="action"
@@ -578,10 +578,10 @@ class Banks extends React.Component {
                         )}
                       </td>
                     )}
-                    {!isReadOnlySuperadmin && (
+                    {!isRestrictedSuperadmin && (
                       <td>
                         <div
-                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.setState({ bankToDeleteId: bank.id })}
                         >
                           {i18n.t('delete')}
@@ -603,8 +603,8 @@ class Banks extends React.Component {
                 <td></td>
                 <td></td>
                 {isSaasServer && <td></td>}
-                {!isReadOnlySuperadmin && <td></td>}
-                {!isReadOnlySuperadmin && <td></td>}
+                {!isRestrictedSuperadmin && <td></td>}
+                {!isRestrictedSuperadmin && <td></td>}
               </tr>
             </tbody>
           </table>
@@ -636,7 +636,7 @@ const InlineSetting = (props) => {
           </div>
         )}
         <div
-          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
           onClick={() => {
             toggleBankSetting(bank.id, {
               ...bank.settings,
@@ -698,13 +698,15 @@ const AutolockDelaySetting = (props) => {
           className="autolock-setting-select"
         >
           {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
-          <option disabled value={-1} disabled={isReadOnlySuperadmin}></option>
+          <option disabled value={-1} disabled={isRestrictedSuperadmin}></option>
           {settingConf.options.map((op) => {
             return (
               <option
                 key={op.seconds}
                 value={op.seconds}
-                disabled={(maxDuration != null && op.seconds > maxDuration) || isReadOnlySuperadmin}
+                disabled={
+                  (maxDuration != null && op.seconds > maxDuration) || isRestrictedSuperadmin
+                }
               >
                 {op.title}
                 {op.seconds == settingConf.recommendedOption ? ' (sugg.)' : ''}

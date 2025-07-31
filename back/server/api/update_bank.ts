@@ -10,7 +10,7 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
       ]);
     }
     if (req.body.settings) {
-      if (req.session.isReadOnlySuperadmin) {
+      if (req.session.adminRole === 'restricted_superadmin') {
         return res.status(401).end();
       }
       await db.query('UPDATE banks SET settings=$1 WHERE id=$2', [
@@ -19,7 +19,7 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
       ]);
     }
     if (req.body.msEntraConfig) {
-      if (req.session.isReadOnlySuperadmin) {
+      if (req.session.adminRole === 'restricted_superadmin') {
         return res.status(401).end();
       }
       if (

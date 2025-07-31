@@ -4,7 +4,7 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { bankServerUrl } from '../../helpers/env';
 
 import './other.css';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props = setIsLoading, isSuperadminPage
 class Other extends React.Component {
@@ -349,7 +349,7 @@ class Other extends React.Component {
         </div>
 
         {/* MAIL WRITER */}
-        <div className={isReadOnlySuperadmin ? 'disabledUI' : null}>
+        <div className={isRestrictedSuperadmin ? 'disabledUI' : null}>
           <h2>{i18n.t('mail_writer')}</h2>
           <div>
             <input
@@ -370,7 +370,7 @@ class Other extends React.Component {
               value="selectionOnly"
               checked={!this.state.sendMailToAll}
               onChange={this.chooseMailRecipients}
-              disabled={isReadOnlySuperadmin}
+              disabled={isRestrictedSuperadmin}
             />
             <label htmlFor="selection">{i18n.t('mail_writer_to_selection')}</label>
           </div>
@@ -379,19 +379,19 @@ class Other extends React.Component {
             placeholder={i18n.t('mail_writer_subject_placeholder')}
             value={this.state.mailSubject}
             onChange={this.onMailSubjectChange}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           />
           <textarea
             value={this.state.mailContent}
             style={{ width: '100%', height: 300, marginTop: 10 }}
             placeholder={i18n.t('mail_writer_placeholder')}
             onChange={this.onMailContentChange}
-            disabled={isReadOnlySuperadmin}
+            disabled={isRestrictedSuperadmin}
           ></textarea>
           <div
             style={{ marginTop: 10 }}
             className="extractAction"
-            onClick={isReadOnlySuperadmin ? null : this.sendMail}
+            onClick={isRestrictedSuperadmin ? null : this.sendMail}
           >
             {i18n.t('mail_writer_send')}
           </div>

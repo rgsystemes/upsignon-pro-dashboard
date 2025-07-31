@@ -3,7 +3,7 @@ import { EditableCell } from '../../helpers/EditableCell';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props : setIsLoading
 class OtherSettings extends React.Component {
@@ -49,7 +49,7 @@ class OtherSettings extends React.Component {
     return (
       <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('settings_bank_settings')}</h2>
-        <table className={isReadOnlySuperadmin ? 'disabledUI' : null}>
+        <table className={isRestrictedSuperadmin ? 'disabledUI' : null}>
           <tbody>
             <tr>
               <td>{i18n.t('sasettings_bank_name')}</td>

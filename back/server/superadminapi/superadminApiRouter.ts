@@ -31,8 +31,7 @@ import { extract_admins } from '../api/extract_admins';
 export const superadminApiRouter = express.Router();
 
 superadminApiRouter.use(async (req: any, res: any, next) => {
-  // @ts-ignore
-  if (!req.session.isSuperadmin && !req.session.isReadOnlySuperadmin) {
+  if (req.session.adminRole !== 'superadmin' && req.session.adminRole !== 'restricted_superadmin') {
     return res.status(401).end();
   }
   next();

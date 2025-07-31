@@ -4,7 +4,7 @@ import { logError } from '../helpers/logger';
 export const extract_emails_for_shared_device = async (
   req: any,
   res: any,
-  isSuperadmin: boolean,
+  isSuperadminPage: boolean,
 ): Promise<void> => {
   try {
     const dbRes = await db.query(
@@ -14,9 +14,9 @@ export const extract_emails_for_shared_device = async (
     FROM user_devices AS ud
     INNER JOIN users ON ud.user_id=users.id
     WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
-    ${isSuperadmin ? '' : 'AND ud.bank_id=$1'}
+    ${isSuperadminPage ? '' : 'AND ud.bank_id=$1'}
   `,
-      isSuperadmin ? [] : [req.proxyParamsBankId],
+      isSuperadminPage ? [] : [req.proxyParamsBankId],
     );
     res.status(200).send(dbRes.rows.map((u) => u.email));
   } catch (e) {

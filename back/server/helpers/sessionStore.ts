@@ -1,6 +1,7 @@
 import { db } from './db';
 import expressSession from 'express-session';
 import { logError } from './logger';
+import { AdminRoles } from './adminRoles';
 
 const oneHour = 3600; // seconds
 
@@ -154,18 +155,14 @@ export const updateSessionDropBank = async (adminEmail: string, bankId: number):
 };
 export const updateSessionRole = async (
   adminEmail: string,
-  isSuperadmin: boolean,
-  isReadOnlySuperadmin: boolean,
+  adminRole: AdminRoles,
 ): Promise<void> => {
   try {
     await db.query(
       `UPDATE admin_sessions
-       SET session_data = jsonb_set(
-         jsonb_set(session_data, '{isSuperadmin}', $2),
-         '{isReadOnlySuperadmin}', $3
-       )
+       SET session_data = jsonb_set('{adminRole}', $2)
        WHERE session_data ->> 'adminEmail' = $1`,
-      [adminEmail, JSON.stringify(isSuperadmin), JSON.stringify(isReadOnlySuperadmin)],
+      [adminEmail, JSON.stringify(adminRole)],
     );
   } catch (e) {
     logError('sessionStore', 'updateSessionRole', e);

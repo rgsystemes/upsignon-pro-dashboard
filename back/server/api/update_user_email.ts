@@ -5,7 +5,7 @@ import { MicrosoftGraph } from 'ms-entra-for-upsignon';
 
 export const update_user_email = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
     const { userId, oldEmail, newEmail } = req.body;

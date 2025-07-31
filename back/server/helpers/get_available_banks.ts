@@ -4,7 +4,10 @@ import { logError } from './logger';
 export const get_available_banks = async (req: any, res: any): Promise<void> => {
   try {
     const allBanks = await db.query('SELECT id, name FROM banks ORDER BY NAME ASC');
-    if (!req.session.isSuperadmin && !req.session.isReadOnlySuperadmin) {
+    if (
+      req.session.adminRole !== 'superadmin' &&
+      req.session.adminRole !== 'restricted_superadmin'
+    ) {
       const filteredBanks = allBanks.rows.filter((g) => req.session.banks?.includes(g.id));
       if (filteredBanks.length === 0) {
         // this case should not happen
@@ -14,15 +17,13 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
       }
       return res.status(200).json({
         banks: filteredBanks,
-        isSuperadmin: false,
-        isReadOnlySuperadmin: false,
+        adminRole: req.session.adminRole,
       });
     }
     // superadmin case
     res.status(200).json({
       banks: allBanks.rows,
-      isSuperadmin: true,
-      isReadOnlySuperadmin: req.session.isReadOnlySuperadmin,
+      adminRole: req.session.adminRole,
     });
   } catch (e) {
     logError('get_available_banks', e);

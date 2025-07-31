@@ -3,6 +3,7 @@ import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './OpenidConfiguration.css';
 import { Loader } from '../../helpers/loader';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Windows Logo Component
 const WindowsLogo = () => (
@@ -160,26 +161,28 @@ export class OpenidConfiguration extends React.Component {
         <p>
           <strong>{i18n.t('settings_openid_config_details')}</strong>
         </p>
-        <NoSSOChoice
-          value="none"
-          name={i18n.t('settings_openid_unset')}
-          onSelect={this.onSelectNone}
-          isSelected={this.state.choice === 'none'}
-        />
-        <PreconfiguredSSOProvider
-          value="microsoft"
-          name="Microsoft"
-          onSelect={this.onSelectMicrosoft}
-          isSelected={this.state.choice === 'microsoft'}
-          logo={<WindowsLogo />}
-        />
-        <CustomSSOProvider
-          value="custom"
-          onSelect={this.onSelectCustom}
-          onValidateAddConfig={this.submitCustomConfig}
-          isSelected={this.state.choice === 'custom'}
-          currentConfig={this.state.openidConfig}
-        />
+        <div className={isRestrictedSuperadmin ? 'disabledUI' : null}>
+          <NoSSOChoice
+            value="none"
+            name={i18n.t('settings_openid_unset')}
+            onSelect={this.onSelectNone}
+            isSelected={this.state.choice === 'none'}
+          />
+          <PreconfiguredSSOProvider
+            value="microsoft"
+            name="Microsoft"
+            onSelect={this.onSelectMicrosoft}
+            isSelected={this.state.choice === 'microsoft'}
+            logo={<WindowsLogo />}
+          />
+          <CustomSSOProvider
+            value="custom"
+            onSelect={this.onSelectCustom}
+            onValidateAddConfig={this.submitCustomConfig}
+            isSelected={this.state.choice === 'custom'}
+            currentConfig={this.state.openidConfig}
+          />
+        </div>
       </div>
     );
   }

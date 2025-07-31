@@ -2,7 +2,7 @@ import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // PROPS = setIsLoading, devices, email, reloadDevices, close
 class UserDevices extends React.Component {
@@ -173,7 +173,7 @@ class UserDevices extends React.Component {
                         <div key={email}>{email}</div>
                       ))}
                       <div
-                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                         onClick={() => this.deactivateAllUsersForDevice(d.id)}
                       >
                         {i18n.t('device_deactive_all')}
@@ -184,14 +184,14 @@ class UserDevices extends React.Component {
                   )}
                   <td>
                     <div
-                      className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                      className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                       onClick={() => this.deleteDeviceWithWarning(d.id)}
                     >
                       {i18n.t('delete')}
                     </div>
                     {isAuthorized && (
                       <div
-                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                         onClick={() => this.deactivateDeviceWithWarning(d.id)}
                       >
                         {i18n.t('device_deactivate')}
@@ -199,7 +199,7 @@ class UserDevices extends React.Component {
                     )}
                     {!isAuthorized && !isRevokedByUser && (
                       <div
-                        className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                         onClick={() => this.authorizeDeviceWithWarning(d.id, isPendingAdminCheck)}
                       >
                         {i18n.t('device_authorize')}
@@ -264,13 +264,13 @@ class UserDevices extends React.Component {
                       )}
                       <td>
                         <div
-                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.deletePwdResetReqWithWarning(d.pwd_reset_id)}
                         >
                           {i18n.t('delete')}
                         </div>
                         <div
-                          className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
                         >
                           {i18n.t('password_reset_request_grant')}

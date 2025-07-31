@@ -5,7 +5,7 @@ import { logError } from '../helpers/logger';
 
 export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
     const email = req.body.newEmail;
@@ -19,8 +19,8 @@ export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
       // Send new invitation
       const newId = v4();
       const insertRes = await db.query(
-        `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) RETURNING id`,
-        [newId, email, false],
+        `INSERT INTO admins (id, email, admin_role) VALUES ($1, lower($2), 'admin') RETURNING id`,
+        [newId, email],
       );
       id = insertRes.rows[0].id;
     } else {

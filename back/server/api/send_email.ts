@@ -2,7 +2,7 @@ import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 
-const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<string[]> => {
+const getSelectedEmails = async (req: any, isSuperadminPage: boolean): Promise<string[]> => {
   const extractorDuplicateSelect =
     typeof req.body.extractorDuplicateSelect === 'boolean'
       ? req.body.extractorDuplicateSelect
@@ -47,8 +47,8 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
   if (sendMailToAll) {
     uniqueEmails = (
       await db.query(
-        `SELECT DISTINCT email FROM users ${isSuperadmin ? '' : 'WHERE bank_id=$1'}`,
-        isSuperadmin ? [] : [req.proxyParamsBankId],
+        `SELECT DISTINCT email FROM users ${isSuperadminPage ? '' : 'WHERE bank_id=$1'}`,
+        isSuperadminPage ? [] : [req.proxyParamsBankId],
       )
     ).rows.map((u) => u.email);
   } else {
@@ -57,9 +57,11 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
       const dupEmails = (
         await db.query(
           `SELECT email FROM users WHERE nb_accounts_with_duplicated_password >= $1 ${
-            isSuperadmin ? '' : 'AND bank_id=$2'
+            isSuperadminPage ? '' : 'AND bank_id=$2'
           }`,
-          isSuperadmin ? [extractorDuplicateMin] : [extractorDuplicateMin, req.proxyParamsBankId],
+          isSuperadminPage
+            ? [extractorDuplicateMin]
+            : [extractorDuplicateMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
 
@@ -69,9 +71,9 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
       const weakEmails = (
         await db.query(
           `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
-            isSuperadmin ? '' : 'AND bank_id=$2'
+            isSuperadminPage ? '' : 'AND bank_id=$2'
           }`,
-          isSuperadmin ? [extractorWeakMin] : [extractorWeakMin, req.proxyParamsBankId],
+          isSuperadminPage ? [extractorWeakMin] : [extractorWeakMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(weakEmails);
@@ -80,9 +82,9 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
       const mediumEmails = (
         await db.query(
           `SELECT email FROM users WHERE nb_accounts_weak >= $1 ${
-            isSuperadmin ? '' : 'AND bank_id=$2'
+            isSuperadminPage ? '' : 'AND bank_id=$2'
           }`,
-          isSuperadmin ? [extractorMediumMin] : [extractorMediumMin, req.proxyParamsBankId],
+          isSuperadminPage ? [extractorMediumMin] : [extractorMediumMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(mediumEmails);
@@ -94,9 +96,11 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           WHERE (SELECT AGE(last_sync_date)
             FROM user_devices AS ud
             WHERE ud.user_id=u.id ORDER BY last_sync_date DESC NULLS LAST LIMIT 1) > interval '$1 days'
-          ${isSuperadmin ? '' : 'AND u.bank_id=$2'}
+          ${isSuperadminPage ? '' : 'AND u.bank_id=$2'}
       `,
-          isSuperadmin ? [extractorUnusedDaysMin] : [extractorUnusedDaysMin, req.proxyParamsBankId],
+          isSuperadminPage
+            ? [extractorUnusedDaysMin]
+            : [extractorUnusedDaysMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(longUnusedEmails);
@@ -107,9 +111,11 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
           `SELECT email FROM user_devices AS ud
         INNER JOIN users ON ud.user_id=users.id
         WHERE (SELECT COUNT(id) FROM user_devices WHERE device_unique_id=ud.device_unique_id)>1
-        ${isSuperadmin ? '' : 'AND ud.bank_id=$1'}
+        ${isSuperadminPage ? '' : 'AND ud.bank_id=$1'}
       `,
-          isSuperadmin ? [extractorUnusedDaysMin] : [extractorUnusedDaysMin, req.proxyParamsBankId],
+          isSuperadminPage
+            ? [extractorUnusedDaysMin]
+            : [extractorUnusedDaysMin, req.proxyParamsBankId],
         )
       ).rows.map((u) => u.email);
       emails.push(deviceSharedEmail);
@@ -129,19 +135,19 @@ const getSelectedEmails = async (req: any, isSuperadmin: boolean): Promise<strin
 export const send_email_precheck = async (
   req: any,
   res: any,
-  isSuperadmin: boolean,
+  isSuperadminPage: boolean,
 ): Promise<void> => {
   try {
-    const uniqueEmails = await getSelectedEmails(req, isSuperadmin);
+    const uniqueEmails = await getSelectedEmails(req, isSuperadminPage);
     return res.status(200).send({ n: uniqueEmails.length });
   } catch (e) {
     logError('send_email_precheck', e);
   }
 };
 
-export const send_email = async (req: any, res: any, isSuperadmin: boolean): Promise<void> => {
+export const send_email = async (req: any, res: any, isSuperadminPage: boolean): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
     const mailContent = typeof req.body.mailContent === 'string' ? req.body.mailContent : null;
@@ -153,7 +159,7 @@ export const send_email = async (req: any, res: any, isSuperadmin: boolean): Pro
     if (typeof req.body.emailList === 'string') {
       uniqueEmails = req.body.emailList.split(';').map((e: string) => e.trim()) as string[];
     } else {
-      uniqueEmails = await getSelectedEmails(req, isSuperadmin);
+      uniqueEmails = await getSelectedEmails(req, isSuperadminPage);
     }
 
     const emailConfig = await getEmailConfig();

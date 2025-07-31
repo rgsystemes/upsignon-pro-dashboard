@@ -14,6 +14,6 @@
     -> DEV_FALLBACK_ADMIN_EMAIL=devadmin@upsignon.eu
 
 - run this command in psql
-  -> `insert into admins (id, email, is_superadmin) VALUES ('a035d19a-f5ca-4cfe-a5e6-9440d2f4ef0b', 'devadmin@upsignon.eu', true);`
+  -> `insert into admins (id, email, admin_role) VALUES ('a035d19a-f5ca-4cfe-a5e6-9440d2f4ef0b', 'devadmin@upsignon.eu', 'superadmin');`
 - in back, `yarn build-server && yarn start-server` to be rerun for each change (there is no watcher)
 - in front, `yarn start-front`

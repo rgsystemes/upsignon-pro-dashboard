@@ -70,8 +70,8 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
       // Send new invitation
       const newId = v4();
       const insertRes = await db.query(
-        `INSERT INTO admins (id, email, is_superadmin) VALUES ($1, lower($2), $3) RETURNING id`,
-        [newId, validatedBody.adminEmail, false],
+        `INSERT INTO admins (id, email, admin_role) VALUES ($1, lower($2), 'admin') RETURNING id`,
+        [newId, validatedBody.adminEmail],
       );
       adminId = insertRes.rows[0].id;
     } else {

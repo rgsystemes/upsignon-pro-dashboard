@@ -9,9 +9,8 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
     // Check Superadmin
     const adminRes = await db.query(
       `SELECT
-        admins.is_superadmin,
-        admins.is_read_only_superadmin,
-        CASE WHEN admins.is_superadmin THEN null ELSE array_agg(admin_banks.bank_id) END AS banks
+        admins.admin_role,
+        CASE WHEN admins.admin_role != 'admin' THEN null ELSE array_agg(admin_banks.bank_id) END AS banks
       FROM admins
       LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
       WHERE admins.email=$1
@@ -19,17 +18,13 @@ export const updateSessionAuthorizations = async (req: any, email: string): Prom
       [email],
     );
     if (adminRes.rowCount !== 0) {
-      const isSuperadmin = adminRes.rows[0].is_superadmin;
-      let isReadOnlySuperadmin = adminRes.rows[0].is_read_only_superadmin;
-      if (
-        !env.IS_PRODUCTION &&
-        email === env.DEV_FALLBACK_ADMIN_EMAIL &&
-        env.DEV_FALLBACK_ADMIN_READ_ONLY
-      ) {
-        isReadOnlySuperadmin = true;
+      if (!env.IS_PRODUCTION && email === env.DEV_FALLBACK_ADMIN_EMAIL) {
+        req.session.adminRole = env.DEV_FALLBACK_ADMIN_RESTRICTED
+          ? 'restricted_superadmin'
+          : 'superadmin';
+      } else {
+        req.session.adminRole = adminRes.rows[0].admin_role;
       }
-      req.session.isSuperadmin = isSuperadmin && !isReadOnlySuperadmin;
-      req.session.isReadOnlySuperadmin = isReadOnlySuperadmin;
       req.session.banks = adminRes.rows[0].banks?.filter((g: any) => g != null) ?? [];
     }
   } catch (e) {

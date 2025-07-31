@@ -17,8 +17,8 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
         safeSettings.SALES_REP = safeSalesRep;
       }
 
-      // PREVENT SOME ACTIONS FOR READ ONLY SUPERADMINS
-      if (req.session.isReadOnlySuperadmin) {
+      // PREVENT SOME ACTIONS FOR RESTRICTED SUPERADMINS
+      if (req.session.adminRole !== 'superadmin') {
         const prevSettingsRes = await db.query('SELECT settings FROM banks WHERE id=$1', [
           req.body.id,
         ]);
@@ -27,7 +27,7 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
           prevSettings.IS_TESTING != safeSettings.IS_TESTING ||
           prevSettings.TESTING_EXPIRATION_DATE != safeSettings.TESTING_EXPIRATION_DATE
         ) {
-          res.status(401).json({ error: 'Not allowed for read only superadmin' });
+          res.status(401).json({ error: 'Not allowed for restricted superadmin' });
           return;
         }
       }

@@ -3,7 +3,7 @@ import { logError } from '../helpers/logger';
 
 export const copy_urls_from_bank = async (req: any, res: any): Promise<void> => {
   try {
-    if (req.session.isReadOnlySuperadmin) {
+    if (req.session.adminRole !== 'superadmin') {
       return res.status(401).end();
     }
     const dbRes = await db.query(

@@ -1,13 +1,13 @@
 import React from 'react';
 import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
-import { isReadOnlySuperadmin } from '../../helpers/isReadOnlySuperadmin';
+import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
 // Props : setIsLoading, banks
 class Admins extends React.Component {
   state = {
     admins: [],
-    adminRole: 'admin', // 'admin' | 'readOnlySuperadmin' | 'superadmin'
+    adminRole: 'admin', // 'admin' | 'RestrictedSuperadmin' | 'superadmin'
     visibleAdminChangeRightsView: [],
   };
   newInputRef = null;
@@ -67,7 +67,7 @@ class Admins extends React.Component {
       });
       await this.fetchAdmins();
 
-      if (adminRole === 'superadmin' || adminRole === 'readOnlySuperadmin') {
+      if (adminRole === 'superadmin' || adminRole === 'RestrictedSuperadmin') {
         this.setState((s) => ({
           ...s,
           visibleAdminChangeRightsView: s.visibleAdminChangeRightsView.filter((v) => v !== adminId),
@@ -135,7 +135,7 @@ class Admins extends React.Component {
             alignItems: 'center',
             marginBottom: 20,
           }}
-          className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
         >
           <input
             ref={(r) => {
@@ -152,7 +152,7 @@ class Admins extends React.Component {
             }}
           />
           <div
-            className={`action ${isReadOnlySuperadmin ? 'disabledUI' : ''}`}
+            className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
             style={{ marginLeft: 10 }}
             onClick={this.insertAdmin}
           >
@@ -197,11 +197,12 @@ class Admins extends React.Component {
                       </td>
                       <td
                         style={{
-                          backgroundColor: admin.is_superadmin
-                            ? 'lightgrey'
-                            : admin.banks && admin.banks.length > 0
-                              ? 'white'
-                              : 'red',
+                          backgroundColor:
+                            admin.admin_role != 'admin'
+                              ? 'lightgrey'
+                              : admin.banks && admin.banks.length > 0
+                                ? 'white'
+                                : 'red',
                         }}
                       >
                         {admin.adminRole === 'admin' &&
@@ -209,7 +210,7 @@ class Admins extends React.Component {
                             return <div key={g.id}>{g.name}</div>;
                           })}
                       </td>
-                      <td className={`${isReadOnlySuperadmin ? 'disabledUI' : ''}`}>
+                      <td className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
                         <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
                           {i18n.t('delete')}
                         </div>
@@ -229,7 +230,7 @@ class Admins extends React.Component {
                           <div className="action" onClick={() => this.closeChangeRights(admin.id)}>
                             {i18n.t('close')}
                           </div>
-                          {!admin.is_superadmin && (
+                          {admin.admin_role != 'superadmin' && (
                             <div style={{ marginTop: 15, margin: 'auto' }}>
                               {this.props.banks.map((g) => {
                                 const doesBelongToBank = admin.banks?.some((ag) => ag.id === g.id);
@@ -241,7 +242,7 @@ class Admins extends React.Component {
                                         this.updateAdminBank(admin.id, g.id, !doesBelongToBank);
                                       }}
                                       checked={doesBelongToBank}
-                                      disabled={isReadOnlySuperadmin}
+                                      disabled={isRestrictedSuperadmin}
                                     />
                                     <div style={{ marginLeft: 5 }}>{g.name}</div>
                                   </div>
@@ -271,11 +272,11 @@ const AdminRoleSelect = (p) => {
         p.onChange(e.target.value);
       }}
       style={{ marginLeft: 10, marginRight: 10, padding: 5 }}
-      disabled={isReadOnlySuperadmin}
+      disabled={isRestrictedSuperadmin}
     >
       <option value="admin">{i18n.t('sasettings_superadmin_role_admin')}</option>
-      <option value="readOnlySuperadmin">
-        {i18n.t('sasettings_superadmin_role_read_only_superadmin')}
+      <option value="RestrictedSuperadmin">
+        {i18n.t('sasettings_superadmin_role_restricted_superadmin')}
       </option>
       <option value="superadmin">{i18n.t('sasettings_superadmin_role_superadmin')}</option>
     </select>
