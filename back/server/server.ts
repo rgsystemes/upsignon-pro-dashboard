@@ -8,13 +8,13 @@ import { logInfo } from './helpers/logger';
 import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
-import SessionStore from './helpers/sessionStore';
+import { PostgreSQLStore } from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
 import { get_available_banks } from './helpers/get_available_banks';
 import { superadminApiRouter } from './superadminapi/superadminApiRouter';
 import { get_server_url } from './helpers/get_server_url';
 import { disconnect } from './helpers/disconnect';
-import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
+import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
@@ -53,7 +53,7 @@ app.use(
     rolling: true,
     saveUninitialized: false,
     unset: 'destroy',
-    store: new SessionStore(),
+    store: new PostgreSQLStore(),
   }),
 );
 
@@ -63,10 +63,10 @@ if (!env.IS_PRODUCTION) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     try {
-      await updateSessionAuthorizations(
-        req,
+      await recomputeSessionAuthorizationsForAdminByEmail(
         // @ts-ignore
         env.DEV_FALLBACK_ADMIN_EMAIL,
+        req,
       );
       next();
     } catch (e) {
