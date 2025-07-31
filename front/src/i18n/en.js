@@ -278,9 +278,11 @@ const translations = {
   sasettings_reseller_delete_warning: 'Are you sure you want to delete this reseller?',
   sasettings_reseller_delete_error_banks_associated:
     'Cannot delete this reseller because there are still banks associated with it. Please reassign or delete the associated banks first.',
+  sasettings_select_reseller: 'Select a reseller',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Create a bank',
   sasettings_new_bank_form_bank_name: 'Name of the bank (between 2 and 50 characters)',
+  sasettings_new_bank_form_admin_email_label: 'Administrator email (for automatic email)',
   sasettings_new_bank_form_admin_email: 'Administrator email',
   sasettings_new_bank_form_is_testing: '30 days trial',
   sasettings_new_bank_form_sales_email: 'Sales referent email',

@@ -1,5 +1,7 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
+import { EditableResellerCell } from '../../helpers/EditableResellerCell';
+import { ResellerSelector } from '../../helpers/ResellerSelector';
 import { Toggler } from '../../helpers/Toggler';
 import { baseFrontUrl, isSaasServer } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
@@ -24,12 +26,13 @@ class Banks extends React.Component {
     sortType: 0, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
     salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
+    selectedResellerIdForNewBank: null, // Selected reseller for new bank form
+    resellers: [],
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
   isTestingCheckboxRef = null;
   salesEmailRef = null;
-  resellerNameInputRef = null;
 
   insertBank = async () => {
     try {
@@ -38,14 +41,14 @@ class Banks extends React.Component {
       const newAdminEmail = this.newAdminEmailInputRef.value;
       const isTrial = this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
-      const resellerName = this.resellerNameInputRef?.value || null;
+      const resellerId = this.state.selectedResellerIdForNewBank || null;
       if (!newBankName || newBankName.length < 2) {
         this.newBankNameInputRef.style.borderColor = 'red';
         return;
       } else {
         this.newBankNameInputRef.style.borderColor = null;
       }
-      if (!newAdminEmail) {
+      if (!this.state.selectedResellerIdForNewBank && !newAdminEmail) {
         this.newAdminEmailInputRef.style.borderColor = 'red';
         return;
       } else {
@@ -59,12 +62,13 @@ class Banks extends React.Component {
         adminEmail: newAdminEmail,
         isTrial,
         salesEmail,
-        resellerName,
+        resellerId,
       });
       await this.props.fetchBanks();
       this.newBankNameInputRef.value = null;
       this.newAdminEmailInputRef.value = null;
       this.isTestingCheckboxRef.checked = true;
+      this.setState({ selectedResellerIdForNewBank: '' });
       window.alert(i18n.t('sasettings_new_bank_form_success'));
     } catch (e) {
       console.error(e);
@@ -78,6 +82,20 @@ class Banks extends React.Component {
       await bankUrlFetch('/api/update-bank', 'POST', {
         name: newName,
         id: bankId,
+      });
+      await this.props.fetchBanks();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+  updateResellerId = async (bankId, resellerId) => {
+    try {
+      this.props.setIsLoading(true);
+      await bankUrlFetch('/api/update-bank', 'POST', {
+        id: bankId,
+        resellerId: resellerId,
       });
       await this.props.fetchBanks();
     } catch (e) {
@@ -125,6 +143,18 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
+
+  fetchResellers = async () => {
+    try {
+      const resellers = await bankUrlFetch('/api/resellers', 'GET', null);
+      this.setState({ resellers: resellers });
+    } catch (e) {
+      console.error('Error fetching resellers:', e);
+    }
+  };
+  componentDidMount() {
+    this.fetchResellers();
+  }
   toggleAllSettings = () => {
     this.setState((s) => {
       if (s.showAllSettings) {
@@ -216,8 +246,8 @@ class Banks extends React.Component {
 
         switch (this.state.sortType) {
           case 1: // Sort by reseller
-            const resellerA = (a.settings?.RESELLER || '').toLowerCase();
-            const resellerB = (b.settings?.RESELLER || '').toLowerCase();
+            const resellerA = a.reseller_name.toLowerCase();
+            const resellerB = b.reseller_name.toLowerCase();
             comparison = resellerA.localeCompare(resellerB);
             break;
 
@@ -258,18 +288,6 @@ class Banks extends React.Component {
             />
           </div>
           <div className="newBankInputContainer">
-            <label htmlFor="adminEmailInput">
-              {i18n.t('sasettings_new_bank_form_admin_email')}*
-            </label>
-            <input
-              id="adminEmailInput"
-              ref={(r) => {
-                this.newAdminEmailInputRef = r;
-              }}
-              placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
-            />
-          </div>
-          <div className="newBankInputContainer">
             <label htmlFor="isTestingCheckbox">
               {i18n.t('sasettings_new_bank_form_is_testing')}
             </label>
@@ -282,6 +300,34 @@ class Banks extends React.Component {
               }}
             />
           </div>
+          {isSaasServer && (
+            <div className="newBankInputContainer">
+              <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
+              <ResellerSelector
+                value={this.state.selectedResellerIdForNewBank}
+                onChange={(value) => this.setState({ selectedResellerIdForNewBank: value })}
+                placeholder={i18n.t('sasettings_select_reseller')}
+                resellers={this.state.resellers}
+              />
+            </div>
+          )}
+          <div
+            className="newBankInputContainer"
+            style={this.state.selectedResellerIdForNewBank ? { display: 'none' } : null}
+          >
+            <div>
+              <label htmlFor="adminEmailInput">
+                {i18n.t('sasettings_new_bank_form_admin_email_label')}
+              </label>
+              <input
+                id="adminEmailInput"
+                ref={(r) => {
+                  this.newAdminEmailInputRef = r;
+                }}
+                placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
+              />
+            </div>
+          </div>
           <div className="newBankInputContainer">
             <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}</label>
             <input
@@ -293,17 +339,7 @@ class Banks extends React.Component {
               defaultValue={localStorage.getItem('newBankSalesEmail')}
             />
           </div>
-          {isSaasServer && (
-            <div className="newBankInputContainer">
-              <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
-              <input
-                id="resellerName"
-                ref={(r) => {
-                  this.resellerNameInputRef = r;
-                }}
-              />
-            </div>
-          )}
+
           <div className="action" onClick={this.insertBank}>
             {i18n.t('add')}
           </div>
@@ -416,14 +452,12 @@ class Banks extends React.Component {
                     </td>
                     <td>{bank.id}</td>
                     {isSaasServer && (
-                      <EditableCell
-                        value={bank.settings?.RESELLER || ''}
-                        onChange={(newVal) => {
-                          this.toggleBankSetting(bank.id, {
-                            ...bank.settings,
-                            RESELLER: newVal,
-                          });
+                      <EditableResellerCell
+                        value={bank.reseller_id}
+                        onChange={(newId) => {
+                          this.updateResellerId(bank.id, newId);
                         }}
+                        resellers={this.state.resellers}
                       />
                     )}
                     <EditableCell

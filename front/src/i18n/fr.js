@@ -280,9 +280,11 @@ const translations = {
   sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce revendeur ?',
   sasettings_reseller_delete_error_banks_associated:
     'Impossible de supprimer ce revendeur car des banques lui sont encore associées. Veuillez réassigner ou supprimer les banques associées en premier.',
+  sasettings_select_reseller: 'Sélectionner un revendeur',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
   sasettings_new_bank_form_bank_name: 'Nom de la banque (2 à 50 caractères)',
+  sasettings_new_bank_form_admin_email_label: "Email de l'administrateur (pour email automatique)",
   sasettings_new_bank_form_admin_email: "Email de l'administrateur",
   sasettings_new_bank_form_is_testing: 'Test 30 jours',
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
