@@ -1,5 +1,5 @@
 import React from 'react';
-import { baseFrontUrl, bankId } from '../helpers/env';
+import { baseFrontUrl, bankId, resellerId } from '../helpers/env';
 import { i18n } from '../i18n/i18n';
 
 // Props: banks, isSuperadmin, isSuperadminPage
@@ -12,8 +12,8 @@ class BankChooser extends React.Component {
     this.setState((s) => ({ ...s, showList: !s.showList }));
   };
   render() {
-    // eslint-disable-next-line eqeqeq
-    const currentBank = this.props.banks.find((g) => g.id == bankId);
+    const currentBank = this.props.banks.find((b) => b.id === parseInt(bankId));
+    const currentReseller = this.props.resellers.find((r) => r.id == resellerId);
     return (
       <div
         style={{
@@ -21,16 +21,23 @@ class BankChooser extends React.Component {
           display: 'flex',
           position: 'relative',
           overflow: 'visible',
+          userSelect: 'none',
         }}
       >
         {this.props.isSuperadminPage ? (
           <div className="currentBank superadmin" onClick={this.toggleBankList}>
             {i18n.t('menu_superadmin')}
           </div>
-        ) : (
+        ) : currentBank ? (
           <div className="currentBank" onClick={this.toggleBankList}>
             {currentBank?.name}
           </div>
+        ) : (
+          currentReseller && (
+            <div className="currentBank reseller" onClick={this.toggleBankList}>
+              {currentReseller?.name}
+            </div>
+          )
         )}
         {this.state.showList && (
           <div
@@ -49,13 +56,41 @@ class BankChooser extends React.Component {
                 {i18n.t('menu_superadmin')}
               </a>
             )}
-            {this.props.banks.map((g) => {
-              return (
-                <a key={g.id} className="bankLink" href={baseFrontUrl + '/' + g.id + '/'}>
-                  {g.name}
-                </a>
-              );
-            })}
+            {this.props.resellers &&
+              this.props.resellers.map((r) => {
+                return (
+                  <React.Fragment key={r.id}>
+                    <a
+                      className="bankLink reseller"
+                      href={baseFrontUrl + '/reseller/' + r.id + '/'}
+                    >
+                      {r.name}
+                    </a>
+                    {this.props.banks &&
+                      this.props.banks
+                        .filter((b) => b.reseller_id === r.id)
+                        .map((b) => {
+                          return (
+                            <a
+                              key={b.id}
+                              className="bankLink resellerBank"
+                              href={baseFrontUrl + '/' + b.id + '/'}
+                            >
+                              {b.name}
+                            </a>
+                          );
+                        })}
+                  </React.Fragment>
+                );
+              })}
+            {this.props.banks &&
+              this.props.banks.map((b) => {
+                return (
+                  <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
+                    {b.name}
+                  </a>
+                );
+              })}
           </div>
         )}
       </div>
