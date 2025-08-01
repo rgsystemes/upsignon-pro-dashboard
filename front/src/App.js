@@ -9,7 +9,7 @@ import { Settings } from './pages/Settings';
 import { SharedDevices } from './pages/SharedDevices';
 import { Users } from './pages/Users';
 import { i18n } from './i18n/i18n';
-import { baseFrontUrl, bankId } from './helpers/env';
+import { baseFrontUrl, bankId, resellerId } from './helpers/env';
 import { Superadmin } from './pages/Superadmin';
 import { PasswordResetRequests } from './pages/PasswordResetRequests';
 import { SharedVaults } from './pages/SharedVaults';
@@ -19,6 +19,7 @@ import {
   isRestrictedSuperadmin,
   setIsRestrictedSuperadmin,
 } from './helpers/isRestrictedSuperadmin';
+import { Reseller } from './pages/Reseller';
 
 class App extends React.Component {
   state = {
@@ -28,6 +29,7 @@ class App extends React.Component {
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
     banks: [],
+    resellers: [],
     isSuperadminOrRestricted: false,
     isReady: false,
   };
@@ -37,29 +39,45 @@ class App extends React.Component {
   async componentDidMount() {
     try {
       const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
-      // eslint-disable-next-line eqeqeq
-      const isBankInList = banksRes.banks.some((g) => g.id == bankId);
+      const isBankInList = banksRes.banks.some((b) => b.id === parseInt(bankId));
+      const isResellerInList = banksRes.resellers.some((r) => r.id == resellerId);
       const isSuperadminOrRestricted =
         banksRes.adminRole === 'superadmin' || banksRes.adminRole === 'restricted_superadmin';
       if (isSuperadminOrRestricted) {
-        if (!bankId || (bankId !== 'superadmin' && !isBankInList)) {
+        const shouldRedirectToSuperadminPage =
+          (resellerId && !isResellerInList) ||
+          (!resellerId && (!bankId || (bankId !== 'superadmin' && !isBankInList)));
+        if (shouldRedirectToSuperadminPage) {
           window.location.href = baseFrontUrl + '/superadmin/';
+          return;
         }
       } else {
-        if (!bankId || !isBankInList) {
-          window.location.href = baseFrontUrl + '/' + banksRes.banks[0].id + '/';
+        const shouldRedirectToFirstResellerOrBankPage =
+          (resellerId && !isResellerInList) || (!resellerId && (!bankId || !isBankInList));
+        if (shouldRedirectToFirstResellerOrBankPage) {
+          if (banksRes.resellers.length > 0) {
+            window.location.href = baseFrontUrl + '/reseller/' + banksRes.resellers[0].id + '/';
+            return;
+          } else {
+            window.location.href = baseFrontUrl + '/' + banksRes.banks[0].id + '/';
+            return;
+          }
         }
       }
       setIsRestrictedSuperadmin(banksRes.adminRole === 'restricted_superadmin');
       this.setState({
         banks: banksRes.banks,
+        resellers: banksRes.resellers,
         isSuperadminOrRestricted: isSuperadminOrRestricted,
         isReady: true,
       });
     } catch (e) {
       console.error(e);
     }
-    if (!window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin')) {
+    if (
+      !window.location.href.replace(baseFrontUrl, '').startsWith('/superadmin') &&
+      !window.location.href.replace(baseFrontUrl, '').startsWith('/reseller')
+    ) {
       bankUrlFetch('/api/count-shared-vaults', 'GET', null)
         .then((res) => this.setState({ nb_shared_vaults: res }))
         .catch(() => {});
@@ -74,9 +92,11 @@ class App extends React.Component {
         )
         .catch(() => {});
     }
-    bankUrlFetch('/api/count-password-reset-requests', 'GET', null)
-      .then((res) => this.setState({ nb_pwd_reset_requests: res }))
-      .catch(() => {});
+    if (!window.location.href.replace(baseFrontUrl, '').startsWith('/reseller')) {
+      bankUrlFetch('/api/count-password-reset-requests', 'GET', null)
+        .then((res) => this.setState({ nb_pwd_reset_requests: res }))
+        .catch(() => {});
+    }
   }
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
@@ -139,8 +159,7 @@ class App extends React.Component {
           <Settings
             setIsLoading={this.setIsLoading}
             isSuperAdmin={this.state.isSuperadmin}
-            // eslint-disable-next-line eqeqeq
-            otherBanks={this.state.banks.filter((g) => g.id != bankId)}
+            otherBanks={this.state.banks.filter((g) => g.id !== parseInt(bankId))}
           />
         );
       }
@@ -148,74 +167,81 @@ class App extends React.Component {
     } else if (path.startsWith(`/${bankId}/licences`)) {
       pageContent = <Licences setIsLoading={this.setIsLoading} />;
       currentPage = 'licences';
+    } else if (path.startsWith(`/reseller/${resellerId}`)) {
+      pageContent = <Reseller setIsLoading={this.setIsLoading} />;
+      currentPage = 'reseller';
     }
 
-    const pages = [
-      {
-        key: 'overview',
-        href: '/',
-        title: i18n.t('menu_overview'),
-        isCurrent: currentPage === 'overview',
-        disabledForSuperadmin: false,
-      },
-      {
-        key: 'password_reset_requests',
-        href: '/password_reset_requests/',
-        title: `${i18n.t('menu_password_reset_requests')} (${
-          this.state.nb_pwd_reset_requests || '-'
-        })`,
-        isCurrent: currentPage === 'password_reset_requests',
-        disabledForSuperadmin: false,
-      },
-      {
-        key: 'users',
-        href: '/users/',
-        title: `${i18n.t('menu_users')} (${this.state.nb_users || '-'})`,
-        isCurrent: currentPage === 'users',
-        disabledForSuperadmin: true,
-      },
-      {
-        key: 'shared_devices',
-        href: '/shared_devices/',
-        title: `${i18n.t('menu_shared_devices')} (${this.state.nb_shared_devices || '-'})`,
-        isCurrent: currentPage === 'shared_devices',
-        disabledForSuperadmin: true,
-      },
-      {
-        key: 'shared_vaults',
-        href: '/shared_vaults/',
-        title: `${i18n.t('menu_shared_vaults')} (${this.state.nb_shared_vaults || '-'})`,
-        isCurrent: currentPage === 'shared_vaults',
-        disabledForSuperadmin: true,
-      },
-      {
-        key: 'other',
-        href: '/other/',
-        title: `${i18n.t('menu_other')}`,
-        isCurrent: currentPage === 'other',
-        disabledForSuperadmin: false,
-      },
-      {
-        key: 'settings',
-        href: '/settings/',
-        title: i18n.t('menu_settings'),
-        isCurrent: currentPage === 'settings',
-        disabledForSuperadmin: false,
-      },
-      {
-        key: 'licences',
-        href: '/licences/',
-        title: `${i18n.t('menu_licences')}`,
-        isCurrent: currentPage === 'licences',
-        disabledForSuperadmin: false,
-      },
-    ];
+    const pages =
+      currentPage === 'reseller'
+        ? []
+        : [
+            {
+              key: 'overview',
+              href: '/',
+              title: i18n.t('menu_overview'),
+              isCurrent: currentPage === 'overview',
+              disabledForSuperadmin: false,
+            },
+            {
+              key: 'password_reset_requests',
+              href: '/password_reset_requests/',
+              title: `${i18n.t('menu_password_reset_requests')} (${
+                this.state.nb_pwd_reset_requests || '-'
+              })`,
+              isCurrent: currentPage === 'password_reset_requests',
+              disabledForSuperadmin: false,
+            },
+            {
+              key: 'users',
+              href: '/users/',
+              title: `${i18n.t('menu_users')} (${this.state.nb_users || '-'})`,
+              isCurrent: currentPage === 'users',
+              disabledForSuperadmin: true,
+            },
+            {
+              key: 'shared_devices',
+              href: '/shared_devices/',
+              title: `${i18n.t('menu_shared_devices')} (${this.state.nb_shared_devices || '-'})`,
+              isCurrent: currentPage === 'shared_devices',
+              disabledForSuperadmin: true,
+            },
+            {
+              key: 'shared_vaults',
+              href: '/shared_vaults/',
+              title: `${i18n.t('menu_shared_vaults')} (${this.state.nb_shared_vaults || '-'})`,
+              isCurrent: currentPage === 'shared_vaults',
+              disabledForSuperadmin: true,
+            },
+            {
+              key: 'other',
+              href: '/other/',
+              title: `${i18n.t('menu_other')}`,
+              isCurrent: currentPage === 'other',
+              disabledForSuperadmin: false,
+            },
+            {
+              key: 'settings',
+              href: '/settings/',
+              title: i18n.t('menu_settings'),
+              isCurrent: currentPage === 'settings',
+              disabledForSuperadmin: false,
+            },
+            {
+              key: 'licences',
+              href: '/licences/',
+              title: `${i18n.t('menu_licences')}`,
+              isCurrent: currentPage === 'licences',
+              disabledForSuperadmin: false,
+            },
+          ];
 
     return (
       <div className="App">
         <Menu
           pages={pages}
           banks={this.state.banks}
+          resellers={this.state.resellers}
           isSuperadmin={this.state.isSuperadminOrRestricted}
           isSuperadminPage={bankId === 'superadmin'}
         />

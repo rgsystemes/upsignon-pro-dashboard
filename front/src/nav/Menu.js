@@ -8,11 +8,16 @@ import bySepteoLogo from './bySepteoLogo.svg';
 
 // PROPS pages, banks, isSuperadmin, isSuperadminPage
 function Menu(props) {
-  const { pages, banks, isSuperadmin, isSuperadminPage } = props;
+  const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
-      <BankChooser banks={banks} isSuperadminPage={isSuperadminPage} isSuperadmin={isSuperadmin} />
+      <BankChooser
+        banks={banks}
+        resellers={resellers}
+        isSuperadminPage={isSuperadminPage}
+        isSuperadmin={isSuperadmin}
+      />
       <React.Fragment>
         {pages
           .filter((p) => !isSuperadminPage || !p.disabledForSuperadmin)
