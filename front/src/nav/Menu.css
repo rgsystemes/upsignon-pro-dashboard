@@ -52,6 +52,12 @@ nav {
   background-color: rgb(44, 82, 132);
   color: white;
 }
+.bankLink.reseller {
+  font-weight: bold;
+}
+.bankLink.resellerBank {
+  padding-left: 60px;
+}
 
 .currentBank {
   text-align: center;
@@ -61,6 +67,9 @@ nav {
   background-color: rgb(44, 83, 132);
   cursor: pointer;
   width: 100%;
+}
+.reseller {
+  font-weight: bold;
 }
 .superadmin {
   background-color: rgb(246, 164, 0);
