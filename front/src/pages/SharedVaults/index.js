@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
-import { frontUrl } from '../../helpers/env';
+import { bankFrontUrl } from '../../helpers/env';
 import { i18n } from '../../i18n/i18n';
 import { StatsCell } from '../../helpers/statsCell';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
@@ -120,7 +120,7 @@ class SharedVaults extends React.Component {
   };
 
   goToPageIndex = (p) => {
-    window.location.href = `${frontUrl}/shared_vaults/?limit=${this.state.limit}&pageIndex=${p}`;
+    window.location.href = `${bankFrontUrl}/shared_vaults/?limit=${this.state.limit}&pageIndex=${p}`;
   };
 
   componentDidMount() {

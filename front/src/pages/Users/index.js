@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { frontUrl } from '../../helpers/env';
+import { bankFrontUrl } from '../../helpers/env';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
@@ -126,10 +126,10 @@ class Users extends React.Component {
   }
 
   goToPageIndex = (p) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
+    window.location.href = `${bankFrontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
   };
   toggleSorting = (sortType) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${this.state.pageIndex}&sortingType=${sortType}`;
+    window.location.href = `${bankFrontUrl}/users/?limit=${this.state.limit}&pageIndex=${this.state.pageIndex}&sortingType=${sortType}`;
   };
 
   onSearch = async (ev) => {
