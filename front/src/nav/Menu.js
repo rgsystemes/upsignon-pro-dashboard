@@ -2,7 +2,7 @@ import React from 'react';
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
-import { frontUrl, baseFrontUrl } from '../helpers/env';
+import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
 import bySepteoLogo from './bySepteoLogo.svg';
 
@@ -20,7 +20,7 @@ function Menu(props) {
             return (
               <a
                 key={p.key}
-                href={frontUrl + p.href}
+                href={bankFrontUrl + p.href}
                 className={`navItem ${p.isCurrent ? 'current' : ''}`}
               >
                 {p.title}
