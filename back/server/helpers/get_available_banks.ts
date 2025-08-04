@@ -3,7 +3,15 @@ import { logError } from './logger';
 
 export const get_available_banks = async (req: any, res: any): Promise<void> => {
   try {
-    const directBanks = await db.query('SELECT id, name, reseller_id FROM banks ORDER BY NAME ASC');
+    const directBanks = await db.query(
+      `SELECT
+        id,
+        name,
+        reseller_id,
+        created_at,
+        (SELECT count(users.id) FROM users WHERE users.bank_id=banks.id) AS nb_users
+      FROM banks ORDER BY NAME ASC`,
+    );
 
     if (
       req.session.adminRole !== 'superadmin' &&

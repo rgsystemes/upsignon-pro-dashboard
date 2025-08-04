@@ -2,7 +2,7 @@ import express from 'express';
 import { delete_admin } from './delete_admin';
 import { delete_bank } from './delete_bank';
 import { get_banks } from './get_banks';
-import { update_bank } from './update_bank';
+import { update_bank_as_superadmin } from './update_bank';
 import { get_admins } from './get_admins';
 import { insert_bank } from './insert_bank';
 import { insert_admin } from './insert_admin';
@@ -55,7 +55,7 @@ superadminApiRouter.post('/update-admin-role', update_admin_role);
 // BANKS
 superadminApiRouter.get('/banks', get_banks);
 superadminApiRouter.post('/insert-bank', insert_bank);
-superadminApiRouter.post('/update-bank', update_bank);
+superadminApiRouter.post('/update-bank', update_bank_as_superadmin);
 superadminApiRouter.post('/delete-bank/:id', delete_bank);
 
 // RESELLERS

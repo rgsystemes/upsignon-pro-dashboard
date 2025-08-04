@@ -101,6 +101,16 @@ class App extends React.Component {
   setIsLoading = (isLoading) => {
     this.setState({ isLoading });
   };
+  refetchBanks = async () => {
+    try {
+      const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
+      this.setState({
+        banks: banksRes.banks,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   render() {
     if (!this.state.isReady) {
       return (
@@ -168,7 +178,14 @@ class App extends React.Component {
       pageContent = <Licences setIsLoading={this.setIsLoading} />;
       currentPage = 'licences';
     } else if (path.startsWith(`/reseller/${resellerId}`)) {
-      pageContent = <Reseller setIsLoading={this.setIsLoading} />;
+      pageContent = (
+        <Reseller
+          setIsLoading={this.setIsLoading}
+          resellerId={resellerId}
+          banks={this.state.banks.filter((b) => b.reseller_id === resellerId)}
+          refetchBanks={this.refetchBanks}
+        />
+      );
       currentPage = 'reseller';
     }
 
