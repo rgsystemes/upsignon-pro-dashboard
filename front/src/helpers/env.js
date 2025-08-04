@@ -4,8 +4,8 @@ let baseServerUrl =
   process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : process.env.PUBLIC_URL;
 
 // remove trailing /
-baseFrontUrl.replace(/\/$/, '');
-baseServerUrl.replace(/\/$/, '');
+baseFrontUrl = baseFrontUrl.replace(/\/$/, '');
+baseServerUrl = baseServerUrl.replace(/\/$/, '');
 
 let resellerId, bankId;
 if (window.location.href.startsWith(`${baseFrontUrl}/reseller/`)) {
@@ -16,7 +16,8 @@ if (window.location.href.startsWith(`${baseFrontUrl}/reseller/`)) {
   resellerId = null;
 }
 const bankFrontUrl = baseFrontUrl + '/' + bankId;
-const bankServerUrl = baseServerUrl + '/' + bankId;
+const bankOrResellerServerUrl =
+  baseServerUrl + (resellerId ? '/reseller/' + resellerId : '/' + bankId);
 
 let isSaasServer = false;
 try {
@@ -28,7 +29,7 @@ try {
 export {
   baseFrontUrl,
   bankFrontUrl,
-  bankServerUrl,
+  bankOrResellerServerUrl,
   bankId,
   baseServerUrl,
   isSaasServer,
