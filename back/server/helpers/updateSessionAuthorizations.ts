@@ -47,7 +47,7 @@ export const recomputeSessionAuthorizationsForAdminById = async (
       !env.DEV_FALLBACK_USE_DB_ROLE &&
       adminEmail === env.DEV_FALLBACK_ADMIN_EMAIL
     ) {
-      adminRole = env.DEV_FALLBACK_ADMIN_RESTRICTED ? 'restricted_superadmin' : 'superadmin';
+      adminRole = 'superadmin';
     }
     const resellerId = adminRes.rows[0].reseller_id;
     const banksRes = await db.query('SELECT bank_id FROM admin_banks WHERE admin_id=$1', [adminId]);
