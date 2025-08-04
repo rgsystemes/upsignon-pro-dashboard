@@ -1,5 +1,5 @@
-import { db } from './db';
-import { logError } from './logger';
+import { db } from './helpers/db';
+import { logError } from './helpers/logger';
 
 export const get_available_banks = async (req: any, res: any): Promise<void> => {
   try {
