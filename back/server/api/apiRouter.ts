@@ -50,7 +50,7 @@ import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
-import { get_bank_url } from '../helpers/get_bank_url';
+import { get_bank_url } from './get_bank_url';
 import { get_bank_sso_config } from './sso/get_bank_sso_config';
 import { add_bank_sso_config } from './sso/add_bank_sso_config';
 import { delete_bank_sso_config } from './sso/delete_bank_sso_config';
