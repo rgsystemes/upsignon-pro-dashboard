@@ -3,6 +3,7 @@ import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import '../../helpers/tabs.css';
 import { ResellerBanks } from './ResellerBanks';
+import { ResellerAdmins } from './ResellerAdmins';
 
 // Props setIsLoading, updateMenuBanks
 class Reseller extends React.Component {
@@ -41,9 +42,12 @@ class Reseller extends React.Component {
             />
           )}
 
-          {/* {activeTab === 'admins' && (
-            <Admins setIsLoading={this.props.setIsLoading} banks={this.state.banks} />
-          )} */}
+          {activeTab === 'admins' && (
+            <ResellerAdmins
+              setIsLoading={this.props.setIsLoading}
+              resellerId={this.props.resellerId}
+            />
+          )}
         </div>
       </div>
     );
