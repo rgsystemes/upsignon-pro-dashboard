@@ -1,19 +1,22 @@
 import { i18n } from '../i18n/i18n';
-import { bankServerUrl, baseServerUrl } from './env';
+import { bankOrResellerServerUrl, baseServerUrl } from './env';
 
-export async function baseUrlFetch(route, method, body, useBank) {
+export async function baseUrlFetch(route, method, body, useBankOrReseller) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(`${useBank ? bankServerUrl : baseServerUrl}${route}`, {
-    method,
-    body: bodyText,
-    cache: 'no-store',
-    mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
-    headers,
-    keepalive: true,
-  });
+  const res = await fetch(
+    `${useBankOrReseller ? bankOrResellerServerUrl : baseServerUrl}${route}`,
+    {
+      method,
+      body: bodyText,
+      cache: 'no-store',
+      mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
+      headers,
+      keepalive: true,
+    },
+  );
   if (!res.ok) {
     window.alert(i18n.t('request_error'));
     throw new Error(res.statusText);

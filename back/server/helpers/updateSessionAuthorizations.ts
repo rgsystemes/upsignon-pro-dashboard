@@ -42,7 +42,11 @@ export const recomputeSessionAuthorizationsForAdminById = async (
     const adminEmail = adminRes.rows[0].email;
 
     let adminRole = adminRes.rows[0].admin_role;
-    if (!env.IS_PRODUCTION && adminEmail === env.DEV_FALLBACK_ADMIN_EMAIL) {
+    if (
+      !env.IS_PRODUCTION &&
+      !env.DEV_FALLBACK_USE_DB_ROLE &&
+      adminEmail === env.DEV_FALLBACK_ADMIN_EMAIL
+    ) {
       adminRole = env.DEV_FALLBACK_ADMIN_RESTRICTED ? 'restricted_superadmin' : 'superadmin';
     }
     const resellerId = adminRes.rows[0].reseller_id;

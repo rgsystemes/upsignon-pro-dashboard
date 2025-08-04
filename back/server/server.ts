@@ -18,6 +18,7 @@ import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateS
 import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
+import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
@@ -127,6 +128,11 @@ app.get('/server_url', get_server_url);
 app.use('/disconnect/', disconnect);
 
 app.use('/superadmin/api/', superadminApiRouter);
+app.use('/reseller/:resellerId/api/', (req, res, next) => {
+  // @ts-ignore
+  req.proxyParamsResellerId = req.params.resellerId;
+  return resellerApiRouter(req, res, next);
+});
 app.use('/:bankId/api/', (req, res, next) => {
   const bankId = req.params.bankId;
   // @ts-ignore
@@ -141,6 +147,7 @@ app.use(
     '/superadmin/settings/',
     '/superadmin/licences/',
     '/superadmin/',
+    '/reseller/:resellerId/',
     '/:bankId/users/',
     '/:bankId/shared_devices/',
     '/:bankId/shared_vaults/',

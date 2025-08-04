@@ -10,12 +10,6 @@ import { i18n } from '../../i18n/i18n';
 import './Banks.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 
-// eslint-disable-next-line no-extend-native
-Date.prototype.addWeeks = function (w) {
-  this.setTime(this.getTime() + w * 7 * 24 * 60 * 60 * 1000);
-  return this;
-};
-
 // Props : setIsLoading, banks, fetchBanks
 class Banks extends React.Component {
   state = {
