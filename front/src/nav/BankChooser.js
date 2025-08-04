@@ -84,13 +84,15 @@ class BankChooser extends React.Component {
                 );
               })}
             {this.props.banks &&
-              this.props.banks.map((b) => {
-                return (
-                  <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
-                    {b.name}
-                  </a>
-                );
-              })}
+              this.props.banks
+                .filter((b) => b.reseller_id == null)
+                .map((b) => {
+                  return (
+                    <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
+                      {b.name}
+                    </a>
+                  );
+                })}
           </div>
         )}
       </div>
