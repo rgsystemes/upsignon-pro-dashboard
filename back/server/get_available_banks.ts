@@ -23,7 +23,7 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
           resellers.name
         FROM resellers
         RIGHT JOIN admins on admins.reseller_id=resellers.id
-        WHERE admins.reseller_id=$1
+        WHERE admins.id=$1
         ORDER BY name ASC`,
         [req.session.adminId],
       );
