@@ -226,7 +226,7 @@ class Admins extends React.Component {
                       <td
                         style={{
                           backgroundColor:
-                            admin.admin_role != 'admin'
+                            admin.admin_role != 'admin' || !!admin.reseller_id
                               ? 'lightgrey'
                               : admin.banks && admin.banks.length > 0
                                 ? 'transparent'
