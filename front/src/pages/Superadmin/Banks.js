@@ -98,20 +98,6 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateNbLicences = async (bankId, newNb) => {
-    try {
-      this.props.setIsLoading(true);
-      await bankUrlFetch('/api/update-bank', 'POST', {
-        nb_licences_sold: parseInt(newNb),
-        id: bankId,
-      });
-      await this.props.fetchBanks();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.props.setIsLoading(false);
-    }
-  };
   toggleBankSetting = async (bankId, newSettings) => {
     try {
       this.props.setIsLoading(true);
@@ -461,17 +447,8 @@ class Banks extends React.Component {
                         this.updateBankName(bank.id, newVal);
                       }}
                     />
-                    <EditableCell
-                      type="number"
-                      value={bank.nb_licences_sold}
-                      onChange={(newVal) => {
-                        if (newVal == null || newVal < 0) return;
-                        this.updateNbLicences(bank.id, newVal);
-                      }}
-                    />
-                    <td
-                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
-                    >
+                    <td>{bank.nb_licences}</td>
+                    <td className={bank.nb_users > bank.nb_licences ? 'user-count-warning' : ''}>
                       {bank.nb_users}
                     </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>

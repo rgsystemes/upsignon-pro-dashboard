@@ -10,7 +10,7 @@ export const get_banks = async (req: any, res: any): Promise<void> => {
         banks.name,
         banks.settings,
         (SELECT count(users.id) FROM users WHERE users.bank_id=banks.id) AS nb_users,
-        banks.nb_licences_sold,
+        0 as nb_licences,
         banks.reseller_id,
         resellers.name as reseller_name
       FROM banks
