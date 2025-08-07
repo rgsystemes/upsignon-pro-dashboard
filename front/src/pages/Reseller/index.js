@@ -1,9 +1,9 @@
 import React from 'react';
 import { i18n } from '../../i18n/i18n';
-import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import '../../helpers/tabs.css';
 import { ResellerBanks } from './ResellerBanks';
 import { ResellerAdmins } from './ResellerAdmins';
+import { LicenceTable } from '../../helpers/LicenceTable';
 
 // Props setIsLoading, updateMenuBanks
 class Reseller extends React.Component {
@@ -30,6 +30,12 @@ class Reseller extends React.Component {
           >
             {i18n.t('sasettings_superadmins')}
           </button>
+          <button
+            className={`tab-button large ${activeTab === 'licences' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('licences')}
+          >
+            {i18n.t('menu_licences')}
+          </button>
         </div>
 
         <div className="tab-content">
@@ -48,6 +54,7 @@ class Reseller extends React.Component {
               resellerId={this.props.resellerId}
             />
           )}
+          {activeTab === 'licences' && <LicenceTable />}
         </div>
       </div>
     );
