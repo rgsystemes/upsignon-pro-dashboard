@@ -31,7 +31,6 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
       bankId: validatedBody.id,
       resellerId: resellerId,
       name: validatedBody.name,
-      nbLicencesSold: null,
       settings: null,
     });
     res.status(200).end();

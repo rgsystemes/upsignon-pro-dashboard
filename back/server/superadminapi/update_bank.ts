@@ -7,7 +7,6 @@ export const update_bank_as_superadmin = async (req: any, res: any): Promise<voi
       bankId: req.body.id,
       name: req.body.name,
       resellerId: req.body.resellerId,
-      nbLicencesSold: req.body.nb_licences_sold,
       settings: req.body.settings,
     });
     res.status(200).end();

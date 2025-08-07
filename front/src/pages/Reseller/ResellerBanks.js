@@ -184,9 +184,7 @@ class ResellerBanks extends React.Component {
                         this.updateBankName(bank.id, newVal);
                       }}
                     />
-                    <td
-                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
-                    >
+                    <td className={bank.nb_users > bank.nb_licences ? 'user-count-warning' : ''}>
                       {bank.nb_users}
                     </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
