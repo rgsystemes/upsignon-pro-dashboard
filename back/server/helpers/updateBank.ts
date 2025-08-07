@@ -8,7 +8,6 @@ export const updateBank = async (
     bankId: number;
     name: string | null;
     resellerId: string | null;
-    nbLicencesSold: number | null;
     settings: {
       SALES_REP: string | null;
     } | null;
@@ -42,12 +41,6 @@ export const updateBank = async (
   if (update.resellerId != null) {
     await db.query(`UPDATE banks SET reseller_id=$1 WHERE id=$2`, [
       update.resellerId || null, // force null instead of empty string
-      update.bankId,
-    ]);
-  }
-  if (update.nbLicencesSold != null) {
-    await db.query(`UPDATE banks SET nb_licences_sold=$1 WHERE id=$2`, [
-      update.nbLicencesSold,
       update.bankId,
     ]);
   }
