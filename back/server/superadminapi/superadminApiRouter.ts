@@ -32,6 +32,7 @@ import { add_reseller } from './reseller/add_reseller';
 import { update_reseller } from './reseller/update_reseller';
 import { delete_reseller } from './reseller/delete_reseller';
 import { update_admin_reseller } from './update_admin_reseller';
+import { licenceAssign } from '../helpers/licence_assign';
 
 export const superadminApiRouter = express.Router();
 
@@ -115,4 +116,5 @@ superadminApiRouter.get('/get-password-stats', (req, res) => {
 superadminApiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, true));
 
 // Licences
-superadminApiRouter.post('/get-licences', (req, res) => get_licences(req, res, true));
+superadminApiRouter.get('/licences', (req, res) => get_licences(req, res, true));
+superadminApiRouter.post('/licences-assign', (req, res) => licenceAssign(req, res, true));

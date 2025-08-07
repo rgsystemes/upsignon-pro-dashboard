@@ -178,4 +178,4 @@ apiRouter.post('/add_sso_configuration', add_bank_sso_config);
 apiRouter.post('/delete_sso_configuration', delete_bank_sso_config);
 
 // Licences
-apiRouter.post('/get-licences', (req, res) => get_licences(req, res, false));
+apiRouter.get('/licences', (req, res) => get_licences(req, res, false));
