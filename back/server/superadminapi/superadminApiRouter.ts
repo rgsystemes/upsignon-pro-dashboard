@@ -34,6 +34,7 @@ import { delete_reseller } from './reseller/delete_reseller';
 import { update_admin_reseller } from './update_admin_reseller';
 import { licenceAssign } from '../helpers/licence_assign';
 import { startPullLicences } from './start_pull_licences';
+import { licenceSummary } from '../helpers/licence-summary';
 
 export const superadminApiRouter = express.Router();
 
@@ -120,3 +121,4 @@ superadminApiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, r
 superadminApiRouter.get('/licences', (req, res) => get_licences(req, res, true));
 superadminApiRouter.post('/licences-assign', (req, res) => licenceAssign(req, res, true));
 superadminApiRouter.post('/start-pull-licences', startPullLicences);
+superadminApiRouter.post('/licence-summary', (req, res) => licenceSummary(req, res, true));

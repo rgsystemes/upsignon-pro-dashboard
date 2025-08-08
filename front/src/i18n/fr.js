@@ -411,6 +411,8 @@ const translations = {
   licences_none_explanation:
     'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
   licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
+  licences_by_licence: 'Vue par licence',
+  licences_by_customer: 'Vue par client',
 };
 
 export default translations;
