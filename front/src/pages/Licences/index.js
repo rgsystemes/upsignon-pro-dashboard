@@ -9,7 +9,7 @@ export class Licences extends React.Component {
     return (
       <div className="page">
         <h1>{i18n.t('menu_licences')}</h1>
-        <LicenceTable />
+        <LicenceTable setIsLoading={this.props.setIsLoading} />
       </div>
     );
   }
