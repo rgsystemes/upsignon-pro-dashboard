@@ -122,7 +122,7 @@ class Resellers extends React.Component {
                 return (
                   <tr key={reseller.id}>
                     <td>
-                      <EditableCell
+                      <EditableCellContent
                         value={reseller.name}
                         onChange={(newVal) => {
                           if (!newVal) return;
@@ -167,8 +167,7 @@ class Resellers extends React.Component {
   }
 }
 
-// Composant EditableCell réutilisable (copié du modèle Banks.js)
-const EditableCell = ({ value, onChange, type = 'text' }) => {
+const EditableCellContent = ({ value, onChange, type = 'text' }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editValue, setEditValue] = React.useState(value);
 

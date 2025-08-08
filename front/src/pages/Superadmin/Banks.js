@@ -62,7 +62,7 @@ class Banks extends React.Component {
       this.newBankNameInputRef.value = null;
       this.newAdminEmailInputRef.value = null;
       this.isTestingCheckboxRef.checked = true;
-      this.setState({ selectedResellerIdForNewBank: '' });
+      this.setState({ selectedResellerIdForNewBank: null });
       window.alert(i18n.t('sasettings_new_bank_form_success'));
     } catch (e) {
       console.error(e);
@@ -630,8 +630,8 @@ const InlineSetting = (props) => {
       <div className="inline-setting-content">{i18n.t(settingConf.banksTitle)}</div>
       <div
         onClick={() => {
-          toggleGroupSetting(group.id, {
-            ...group.settings,
+          toggleBankSetting(bank.id, {
+            ...bank.settings,
             [settingNameInDB]: !resValue,
           });
         }}
