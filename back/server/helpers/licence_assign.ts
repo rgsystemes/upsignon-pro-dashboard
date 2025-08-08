@@ -63,9 +63,9 @@ export const licenceAssign = async (req: Request, res: Response, asSuperadmin: b
         checkedBody.bankId,
       ]);
     }
-    res.send(200).end();
+    res.status(200).end();
   } catch (e) {
-    logError(e);
+    logError('licenceAssign', e);
     res.sendStatus(400);
   }
 };
