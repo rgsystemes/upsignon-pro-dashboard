@@ -12,6 +12,8 @@ const translations = {
   add: 'Add',
   close: 'Close',
   total: 'Total',
+  refresh: 'Refresh',
+  refresh_failed: 'The request failed.',
   disconnect: 'Disconnect',
   pagination_pages: 'pages',
   validate: 'Validate',

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { i18n } from '../../i18n/i18n';
 import { bankUrlFetch } from '../urlFetch';
-import { isSaasServer } from '../env';
+import { baseServerUrl, isSaasServer } from '../env';
 import { isRestrictedSuperadmin } from '../isRestrictedSuperadmin';
 
 export class LicenceTable extends React.Component {
@@ -139,11 +139,13 @@ export class LicenceTable extends React.Component {
           {window.location.pathname.indexOf('/superadmin') >= 0 && (
             <p>{i18n.t('licences_none_explanation')}</p>
           )}
+          <PullButton setIsLoading={this.props.setIsLoading} refreshLicences={this.fetchLicences} />
         </div>
       );
     return (
       <div>
         <p>{i18n.t('licences_all')}</p>
+        <PullButton setIsLoading={this.props.setIsLoading} refreshLicences={this.fetchLicences} />
         <table style={{ marginBottom: 20 }}>
           <thead>
             <tr>
@@ -263,5 +265,37 @@ const LicenceAssignmentForm = (props) => {
         {i18n.t('licences_bank_distribution_assign')}
       </div>
     </div>
+  );
+};
+
+const PullButton = (p) => {
+  if (window.location.pathname.indexOf('/superadmin') === -1) {
+    return null;
+  }
+  const doStartLicencePulling = async () => {
+    p.setIsLoading(true);
+    try {
+      await bankUrlFetch('/api/start-pull-licences', 'POST', null);
+      await p.refreshLicences();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      p.setIsLoading(false);
+    }
+  };
+  return (
+    <button
+      className="action"
+      onClick={doStartLicencePulling}
+      style={{
+        marginBottom: 20,
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        cursor: 'pointer',
+      }}
+    >
+      {i18n.t('refresh')}
+    </button>
   );
 };
