@@ -3,6 +3,7 @@ import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
+import { forceProStatusUpdate } from './forceProStatusUpdate';
 
 export const configureBankWithAdminEmailAndSendMail = async (
   res: Response,
@@ -71,6 +72,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
       [adminId, insertedBank.id],
     );
 
+    forceProStatusUpdate();
     /////////////////////
     // SEND EMAIL
     /////////////////////
