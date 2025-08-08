@@ -397,6 +397,8 @@ const translations = {
   licences_none_explanation:
     'Check that your server allows external requests on the /licences route.',
   licences_all: 'Here are all the licences currently associated to you.',
+  licences_by_licence: 'View by licence',
+  licences_by_customer: 'View by customer',
 };
 
 export default translations;
