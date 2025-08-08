@@ -3,12 +3,16 @@ import { i18n } from '../../i18n/i18n';
 import { bankUrlFetch } from '../urlFetch';
 import { baseServerUrl, isSaasServer } from '../env';
 import { isRestrictedSuperadmin } from '../isRestrictedSuperadmin';
+import { Toggler } from '../Toggler';
+import { LicencesSummary } from './LicencesSummary';
+import { classNameForLicence } from './classNameForLicence';
 
 export class LicenceTable extends React.Component {
   state = {
     externalLicences: [],
     internalLicences: [],
     banks: [],
+    view: 'licenceView', // 'licenceView' or 'customerView'
   };
   showResellerCol = isSaasServer && window.location.pathname.indexOf('/superadmin') >= 0;
   isResellerPage = isSaasServer && window.location.pathname.indexOf('/reseller') >= 0;
@@ -45,28 +49,7 @@ export class LicenceTable extends React.Component {
   componentDidMount() {
     this.fetchLicences();
   }
-  classNameForLicence = (l) => {
-    try {
-      const isExpiredNotRenewed =
-        l.to_be_renewed && !l.is_monthly && new Date(l.valid_until).getTime() < Date.now();
-      let willExpireSoon = false;
-      if (l.valid_until && l.to_be_renewed) {
-        let expDateMinus3Month = new Date(l.valid_until);
-        expDateMinus3Month.setMonth(expDateMinus3Month.getMonth() - 3);
-        willExpireSoon = expDateMinus3Month.getTime() < Date.now() && l.to_be_renewed;
-      }
-      const isExpiredNotToRenew =
-        !l.to_be_renewed && new Date(l.valid_until).getTime() < Date.now();
-      let className = null;
-      if (isExpiredNotRenewed) className = 'redrow';
-      else if (willExpireSoon) className = 'orangerow';
-      else if (isExpiredNotToRenew) className = 'greyrow';
-      return className;
-    } catch (e) {
-      console.error(e, l);
-      return null;
-    }
-  };
+
   licenceDistributionCell = (l) => {
     if (l.reseller_id && !this.isResellerPage) {
       return (
@@ -113,7 +96,7 @@ export class LicenceTable extends React.Component {
   };
 
   licenceRow = (l) => {
-    const className = this.classNameForLicence(l);
+    const className = classNameForLicence(l);
     return (
       <tr key={l.id} className={className}>
         {this.showResellerCol && <td>{l.reseller_name}</td>}
@@ -129,6 +112,26 @@ export class LicenceTable extends React.Component {
       </tr>
     );
   };
+  licencesByLicence = () => {
+    return (
+      <table style={{ marginBottom: 20 }}>
+        <thead>
+          <tr>
+            {this.showResellerCol && <th>{i18n.t('licences_reseller_name')}</th>}
+            {!this.isResellerPage && !this.isBankPage && <th>{i18n.t('licences_bank_name')}</th>}
+            <th>{i18n.t('licences_nb')}</th>
+            <th>{i18n.t('licences_is_montly')}</th>
+            <th>{i18n.t('licences_valid_from')}</th>
+            <th>{i18n.t('licences_valid_until')}</th>
+            <th>{i18n.t('licences_to_be_renewed')}</th>
+            {!this.isBankPage && <th>{i18n.t('licences_bank_distribution')}</th>}
+          </tr>
+        </thead>
+        <tbody>{this.state.externalLicences.map((l, i) => this.licenceRow(l))}</tbody>
+      </table>
+    );
+  };
+
   render() {
     const hasLicences =
       this.state.internalLicences?.length > 0 || this.state.externalLicences?.length > 0;
@@ -145,22 +148,29 @@ export class LicenceTable extends React.Component {
     return (
       <div>
         <p>{i18n.t('licences_all')}</p>
-        <PullButton setIsLoading={this.props.setIsLoading} refreshLicences={this.fetchLicences} />
-        <table style={{ marginBottom: 20 }}>
-          <thead>
-            <tr>
-              {this.showResellerCol && <th>{i18n.t('licences_reseller_name')}</th>}
-              {!this.isResellerPage && !this.isBankPage && <th>{i18n.t('licences_bank_name')}</th>}
-              <th>{i18n.t('licences_nb')}</th>
-              <th>{i18n.t('licences_is_montly')}</th>
-              <th>{i18n.t('licences_valid_from')}</th>
-              <th>{i18n.t('licences_valid_until')}</th>
-              <th>{i18n.t('licences_to_be_renewed')}</th>
-              {!this.isBankPage && <th>{i18n.t('licences_bank_distribution')}</th>}
-            </tr>
-          </thead>
-          <tbody>{this.state.externalLicences.map((l, i) => this.licenceRow(l))}</tbody>
-        </table>
+        <div>
+          <PullButton setIsLoading={this.props.setIsLoading} refreshLicences={this.fetchLicences} />
+        </div>
+        {!this.isBankPage && (
+          <Toggler
+            choices={[
+              {
+                key: 'licenceView',
+                title: i18n.t('licences_by_licence'),
+                isCurrent: this.state.view === 'licenceView',
+              },
+              {
+                key: 'customerView',
+                title: i18n.t('licences_by_customer'),
+                isCurrent: this.state.view === 'customerView',
+              },
+            ]}
+            onSelect={(choice) => {
+              this.setState({ view: choice });
+            }}
+          />
+        )}
+        {this.state.view === 'licenceView' ? this.licencesByLicence() : <LicencesSummary />}
       </div>
     );
   }
