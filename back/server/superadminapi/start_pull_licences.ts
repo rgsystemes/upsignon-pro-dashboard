@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { logError } from '../helpers/logger';
 import { db } from '../helpers/db';
 
+/// This route calls the upsignon-pro-server start-licence-pulling route
+
 export const startPullLicences = async (req: Request, res: Response): Promise<void> => {
   try {
     const settingsRes = await db.query(
