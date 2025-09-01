@@ -399,6 +399,10 @@ const translations = {
   licences_all: 'Here are all the licences currently associated to you.',
   licences_by_licence: 'View by licence',
   licences_by_customer: 'View by customer',
+  licences_pool: 'Pooled licences',
+  licences_pool_detail:
+    'Pooled licences are available to all banks on a first come first served basis.',
+  licences_pool_number: '$n (pool)',
 };
 
 export default translations;
