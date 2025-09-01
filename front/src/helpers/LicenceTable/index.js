@@ -206,7 +206,7 @@ const EditableLicenceAssignment = (props) => {
       <input
         type="number"
         style={{ color: nbLicences > actualMax ? 'red' : 'inherit', width: 100, ...inputStyle }}
-        value={nbLicences || ''}
+        value={nbLicences == null ? '' : nbLicences}
         min={0}
         onChange={(ev) => {
           setNbLicences(parseInt(ev.target.value));

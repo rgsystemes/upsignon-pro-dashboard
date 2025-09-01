@@ -10,7 +10,7 @@ export const licenceAssign = async (req: Request, res: Response, asSuperadmin: b
       Joi.object({
         licencesExtId: Joi.number().required(),
         bankId: Joi.number().required(),
-        nbLicences: Joi.number().positive().allow(null).required(),
+        nbLicences: Joi.number().min(0).allow(null).required(),
       }),
     );
     // @ts-ignore
