@@ -8,6 +8,7 @@ import { delete_admin } from './admins/delete_admin';
 import { get_licences } from '../api/get_licences';
 import { licenceAssign } from '../helpers/licence_assign';
 import { licenceSummary } from '../helpers/licence-summary';
+import { licenceTogglePool } from '../helpers/licence-toggle-pool';
 
 export const resellerApiRouter = express.Router();
 
@@ -25,3 +26,4 @@ resellerApiRouter.post('/delete-reseller-admin/:adminId', delete_admin);
 resellerApiRouter.get('/licences', (req, res) => get_licences(req, res, false));
 resellerApiRouter.post('/licences-assign', (req, res) => licenceAssign(req, res, false));
 resellerApiRouter.post('/licence-summary', (req, res) => licenceSummary(req, res, false));
+resellerApiRouter.post('/licence-toogle-pool', (req, res) => licenceTogglePool(req, res, false));

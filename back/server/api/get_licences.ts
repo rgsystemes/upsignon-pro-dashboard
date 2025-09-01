@@ -17,7 +17,8 @@ export const get_licences = async (
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
-          el.valid_until
+          el.valid_until,
+          el.uses_pool
         FROM external_licences AS el
         INNER JOIN banks AS b ON b.id=el.bank_id
         WHERE el.bank_id=$1
@@ -32,7 +33,8 @@ export const get_licences = async (
         el.is_monthly,
         el.to_be_renewed,
         el.valid_from,
-        el.valid_until
+        el.valid_until,
+        el.uses_pool
         FROM internal_licences AS il
         INNER JOIN external_licences AS el ON el.ext_id=il.external_licences_id
         INNER JOIN banks AS b ON b.id=il.bank_id
@@ -41,9 +43,47 @@ export const get_licences = async (
         `,
         [bankId],
       );
+      const indirectResellerPoolLicencesRes = await db.query(
+        `SELECT
+          el.ext_id as id,
+          el.nb_licences,
+          el.is_monthly,
+          el.to_be_renewed,
+          el.valid_from,
+          el.valid_until,
+          el.uses_pool
+        FROM external_licences AS el
+        INNER JOIN resellers AS r ON r.id=el.reseller_id
+        INNER JOIN banks AS b ON b.reseller_id=el.reseller_id
+        WHERE el.uses_pool=true AND b.id=$1
+        ORDER BY b.name ASC, el.valid_from ASC, el.valid_until ASC
+        `,
+        [bankId],
+      );
+      const indirectSuperadminPoolLicencesRes = await db.query(
+        `SELECT
+          el.ext_id as id,
+          el.nb_licences,
+          el.is_monthly,
+          el.to_be_renewed,
+          el.valid_from,
+          el.valid_until,
+          el.uses_pool
+        FROM external_licences AS el
+        WHERE el.uses_pool=true AND reseller_id is null
+        ORDER BY el.valid_from ASC, el.valid_until ASC
+        `,
+        [],
+      );
+
       res.status(200).send({
         internalLicences: [],
-        externalLicences: [...directLicencesRes.rows, ...indirectLicencesRes.rows],
+        externalLicences: [
+          ...directLicencesRes.rows,
+          ...indirectLicencesRes.rows,
+          ...indirectResellerPoolLicencesRes.rows,
+          ...indirectSuperadminPoolLicencesRes.rows,
+        ],
         banks: [],
       });
     } else {
@@ -68,7 +108,8 @@ export const get_licences = async (
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
-          el.valid_until
+          el.valid_until,
+          el.uses_pool
           FROM external_licences AS el
           LEFT JOIN resellers AS r ON r.id=el.reseller_id
           LEFT JOIN banks AS b ON b.id=el.bank_id
