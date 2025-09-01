@@ -413,6 +413,10 @@ const translations = {
   licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
   licences_by_licence: 'Vue par licence',
   licences_by_customer: 'Vue par client',
+  licences_pool: 'Licences mutualisées',
+  licences_pool_detail:
+    'Les licences mutualisées sont disponibles pour toutes les banques sur la base du premier arrivé premier servi.',
+  licences_pool_number: '$n (mutualisées)',
 };
 
 export default translations;

@@ -46,6 +46,18 @@ export class LicenceTable extends React.Component {
       console.error(e);
     }
   };
+  togglePool = async (licenceId, usesPool) => {
+    try {
+      const res = await bankUrlFetch('/api/licence-toogle-pool', 'POST', {
+        licencesExtId: licenceId,
+        usesPool,
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      await this.fetchLicences();
+    }
+  };
   componentDidMount() {
     this.fetchLicences();
   }
@@ -76,21 +88,39 @@ export class LicenceTable extends React.Component {
 
     return (
       <div>
-        {licenceAssignmnentsForThisExtLicence.map((il) => {
-          return (
-            <EditableLicenceAssignment
-              key={il.id}
-              l={il}
-              max={remainingLicencesToAssign}
-              onSubmit={this.assignInternalLicence}
+        {licenceAssignmnentsForThisExtLicence.length === 0 && (
+          <div style={{ display: 'flex', marginBottom: 15 }}>
+            <input
+              type="checkbox"
+              checked={l.uses_pool}
+              onChange={(ev) => this.togglePool(l.id, ev.target.checked)}
             />
-          );
-        })}
-        <LicenceAssignmentForm
-          onSubmit={(bankId, nbLicences) => this.assignInternalLicence(l.id, bankId, nbLicences)}
-          max={remainingLicencesToAssign}
-          banks={allUnssignedBanks}
-        />
+            <div style={{ marginLeft: 10, cursor: 'help' }} title={i18n.t('licences_pool_detail')}>
+              {i18n.t('licences_pool')}
+            </div>
+          </div>
+        )}
+        {!l.uses_pool && (
+          <>
+            {licenceAssignmnentsForThisExtLicence.map((il) => {
+              return (
+                <EditableLicenceAssignment
+                  key={il.id}
+                  l={il}
+                  max={remainingLicencesToAssign}
+                  onSubmit={this.assignInternalLicence}
+                />
+              );
+            })}
+            <LicenceAssignmentForm
+              onSubmit={(bankId, nbLicences) =>
+                this.assignInternalLicence(l.id, bankId, nbLicences)
+              }
+              max={remainingLicencesToAssign}
+              banks={allUnssignedBanks}
+            />
+          </>
+        )}
       </div>
     );
   };
@@ -101,7 +131,9 @@ export class LicenceTable extends React.Component {
       <tr key={l.id} className={className}>
         {this.showResellerCol && <td>{l.reseller_name}</td>}
         {!this.isResellerPage && !this.isBankPage && <td>{l.bank_name}</td>}
-        <td>{l.nb_licences}</td>
+        <td>
+          {l.uses_pool ? i18n.t('licences_pool_number', { n: l.nb_licences }) : l.nb_licences}
+        </td>
         <td>
           <input type="checkbox" checked={l.is_monthly} disabled />
         </td>
