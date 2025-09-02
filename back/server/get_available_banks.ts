@@ -5,12 +5,16 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
   try {
     const directBanks = await db.query(
       `SELECT
-        id,
-        name,
-        reseller_id,
-        created_at,
-        (SELECT count(users.id) FROM users WHERE users.bank_id=banks.id) AS nb_users
-      FROM banks ORDER BY NAME ASC`,
+        b.id,
+        b.name,
+        b.reseller_id,
+        b.created_at,
+        COUNT(DISTINCT u.id) AS nb_users
+      FROM banks AS b
+      LEFT JOIN users AS u
+        ON u.bank_id=b.id
+      GROUP BY b.id
+      ORDER BY b.name ASC`,
     );
 
     if (
