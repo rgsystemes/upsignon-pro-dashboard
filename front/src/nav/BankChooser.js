@@ -20,7 +20,6 @@ class BankChooser extends React.Component {
           padding: 20,
           display: 'flex',
           position: 'relative',
-          overflow: 'visible',
           userSelect: 'none',
         }}
       >
@@ -44,11 +43,11 @@ class BankChooser extends React.Component {
             style={{
               position: 'absolute',
               top: 'calc(100% - 20px)',
+              zIndex: 1000,
               backgroundColor: 'white',
               border: '1px solid #eee',
               boxShadow: '0 0 5px rgb(44, 83, 132)',
               maxHeight: '80vh',
-              overflow: 'scroll',
             }}
           >
             {this.props.isSuperadmin && (
