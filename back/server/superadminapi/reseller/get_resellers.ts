@@ -7,12 +7,19 @@ export const get_resellers = async (req: Request, res: Response): Promise<void> 
   try {
     const dbRes = await db.query(
       `SELECT
-        id,
-        name,
-        created_at,
-        (SELECT ARRAY_AGG(JSON_BUILD_OBJECT('id', banks.id, 'name', banks.name)) FROM banks WHERE banks.reseller_id=resellers.id) as banks
-      FROM resellers
-      ORDER BY name ASC`,
+        r.id,
+        r.name,
+        r.created_at,
+        ARRAY_AGG(
+            JSON_BUILD_OBJECT(
+              'id', b.id,
+              'name', b.name
+            )
+        ) FILTER (WHERE b.id IS NOT NULL) AS banks
+      FROM resellers AS r
+      LEFT JOIN banks AS b ON b.reseller_id=r.id
+      GROUP BY r.id
+      ORDER BY r.name ASC`,
     );
     res.status(200).send(
       dbRes.rows.map((r) => {

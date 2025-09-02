@@ -9,12 +9,14 @@ export const get_banks = async (req: any, res: any): Promise<void> => {
         banks.id,
         banks.name,
         banks.settings,
-        (SELECT count(users.id) FROM users WHERE users.bank_id=banks.id) AS nb_users,
+        COUNT(users.id) AS nb_users,
         banks.reseller_id,
         resellers.name as reseller_name
       FROM banks
       LEFT JOIN resellers ON resellers.id=banks.reseller_id
-      ORDER BY name ASC`,
+      LEFT JOIN users ON users.bank_id=banks.id
+      GROUP BY banks.id, resellers.id
+      ORDER BY banks.name ASC`,
     );
     const banks = dbRes.rows;
     for (let i = 0; i < banks.length; i++) {
