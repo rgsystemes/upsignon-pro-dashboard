@@ -14,7 +14,6 @@ export const get_admins = async (req: any, res: any): Promise<void> => {
       FROM admins
       LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
       LEFT JOIN banks ON admin_banks.bank_id=banks.id
-      WHERE banks.reseller_id IS NULL OR banks.reseller_id != admins.reseller_id
       GROUP BY admins.id
       ORDER BY admins.admin_role, admins.created_at ASC`,
     );
