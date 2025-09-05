@@ -3,6 +3,7 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { baseFrontUrl } from '../../helpers/env';
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading
 class Resellers extends React.Component {
@@ -67,7 +68,7 @@ class Resellers extends React.Component {
       } catch (e) {
         console.error(e);
         if (e.message.includes('400')) {
-          window.alert(i18n.t('sasettings_reseller_delete_error_banks_associated'));
+          toast.error(i18n.t('sasettings_reseller_delete_error_banks_associated'));
         }
       } finally {
         this.props.setIsLoading(false);

@@ -2,6 +2,7 @@ import React from 'react';
 import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading
 class BankAdmins extends React.Component {
@@ -59,13 +60,12 @@ class BankAdmins extends React.Component {
       this.props.setIsLoading(true);
       const { success } = await baseUrlFetch('/get_admin_invite', 'POST', { adminEmail });
       if (success) {
-        window.alert(i18n.t('settings_admin_invite_sent'));
+        toast.success(i18n.t('settings_admin_invite_sent'));
       } else {
-        window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
+        toast.error(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
       }
     } catch (e) {
       console.error(e);
-      window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e }));
     } finally {
       this.props.setIsLoading(false);
     }
