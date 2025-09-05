@@ -26,7 +26,7 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
           resellers.id,
           resellers.name
         FROM resellers
-        RIGHT JOIN admins on admins.reseller_id=resellers.id
+        INNER JOIN admins on admins.reseller_id=resellers.id
         WHERE admins.id=$1
         ORDER BY name ASC`,
         [req.session.adminId],
@@ -45,6 +45,7 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
       });
     }
 
+    // superadmin or restricted_superadmin case
     const resellersRes = await db.query(
       `SELECT
         id,
@@ -52,7 +53,6 @@ export const get_available_banks = async (req: any, res: any): Promise<void> => 
       FROM resellers
       ORDER BY name ASC`,
     );
-    // superadmin case
     res.status(200).json({
       banks: directBanks.rows,
       resellers: resellersRes.rows,
