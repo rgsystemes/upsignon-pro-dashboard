@@ -4,6 +4,7 @@ import { i18n } from '../../i18n/i18n';
 import './OpenidConfiguration.css';
 import { Loader } from '../../helpers/loader';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 // Windows Logo Component
 const WindowsLogo = () => (
@@ -70,11 +71,11 @@ export class OpenidConfiguration extends React.Component {
         try {
           const url = new URL(configUrl);
           if (!url.protocol.startsWith('http')) {
-            alert(i18n.t('settings_openid_invalid_url_protocol'));
+            toast.warn(i18n.t('settings_openid_invalid_url_protocol'));
             return;
           }
         } catch (error) {
-          alert(i18n.t('settings_openid_invalid_url'));
+          toast.error(i18n.t('settings_openid_invalid_url'));
           return;
         }
       }
