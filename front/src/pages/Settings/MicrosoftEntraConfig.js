@@ -84,7 +84,6 @@ export class MicrosoftEntraConfig extends React.Component {
       this.setState({ testResult: testRes });
     } catch (e) {
       console.error(e);
-      alert(i18n.t('bank_setting_microsoft_entra_test_error', { e }));
     } finally {
       this.props.setIsLoading(false);
     }
