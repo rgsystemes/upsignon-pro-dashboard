@@ -2,6 +2,7 @@ import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 export class EmailConfig extends React.Component {
   state = {
@@ -63,10 +64,9 @@ export class EmailConfig extends React.Component {
       event.preventDefault();
       this.props.setIsLoading(true);
       await bankUrlFetch(`/api/test-email?email=${this.testingEmailInputRef.value}`, 'GET');
-      alert(i18n.t('sasettings_email_config_testing_alert'));
+      toast.info(i18n.t('sasettings_email_config_testing_alert'));
     } catch (e) {
       console.log(e);
-      alert(i18n.t('sasettings_email_config_testing_error_alert', { e }));
     } finally {
       this.props.setIsLoading(false);
     }

@@ -18,7 +18,7 @@ const translations = {
   pagination_pages: 'pages',
   validate: 'Validate',
   cancel: 'Cancel',
-  request_error: 'The server connection failed. You may need to reconnect.',
+  request_error: 'Server request error. You may need to reconnect.',
 
   menu_overview: 'Overview',
   menu_password_reset_requests: 'Password reset requests',
@@ -214,7 +214,6 @@ const translations = {
   mail_writer_placeholder: 'Write your mail here',
   mail_writer_send: 'Send',
   mail_writer_success: 'SUCCESS\n\nMail sent to $n recipients',
-  mail_writer_error: 'ERROR\n\n$e',
   mail_writer_empty_fields:
     'ERROR\n\nBoth subject and content need to be not empty for sending an email.',
   mail_writer_confirm_send: 'You are about to send an email to $n recipients. Continue?',
@@ -376,7 +375,6 @@ const translations = {
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
   bank_setting_microsoft_entra_testing: 'Test',
   bank_setting_microsoft_entra_test_start: 'Start test',
-  bank_setting_microsoft_entra_test_error: 'Error testing Microsoft Entra ID: $e',
   bank_setting_microsoft_entra_test_user_id: 'MS user id:',
   bank_setting_microsoft_entra_test_all_users: 'UpSignon users:',
   bank_setting_microsoft_entra_test_user_authorized: 'User authorized:',

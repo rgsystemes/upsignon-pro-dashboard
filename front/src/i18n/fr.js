@@ -18,7 +18,7 @@ const translations = {
   pagination_pages: 'pages',
   validate: 'Valider',
   cancel: 'Annuler',
-  request_error: 'La connexion au serveur a échouée, vous devez peut-être vous reconnecter.',
+  request_error: 'La requête au serveur a échouée, vous devez peut-être vous reconnecter.',
   menu_overview: "Vue d'ensemble",
   menu_password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   menu_users: 'Coffres-forts',
@@ -215,7 +215,6 @@ const translations = {
   mail_writer_placeholder: 'Écrivez votre message ici',
   mail_writer_send: 'Envoyer',
   mail_writer_success: 'SUCCÈS\n\nMail envoyé à $n destinataires',
-  mail_writer_error: 'ERREUR\n\n$e',
   mail_writer_empty_fields:
     "ERREUR\n\nL'object et le contenu ne peuvent pas être vides pour envoyer un email.",
   mail_writer_confirm_send:
@@ -390,7 +389,6 @@ const translations = {
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   bank_setting_microsoft_entra_testing: 'Tester',
   bank_setting_microsoft_entra_test_start: 'Lancer le test',
-  bank_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   bank_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
   bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignon:',
   bank_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',

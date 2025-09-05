@@ -5,6 +5,7 @@ import { bankOrResellerServerUrl } from '../../helpers/env';
 
 import './other.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 // Props = setIsLoading, isSuperadminPage
 class Other extends React.Component {
@@ -53,7 +54,7 @@ class Other extends React.Component {
 
   sendMail = async () => {
     if (!this.state.mailContent || !this.state.mailSubject) {
-      alert(i18n.t('mail_writer_empty_fields'));
+      toast.warn(i18n.t('mail_writer_empty_fields'));
       return;
     }
     if (this.state.extractedEmails) {
@@ -67,29 +68,33 @@ class Other extends React.Component {
         this.setState({ mailContent: '', mailSubject: '' });
         localStorage.removeItem('mailContent');
         localStorage.removeItem('mailSubject');
-        alert(i18n.t('mail_writer_success', { n: res.n }));
+        window.success(i18n.t('mail_writer_success', { n: res.n }));
       } catch (e) {
         console.error(e);
-        alert(i18n.t('mail_writer_error', { e }));
       } finally {
         this.props.setIsLoading(false);
       }
       return;
     }
-    const resPrecheck = await bankUrlFetch('/api/send-email-precheck', 'POST', {
-      extractorDuplicateSelect: this.state.extractorDuplicateSelect,
-      extractorWeakSelect: this.state.extractorWeakSelect,
-      extractorMediumSelect: this.state.extractorMediumSelect,
-      extractorLongUnusedSelect: this.state.extractorLongUnusedSelect,
-      extractorSharingDeviceSelect: this.state.extractorSharingDeviceSelect,
-      extractorDuplicateMin: this.state.extractorDuplicateMin,
-      extractorWeakMin: this.state.extractorWeakMin,
-      extractorMediumMin: this.state.extractorMediumMin,
-      extractorUnusedDaysMin: this.state.extractorUnusedDaysMin,
-      sendMailToAll: this.state.sendMailToAll,
-      mailContent: this.state.mailContent,
-      mailSubject: this.state.mailSubject,
-    });
+    try {
+      const resPrecheck = await bankUrlFetch('/api/send-email-precheck', 'POST', {
+        extractorDuplicateSelect: this.state.extractorDuplicateSelect,
+        extractorWeakSelect: this.state.extractorWeakSelect,
+        extractorMediumSelect: this.state.extractorMediumSelect,
+        extractorLongUnusedSelect: this.state.extractorLongUnusedSelect,
+        extractorSharingDeviceSelect: this.state.extractorSharingDeviceSelect,
+        extractorDuplicateMin: this.state.extractorDuplicateMin,
+        extractorWeakMin: this.state.extractorWeakMin,
+        extractorMediumMin: this.state.extractorMediumMin,
+        extractorUnusedDaysMin: this.state.extractorUnusedDaysMin,
+        sendMailToAll: this.state.sendMailToAll,
+        mailContent: this.state.mailContent,
+        mailSubject: this.state.mailSubject,
+      });
+    } catch (e) {
+      console.error(e);
+      return;
+    }
     if (window.confirm(i18n.t('mail_writer_confirm_send', { n: resPrecheck.n }))) {
       try {
         this.props.setIsLoading(true);
@@ -110,10 +115,9 @@ class Other extends React.Component {
         this.setState({ mailContent: '', mailSubject: '' });
         localStorage.removeItem('mailContent');
         localStorage.removeItem('mailSubject');
-        alert(i18n.t('mail_writer_success', { n: res.n }));
+        toast.success(i18n.t('mail_writer_success', { n: res.n }));
       } catch (e) {
         console.error(e);
-        alert(i18n.t('mail_writer_error', { e }));
       } finally {
         this.props.setIsLoading(false);
       }
@@ -161,7 +165,11 @@ class Other extends React.Component {
     if (this.state.extractorSharingDeviceSelect) {
       requests.push(bankUrlFetch('/api/extract-emails-for-shared-device', 'GET', null));
     }
-    const emails = await Promise.all(requests);
+    const emails = await Promise.all(
+      requests.catch((e) => {
+        console.error(e);
+      }),
+    );
     const uniqueEmails = [];
     emails.forEach((list) => {
       list.forEach((email) => {

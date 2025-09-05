@@ -11,6 +11,7 @@ import { getDateBack1Month, getDateBack2Weeks } from '../../helpers/dateHelper';
 import { StatsCell } from '../../helpers/statsCell';
 import { settingsConfig } from '../../helpers/settingsConfig';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 const maxRenderedItems = 50;
 
@@ -175,7 +176,7 @@ class Users extends React.Component {
           }));
         } catch (e) {
           console.error(e);
-          window.alert(i18n.t('user_email_already_used_or_not_authorized', { email: newEmail }));
+          toast.error(i18n.t('user_email_already_used_or_not_authorized', { email: newEmail }));
         }
       }
     }
