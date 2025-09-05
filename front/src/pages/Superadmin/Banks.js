@@ -9,6 +9,7 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Banks.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading, banks, fetchBanks
 class Banks extends React.Component {
@@ -63,7 +64,7 @@ class Banks extends React.Component {
       this.newAdminEmailInputRef.value = null;
       this.isTestingCheckboxRef.checked = true;
       this.setState({ selectedResellerIdForNewBank: null });
-      window.alert(i18n.t('sasettings_new_bank_form_success'));
+      toast.success(i18n.t('sasettings_new_bank_form_success'));
     } catch (e) {
       console.error(e);
     } finally {
@@ -541,7 +542,7 @@ class Banks extends React.Component {
                                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                               )
                           ) {
-                            window.alert(i18n.t('sasettings_bank_sales_rep_must_be_email'));
+                            toast.warn(i18n.t('sasettings_bank_sales_rep_must_be_email'));
                             return;
                           }
                           this.toggleBankSetting(bank.id, {

@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { i18n } from '../i18n/i18n';
 import { bankOrResellerServerUrl, baseServerUrl } from './env';
 
@@ -18,7 +19,7 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
     },
   );
   if (!res.ok) {
-    window.alert(i18n.t('request_error'));
+    toast.error(`${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
     throw new Error(res.statusText);
   }
   const content = await res.text();
