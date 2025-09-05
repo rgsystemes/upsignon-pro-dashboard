@@ -14,6 +14,10 @@ class BankChooser extends React.Component {
   render() {
     const currentBank = this.props.banks.find((b) => b.id === parseInt(bankId));
     const currentReseller = this.props.resellers.find((r) => r.id == resellerId);
+
+    const directBanks = this.props.banks.filter(
+      (b) => this.props.resellers.find((r) => r.id === b.reseller_id) == null,
+    );
     return (
       <div
         style={{
@@ -82,16 +86,13 @@ class BankChooser extends React.Component {
                   </React.Fragment>
                 );
               })}
-            {this.props.banks &&
-              this.props.banks
-                .filter((b) => b.reseller_id == null)
-                .map((b) => {
-                  return (
-                    <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
-                      {b.name}
-                    </a>
-                  );
-                })}
+            {directBanks.map((b) => {
+              return (
+                <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
+                  {b.name}
+                </a>
+              );
+            })}
           </div>
         )}
       </div>
