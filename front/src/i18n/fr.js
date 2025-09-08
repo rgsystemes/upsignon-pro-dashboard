@@ -304,8 +304,8 @@ const translations = {
   sasettings_bank_sales_rep: 'Commercial',
   sasettings_bank_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_bank_open: 'Voir',
-  sasettings_nb_users: 'Nombre de coffres-forts',
-  sasettings_nb_associated_licences: 'Licences associées',
+  sasettings_nb_users: 'Licences consommées (nb de coffres-forts)',
+  sasettings_nb_associated_licences: 'Licences commandées',
   sasettings_disable_reset_pwd_manual_admin_check:
     "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
   sasettings_disable_offline_desktop:
@@ -410,7 +410,7 @@ const translations = {
   licences_none: "Aucune licence associée pour l'instant.",
   licences_none_explanation:
     'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
-  licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
+  licences_all: 'Voici toutes vos licences.',
   licences_by_licence: 'Vue par licence',
   licences_by_customer: 'Vue par client',
   licences_pool: 'Licences mutualisées',
