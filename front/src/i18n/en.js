@@ -302,8 +302,8 @@ const translations = {
   sasettings_bank_sales_rep: 'Sales Rep',
   sasettings_bank_sales_rep_must_be_email: 'Sales Rep must be an email address',
   sasettings_bank_open: 'See',
-  sasettings_nb_users: 'Number of vaults',
-  sasettings_nb_associated_licences: 'Associated licences',
+  sasettings_nb_users: 'Consumed licences (nb vaults)',
+  sasettings_nb_associated_licences: 'Ordered licences',
   sasettings_disable_reset_pwd_manual_admin_check:
     'Deactivate manual admin check for password reset requests',
   sasettings_disable_offline_desktop:
@@ -396,7 +396,7 @@ const translations = {
   licences_none: 'No licence yet available.',
   licences_none_explanation:
     'Check that your server allows external requests on the /licences route.',
-  licences_all: 'Here are all the licences currently associated to you.',
+  licences_all: 'Here are all your licences.',
   licences_by_licence: 'View by licence',
   licences_by_customer: 'View by customer',
   licences_pool: 'Pooled licences',
