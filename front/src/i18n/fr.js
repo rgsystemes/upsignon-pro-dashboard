@@ -61,6 +61,15 @@ const translations = {
   user_nb_accounts_value: '$nb comptes',
   user_nb_shared_items_value: '$nb éléments/dossiers partagés',
   user_passwords_stats: 'Stats des mots de passe (non partagés uniquement)',
+  user_passwords_stats_tooltip_1:
+    "Les couleurs vert/orange/rouge sont celles affichées dans l'application. Elles combinent la force intrinsèque du mot de passe et son nombre d'occurence.",
+  user_passwords_stats_tooltip_2:
+    'Le décompte fort/moyen/faible fait référence uniquement à la force intrinsèque du mot de passe.',
+  user_passwords_stats_tooltip_3:
+    'Un mot de passe fort non dupliqué sera vert, mais un mot de passe fort dupliqué sera orange ou rouge.',
+  user_passwords_stats_tooltip_4:
+    'Un mot de passe moyen non dupliqué sera orange, mais un mot de passe moyen dupliqué peut être rouge.',
+  user_passwords_stats_tooltip_5: 'Un mot de passe faible sera toujours rouge.',
   user_settings_override: 'Paramètres',
   shared_vault_passwords_stats: 'Stats des mots de passe',
   user_passwords_weak: '$nb faibles',

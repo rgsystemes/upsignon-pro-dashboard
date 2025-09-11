@@ -23,3 +23,16 @@
   background: orange;
   color: white;
 }
+
+.info-icon {
+  margin: 0 10px;
+  background-color: black;
+  color: white;
+  border-radius: 50%;
+  display: inline-flex;
+  width: 1.2em;
+  height: 1.2em;
+  justify-content: center;
+  align-items: center;
+  cursor: help;
+}

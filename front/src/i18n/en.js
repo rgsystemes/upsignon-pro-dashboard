@@ -62,6 +62,15 @@ const translations = {
   user_nb_accounts_value: '$nb accounts',
   user_nb_shared_items_value: '$nb shared items/vaults',
   user_passwords_stats: 'Passwords stats (not shared only)',
+  user_passwords_stats_tooltip_1:
+    'The colors green/orange/red are those displayed in the app. They combine the intrinsic password strength and its number of occurences.',
+  user_passwords_stats_tooltip_2:
+    'The strong/medium/weak count only references the intrinsic password strength.',
+  user_passwords_stats_tooltip_3:
+    'An unduplicated strong password will be green, but a duplicated strong password will be orange or red.',
+  user_passwords_stats_tooltip_4:
+    'An unduplicated medium password will be orange, but a duplicated medium password may be red.',
+  user_passwords_stats_tooltip_5: 'A weak password will always be red.',
   user_settings_override: 'Settings',
   shared_vault_passwords_stats: 'Passwords stats',
   user_passwords_weak: '$nb weak',
