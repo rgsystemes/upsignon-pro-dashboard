@@ -12,6 +12,7 @@ import { StatsCell } from '../../helpers/statsCell';
 import { settingsConfig } from '../../helpers/settingsConfig';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 const maxRenderedItems = 50;
 
@@ -336,6 +337,7 @@ class Users extends React.Component {
           onClick={this.goToPageIndex}
           itemUnitName={i18n.t('user_unit_name')}
         />
+        <Tooltip id="pwd-strength-tooltip" />
         <table>
           <thead>
             <tr>
@@ -343,7 +345,24 @@ class Users extends React.Component {
               <th>{i18n.t('user_email')}</th>
               <th>{i18n.t('user_data')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
-              <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
+              <th style={{ width: 150 }}>
+                <span>{i18n.t('user_passwords_stats')}</span>
+                <span
+                  className="info-icon"
+                  data-tooltip-id="pwd-strength-tooltip"
+                  data-tooltip-html={`<div>
+                  <p>${i18n.t('user_passwords_stats_tooltip_1')}</p>
+                  <p>${i18n.t('user_passwords_stats_tooltip_2')}</p>
+                  <ul>
+                    <li>${i18n.t('user_passwords_stats_tooltip_3')}</li>
+                    <li>${i18n.t('user_passwords_stats_tooltip_4')}</li>
+                    <li>${i18n.t('user_passwords_stats_tooltip_5')}</li>
+                  </ul>
+                  </div>`}
+                >
+                  ?
+                </span>
+              </th>
               <th>
                 <div>{i18n.t('user_settings_override')}</div>
                 <div className="action" style={{ color: 'white' }} onClick={this.toggleAllSettings}>
