@@ -38,7 +38,7 @@ class Banks extends React.Component {
       const newAdminEmail = this.newAdminEmailInputRef.value;
       const isTrial = this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
-      const resellerName = this.resellerNameInputRef.value || null;
+      const resellerName = this.resellerNameInputRef?.value || null;
       if (!newBankName || newBankName.length < 2) {
         this.newBankNameInputRef.style.borderColor = 'red';
         return;
