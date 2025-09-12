@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { logError } from '../helpers/logger';
 import { db } from '../helpers/db';
+import { proxiedFetch } from '../helpers/xmlHttpRequest';
 
 /// This route calls the upsignon-pro-server start-licence-pulling route
 
@@ -16,10 +17,8 @@ export const startPullLicences = async (req: Request, res: Response): Promise<vo
 
     const { url } = settingsRes.rows[0].value;
     if (url) {
-      await fetch(`${url}/start-licence-pulling`, {
+      await proxiedFetch(`${url}/start-licence-pulling`, {
         method: 'POST',
-        cache: 'no-store',
-        mode: 'cors',
       });
     }
     res.status(200).end();

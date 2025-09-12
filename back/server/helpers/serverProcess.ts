@@ -4,9 +4,9 @@ import https from 'https';
 import fs from 'fs';
 import { logInfo } from './logger';
 import { setupMSGraph } from './init_ms_graph';
-import { setupProxyAgent } from './proxyAgent';
+import { setupGlobalAgent } from './xmlHttpRequest';
 
-setupProxyAgent();
+setupGlobalAgent();
 
 export const startServer = (app: any, then: any): void => {
   setupMSGraph();

@@ -1,5 +1,6 @@
 import { db } from './db';
 import { logError } from './logger';
+import { proxiedFetch } from './xmlHttpRequest';
 
 export const forceProStatusUpdate = async () => {
   try {
@@ -12,10 +13,8 @@ export const forceProStatusUpdate = async () => {
 
     const { url } = settingsRes.rows[0].value;
     if (url) {
-      await fetch(`${url}/force-pro-status-update`, {
+      await proxiedFetch(`${url}/force-pro-status-update`, {
         method: 'POST',
-        cache: 'no-store',
-        mode: 'cors',
       });
     }
   } catch (e) {
