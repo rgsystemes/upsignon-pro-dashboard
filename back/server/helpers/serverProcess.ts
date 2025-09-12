@@ -4,14 +4,9 @@ import https from 'https';
 import fs from 'fs';
 import { logInfo } from './logger';
 import { setupMSGraph } from './init_ms_graph';
+import { setupProxyAgent } from './proxyAgent';
 
-if (env.HTTP_PROXY) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const globalAgent = require('global-agent');
-  globalAgent.bootstrap();
-  // @ts-ignore
-  global.GLOBAL_AGENT.HTTP_PROXY = env.HTTP_PROXY;
-}
+setupProxyAgent();
 
 export const startServer = (app: any, then: any): void => {
   setupMSGraph();
