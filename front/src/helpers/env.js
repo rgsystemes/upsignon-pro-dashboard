@@ -22,8 +22,8 @@ const bankOrResellerServerUrl =
 let isSaasServer = false;
 try {
   if (process.env.NODE_ENV === 'development') isSaasServer = true;
-  isSaasServer =
-    new URL(process.env.PUBLIC_URL).hostname.split('.').slice(-2).join('.') === 'upsignon.eu';
+  else
+    isSaasServer = new URL(baseServerUrl).hostname.split('.').slice(-2).join('.') === 'upsignon.eu';
 } catch (e) {}
 
 export {
