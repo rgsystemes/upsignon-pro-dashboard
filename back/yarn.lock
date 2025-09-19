@@ -1526,9 +1526,9 @@ minimatch@^9.0.4:
   dependencies:
     brace-expansion "^2.0.1"
 
-"ms-entra-for-upsignon@git+https://github.com/UpSignOn/ms-entra-for-upsignon":
+"upsignon-ms-entra@git+https://github.com/rgsystemes/upsignon-ms-entra":
   version "1.0.2"
-  resolved "git+https://github.com/UpSignOn/ms-entra-for-upsignon#2ce37e7879f5ddb2c84ebaab1b53106c55ea447b"
+  resolved "git+https://github.com/rgsystemes/upsignon-ms-entra#2ce37e7879f5ddb2c84ebaab1b53106c55ea447b"
   dependencies:
     "@azure/identity" "^4.10.1"
     "@microsoft/microsoft-graph-client" "^3.0.7"

@@ -52,7 +52,7 @@ class Overview extends React.Component {
             <a
               className="link"
               target="_blank"
-              href="https://github.com/UpSignOn/UpSignOn-pro-server/blob/production/doc/GPO_deployment.md"
+              href="https://github.com/rgsystemes/upsignon-pro-server/blob/production/doc/GPO_deployment.md"
               rel="noreferrer"
             >
               {i18n.t('install_doc_browser_extension')}
@@ -63,7 +63,7 @@ class Overview extends React.Component {
               <a
                 className="link"
                 target="_blank"
-                href="https://github.com/UpSignOn/UpSignOn-pro-server"
+                href="https://github.com/rgsystemes/upsignon-pro-server"
                 rel="noreferrer"
               >
                 {i18n.t('install_doc_server_pro')}

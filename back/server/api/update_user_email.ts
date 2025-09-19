@@ -1,7 +1,7 @@
 import { db } from '../helpers/db';
 import { getEmailAuthorizationStatus } from '../helpers/emailAuthorization';
 import { logError } from '../helpers/logger';
-import { MicrosoftGraph } from 'ms-entra-for-upsignon';
+import { MicrosoftGraph } from 'upsignon-ms-entra';
 
 export const update_user_email = async (req: any, res: any): Promise<void> => {
   try {

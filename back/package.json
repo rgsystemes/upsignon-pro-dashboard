@@ -11,7 +11,7 @@
     "express-session": "^1.18.1",
     "global-agent": "^3.0.0",
     "joi": "^17.13.3",
-    "ms-entra-for-upsignon": "git+https://github.com/UpSignOn/ms-entra-for-upsignon",
+    "upsignon-ms-entra": "git+https://github.com/rgsystemes/upsignon-ms-entra",
     "nodemailer": "^7.0.3",
     "path": "^0.12.7",
     "pg": "^8.16.0",

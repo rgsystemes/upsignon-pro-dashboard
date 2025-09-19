@@ -1,6 +1,6 @@
 import { inputSanitizer } from '../helpers/sanitizer';
 import { logError } from '../helpers/logger';
-import { EntraGroup, MicrosoftGraph } from 'ms-entra-for-upsignon';
+import { EntraGroup, MicrosoftGraph } from 'upsignon-ms-entra';
 
 export const test_ms_entra = async (req: any, res: any): Promise<void> => {
   try {

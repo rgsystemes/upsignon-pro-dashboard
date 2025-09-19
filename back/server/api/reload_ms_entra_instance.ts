@@ -1,5 +1,5 @@
 import { logError } from '../helpers/logger';
-import { MicrosoftGraph } from 'ms-entra-for-upsignon';
+import { MicrosoftGraph } from 'upsignon-ms-entra';
 
 export const reloadMSEntraInstance = async (req: any, res: any): Promise<void> => {
   try {

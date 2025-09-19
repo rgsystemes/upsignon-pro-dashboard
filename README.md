@@ -1,6 +1,6 @@
 # Installation
 
-See this page: [https://github.com/UpSignOn/UpSignOn-pro-server](https://github.com/UpSignOn/UpSignOn-pro-server)
+See this page: [https://github.com/rgsystemes/upsignon-pro-server](https://github.com/rgsystemes/upsignon-pro-server)
 
 # Update
 
