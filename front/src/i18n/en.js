@@ -63,7 +63,7 @@ const translations = {
   user_nb_shared_items_value: '$nb shared items/vaults',
   user_passwords_stats: 'Passwords stats (not shared only)',
   user_passwords_stats_tooltip_1:
-    'The colors green/orange/red are those displayed in the app. They combine the intrinsic password strength and its number of occurences.',
+    'The colors green/orange/red are those displayed in the app. They combine the intrinsic password strength and its number of occurrences.',
   user_passwords_stats_tooltip_2:
     'The strong/medium/weak count only references the intrinsic password strength.',
   user_passwords_stats_tooltip_3:

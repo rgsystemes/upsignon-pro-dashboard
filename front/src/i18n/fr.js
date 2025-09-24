@@ -62,7 +62,7 @@ const translations = {
   user_nb_shared_items_value: '$nb éléments/dossiers partagés',
   user_passwords_stats: 'Stats des mots de passe (non partagés uniquement)',
   user_passwords_stats_tooltip_1:
-    "Les couleurs vert/orange/rouge sont celles affichées dans l'application. Elles combinent la force intrinsèque du mot de passe et son nombre d'occurence.",
+    "Les couleurs vert/orange/rouge sont celles affichées dans l'application. Elles combinent la force intrinsèque du mot de passe et son nombre d'occurrences.",
   user_passwords_stats_tooltip_2:
     'Le décompte fort/moyen/faible fait référence uniquement à la force intrinsèque du mot de passe.',
   user_passwords_stats_tooltip_3:
