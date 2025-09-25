@@ -4,7 +4,6 @@ import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
 import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
-import bySepteoLogo from './bySepteoLogo.svg';
 
 // PROPS pages, banks, isSuperadmin, isSuperadminPage
 function Menu(props) {
@@ -49,7 +48,10 @@ function Menu(props) {
         </div>
       </div>
       <div className="logo">
-        <img src={bySepteoLogo} alt="UpSignOn logo" />
+        <img
+          src={`${process.env.PUBLIC_URL}//upsignon-by-septeo-vertical.svg`}
+          alt="UpSignOn by Septeo logo"
+        />
         <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
       </div>
     </nav>
