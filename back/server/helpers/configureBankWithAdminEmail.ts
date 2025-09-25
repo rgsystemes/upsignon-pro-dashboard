@@ -103,13 +103,13 @@ export const configureBankWithAdminEmailAndSendMail = async (
     const useCc = salesEmail !== adminEmail && !!salesEmail;
 
     transporter.sendMail({
-      from: `"UpSignon" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+      from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
       to: validatedBody.adminEmail,
       cc: useCc ? [salesEmail!] : undefined,
       replyTo: salesEmail ?? undefined,
       subject: validatedBody.isTrial
-        ? 'Ouverture de votre banque de test UpSignon PRO'
-        : 'Ouverture de votre banque UpSignon PRO',
+        ? 'Ouverture de votre banque de test UpSignOn PRO'
+        : 'Ouverture de votre banque UpSignOn PRO',
       text: emailContent.text,
       html: emailContent.html,
     });
@@ -129,7 +129,7 @@ function getTrialEmail(
   const text = `
 Bonjour,
 \n\n
-Merci pour votre demande de test de notre coffre-fort de mots de passe UpSignon PRO.
+Merci pour votre demande de test de notre coffre-fort de mots de passe UpSignOn PRO.
 \n\n
 Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien : ${bankLink}
 \n\n
@@ -147,7 +147,7 @@ L'équipe RG System.
   <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
     <p>Bonjour,</p>
     <p>
-      Merci pour votre demande de test de notre coffre-fort de mots de passe <b>UpSignon PRO</b>.
+      Merci pour votre demande de test de notre coffre-fort de mots de passe <b>UpSignOn PRO</b>.
     </p>
     <p>
       Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien&nbsp;:
@@ -189,7 +189,7 @@ function getNonTrialEmail(
   const text = `
 Bonjour,
 \n\n
-Merci d'avoir choisi notre solution UpSignon PRO pour la gestion de vos mots de passe!
+Merci d'avoir choisi notre solution UpSignOn PRO pour la gestion de vos mots de passe!
 \n\n
 Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien : ${bankLink}
 \n\n
@@ -205,7 +205,7 @@ L'équipe RG System.
   <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
     <p>Bonjour,</p>
     <p>
-      Merci d'avoir choisi notre solution UpSignon PRO pour la gestion de vos mots de passe!
+      Merci d'avoir choisi notre solution UpSignOn PRO pour la gestion de vos mots de passe!
     </p>
     <p>
       Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien&nbsp;:

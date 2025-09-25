@@ -212,11 +212,11 @@ const translations = {
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',
   extract_emails_weak: 'ayant au moins $n mots de passe faibles',
   extract_emails_medium: 'ayant au moins $n mots de passe moyens',
-  extract_emails_long_unused: "qui n'ont pas utilisé UpSignon depuis au moins $n jours",
+  extract_emails_long_unused: "qui n'ont pas utilisé UpSignOn depuis au moins $n jours",
   extract_emails_shared_device: 'qui partagent au moins un de leurs appareils',
   extract_emails: 'Récupérer les emails',
   extract_emails_msi:
-    "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignon 7.5.0)",
+    "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
   mail_writer: 'Envoyer un email',
   mail_writer_to_selection: 'Utiliser la liste de destinataires de la sélection ci-dessus.',
   mail_writer_to_all: "Envoyer à tous les détenteurs d'un coffre-fort.",
@@ -258,10 +258,10 @@ const translations = {
   link_to_tutorials: "Tutoriels / notice d'utilisation pour les utilisateurs",
   link_to_changelogs: 'Notes de version',
   link_to_downloads: "Liens de téléchargement de l'application",
-  pro_server: 'Serveur UpSignon PRO',
+  pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
   setup_link_is_bank_specific: 'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
-  pro_server_url: 'URL de votre serveur UpSignon PRO',
+  pro_server_url: 'URL de votre serveur UpSignOn PRO',
   link_to_communicate: 'Lien à communiquer',
   preconfig_title: 'Préconfiguration du lien par stratégie de groupe.',
   preconfig_line1:
@@ -375,13 +375,13 @@ const translations = {
   sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
   bank_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
   bank_setting_microsoft_entra_pitch:
-    "UpSignon peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
+    "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
   bank_setting_microsoft_entra_tuto:
     'Pour utiliser cette fonctionnalité, suivez les étapes ci-dessous :',
   bank_setting_microsoft_entra_tuto_step1:
-    "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignon' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
+    "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignOn' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
   bank_setting_microsoft_entra_tuto_step2:
-    "Dans 'Inscriptions d'applications' > UpSignon > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
+    "Dans 'Inscriptions d'applications' > UpSignOn > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
   bank_setting_microsoft_entra_tuto_step3: 'Remplissez le formulaire ci-dessous.',
   bank_setting_microsoft_entra_tuto_step4:
     "Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
@@ -389,17 +389,17 @@ const translations = {
   bank_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
   bank_setting_microsoft_entra_client_id_label:
-    "ID d\'application (Application d'entreprise > UpSignon > Vue d'ensemble)",
+    "ID d\'application (Application d'entreprise > UpSignOn > Vue d'ensemble)",
   bank_setting_microsoft_entra_app_resource_id_label:
-    "ID d\'objet (Application d'entreprise > UpSignon > Vue d'ensemble)",
+    "ID d\'objet (Application d'entreprise > UpSignOn > Vue d'ensemble)",
   bank_setting_microsoft_entra_client_secret_label:
-    "Secret client (Inscriptions d'application > UpSignon > Certificats & secrets)",
+    "Secret client (Inscriptions d'application > UpSignOn > Certificats & secrets)",
   bank_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   bank_setting_microsoft_entra_testing: 'Tester',
   bank_setting_microsoft_entra_test_start: 'Lancer le test',
   bank_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
-  bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignon:',
+  bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignOn:',
   bank_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   bank_setting_microsoft_entra_test_user_gs: 'Groupes associés à cet utilisateur :',
   licences_reseller_name: 'Revendeur',

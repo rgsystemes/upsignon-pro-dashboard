@@ -211,11 +211,11 @@ const translations = {
   extract_emails_duplicates: 'who have at least $n duplicate passwords',
   extract_emails_weak: 'who have at least $n weak passwords',
   extract_emails_medium: 'who have at least $n medium passwords',
-  extract_emails_long_unused: "who haven't used UpSignon since at least $n days",
+  extract_emails_long_unused: "who haven't used UpSignOn since at least $n days",
   extract_emails_shared_device: 'who share at least one of their devices',
   extract_emails: 'Extract emails',
   extract_emails_msi:
-    'Extract vaults having the msi version of the Windows app (since UpSignon 7.5.0)',
+    'Extract vaults having the msi version of the Windows app (since UpSignOn 7.5.0)',
   mail_writer: 'Sending an email',
   mail_writer_to_selection: 'Use recipients from above selection.',
   mail_writer_to_all: 'Send to all vault holders.',
@@ -258,8 +258,8 @@ const translations = {
   link_to_downloads: 'Application download links',
   setup_link: 'Application setup link',
   setup_link_is_bank_specific: 'Notice this link is specific to each bank of vaults.',
-  pro_server: 'UpSignon PRO server',
-  pro_server_url: 'URL of your UpSignon PRO server',
+  pro_server: 'UpSignOn PRO server',
+  pro_server_url: 'URL of your UpSignOn PRO server',
   link_to_communicate: 'Link to communicate',
   preconfig_title: 'Preconfiguration of this link with group policy.',
   preconfig_line1:
@@ -363,29 +363,29 @@ const translations = {
   sasettings_email_config_testing_error_alert: 'Error sending email: $e',
   bank_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optional)',
   bank_setting_microsoft_entra_pitch:
-    "UpSignon can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
+    "UpSignOn can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
   bank_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
   bank_setting_microsoft_entra_tuto_step1:
-    "In 'App registrations', click on 'New registration', choose a name ('UpSignon' for the rest of this documentation), choose the single tenant option, then submit.",
+    "In 'App registrations', click on 'New registration', choose a name ('UpSignOn' for the rest of this documentation), choose the single tenant option, then submit.",
   bank_setting_microsoft_entra_tuto_step2:
-    "In 'App registrations' > UpSignon > 'API permissions' add the following permissions and request an administrator approval.",
+    "In 'App registrations' > UpSignOn > 'API permissions' add the following permissions and request an administrator approval.",
   bank_setting_microsoft_entra_tuto_step3: 'Fill in this form.',
   bank_setting_microsoft_entra_tuto_step4:
     'Finally, add users and groups to this enterprise application.',
   bank_setting_microsoft_entra_api_list: 'List of used APIs',
   bank_setting_microsoft_entra_tenant_id_label: 'Tenant ID',
   bank_setting_microsoft_entra_client_id_label:
-    'Application ID (Enterprise applications > UpSignon > Overview)',
+    'Application ID (Enterprise applications > UpSignOn > Overview)',
   bank_setting_microsoft_entra_app_resource_id_label:
-    "ID d\'objet (Enterprise applications > UpSignon > Overview)",
+    "ID d\'objet (Enterprise applications > UpSignOn > Overview)",
   bank_setting_microsoft_entra_client_secret_label:
-    'Client secret client (App registrations > UpSignon > Certificates & secrets)',
+    'Client secret client (App registrations > UpSignOn > Certificates & secrets)',
   bank_setting_microsoft_entra_apply_config: 'Apply configuration',
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
   bank_setting_microsoft_entra_testing: 'Test',
   bank_setting_microsoft_entra_test_start: 'Start test',
   bank_setting_microsoft_entra_test_user_id: 'MS user id:',
-  bank_setting_microsoft_entra_test_all_users: 'UpSignon users:',
+  bank_setting_microsoft_entra_test_all_users: 'UpSignOn users:',
   bank_setting_microsoft_entra_test_user_authorized: 'User authorized:',
   bank_setting_microsoft_entra_test_user_banks: 'Groups associated with this user:',
   licences_reseller_name: 'Reseller',

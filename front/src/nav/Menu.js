@@ -49,7 +49,7 @@ function Menu(props) {
         </div>
       </div>
       <div className="logo">
-        <img src={bySepteoLogo} alt="UpSignon logo" />
+        <img src={bySepteoLogo} alt="UpSignOn logo" />
         <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
       </div>
     </nav>

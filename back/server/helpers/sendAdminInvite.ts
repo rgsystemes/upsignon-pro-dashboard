@@ -22,15 +22,15 @@ export const sendAdminInvite = async (
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
       to: email,
-      subject: "Administration d'UpSignon",
+      subject: "Administration d'UpSignOn",
       text: `Bonjour,
     Vous avez été invité à administrer${
       bankName ? ' la banque de coffres-forts ' + bankName : ''
-    } UpSignon PRO.
+    } UpSignOn PRO.
 
     Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.
 Prérequis :
-1. Avoir téléchargé l'application UpSignon sur cet appareil (voir https://upsignon.eu/download).
+1. Avoir téléchargé l'application UpSignOn sur cet appareil (voir https://upsignon.eu/download).
 2. Avoir créé ou importé votre coffre-fort PRO en utilisant le lien de configuration fourni par un autre administrateur.
 
 Pour accéder à votre console de supervision, cliquez sur ce lien. Attention, ce lien ne fonctionne que si l'application est installée. Par ailleurs, il expirera dans ${ttlMinutes} minutes.
@@ -38,16 +38,16 @@ ${link}
 
 Si ce lien a expiré, vous pouvez le regénérer depuis la page ${env.BACKEND_URL + '/login.html'}.
 Bonne journée,
-UpSignon`,
+UpSignOn`,
       html: `<!DOCTYPE html>
     <html><body>
 <div>Bonjour,</div>
 <div>Vous avez été invité à administrer${
         bankName ? ' la banque de coffres-forts' + bankName : ''
-      } UpSignon PRO.</div>
+      } UpSignOn PRO.</div>
 <div>Vous pouvez ignorer cet email si vous avez déjà accès à la console d'administration pour une autre banque de coffre-fort.</div>
 <div>Prérequis :</div>
-<div>1. Avoir téléchargé l'application UpSignon sur cet appareil (voir <a href="https://upsignon.eu/download">cette page</a>).</div>
+<div>1. Avoir téléchargé l'application UpSignOn sur cet appareil (voir <a href="https://upsignon.eu/download">cette page</a>).</div>
 <div>2. Avoir créé ou importé votre coffre-fort PRO en utilisant le lien de configuration fourni par un autre administrateur.</div>
 <br/>
 <div>
@@ -59,7 +59,7 @@ UpSignon`,
 </div>
 <br/>
 <div>Bonne journée,</div>
-<div>UpSignon</div>
+<div>UpSignOn</div>
 </body></html>`,
     });
   } catch (e) {
