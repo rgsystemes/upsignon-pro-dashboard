@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { i18n } from '../../i18n/i18n';
 import { bankUrlFetch } from '../urlFetch';
-import { baseServerUrl, isSaasServer } from '../env';
+import { baseFrontUrl, baseServerUrl, isSaasServer } from '../env';
 import { isRestrictedSuperadmin } from '../isRestrictedSuperadmin';
 import { Toggler } from '../Toggler';
 import { LicencesSummary } from './LicencesSummary';
@@ -65,7 +65,7 @@ export class LicenceTable extends React.Component {
   licenceDistributionCell = (l) => {
     if (l.reseller_id && !this.isResellerPage) {
       return (
-        <a className="action" href={`/reseller/${l.reseller_id}`}>
+        <a className="action" href={`${baseFrontUrl}/reseller/${l.reseller_id}`}>
           {i18n.t('licences_bank_distribution_see_reseller')}
         </a>
       );
