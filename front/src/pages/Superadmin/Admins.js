@@ -236,7 +236,11 @@ class Admins extends React.Component {
                         {admin.adminRole === 'admin' && (
                           <>
                             {admin.banks?.map((g) => {
-                              return <div key={g.id}>{g.name}</div>;
+                              return (
+                                <div
+                                  key={g.id}
+                                >{`${g.reseller_name ? `${g.reseller_name}/` : ''}${g.name}`}</div>
+                              );
                             })}
                             {reseller && (
                               <div>
