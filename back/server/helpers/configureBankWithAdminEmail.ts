@@ -5,6 +5,12 @@ import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 
+type BankSettings = {
+  SALES_REP: string | null;
+  IS_TESTING?: boolean;
+  TESTING_EXPIRATION_DATE?: string | Date;
+};
+
 export const configureBankWithAdminEmailAndSendMail = async (
   res: Response,
   adminEmail: string | null,
@@ -18,7 +24,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
 ): Promise<void> => {
   const salesEmail = validatedBody.salesEmail || adminEmail;
 
-  let newBankSettings = {};
+  let newBankSettings: BankSettings = {
+    SALES_REP: salesEmail,
+  };
   let expDate = null;
   if (validatedBody.isTrial) {
     expDate = new Date();
@@ -28,9 +36,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
     expDate.setMinutes(0);
     expDate.setHours(0);
     newBankSettings = {
+      ...newBankSettings,
       IS_TESTING: true,
       TESTING_EXPIRATION_DATE: expDate,
-      SALES_REP: salesEmail,
     };
   }
   const bankInsertRes = await db.query(
