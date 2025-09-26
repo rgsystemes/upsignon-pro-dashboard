@@ -18,7 +18,7 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
           .pattern(/^.{2,50}$/),
         adminEmail: Joi.string().email().allow(null, ''),
         isTrial: Joi.boolean(),
-        salesEmail: Joi.string().allow(null, '').email(),
+        salesEmail: Joi.string().email().allow(null, ''),
         resellerId: Joi.string().allow(null),
       }),
     );
