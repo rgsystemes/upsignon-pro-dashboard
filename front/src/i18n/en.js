@@ -280,6 +280,7 @@ const translations = {
   sasettings_banks: 'Banks of vaults',
   sasettings_banks_explanation:
     'Banks of vaults are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
+  sasettings_direct_banks: 'Lonely banks',
   sasettings_resellers: 'Resellers',
   sasettings_reseller_name: 'Reseller name',
   sasettings_reseller_created_at: 'Created on',
