@@ -20,9 +20,9 @@ export const hasBankOwnership = async (req: Request, bankId: string): Promise<bo
   const resellerOwnershipCheck = await db.query(
     `SELECT 1
     FROM banks
-    INNER JOIN admin_banks ON admin_banks.bank_id=banks.id
-    INNER JOIN admins ON admins.id=admin_banks.admin_id
-    WHERE admins.id=$1 AND admins.reseller_id=banks.reseller_id AND banks.id=$2`,
+    INNER JOIN resellers ON resellers.id=banks.reseller_id
+    INNER JOIN admins ON resellers.id=admins.reseller_id
+    WHERE admins.id=$1 AND banks.id=$2`,
     [
       // @ts-ignore
       req.session.adminId,
