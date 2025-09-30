@@ -43,12 +43,6 @@ class Banks extends React.Component {
       } else {
         this.newBankNameInputRef.style.borderColor = null;
       }
-      if (!this.state.selectedResellerIdForNewBank && !newAdminEmail) {
-        this.newAdminEmailInputRef.style.borderColor = 'red';
-        return;
-      } else {
-        this.newAdminEmailInputRef.style.borderColor = null;
-      }
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
       }
