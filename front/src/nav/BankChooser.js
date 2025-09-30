@@ -52,6 +52,7 @@ class BankChooser extends React.Component {
               border: '1px solid #eee',
               boxShadow: '0 0 5px rgb(44, 83, 132)',
               maxHeight: '80vh',
+              overflow: 'auto',
             }}
           >
             {this.props.isSuperadmin && (
