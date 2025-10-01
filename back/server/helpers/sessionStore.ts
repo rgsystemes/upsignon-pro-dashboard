@@ -8,20 +8,8 @@ const oneHour = 3600; // seconds
 export class PostgreSQLStore extends expressSession.Store {
   constructor() {
     super();
-    this.createTable();
     setInterval(this.dbCleanup, oneHour * 1000);
   }
-
-  createTable = async (): Promise<void> => {
-    try {
-      await db.query(
-        'CREATE TABLE IF NOT EXISTS admin_sessions (session_id VARCHAR PRIMARY KEY, session_data JSON NOT NULL, expiration_time TIMESTAMP(0) NOT NULL)',
-      );
-    } catch (e) {
-      logError('sessionStore', 'createTable', e);
-      throw e;
-    }
-  };
 
   getExpireDate = (maxAgeMillis?: number): Date => {
     const expireDate = new Date();
