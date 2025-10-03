@@ -221,9 +221,12 @@ class Banks extends React.Component {
 
         switch (this.state.sortType) {
           case 1: // Sort by reseller
-            const resellerA = a.reseller_name.toLowerCase();
-            const resellerB = b.reseller_name.toLowerCase();
-            comparison = resellerA.localeCompare(resellerB);
+            const resellerA = a.reseller_name?.toLowerCase();
+            const resellerB = b.reseller_name?.toLowerCase();
+            if (!resellerA) comparison = 1;
+            if (!resellerB) comparison = -1;
+            if (!resellerA && !resellerB) comparison = 0;
+            if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
             break;
 
           case 2: // Sort by expiration date/days remaining
