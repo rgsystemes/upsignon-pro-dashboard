@@ -65,7 +65,7 @@ export class LicenceTable extends React.Component {
   licenceDistributionCell = (l) => {
     if (l.reseller_id && !this.isResellerPage) {
       return (
-        <a className="action" href={`${baseFrontUrl}/reseller/${l.reseller_id}`}>
+        <a className="action" href={`${baseFrontUrl}/reseller/${l.reseller_id}/`}>
           {i18n.t('licences_bank_distribution_see_reseller')}
         </a>
       );
