@@ -18,7 +18,7 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
       keepalive: true,
     });
   } catch (e) {
-    toast.error(`${i18n.t('network_error')}`);
+    toast.error(i18n.t('network_error'));
     throw e;
   }
   if (!res.ok) {
@@ -30,7 +30,7 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
     if (!content) return;
     return JSON.parse(content);
   } catch (e) {
-    toast.error(`${i18n.t('unknown_error')}`);
+    toast.error(i18n.t('unknown_error'));
     throw e;
   }
 }
