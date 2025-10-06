@@ -5,10 +5,12 @@ import { hasBankOwnership } from '../helpers/securityChecks';
 export const delete_bank = async (req: any, res: any): Promise<void> => {
   try {
     const bankId = req.params.id;
-    const isOwner = await hasBankOwnership(req, bankId);
-    if (!isOwner) {
-      res.sendStatus(401);
-      return;
+    if (req.session.adminRole !== 'superadmin') {
+      const isOwner = await hasBankOwnership(req, bankId);
+      if (!isOwner) {
+        res.sendStatus(401);
+        return;
+      }
     }
     await db.query(`DELETE FROM banks WHERE id=$1`, [bankId]);
     res.status(200).end();
