@@ -7,24 +7,32 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  const res = await fetch(
-    `${useBankOrReseller ? bankOrResellerServerUrl : baseServerUrl}${route}`,
-    {
+  let res;
+  try {
+    res = await fetch(`${useBankOrReseller ? bankOrResellerServerUrl : baseServerUrl}${route}`, {
       method,
       body: bodyText,
       cache: 'no-store',
       mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
       headers,
       keepalive: true,
-    },
-  );
+    });
+  } catch (e) {
+    toast.error(`${i18n.t('network_error')}`);
+    throw e;
+  }
   if (!res.ok) {
     toast.error(`${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
     throw new Error(res.statusText);
   }
-  const content = await res.text();
-  if (!content) return;
-  return JSON.parse(content);
+  try {
+    const content = await res.text();
+    if (!content) return;
+    return JSON.parse(content);
+  } catch (e) {
+    toast.error(`${i18n.t('unknown_error')}`);
+    throw e;
+  }
 }
 
 export function bankUrlFetch(route, method, body) {
