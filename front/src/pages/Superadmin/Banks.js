@@ -224,9 +224,9 @@ class Banks extends React.Component {
             const resellerA = a.reseller_name?.toLowerCase();
             const resellerB = b.reseller_name?.toLowerCase();
             if (!resellerA) comparison = 1;
-            if (!resellerB) comparison = -1;
-            if (!resellerA && !resellerB) comparison = 0;
-            if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
+            else if (!resellerB) comparison = -1;
+            else if (!resellerA && !resellerB) comparison = 0;
+            else if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
             break;
 
           case 2: // Sort by expiration date/days remaining
