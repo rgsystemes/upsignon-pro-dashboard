@@ -19,6 +19,8 @@ const translations = {
   validate: 'Validate',
   cancel: 'Cancel',
   request_error: 'Server request error. You may need to reconnect.',
+  network_error: 'Network error',
+  unknown_error: 'Unknown error',
 
   menu_overview: 'Overview',
   menu_password_reset_requests: 'Password reset requests',

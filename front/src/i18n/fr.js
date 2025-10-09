@@ -19,6 +19,8 @@ const translations = {
   validate: 'Valider',
   cancel: 'Annuler',
   request_error: 'La requête au serveur a échouée, vous devez peut-être vous reconnecter.',
+  network_error: 'Erreur réseau',
+  unknown_error: 'Erreur inconnue',
   menu_overview: "Vue d'ensemble",
   menu_password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   menu_users: 'Coffres-forts',
