@@ -141,7 +141,7 @@ Merci pour votre demande de test de notre coffre-fort de mots de passe UpSignOn 
 \n\n
 Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien : ${bankLink}
 \n\n
-Votre banque de coffres-forts sera bloquée automatiquement le ${expDate.toLocaleDateString()} à l’issue de votre période de test.
+Votre banque de coffres-forts sera bloquée automatiquement le ${expDate.toLocaleDateString('fr')} à l’issue de votre période de test.
 \n\n
 Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email [${adminEmail}](mailto:${adminEmail}) sur la page [${adminLoginPage}](${adminLoginPage}).
 \n\n
@@ -167,7 +167,7 @@ L'équipe RG System.
       <img src="${qr.createDataURL(qrCellSize, 0)}" alt="QR Code" style="margin: 12px 0;" />
     </p>
     <p>
-      Votre banque de coffres-forts sera bloquée automatiquement le <b>${expDate.toLocaleDateString()}</b> à l’issue de votre période de test.
+      Votre banque de coffres-forts sera bloquée automatiquement le <b>${expDate.toLocaleDateString('fr')}</b> à l’issue de votre période de test.
     </p>
     <p>
       Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email
