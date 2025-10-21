@@ -5,6 +5,7 @@ import { getEmailConfig, getMailTransporter } from './mailTransporter';
 export const ttlMinutes = 20;
 export const sendAdminInvite = async (
   email: string,
+  userId: string,
   token: string,
   tokenExpiresAt: Date,
   bankName: null | string,
@@ -15,7 +16,7 @@ export const sendAdminInvite = async (
 
     const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
     const encodedToken = encodeURIComponent(token);
-    const link = `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}`;
+    const link = `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}&userId=${userId}`;
 
     const expDate = tokenExpiresAt.toLocaleDateString('fr');
 
