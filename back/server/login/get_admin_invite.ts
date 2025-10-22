@@ -8,7 +8,7 @@ export const getAdminInvite = async (req: any, res: any): Promise<void> => {
   try {
     const adminEmail = inputSanitizer.getLowerCaseString(req.body.adminEmail);
     if (!adminEmail) return res.status(400).end();
-    const getRes = await db.query('SELECT token, token_expires_at FROM admins WHERE email=$1', [
+    const getRes = await db.query('SELECT id, token, token_expires_at FROM admins WHERE email=$1', [
       adminEmail,
     ]);
     if (getRes.rowCount == 0) {
@@ -33,7 +33,7 @@ export const getAdminInvite = async (req: any, res: any): Promise<void> => {
       token = getRes.rows[0].token;
       tokenExpiresAt = getRes.rows[0].token_expires_at;
     }
-    sendAdminInvite(adminEmail, token, tokenExpiresAt, null);
+    sendAdminInvite(adminEmail, admRes.id, token, tokenExpiresAt, null);
     return res.status(200).json({ success: true });
   } catch (e) {
     logError('getAdminInvite', e);
