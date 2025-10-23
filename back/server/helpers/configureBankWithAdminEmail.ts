@@ -149,7 +149,7 @@ N'hésitez pas à répondre à ce mail pour toute question.
 \n\n
 Cordialement,
 \n\n
-L'équipe RG System.
+L'équipe Septeo IT Solutions.
     `;
   const html = `
   <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
@@ -180,7 +180,7 @@ L'équipe RG System.
     </p>
     <p>
       Cordialement,<br>
-      L'équipe RG System.
+      L'équipe Septeo IT Solutions.
     </p>
   </div>
 `;
@@ -207,7 +207,7 @@ N'hésitez pas à répondre à ce mail pour toute question.
 \n\n
 Cordialement,
 \n\n
-L'équipe RG System.
+L'équipe Septeo IT Solutions.
     `;
   const html = `
   <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
@@ -235,7 +235,7 @@ L'équipe RG System.
     </p>
     <p>
       Cordialement,<br>
-      L'équipe RG System.
+      L'équipe Septeo IT Solutions.
     </p>
   </div>
 `;
