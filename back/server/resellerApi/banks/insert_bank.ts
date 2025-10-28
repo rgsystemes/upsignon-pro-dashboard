@@ -30,7 +30,7 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
       }
     }
 
-    await configureBankWithAdminEmailAndSendMail(res, req.session?.adminEmail, {
+    await configureBankWithAdminEmailAndSendMail(req, res, req.session?.adminEmail, {
       name: validatedBody.name,
       adminEmail: validatedBody.adminEmail,
       isTrial: false,

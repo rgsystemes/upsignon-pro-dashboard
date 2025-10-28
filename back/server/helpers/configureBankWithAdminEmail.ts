@@ -1,9 +1,10 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
+import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
 
 type BankSettings = {
   SALES_REP: string | null;
@@ -12,6 +13,7 @@ type BankSettings = {
 };
 
 export const configureBankWithAdminEmailAndSendMail = async (
+  req: Request,
   res: Response,
   adminEmail: string | null,
   validatedBody: {
@@ -49,6 +51,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
     res.status(500).end();
     return;
   }
+  if (validatedBody.resellerId) {
+    await recomputeSessionAuthorizationsForAdminsByResellerId(validatedBody.resellerId, req);
+  }
   const insertedBank = bankInsertRes.rows[0];
 
   if (validatedBody.adminEmail) {
@@ -67,7 +72,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
     if (selectRes.rows.length === 0) {
       // Send new invitation
       const insertRes = await db.query(
-        `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($2), 'admin') RETURNING id`,
+        `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') RETURNING id`,
         [validatedBody.adminEmail],
       );
       adminId = insertRes.rows[0].id;

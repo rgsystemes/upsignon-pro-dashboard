@@ -22,7 +22,7 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
         resellerId: Joi.string().allow(null),
       }),
     );
-    await configureBankWithAdminEmailAndSendMail(res, req.session?.adminEmail, validatedBody);
+    await configureBankWithAdminEmailAndSendMail(req, res, req.session?.adminEmail, validatedBody);
   } catch (e) {
     logError('superadmin insert_bank', e);
     res.sendStatus(400);
