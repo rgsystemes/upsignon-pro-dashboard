@@ -269,12 +269,14 @@ class UserDevices extends React.Component {
                         >
                           {i18n.t('delete')}
                         </div>
-                        <div
-                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
-                          onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
-                        >
-                          {i18n.t('password_reset_request_grant')}
-                        </div>
+                        {d.status === 'PENDING_ADMIN_CHECK' && (
+                          <div
+                            className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
+                            onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
+                          >
+                            {i18n.t('password_reset_request_grant')}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   );
