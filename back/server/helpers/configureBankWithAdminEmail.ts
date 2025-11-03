@@ -15,7 +15,6 @@ type BankSettings = {
 export const configureBankWithAdminEmailAndSendMail = async (
   req: Request,
   res: Response,
-  adminEmail: string | null,
   validatedBody: {
     name: string;
     adminEmail: string | null;
@@ -24,7 +23,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
     resellerId: string | null;
   },
 ): Promise<void> => {
-  const salesEmail = validatedBody.salesEmail || adminEmail;
+  // @ts-ignore
+  const sessionAdminEmail: string = req.session?.adminEmail;
+  const salesEmail = validatedBody.salesEmail || sessionAdminEmail;
 
   let newBankSettings: BankSettings = {
     SALES_REP: salesEmail,
@@ -113,7 +114,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
 
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
-    const useCc = salesEmail !== adminEmail && !!salesEmail;
+    const useCc = salesEmail !== sessionAdminEmail && !!salesEmail;
 
     transporter.sendMail({
       from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
