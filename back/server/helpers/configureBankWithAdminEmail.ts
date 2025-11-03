@@ -1,9 +1,10 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
+import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
 
 type BankSettings = {
   SALES_REP: string | null;
@@ -12,8 +13,8 @@ type BankSettings = {
 };
 
 export const configureBankWithAdminEmailAndSendMail = async (
+  req: Request,
   res: Response,
-  adminEmail: string | null,
   validatedBody: {
     name: string;
     adminEmail: string | null;
@@ -22,7 +23,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
     resellerId: string | null;
   },
 ): Promise<void> => {
-  const salesEmail = validatedBody.salesEmail || adminEmail;
+  // @ts-ignore
+  const sessionAdminEmail: string = req.session?.adminEmail;
+  const salesEmail = validatedBody.salesEmail || sessionAdminEmail;
 
   let newBankSettings: BankSettings = {
     SALES_REP: salesEmail,
@@ -49,6 +52,9 @@ export const configureBankWithAdminEmailAndSendMail = async (
     res.status(500).end();
     return;
   }
+  if (validatedBody.resellerId) {
+    await recomputeSessionAuthorizationsForAdminsByResellerId(validatedBody.resellerId, req);
+  }
   const insertedBank = bankInsertRes.rows[0];
 
   if (validatedBody.adminEmail) {
@@ -67,7 +73,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
     if (selectRes.rows.length === 0) {
       // Send new invitation
       const insertRes = await db.query(
-        `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($2), 'admin') RETURNING id`,
+        `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') RETURNING id`,
         [validatedBody.adminEmail],
       );
       adminId = insertRes.rows[0].id;
@@ -108,7 +114,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
 
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
-    const useCc = salesEmail !== adminEmail && !!salesEmail;
+    const useCc = salesEmail !== sessionAdminEmail && !!salesEmail;
 
     transporter.sendMail({
       from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,

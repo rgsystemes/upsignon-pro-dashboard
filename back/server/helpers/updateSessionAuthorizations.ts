@@ -27,9 +27,30 @@ export const recomputeSessionAuthorizationsForAdminByEmail = async (
   }
 };
 
+export const recomputeSessionAuthorizationsForAdminsByResellerId = async (
+  resellerId: string,
+  req?: Request,
+): Promise<void> => {
+  try {
+    const adminsRes = await db.query('SELECT id FROM admins WHERE reseller_id=$1', [resellerId]);
+    // @ts-ignore
+    const currentAdminId = req?.session?.adminId;
+    for (let i = 0; i < adminsRes.rows.length; i++) {
+      const adminId = adminsRes.rows[i].id;
+      await recomputeSessionAuthorizationsForAdminById(
+        adminId,
+        adminId === currentAdminId ? req : null,
+      );
+    }
+  } catch (e) {
+    logError('updateSessionAuthorizations', e);
+    return;
+  }
+};
+
 export const recomputeSessionAuthorizationsForAdminById = async (
   adminId: string,
-  req?: Request,
+  req?: Request | null,
 ): Promise<void> => {
   try {
     const adminRes = await db.query(
