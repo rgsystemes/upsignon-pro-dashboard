@@ -52,6 +52,7 @@ const translations = {
   user_filtering_by_deactivated_interval:
     'NB: Checks happen automatically every day at 1am and 1pm.',
   user_search: 'Search a vault',
+  user_search_placeholder: 'Email or id',
   user_unit_name: 'vaults',
   user_id: 'Id',
   user_email: 'Email',

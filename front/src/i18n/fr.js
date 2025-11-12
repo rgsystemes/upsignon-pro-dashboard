@@ -51,6 +51,7 @@ const translations = {
   user_filtering_by_deactivated_interval:
     'NB : Les vérifications ont lieu automatiquement à 1h et 13h tous les jours.',
   user_search: 'Rechercher un coffre-fort',
+  user_search_placeholder: 'Email ou id',
   user_unit_name: 'coffres-forts',
   user_id: 'Id',
   user_email: 'Email',

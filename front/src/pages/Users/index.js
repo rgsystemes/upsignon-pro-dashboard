@@ -291,7 +291,7 @@ class Users extends React.Component {
               ref={(r) => (this.searchInput = r)}
               type="search"
               style={searchInputStyle}
-              placeholder="email or id"
+              placeholder={i18n.t('user_search_placeholder')}
               onChange={this.onSearch}
             />
           </div>
