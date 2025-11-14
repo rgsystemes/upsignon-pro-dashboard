@@ -413,7 +413,7 @@ const translations = {
   licences_bank_distribution_na: 'Déjà liée à une banque',
   licences_bank_distribution_assign: 'Attribuer',
   licences_bank_distribution_remaining: 'restantes',
-  licences_nb: 'Nombre de licences',
+  licences_nb: 'Licences commandées',
   licences_is_montly: 'Mensuelle',
   licences_valid_from: 'Valides à partir de',
   licences_valid_until: "Valide jusqu'à",

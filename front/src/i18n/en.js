@@ -399,7 +399,7 @@ const translations = {
   licences_bank_distribution_na: 'Already linked to a bank',
   licences_bank_distribution_assign: 'Assign',
   licences_bank_distribution_remaining: 'remaining',
-  licences_nb: 'Number of licences',
+  licences_nb: 'Ordered licences',
   licences_is_montly: 'Monthly',
   licences_valid_from: 'Valid from',
   licences_valid_until: 'Valid until',
