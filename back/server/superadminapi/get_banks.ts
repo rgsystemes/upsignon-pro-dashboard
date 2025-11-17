@@ -16,7 +16,7 @@ export const get_banks = async (req: any, res: any): Promise<void> => {
       LEFT JOIN resellers ON resellers.id=banks.reseller_id
       LEFT JOIN users ON users.bank_id=banks.id
       GROUP BY banks.id, resellers.id
-      ORDER BY banks.name ASC`,
+      ORDER BY resellers.name ASC, banks.name ASC`,
     );
     const banks = dbRes.rows;
     for (let i = 0; i < banks.length; i++) {
