@@ -36,6 +36,9 @@ class App extends React.Component {
   updateMenuBanks = (newBanks) => {
     this.setState({ banks: newBanks });
   };
+  updateMenuResellers = (newResellers) => {
+    this.setState({ resellers: newResellers });
+  };
   async componentDidMount() {
     try {
       const banksRes = await baseUrlFetch('/get_available_banks', 'GET', null);
@@ -162,7 +165,11 @@ class App extends React.Component {
     } else if (path.startsWith(`/${bankId}/settings`)) {
       if (bankId === 'superadmin') {
         pageContent = (
-          <Superadmin setIsLoading={this.setIsLoading} updateMenuBanks={this.updateMenuBanks} />
+          <Superadmin
+            setIsLoading={this.setIsLoading}
+            updateMenuBanks={this.updateMenuBanks}
+            updateMenuResellers={this.updateMenuResellers}
+          />
         );
       } else {
         pageContent = (

@@ -5,7 +5,7 @@ import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { baseFrontUrl } from '../../helpers/env';
 import { toast } from 'react-toastify';
 
-// Props : setIsLoading
+// Props : setIsLoading, updateMenuResellers
 class Resellers extends React.Component {
   state = {
     resellers: [],
@@ -16,6 +16,7 @@ class Resellers extends React.Component {
     try {
       const resellers = await bankUrlFetch('/api/resellers', 'GET', null);
       this.setState({ resellers: resellers });
+      this.props.updateMenuResellers(resellers);
     } catch (e) {
       console.error(e);
     }
