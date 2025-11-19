@@ -223,9 +223,9 @@ class Banks extends React.Component {
           case 1: // Sort by reseller
             const resellerA = a.reseller_name?.toLowerCase();
             const resellerB = b.reseller_name?.toLowerCase();
-            if (!resellerA) comparison = 1;
+            if (!resellerA && !resellerB) comparison = 0;
+            else if (!resellerA) comparison = 1;
             else if (!resellerB) comparison = -1;
-            else if (!resellerA && !resellerB) comparison = 0;
             else if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
             break;
 
