@@ -152,7 +152,7 @@ class Resellers extends React.Component {
                       </div>
                     </td>
                     <td className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
-                      {parseInt(reseller.bank_count) === 0 && (
+                      {reseller.banks.length === 0 && (
                         <div className="action" onClick={() => this.deleteReseller(reseller.id)}>
                           {i18n.t('delete')}
                         </div>
