@@ -35,7 +35,6 @@ import { update_admin_reseller } from './update_admin_reseller';
 import { licenceAssign } from '../helpers/licence_assign';
 import { startPullLicences } from './start_pull_licences';
 import { licenceSummary } from '../helpers/licence-summary';
-import { licenceTogglePool } from '../helpers/licence-toggle-pool';
 
 export const superadminApiRouter = express.Router();
 
@@ -123,4 +122,3 @@ superadminApiRouter.get('/licences', (req, res) => get_licences(req, res, true))
 superadminApiRouter.post('/licences-assign', (req, res) => licenceAssign(req, res, true));
 superadminApiRouter.post('/start-pull-licences', startPullLicences);
 superadminApiRouter.post('/licence-summary', (req, res) => licenceSummary(req, res, true));
-superadminApiRouter.post('/licence-toogle-pool', (req, res) => licenceTogglePool(req, res, true));

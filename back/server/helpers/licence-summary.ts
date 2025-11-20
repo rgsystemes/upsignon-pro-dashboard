@@ -42,18 +42,33 @@ export const licenceSummary = async (req: Request, res: Response, asSuperadmin: 
             'is_monthly', el.is_monthly,
             'to_be_renewed', el.to_be_renewed
           )
-        ) FILTER (WHERE il.id IS NOT NULL) as licences
+        ) FILTER (WHERE il.id IS NOT NULL) ||
+        ARRAY_AGG(
+          JSON_BUILD_OBJECT(
+            'id', el2.ext_id,
+            'nb_licences', el2.nb_licences,
+            'valid_from', el2.valid_from,
+            'valid_until', el2.valid_until,
+            'is_monthly', el2.is_monthly,
+            'to_be_renewed', el2.to_be_renewed
+          )
+        ) FILTER (WHERE el2.ext_id IS NOT NULL)
+          as licences
         FROM banks AS b
         LEFT JOIN internal_licences AS il
           ON il.bank_id=b.id
         LEFT JOIN external_licences AS el
           ON il.external_licences_id=el.ext_id
+        LEFT JOIN external_licences AS el2
+          ON el2.bank_id = b.id
         WHERE b.reseller_id ${asSuperadmin ? 'IS NULL' : '=$1'}
         GROUP BY b.id
         `,
       asSuperadmin ? [] : [resellerId],
     );
-    res.status(200).json({ resellers: resellers, directBanks: bRes.rows });
+    let directBanks = bRes.rows;
+
+    res.status(200).json({ resellers: resellers, directBanks: directBanks });
   } catch (e) {
     logError('licenceSummary', e);
     res.sendStatus(400);

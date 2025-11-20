@@ -71,7 +71,7 @@ const Licences = (p) => {
                   <input type="checkbox" disabled checked={l.is_monthly} />
                 </td>
                 <td>{new Date(l.valid_from).toLocaleDateString()}</td>
-                <td>{l.valid_untiln ? new Date(l.valid_until).toLocaleDateString() : '-'}</td>
+                <td>{l.valid_until ? new Date(l.valid_until).toLocaleDateString() : '-'}</td>
                 <td>{l.to_be_renewed ? i18n.t('yes') : i18n.t('no')}</td>
               </tr>
             );

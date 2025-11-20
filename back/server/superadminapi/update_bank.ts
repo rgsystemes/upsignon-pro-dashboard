@@ -1,3 +1,4 @@
+import { forceProStatusUpdate } from '../helpers/forceProStatusUpdate';
 import { logError } from '../helpers/logger';
 import { updateBank } from '../helpers/updateBank';
 
@@ -9,6 +10,7 @@ export const update_bank_as_superadmin = async (req: any, res: any): Promise<voi
       resellerId: req.body.resellerId,
       settings: req.body.settings,
     });
+    forceProStatusUpdate();
     res.status(200).end();
   } catch (e) {
     logError('update_bank_as_admin', e);

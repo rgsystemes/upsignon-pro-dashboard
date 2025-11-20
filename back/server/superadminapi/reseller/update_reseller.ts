@@ -3,6 +3,7 @@ import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
 import Joi from 'joi';
 import { Request, Response } from 'express';
+import { forceProStatusUpdate } from '../../helpers/forceProStatusUpdate';
 
 export const update_reseller = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -15,6 +16,7 @@ export const update_reseller = async (req: Request, res: Response): Promise<void
       safeBody.resellerId,
       safeBody.resellerName,
     ]);
+    forceProStatusUpdate();
     res.status(200).end();
   } catch (e) {
     logError('update_reseller', e);

@@ -10,6 +10,7 @@ export const get_licences = async (
     const bankId = req.proxyParamsBankId;
     const resellerId = req.proxyParamsResellerId;
     if (bankId) {
+      // licences directly attributed by Septeo
       const directLicencesRes = await db.query(
         `SELECT
           el.ext_id as id,
@@ -18,7 +19,7 @@ export const get_licences = async (
           el.to_be_renewed,
           el.valid_from,
           el.valid_until,
-          el.uses_pool
+          el.bank_id
         FROM external_licences AS el
         INNER JOIN banks AS b ON b.id=el.bank_id
         WHERE el.bank_id=$1
@@ -26,6 +27,7 @@ export const get_licences = async (
           `,
         [bankId],
       );
+      // licences internally attributed by reseller admin
       const indirectLicencesRes = await db.query(
         `SELECT
         il.id,
@@ -34,7 +36,7 @@ export const get_licences = async (
         el.to_be_renewed,
         el.valid_from,
         el.valid_until,
-        el.uses_pool
+        il.bank_id
         FROM internal_licences AS il
         INNER JOIN external_licences AS el ON el.ext_id=il.external_licences_id
         INNER JOIN banks AS b ON b.id=il.bank_id
@@ -43,34 +45,20 @@ export const get_licences = async (
         `,
         [bankId],
       );
-      const indirectResellerPoolLicencesRes = await db.query(
+      // licences left in pool
+      const poolLicencesRes = await db.query(
         `SELECT
           el.ext_id as id,
-          el.nb_licences,
+          (el.nb_licences - SUM(il.nb_licences)) as nb_licences,
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
           el.valid_until,
-          el.uses_pool
+          el.bank_id
         FROM external_licences AS el
-        INNER JOIN resellers AS r ON r.id=el.reseller_id
-        INNER JOIN banks AS b ON b.reseller_id=el.reseller_id
-        WHERE el.uses_pool=true AND b.id=$1
-        ORDER BY b.name ASC, el.valid_from ASC, el.valid_until ASC
-        `,
-        [bankId],
-      );
-      const indirectSuperadminPoolLicencesRes = await db.query(
-        `SELECT
-          el.ext_id as id,
-          el.nb_licences,
-          el.is_monthly,
-          el.to_be_renewed,
-          el.valid_from,
-          el.valid_until,
-          el.uses_pool
-        FROM external_licences AS el
-        WHERE el.uses_pool=true AND reseller_id is null
+        LEFT JOIN internal_licences AS il ON el.ext_id=il.external_licences_id
+        WHERE el.bank_id IS NULL
+        GROUP BY el.ext_id
         ORDER BY el.valid_from ASC, el.valid_until ASC
         `,
         [],
@@ -81,8 +69,7 @@ export const get_licences = async (
         externalLicences: [
           ...directLicencesRes.rows,
           ...indirectLicencesRes.rows,
-          ...indirectResellerPoolLicencesRes.rows,
-          ...indirectSuperadminPoolLicencesRes.rows,
+          ...poolLicencesRes.rows.filter((l) => l.nb_licences > 0),
         ],
         banks: [],
       });
@@ -108,8 +95,7 @@ export const get_licences = async (
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
-          el.valid_until,
-          el.uses_pool
+          el.valid_until
           FROM external_licences AS el
           LEFT JOIN resellers AS r ON r.id=el.reseller_id
           LEFT JOIN banks AS b ON b.id=el.bank_id

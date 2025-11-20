@@ -45,7 +45,7 @@ export const proxiedFetch = (url: string, options: RequestOptions): Promise<Requ
             body: body,
           });
         } catch (e) {
-          console.error(`Error ${e}\with body\n${body}`);
+          console.error(`Error ${e} with body\n${body}`);
           reject(e);
         }
       });

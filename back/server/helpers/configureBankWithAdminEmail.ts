@@ -86,7 +86,6 @@ export const configureBankWithAdminEmailAndSendMail = async (
       [adminId, insertedBank.id],
     );
 
-    forceProStatusUpdate();
     /////////////////////
     // SEND EMAIL
     /////////////////////
@@ -128,6 +127,8 @@ export const configureBankWithAdminEmailAndSendMail = async (
       html: emailContent.html,
     });
   }
+
+  forceProStatusUpdate();
 
   res.status(200).end();
 };

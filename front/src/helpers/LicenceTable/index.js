@@ -46,18 +46,6 @@ export class LicenceTable extends React.Component {
       console.error(e);
     }
   };
-  togglePool = async (licenceId, usesPool) => {
-    try {
-      const res = await bankUrlFetch('/api/licence-toogle-pool', 'POST', {
-        licencesExtId: licenceId,
-        usesPool,
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      await this.fetchLicences();
-    }
-  };
   componentDidMount() {
     this.fetchLicences();
   }
@@ -88,20 +76,12 @@ export class LicenceTable extends React.Component {
 
     return (
       <div>
-        {licenceAssignmnentsForThisExtLicence.length === 0 && (
-          <div style={{ display: 'flex', marginBottom: 15 }}>
-            <input
-              type="checkbox"
-              checked={l.uses_pool}
-              onChange={(ev) => this.togglePool(l.id, ev.target.checked)}
-            />
-            <div style={{ marginLeft: 10, cursor: 'help' }} title={i18n.t('licences_pool_detail')}>
-              {i18n.t('licences_pool')}
-            </div>
-          </div>
-        )}
-        {!l.uses_pool && (
+        <div style={{ cursor: 'help', marginBottom: 15 }} title={i18n.t('licences_pool_detail')}>
+          {`${remainingLicencesToAssign} ${i18n.t('licences_pool')}`}
+        </div>
+        {!l.bank_id && (
           <>
+            <div>{i18n.t('licences_attribution')}</div>
             {licenceAssignmnentsForThisExtLicence.map((il) => {
               return (
                 <EditableLicenceAssignment
@@ -112,13 +92,15 @@ export class LicenceTable extends React.Component {
                 />
               );
             })}
-            <LicenceAssignmentForm
-              onSubmit={(bankId, nbLicences) =>
-                this.assignInternalLicence(l.id, bankId, nbLicences)
-              }
-              max={remainingLicencesToAssign}
-              banks={allUnssignedBanks}
-            />
+            {remainingLicencesToAssign > 0 && (
+              <LicenceAssignmentForm
+                onSubmit={(bankId, nbLicences) =>
+                  this.assignInternalLicence(l.id, bankId, nbLicences)
+                }
+                max={remainingLicencesToAssign}
+                banks={allUnssignedBanks}
+              />
+            )}
           </>
         )}
       </div>
@@ -130,10 +112,8 @@ export class LicenceTable extends React.Component {
     return (
       <tr key={l.id} className={className}>
         {this.showResellerCol && <td>{l.reseller_name}</td>}
-        {!this.isResellerPage && !this.isBankPage && <td>{l.bank_name}</td>}
-        <td>
-          {l.uses_pool ? i18n.t('licences_pool_number', { n: l.nb_licences }) : l.nb_licences}
-        </td>
+        {!this.isBankPage && <td>{l.bank_name}</td>}
+        <td>{!l.bank_id ? i18n.t('licences_pool_number', { n: l.nb_licences }) : l.nb_licences}</td>
         <td>
           <input type="checkbox" checked={l.is_monthly} disabled />
         </td>
@@ -150,7 +130,7 @@ export class LicenceTable extends React.Component {
         <thead>
           <tr>
             {this.showResellerCol && <th>{i18n.t('licences_reseller_name')}</th>}
-            {!this.isResellerPage && !this.isBankPage && <th>{i18n.t('licences_bank_name')}</th>}
+            {!this.isBankPage && <th>{i18n.t('licences_bank_name')}</th>}
             <th>{i18n.t('licences_nb')}</th>
             <th>{i18n.t('licences_is_montly')}</th>
             <th>{i18n.t('licences_valid_from')}</th>
@@ -211,6 +191,7 @@ export class LicenceTable extends React.Component {
 const EditableLicenceAssignment = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [nbLicences, setNbLicences] = useState(props.l.nb_licences);
+  const [submitTime, setSubmitTime] = useState(null); // to prevent deletion is user "double clicks"
   const actualMax = props.max + props.l.nb_licences;
   const remainingText = `${actualMax} ${i18n.t('licences_bank_distribution_remaining')}`;
   const lineStyle = { display: 'flex', height: 25, alignItems: 'center', margin: '5px 0' };
@@ -218,17 +199,28 @@ const EditableLicenceAssignment = (props) => {
     marginLeft: 10,
     marginRight: 10,
   };
+  const toggleEdition = () => {
+    setIsEditing(true);
+    setNbLicences(props.l.nb_licences);
+  };
+  const remove = () => {
+    if (submitTime && Date.now() - submitTime < 500) {
+      // prevent user deleting assignament by double clicking the submit button
+      return;
+    }
+    props.onSubmit(props.l.external_licences_id, props.l.bank_id, 0);
+  };
   if (!isEditing) {
     return (
-      <div
-        style={{ cursor: 'pointer', ...lineStyle }}
-        onClick={() => {
-          setIsEditing(true);
-          setNbLicences(props.l.nb_licences);
-        }}
-      >
+      <div style={{ cursor: 'pointer', ...lineStyle }}>
         <div>{props.l.bank_name}:</div>
-        <div style={inputStyle}>{`${props.l.nb_licences} licences`}</div>
+        <div style={inputStyle} onClick={toggleEdition}>{`${props.l.nb_licences} licences`}</div>
+        <div className="action" onClick={toggleEdition}>
+          {i18n.t('licences_bank_distribution_change')}
+        </div>
+        <div style={{ marginLeft: 5 }} className="action" onClick={remove}>
+          {i18n.t('licences_bank_distribution_remove')}
+        </div>
       </div>
     );
   }
@@ -246,11 +238,11 @@ const EditableLicenceAssignment = (props) => {
         max={actualMax}
         placeholder={remainingText}
         autoFocus
-        onBlur={() => setIsEditing(false)}
       />
       <div
         className="action"
-        onMouseDown={(ev) => {
+        onClick={(ev) => {
+          setSubmitTime(Date.now());
           ev.preventDefault(); // Prevents the blur on input
           props.onSubmit(props.l.external_licences_id, props.l.bank_id, nbLicences);
           setIsEditing(false);

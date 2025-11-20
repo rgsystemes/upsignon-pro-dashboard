@@ -11,7 +11,7 @@ import { EmailConfig } from './EmailConfig';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { isSaasServer } from '../../helpers/env';
 
-// Props setIsLoading, updateMenuBanks
+// Props setIsLoading, updateMenuBanks, updateMenuResellers
 class Superadmin extends React.Component {
   state = {
     banks: [],
@@ -77,7 +77,12 @@ class Superadmin extends React.Component {
             />
           )}
 
-          {activeTab === 'resellers' && <Resellers setIsLoading={this.props.setIsLoading} />}
+          {activeTab === 'resellers' && (
+            <Resellers
+              setIsLoading={this.props.setIsLoading}
+              updateMenuResellers={this.props.updateMenuResellers}
+            />
+          )}
 
           {activeTab === 'admins' && (
             <Admins
