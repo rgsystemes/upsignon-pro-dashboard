@@ -49,7 +49,7 @@ export const get_licences = async (
       const poolLicencesRes = await db.query(
         `SELECT
           el.ext_id as id,
-          (el.nb_licences - SUM(il.nb_licences)) as nb_licences,
+          (el.nb_licences - COALESCE(SUM(il.nb_licences), 0)) as nb_licences,
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
