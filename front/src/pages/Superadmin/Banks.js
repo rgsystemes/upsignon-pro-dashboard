@@ -18,7 +18,7 @@ class Banks extends React.Component {
     showAllSettings: false,
     showBankSettings: {},
     filterType: 0, // 0: all, 1: testing only
-    sortType: 0, // 0: name, 1: reseller, 2: expiration date
+    sortType: 1, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
     salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
     selectedResellerIdForNewBank: null, // Selected reseller for new bank form
@@ -164,6 +164,42 @@ class Banks extends React.Component {
     localStorage.setItem('banksSalesRepFilter', value);
   };
 
+  sortByReseller = (a, b, ascending) => {
+    let comparison;
+    const resellerA = a.reseller_name?.toLowerCase();
+    const resellerB = b.reseller_name?.toLowerCase();
+    if (resellerA === resellerB) {
+      // resellers are sorted using selected order, but banks are always sorted in natural order.
+      return this.sortByBank(a, b, true);
+    } else if (!resellerA) comparison = 1;
+    else if (!resellerB) comparison = -1;
+    else if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
+    return ascending ? comparison : -comparison;
+  };
+  sortByBank = (a, b, ascending) => {
+    let comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    return ascending ? comparison : -comparison;
+  };
+  sortByRemainingTrialDays = (a, b, ascending) => {
+    const getExpirationValue = (bank) => {
+      if (!bank.settings?.IS_TESTING || !bank.settings?.TESTING_EXPIRATION_DATE) {
+        return Infinity; // Non-testing banks go to the end
+      }
+      const today = new Date();
+      const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
+      return expirationDate - today; // Sort by time remaining (expired first)
+    };
+    const expA = getExpirationValue(a);
+    const expB = getExpirationValue(b);
+    if (expA === expB) {
+      return this.sortByReseller(a, b, true);
+    } else if (expA < expB) {
+      return ascending ? 1 : -1;
+    } else {
+      return ascending ? -1 : 1;
+    }
+  };
+
   render() {
     const bankToDelete = this.props.banks.find((g) => g.id === this.state.bankToDeleteId);
     if (bankToDelete) {
@@ -218,36 +254,17 @@ class Banks extends React.Component {
       })
       .sort((a, b) => {
         let comparison = 0;
+        const ascending = this.state.sortDirection === 'asc';
 
         switch (this.state.sortType) {
-          case 1: // Sort by reseller
-            const resellerA = a.reseller_name?.toLowerCase();
-            const resellerB = b.reseller_name?.toLowerCase();
-            if (!resellerA && !resellerB) comparison = 0;
-            else if (!resellerA) comparison = 1;
-            else if (!resellerB) comparison = -1;
-            else if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
-            break;
-
-          case 2: // Sort by expiration date/days remaining
-            const getExpirationValue = (bank) => {
-              if (!bank.settings?.IS_TESTING || !bank.settings?.TESTING_EXPIRATION_DATE) {
-                return Infinity; // Non-testing banks go to the end
-              }
-              const today = new Date();
-              const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
-              return expirationDate - today; // Sort by time remaining (expired first)
-            };
-            comparison = getExpirationValue(a) - getExpirationValue(b);
-            break;
-
-          case 0: // Sort by bank name (default)
+          case 0:
+            return this.sortByBank(a, b, ascending);
+          case 2:
+            return this.sortByRemainingTrialDays(a, b, ascending);
+          case 1:
           default:
-            comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-            break;
+            return this.sortByReseller(a, b, ascending);
         }
-
-        return this.state.sortDirection === 'desc' ? -comparison : comparison;
       });
     return (
       <div>
