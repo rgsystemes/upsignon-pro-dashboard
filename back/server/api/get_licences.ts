@@ -49,7 +49,7 @@ export const get_licences = async (
       const poolLicencesRes = await db.query(
         `SELECT
           el.ext_id as id,
-          (el.nb_licences - COALESCE(SUM(il.nb_licences), 0)) as nb_licences,
+          (el.nb_licences - COALESCE(SUM(il.nb_licences), 0))::int as nb_licences,
           el.is_monthly,
           el.to_be_renewed,
           el.valid_from,
@@ -57,11 +57,13 @@ export const get_licences = async (
           el.bank_id
         FROM external_licences AS el
         LEFT JOIN internal_licences AS il ON el.ext_id=il.external_licences_id
-        WHERE el.bank_id IS NULL
+        LEFT JOIN resellers AS r ON r.id=el.reseller_id
+        LEFT JOIN banks AS b ON b.reseller_id=r.id AND b.id=$1
+        WHERE el.bank_id IS NULL AND (el.reseller_id IS NULL OR b.id IS NOT NULL)
         GROUP BY el.ext_id
         ORDER BY el.valid_from ASC, el.valid_until ASC
         `,
-        [],
+        [bankId],
       );
 
       res.status(200).send({
