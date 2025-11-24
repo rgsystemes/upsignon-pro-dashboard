@@ -113,7 +113,11 @@ export class LicenceTable extends React.Component {
       <tr key={l.id} className={className}>
         {this.showResellerCol && <td>{l.reseller_name}</td>}
         {!this.isBankPage && <td>{l.bank_name}</td>}
-        <td>{!l.bank_id ? i18n.t('licences_pool_number', { n: l.nb_licences }) : l.nb_licences}</td>
+        <td>
+          {!l.bank_id && this.isBankPage
+            ? i18n.t('licences_pool_number', { n: l.nb_licences })
+            : l.nb_licences}
+        </td>
         <td>
           <input type="checkbox" checked={l.is_monthly} disabled />
         </td>
