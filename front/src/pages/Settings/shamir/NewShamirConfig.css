@@ -1,0 +1,84 @@
+.titleWithIcon {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.twoCol {
+  display: flex;
+  align-items: start;
+  justify-content: flex-start;
+  gap: 50px;
+}
+
+.shamirTable th:nth-child(2) {
+  min-width: 250px;
+}
+.shamirTable th:nth-child(3) {
+  min-width: 250px;
+}
+
+.shamir-warning {
+  display: inline-block;
+  min-width: 600px;
+  margin-top: 0.5rem;
+  font-size: 14px;
+  line-height: 150%;
+}
+.shamir-warning::before{
+  content: "";
+  height: 5px;
+  border-radius: 5px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.shamir-warning.forbidden::before  {
+  background-color: #9B2C2C;
+}
+.shamir-warning.danger::before  {
+  background-color: #E53E3E;
+}
+.shamir-warning.warning::before  {
+  background-color: #DD6B20;
+}
+.shamir-warning.good::before  {
+  background-color: #38B2AC;
+}
+.shamir-warning.verygood::before  {
+  background-color: #38B2AC;
+}
+.shamir-warning.heavy::before  {
+  background-color: #DD6B20;
+}
+
+.shareholderSearch {
+  margin-bottom: 20px;
+}
+.contactEmailInput {
+  outline: none;
+  border: 1px solid rgba(46, 56, 98, 0.10);
+  border-radius: 4px;
+  padding: 8px 16px;
+  width: 300px;
+}
+.contactEmailInput:focus {
+  outline: none;
+  border-color: #403EDD;
+}
+
+.shamirSummary {
+  border-radius: 4px;
+  background-color: #F5F5F5;
+  padding: 20px 50px;
+  margin-bottom: 50px;
+}
+
+.shamirFormButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+}

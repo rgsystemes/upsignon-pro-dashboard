@@ -1,0 +1,122 @@
+.elementTitle {
+  /* Titre d'élément | 20/Bold */
+  color: #000;
+  /* font-family: Inter; */
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 133%; /* 26.6px */
+}
+
+.hintRegular {
+  /* Hint | 14/Regular */
+  color: #323232;
+  /* font-family: Inter; */
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 21px */
+}
+
+.bodySemiBold {
+  /* Body | 16/Semi Bold */
+  color: #323232;
+  /* font-family: Inter; */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%; /* 20.8px */
+}
+
+.bodyMedium {
+  /* Body | 16/Medium */
+  color: #586081;
+  /* font-family: Inter; */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 20.8px */
+}
+
+.bodyRegular {
+  /* Body | 16/Regular */
+  color: #111;
+  /* font-family: Inter; */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 20.8px */
+}
+
+.xsNormal {
+  /* xs/font-normal */
+  /* font-family: Inter; */
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 133.333% */
+}
+
+.bodyRegularSecondary {
+  color: #323232;
+  /* font-family: Inter; */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+
+.cancelButton {
+  border-radius: 6px;
+  border: 1px solid rgba(88, 96, 129, 0.40);
+  background-color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 206px;
+  height: 48px;
+  padding: 0 24px;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.cancelButton:hover {
+  border-color: rgba(88, 96, 129, 0.60);
+  background-color: #f8f9fa;
+}
+.cancelButton:focus {
+  outline: none;
+  border-color: #4D54D1;
+  box-shadow: 0 0 0 3px rgba(77, 84, 209, 0.15);
+}
+
+.submitButton {
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  background: #4D54D1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 540px;
+  height: 48px;
+  padding: 0 24px;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.submitButton:hover {
+  background: #3d44b5;
+}
+.submitButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(77, 84, 209, 0.3);
+}
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #4D54D1;
+}

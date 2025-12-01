@@ -31,6 +31,7 @@ const translations = {
   settings_tab_admins: 'Administrateurs',
   settings_tab_permissions: 'Autorisations',
   settings_tab_urls: 'Sites web pré-renseignés',
+  settings_tab_shamir: 'Récupération de secours',
   menu_shared_devices: 'Appareils partagés',
   menu_shared_vaults: 'Éléments/dossiers partagés',
   menu_superadmin: 'Super-Admin',
@@ -431,6 +432,59 @@ const translations = {
     'Les licences mutualisées sont disponibles pour toutes les banques sur la base du premier arrivé premier servi.',
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (mutualisées)',
+
+  shamir_title: 'Configuration du protocole de récupération de secours (SHAMIR)',
+  shamir_general_explanation:
+    "Ce protocole permet à plusieurs personnes désignées, si elles sont toutes d'accord, de récupérer l'accès à n'importe quel coffre-fort de votre banque. Ce protocole de secours permet par exemple de débloquer un utilisateur ayant oublié son mot de passe maître et n'ayant plus accès à aucun de ses appareils autorisés. Techniquement, chaque personne de confiance désignée (un actionnaire) reçoit une part d'un secret. Chaque part isolée est inutile et ne donne accès à aucune information sur le secret, mais le regroupement de plusieurs parts permet de recalculer le secret et donc de déverrouiller le coffre-fort de l'utilisateur. La sécurité de la procédure vient de l'obligation mathématique d'obtenir le consensus des personnes de confiance pour obtenir le secret.",
+  shamir_config_name_title: 'Nom & version',
+  shamir_config_name: 'Nom de la configuration',
+  shamir_config_creation_date: 'Date de création',
+  shamir_config_min_shares:
+    'Choisissez le nombre de personnes minimum qui sera requis pour déverrouiller un coffre-fort.',
+  shamir_config_min_shares_explanation:
+    "Plus ce nombre est élevé, plus la sécurité est élevée, mais moins il sera pratique d'activer le protocole. Nous vous recommandons 2 à 4 personnes.",
+  shamir_config_min_shares_risk_1: 'Sécurité insuffisante.',
+  shamir_config_min_shares_risk_1_details:
+    "Chaque actionnaire pourra déverrouiller n'importe quel coffre-fort à lui seul !",
+  shamir_config_min_shares_risk_2: 'Sécurité modérée.',
+  shamir_config_min_shares_risk_3: 'Bonne sécurité.',
+  shamir_config_min_shares_risk_4: 'Très bonne sécurité.',
+  shamir_config_min_shares_risk_5: 'Sécurité extrême, mais probablement peu pratique.',
+  shamir_config_holders:
+    'Choisissez les personnes ayant le droit de participer au protocole (actionnaires).',
+  shamir_config_holders_explanation:
+    "Chacune de ces personnes recevra une part. Vous pouvez choisir des personnes dans toutes les banques auxquelles vous avez accès. Plus vous ajoutez de personnes, plus vous serez résilient aux départs et aux absences d'actionnaires.",
+  shamir_config_holders_number: '$n actionnaire(s) sélectionné(s).',
+  shamir_config_holders_in_creation: 'En cours de création.',
+  shamir_config_holders_warning_not_enough: 'Vous devez ajouter encore',
+  shamir_config_holders_warning_not_enough_number: 'au moins $n actionnaire(s).',
+  shamir_config_holders_warning_resilience_0_short: 'Aucune résilience.',
+  shamir_config_holders_warning_resilience_0_details_1:
+    "L'absence d'un seul actionnaire vous empêche d'utiliser la procédure de secours.",
+  shamir_config_holders_warning_resilience_0_details_2:
+    "La procédure de secours ne peut pas être utilisée pour déverrouiller le coffre d'un actionnaire.",
+  shamir_config_holders_warning_resilience_1_short: 'Faible résilience.',
+  shamir_config_holders_warning_resilience_1_details:
+    "La procédure peut être utilisée même en l'absence d'un actionnaire, sauf si le coffre-fort à déverrouiller est celui d'un autre actionnaire.",
+  shamir_config_holders_warning_resilience_2_short: 'Bonne résilience.',
+  shamir_config_holders_warning_resilience_2_details:
+    "La procédure peut être utilisée même en l'absence d'un actionnaire et y compris pour déverrouiller le coffre-fort d'un autre actionnaire.",
+  shamir_config_holders_warning_resilience_3_short: 'Très bonne résilience.',
+  shamir_config_holders_warning_resilience_3_details:
+    "La procédure peut-être utilisée même en l'abscence de $n actionnaires.",
+  shamir_config_holder_search: 'Rechercher et sélectionner',
+  shamir_config_holder_email: 'Actionnaire',
+  shamir_config_holder_bank_name: 'Banque',
+  shamir_config_support_email:
+    "Indiquez l'adresse email sur laquelle les utilisateurs bloqués pourront vous contacter",
+  shamir_config_support_email_explanation: "Cette adresse email sera affichée dans l'application.",
+  shamir_config_summary: 'Résumé de votre configuration',
+  shamir_config_summary_details_consensus_label: 'Consensus requis :',
+  shamir_config_summary_details_consensus_content:
+    'Minimum $min actionnaire(s) parmi $total désigné(s).',
+  shamir_config_summary_details_risk_label: 'Niveau de sécurité :',
+  shamir_config_summary_details_resilience_label: 'Résilience :',
+  shamir_config_submit: 'Enregistrer cette configuration',
 };
 
 export default translations;
