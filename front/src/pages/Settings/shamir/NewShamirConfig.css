@@ -82,3 +82,40 @@
   justify-content: flex-end;
   gap: 30px;
 }
+
+/* Validation Modal */
+.shamirFormValidateButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.shamirFormValidateButtons .cancelButton, .shamirFormValidateButtons .submitButton {
+  flex: 1;
+  min-width: 0;
+}
+
+.shamirValidationWarning {
+  display: flex;
+  gap: 16px;
+  border-radius: 8px;
+  border: 1px solid #E53E3E;
+  padding: 12px 20px;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #FFF5F5;
+  color: #9F1522;
+  margin-bottom: 20px;
+}
+.shamirValidationWarningIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #FED7D7;
+}

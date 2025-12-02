@@ -485,6 +485,12 @@ const translations = {
   shamir_config_summary_details_risk_label: 'Niveau de sécurité :',
   shamir_config_summary_details_resilience_label: 'Résilience :',
   shamir_config_submit: 'Enregistrer cette configuration',
+  shamir_config_validate_submit: 'Enregistrer',
+  shamir_config_validate_title: 'Souhaitez-vous enregistrer ce protocole de secours ?',
+  shamir_config_validate_warning:
+    "Après validation, la configuration ne pourra être modifiée qu'avec le consentement des actionnaires selon les critères définis dans ce protocole.",
+  shamir_config_validate_info:
+    "L'enregistrement de ce protocole prendra effet immédiatement. Le déverrouillage de secours d'un coffre deviendra possible après qu'il aura été déverrouillé au moins une fois à partir d'une version compatible de l'application.",
 };
 
 export default translations;

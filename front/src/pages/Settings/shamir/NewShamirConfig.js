@@ -10,6 +10,8 @@ import { FileIcon } from '../../../helpers/icons/FileIcon';
 import { SearchBar } from '../../../helpers/SearchBar';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
 import { toast } from 'react-toastify';
+import { Modal } from '../../../helpers/Modal/Modal';
+import { WarningIcon } from '../../../helpers/icons/WarningIcon';
 
 // Props : setIsLoading
 export class NewShamirConfig extends React.Component {
@@ -22,8 +24,12 @@ export class NewShamirConfig extends React.Component {
     supportEmail: '',
     sortShareholder: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     sortBank: 0, // 0 (no sorting), -1 (desc), 1 (asc)
+    showSubmitValidation: false,
   };
   isSubmitable = () => {
+    if (!this.state.nextShamirConfigIndex) {
+      return false;
+    }
     if (!this.state.minShares || this.state.minShares < 1) {
       return false;
     }
@@ -36,10 +42,30 @@ export class NewShamirConfig extends React.Component {
     return true;
   };
 
-  onCancel = () => {};
+  onCancel = () => {
+    // TODO close page
+  };
   onSubmit = () => {
     if (!this.isSubmitable()) {
       return;
+    }
+    if (this.state.nextShamirConfigIndex === 1) {
+      document.getElementById('submitValidationModal').showModal();
+    }
+  };
+  onValidationCancel = () => {
+    document.getElementById('submitValidationModal').close();
+  };
+  onValidateSubmit = async () => {
+    try {
+      await bankUrlFetch('/api/shamir-create-first-config', 'POST', {
+        minShares: this.state.minShares,
+        selectedHolderIds: this.state.selectedHolders.map((h) => h.id),
+        supportEmail: this.state.supportEmail,
+      });
+      // TODO redirection
+    } catch (e) {
+      toast.error(e);
     }
   };
   onHolderSearchChange = async (search) => {
@@ -249,6 +275,7 @@ export class NewShamirConfig extends React.Component {
       search,
       sortShareholder,
       sortBank,
+      showSubmitValidation,
     } = this.state;
 
     const minSharesWarning = this.getMinSharesSecurityWarning(minShares);
@@ -414,6 +441,23 @@ export class NewShamirConfig extends React.Component {
             {i18n.t('shamir_config_submit')}
           </button>
         </div>
+        <Modal id="submitValidationModal" title={i18n.t('shamir_config_validate_title')}>
+          <div className="shamirValidationWarning">
+            <span className="shamirValidationWarningIconContainer">
+              <WarningIcon size={12} />
+            </span>
+            <span>{i18n.t('shamir_config_validate_warning')}</span>
+          </div>
+          <div>{i18n.t('shamir_config_validate_info')}</div>
+          <div className="shamirFormValidateButtons">
+            <button onClick={this.onValidationCancel} className="cancelButton">
+              {i18n.t('cancel')}
+            </button>
+            <button onClick={this.onValidateSubmit} className="submitButton">
+              {i18n.t('shamir_config_validate_submit')}
+            </button>
+          </div>
+        </Modal>
       </>
     );
   }

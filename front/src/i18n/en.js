@@ -471,6 +471,12 @@ const translations = {
   shamir_config_summary_details_risk_label: 'Security level:',
   shamir_config_summary_details_resilience_label: 'Resilience:',
   shamir_config_submit: 'Save this configuration',
+  shamir_config_validate_submit: 'Save',
+  shamir_config_validate_title: 'Do you want to save this fallback protocol?',
+  shamir_config_validate_warning:
+    'After validation, the configuration may only be modified with the consent of the shareholders in accordance with the criteria defined in this protocol.',
+  shamir_config_validate_info:
+    'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
 };
 
 export default translations;
