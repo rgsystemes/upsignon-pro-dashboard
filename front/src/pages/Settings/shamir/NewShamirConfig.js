@@ -12,6 +12,7 @@ import { bankUrlFetch } from '../../../helpers/urlFetch';
 import { toast } from 'react-toastify';
 import { Modal } from '../../../helpers/Modal/Modal';
 import { WarningIcon } from '../../../helpers/icons/WarningIcon';
+import { ExternalLink } from '../../../helpers/ExternalLink/ExternalLink';
 
 // Props : setIsLoading
 export class NewShamirConfig extends React.Component {
@@ -289,7 +290,9 @@ export class NewShamirConfig extends React.Component {
     return (
       <>
         <h2>{i18n.t('shamir_title')}</h2>
-        <p>{i18n.t('shamir_general_explanation')}</p>
+        <ExternalLink href="https://upsignon.eu/shamir-doc">
+          {i18n.t('shamir_doc_link')}
+        </ExternalLink>
 
         <h3 className={`titleWithIcon`}>
           <EditIcon size={20} />

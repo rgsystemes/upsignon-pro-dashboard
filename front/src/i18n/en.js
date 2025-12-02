@@ -419,62 +419,61 @@ const translations = {
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (pool)',
 
-  shamir_title: 'Fallback recovery protocol configuration (SHAMIR)',
-  shamir_general_explanation:
-    "This protocol allows several designated persons, if they all agree, to recover access to any vault in your bank. This fallback protocol allows, for example, to unlock a user who has forgotten their master password and no longer has access to any of their authorized devices. Technically, each designated trusted person (a shareholder) receives a share of a secret. Each isolated share is useless and does not give access to any information about the secret, but the combination of several shares makes it possible to recalculate the secret and thus unlock the user's vault. The security of the procedure comes from the mathematical obligation to obtain consensus from trusted persons to obtain the secret.",
+  shamir_title: 'Fallback protocol configuration (SHAMIR)',
+  shamir_doc_link: 'Read the documentation.',
   shamir_config_name_title: 'Name & version',
   shamir_config_name: 'Configuration name',
   shamir_config_creation_date: 'Creation date',
   shamir_config_min_shares:
-    'Choose the minimum number of people that will be required to unlock a vault.',
+    'Choose the minimum number of trusted persons that will be required to unlock a vault.',
   shamir_config_min_shares_explanation:
     'The higher this number, the higher the security, but the less practical it will be to activate the protocol. We recommend 2 to 4 people.',
   shamir_config_min_shares_risk_1: 'Insufficient security.',
   shamir_config_min_shares_risk_1_details:
-    'Every shareholder will be able to unlock any vault on their own!',
+    'Every trusted person will be able to unlock any vault on their own!',
   shamir_config_min_shares_risk_2: 'Moderate security.',
   shamir_config_min_shares_risk_3: 'Good security.',
   shamir_config_min_shares_risk_4: 'Very good security.',
   shamir_config_min_shares_risk_5: 'Extremely secure, but probably not very practical.',
   shamir_config_holders:
-    'Choose the people who have the right to participate in the protocol (shareholders).',
+    'Choose the trusted persons who have the right to participate in the protocol.',
   shamir_config_holders_explanation:
-    'Each of these people will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of shareholders.',
-  shamir_config_holders_number: '$n shareholder(s) selected.',
+    'Each of these trusted persons will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of trusted persons.',
+  shamir_config_holders_number: '$n trusted person(s) selected.',
   shamir_config_holders_in_creation: 'Being created.',
   shamir_config_holders_warning_not_enough: 'You must still add',
-  shamir_config_holders_warning_not_enough_number: 'at least $n shareholder(s).',
+  shamir_config_holders_warning_not_enough_number: 'at least $n trusted person(s).',
   shamir_config_holders_warning_resilience_0_short: 'No resilience.',
   shamir_config_holders_warning_resilience_0_details_1:
-    'The absence of a single shareholder prevents you from using the fallback procedure.',
+    'The absence of a single trusted person prevents you from using the fallback protocol.',
   shamir_config_holders_warning_resilience_0_details_2:
-    "The fallback procedure cannot be used to unlock a shareholder's vault.",
+    "The fallback protocol cannot be used to unlock a trusted person's vault.",
   shamir_config_holders_warning_resilience_1_short: 'Low resilience.',
   shamir_config_holders_warning_resilience_1_details:
-    'The procedure can be used even in the absence of one shareholder, except if the vault to unlock belongs to another shareholder.',
+    'The protocol can be used even in the absence of one trusted person, except if the vault to unlock belongs to another trusted person.',
   shamir_config_holders_warning_resilience_2_short: 'Good resilience.',
   shamir_config_holders_warning_resilience_2_details:
-    "The procedure can be used even in the absence of one shareholder and including to unlock another shareholder's vault.",
+    "The protocol can be used even in the absence of one trusted person and including to unlock another trusted person's vault.",
   shamir_config_holders_warning_resilience_3_short: 'Very good resilience.',
   shamir_config_holders_warning_resilience_3_details:
-    'The procedure can be used even in the absence of $n shareholders.',
+    'The protocol can be used even in the absence of $n trusted persons.',
   shamir_config_holder_search: 'Search and select',
-  shamir_config_holder_email: 'Shareholder',
+  shamir_config_holder_email: 'Trusted person',
   shamir_config_holder_bank_name: 'Bank',
-  shamir_config_support_email: 'Indicate the email address on which blocked users can contact you',
+  shamir_config_support_email: 'Indicate the email address on which blocked users can contact you.',
   shamir_config_support_email_explanation:
     'This email address will be displayed in the application.',
   shamir_config_summary: 'Summary of your configuration',
   shamir_config_summary_details_consensus_label: 'Required consensus:',
   shamir_config_summary_details_consensus_content:
-    'Minimum $min shareholder(s) among $total designated.',
+    'Minimum $min trusted person(s) among $total designated.',
   shamir_config_summary_details_risk_label: 'Security level:',
   shamir_config_summary_details_resilience_label: 'Resilience:',
   shamir_config_submit: 'Save this configuration',
   shamir_config_validate_submit: 'Save',
   shamir_config_validate_title: 'Do you want to save this fallback protocol?',
   shamir_config_validate_warning:
-    'After validation, the configuration may only be modified with the consent of the shareholders in accordance with the criteria defined in this protocol.',
+    'After validation, the configuration may only be modified with the consent of the trusted persons in accordance with the criteria defined in this protocol.',
   shamir_config_validate_info:
     'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
 };
