@@ -433,7 +433,30 @@ const translations = {
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (mutualisées)',
 
+  // SHAMIR
   shamir_title: 'Configuration du protocole de secours (SHAMIR)',
+
+  // SHAMIR - presentation
+  shamir_presentation_card_user_title_1: 'Un protocole sécurisé pour ',
+  shamir_presentation_card_user_title_2: "récupérer l'accès à un coffre-fort",
+  shamir_presentation_card_user_details:
+    'L’utilisateur initie la demande de récupération en cliquant sur “Mot de passe oublié” même si il n’a plus accès à aucun de ses appareils autorisés. Le système attend ensuite les validations des personnes de confiance sélectionnées.',
+  shamir_presentation_card_shareholder_title_1: 'Une approbation distribuée grâce aux ',
+  shamir_presentation_card_shareholder_title_2: 'clés partielles',
+  shamir_presentation_card_shareholder_details_1:
+    'Chaque personne de confiance détient une clé partielle, chiffrée et invisible.',
+  shamir_presentation_card_shareholder_details_2:
+    "Une fois les approbations suffisantes obtenues, ces fragments sont combinés — selon le protocole de Shamir — pour reconstituer la clé complète et débloquer l’accès. L'approbation distribuée permet de renforcer la sécurité, en évitant de donner l'accès à tous les coffres à une seule personne.",
+  shamir_presentation_card_admin_title_1: 'Une configuration simple en ',
+  shamir_presentation_card_admin_title_2: 'deux étapes',
+  shamir_presentation_card_admin_details_1:
+    'Définir un nombre de personnes minimum requis pour débloquer un utilisateur',
+  shamir_presentation_card_admin_details_2:
+    'Choisir les personnes de confiance autorisées à approuver les demandes',
+  shamir_presentation_start: 'Configurer un protocole',
+  shamir_presentation_see_more: 'En savoir plus',
+
+  // SHAMIR - new config
   shamir_doc_link: 'Consulter la documentation',
   shamir_config_name_title: 'Nom & version',
   shamir_config_name: 'Nom de la configuration',
@@ -453,7 +476,7 @@ const translations = {
     'Choisissez les personnes de confiance qui auront le droit de participer au protocole.',
   shamir_config_holders_explanation:
     'Chacune de ces personnes recevra une part. Vous pouvez choisir des personnes dans toutes les banques auxquelles vous avez accès. Plus vous ajoutez de personnes, plus vous serez résilient aux départs et aux absences des personnes de confiance.',
-  shamir_config_holders_number: '$n personnes(s) de confiance sélectionnée(s).',
+  shamir_config_holders_number: '$n personnes(s) de confiance sélectionnée(s)$adminWarning.',
   shamir_config_holders_in_creation: 'En cours de création.',
   shamir_config_holders_warning_not_enough: 'Vous devez ajouter encore',
   shamir_config_holders_warning_not_enough_number: 'au moins $n personnes(s) de confiance.',
@@ -483,6 +506,9 @@ const translations = {
     'Minimum $min personne(s) de confiance parmi $total désignée(s).',
   shamir_config_summary_details_risk_label: 'Niveau de sécurité :',
   shamir_config_summary_details_resilience_label: 'Résilience :',
+  shamir_config_summary_details_shareholders_label: 'Personnes de confiance :',
+  shamir_config_summary_details_support_email_label: 'Email de support :',
+  shamir_config_summary_details_admin_not_shareholder: ' (dont vous ne faites pas partie)',
   shamir_config_submit: 'Enregistrer cette configuration',
   shamir_config_validate_submit: 'Enregistrer',
   shamir_config_validate_title: 'Souhaitez-vous enregistrer ce protocole de secours ?',
@@ -490,6 +516,8 @@ const translations = {
     "Après validation, la configuration ne pourra être modifiée qu'avec le consentement des personnes de confiance selon les critères définis dans ce protocole.",
   shamir_config_validate_info:
     "L'enregistrement de ce protocole prendra effet immédiatement. Le déverrouillage de secours d'un coffre deviendra possible après qu'il aura été déverrouillé au moins une fois à partir d'une version compatible de l'application.",
+  shamir_config_creation: 'Creation : ',
+  shamir_config_creation_content: 'le $date par $creator.',
 };
 
 export default translations;

@@ -36,6 +36,7 @@ export const shamirSearchUsers = async (req: any, res: any): Promise<void> => {
         bankName: u.bank_name,
         hasSharingPublicKey: u.has_sharing_public_key,
       })),
+      adminEmail: req.session.adminEmail,
     });
   } catch (e) {
     logError('shamirSearchUsers', e);

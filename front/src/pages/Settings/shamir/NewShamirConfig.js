@@ -2,7 +2,6 @@ import React from 'react';
 import { i18n } from '../../../i18n/i18n';
 import './NewShamirConfig.css';
 import { TableColSortIcon } from '../../../helpers/icons/TableColSortIcon';
-import { EditIcon } from '../../../helpers/icons/EditIcon';
 import { CountingIcon } from '../../../helpers/icons/CountingIcon';
 import { PersonRoundIcon } from '../../../helpers/icons/PersonRoundIcon';
 import { MailIcon } from '../../../helpers/icons/MailIcon';
@@ -13,8 +12,12 @@ import { toast } from 'react-toastify';
 import { Modal } from '../../../helpers/Modal/Modal';
 import { WarningIcon } from '../../../helpers/icons/WarningIcon';
 import { ExternalLink } from '../../../helpers/ExternalLink/ExternalLink';
+import { NameAndVersion } from './components/NameAndVersion';
+import { MinSharesSecurityComment } from './components/MinSharesSecurityComment';
+import { ShareholdersResilienceComment } from './components/ShareholdersResilienceComment';
+import { ConfigSummary } from './components/ConfigSummary';
 
-// Props : setIsLoading
+// Props : setIsLoading, onConfigCreated, onCancel
 export class NewShamirConfig extends React.Component {
   state = {
     nextShamirConfigIndex: null,
@@ -26,6 +29,7 @@ export class NewShamirConfig extends React.Component {
     sortShareholder: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     sortBank: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     showSubmitValidation: false,
+    adminEmail: '',
   };
   isSubmitable = () => {
     if (!this.state.nextShamirConfigIndex) {
@@ -44,7 +48,7 @@ export class NewShamirConfig extends React.Component {
   };
 
   onCancel = () => {
-    // TODO close page
+    this.props.onCancel();
   };
   onSubmit = () => {
     if (!this.isSubmitable()) {
@@ -59,25 +63,33 @@ export class NewShamirConfig extends React.Component {
   };
   onValidateSubmit = async () => {
     try {
+      this.props.setIsLoading(true);
       await bankUrlFetch('/api/shamir-create-first-config', 'POST', {
         minShares: this.state.minShares,
         selectedHolderIds: this.state.selectedHolders.map((h) => h.id),
         supportEmail: this.state.supportEmail,
       });
-      // TODO redirection
+      this.props.onConfigCreated();
     } catch (e) {
       toast.error(e);
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   onHolderSearchChange = async (search) => {
     try {
-      const { searchedHolders } = await bankUrlFetch('/api/shamir-search-users', 'POST', {
-        search,
-      });
+      const { searchedHolders, adminEmail } = await bankUrlFetch(
+        '/api/shamir-search-users',
+        'POST',
+        {
+          search,
+        },
+      );
       this.setState((s) => ({
         ...s,
         search,
         searchedHolders,
+        adminEmail,
       }));
     } catch (e) {
       toast.error(e);
@@ -152,86 +164,6 @@ export class NewShamirConfig extends React.Component {
     }
   };
 
-  getMinSharesSecurityWarning = (minShares) => {
-    return (
-      <div>
-        {minShares === 1 && (
-          <span className={`shamir-warning danger`}>
-            <strong>{i18n.t('shamir_config_min_shares_risk_1')}</strong>
-            <br />
-            {i18n.t('shamir_config_min_shares_risk_1_details')}
-          </span>
-        )}
-        {minShares === 2 && (
-          <span className={`shamir-warning warning`}>
-            <strong>{i18n.t('shamir_config_min_shares_risk_2')}</strong>
-          </span>
-        )}
-        {minShares === 3 && (
-          <span className={`shamir-warning good`}>
-            <strong>{i18n.t('shamir_config_min_shares_risk_3')}</strong>
-          </span>
-        )}
-        {minShares === 4 && (
-          <span className={`shamir-warning verygood`}>
-            <strong>{i18n.t('shamir_config_min_shares_risk_4')}</strong>
-          </span>
-        )}
-        {minShares >= 5 && (
-          <span className={`shamir-warning heavy`}>
-            <strong>{i18n.t('shamir_config_min_shares_risk_5')}</strong>
-          </span>
-        )}
-      </div>
-    );
-  };
-
-  getResilience = (minShares, totalHolders) => {
-    const margin = totalHolders - minShares;
-    return (
-      <div>
-        {margin < 0 && (
-          <span className={`shamir-warning forbidden`}>
-            {i18n.t('shamir_config_holders_warning_not_enough')}{' '}
-            <strong>
-              {i18n.t('shamir_config_holders_warning_not_enough_number', { n: -margin })}
-            </strong>
-          </span>
-        )}
-        {margin === 0 && (
-          <span className={`shamir-warning danger`}>
-            <strong>{i18n.t('shamir_config_holders_warning_resilience_0_short')}</strong>
-            <br />
-            <strong>{i18n.t('shamir_config_holders_warning_resilience_0_details_1')}</strong>
-            <br />
-            {i18n.t('shamir_config_holders_warning_resilience_0_details_2')}
-          </span>
-        )}
-        {margin === 1 && (
-          <span className={`shamir-warning warning`}>
-            <strong>{i18n.t('shamir_config_holders_warning_resilience_1_short')}</strong>
-            <br />
-            {i18n.t('shamir_config_holders_warning_resilience_1_details')}
-          </span>
-        )}
-        {margin === 2 && (
-          <span className={`shamir-warning good`}>
-            <strong>{i18n.t('shamir_config_holders_warning_resilience_2_short')}</strong>
-            <br />
-            {i18n.t('shamir_config_holders_warning_resilience_2_details')}
-          </span>
-        )}
-        {margin >= 3 && (
-          <span className={`shamir-warning verygood`}>
-            <strong>{i18n.t('shamir_config_holders_warning_resilience_3_short')}</strong>
-            <br />
-            {i18n.t('shamir_config_holders_warning_resilience_3_details', { n: margin })}
-          </span>
-        )}
-      </div>
-    );
-  };
-
   getResultingHolderList = () => {
     const { selectedHolders, searchedHolders, sortShareholder, sortBank } = this.state;
     const res = [
@@ -277,16 +209,23 @@ export class NewShamirConfig extends React.Component {
       sortShareholder,
       sortBank,
       showSubmitValidation,
+      adminEmail,
     } = this.state;
 
-    const minSharesWarning = this.getMinSharesSecurityWarning(minShares);
     const resultingHolderList = this.getResultingHolderList();
 
     const areAllSelected =
       resultingHolderList.filter((h) => h.hasSharingPublicKey).length > 0 &&
       !resultingHolderList.find((h) => !h.isSelected && h.hasSharingPublicKey);
     const shouldShowShareHoldersTable = searchedHolders.length > 0 || selectedHolders.length > 0;
-    const resilience = this.getResilience(minShares, selectedHolders.length);
+    const isAdminAShareholder = selectedHolders.find((h) => h.email === adminEmail) != null;
+
+    const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
+    const resilience = (
+      <ShareholdersResilienceComment minShares={minShares} totalHolders={selectedHolders.length} />
+    );
+    const configName = `Shamir ${nextShamirConfigIndex || '_'}`;
+    const creationDate = new Date();
     return (
       <>
         <h2>{i18n.t('shamir_title')}</h2>
@@ -294,22 +233,7 @@ export class NewShamirConfig extends React.Component {
           {i18n.t('shamir_doc_link')}
         </ExternalLink>
 
-        <h3 className={`titleWithIcon`}>
-          <EditIcon size={20} />
-          <span>{i18n.t('shamir_config_name_title')}</span>
-        </h3>
-        <div className="twoCol">
-          <div>
-            <label className={'bodyMedium'}>{i18n.t('shamir_config_name')}</label>
-            <br />
-            <span>{`Shamir ${nextShamirConfigIndex || '_'}`}</span>
-          </div>
-          <div>
-            <label className={'bodyMedium'}>{i18n.t('shamir_config_creation_date')}</label>
-            <br />
-            <span>{new Date().toLocaleDateString()}</span>
-          </div>
-        </div>
+        <NameAndVersion name={configName} creationDate={creationDate} />
 
         <h3 className={`titleWithIcon`}>
           <CountingIcon size={20} />
@@ -392,7 +316,12 @@ export class NewShamirConfig extends React.Component {
               </tbody>
             </table>
             <div style={{ marginTop: 10 }}>
-              {i18n.t('shamir_config_holders_number', { n: selectedHolders.length })}
+              {i18n.t('shamir_config_holders_number', {
+                n: selectedHolders.length,
+                adminWarning: isAdminAShareholder
+                  ? ''
+                  : i18n.t('shamir_config_summary_details_admin_not_shareholder'),
+              })}
             </div>
             {resilience}
           </div>
@@ -414,23 +343,21 @@ export class NewShamirConfig extends React.Component {
           <FileIcon size={20} />
           <span>{i18n.t('shamir_config_summary')}</span>
         </h3>
-        <div className="shamirSummary">
-          <div style={{ marginBottom: 20 }}>
-            <strong>{i18n.t('shamir_config_summary_details_consensus_label')}</strong>{' '}
-            {i18n.t('shamir_config_summary_details_consensus_content', {
-              min: minShares,
-              total: selectedHolders.length,
-            })}
-          </div>
-          <div style={{ marginBottom: 20 }}>
-            <strong>{i18n.t('shamir_config_summary_details_risk_label')}</strong>
-            <div style={{ marginLeft: 20 }}>{minSharesWarning}</div>
-          </div>
-          <div style={{ marginBottom: 20 }}>
-            <strong>{i18n.t('shamir_config_summary_details_resilience_label')}</strong>
-            <div style={{ marginLeft: 20 }}>{resilience}</div>
-          </div>
-        </div>
+        <ConfigSummary
+          name={configName}
+          creationDate={creationDate}
+          creatorEmail={adminEmail}
+          minShares={minShares}
+          holders={selectedHolders.map((sh) => {
+            return {
+              id: sh.id,
+              email: sh.email,
+              bankName: sh.bankName,
+            };
+          })}
+          supportEmail={supportEmail}
+          showCreatorNotHolderWarning={!isAdminAShareholder}
+        />
 
         <div className="shamirFormButtons">
           <button onClick={this.onCancel} className="cancelButton">

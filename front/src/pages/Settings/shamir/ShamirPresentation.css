@@ -1,0 +1,70 @@
+.presentationCardsContainer {
+  display: flex;
+  gap: 40px;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.presentationCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.presentationCardHeader {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  height: 100px;
+  min-height: 100px;
+  flex-shrink: 0;
+  flex: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.presentationCard:nth-of-type(1) .presentationCardHeader {
+  background-color: #FBD38D;
+}
+.presentationCard:nth-of-type(2) .presentationCardHeader {
+  background-color: #8DABFF;
+}
+.presentationCard:nth-of-type(3) .presentationCardHeader {
+  background-color: #81E6D9;
+}
+.presentationCard:nth-of-type(1) h3 .coloredText {
+  color: #FF6136;
+}
+.presentationCard:nth-of-type(2) h3 .coloredText {
+  color: #4D54D1;
+}
+.presentationCard:nth-of-type(3) h3 .coloredText {
+  color: #2C7A7B;
+}
+.presentationCardContent {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left-width: 1px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+  border-color: rgba(46, 56, 98, 0.10);
+  border-style: solid;
+  padding: 20px;
+  flex: 1;
+}
+
+.presentationCardContent h3 {
+  margin: 0 0 20px 0;
+}
+
+.shamirStartButton {
+  width: 100%;
+  margin: 40px 0;
+}
+
+.seeMoreLink {
+  text-align: center;
+}
+
+.cardIlluContainer {
+  display: flex;
+  align-items: center;
+}

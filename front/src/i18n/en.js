@@ -419,7 +419,29 @@ const translations = {
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (pool)',
 
+  // SHAMIR
   shamir_title: 'Fallback protocol configuration (SHAMIR)',
+
+  // SHAMIR - presentation
+  shamir_presentation_card_user_title_1: 'A secure protocol to ',
+  shamir_presentation_card_user_title_2: 'recover access to a vault',
+  shamir_presentation_card_user_details:
+    'The user initiates the recovery request by clicking on "Forgotten password" even if they no longer have access to any of their authorised devices. The system then waits for validation from the selected trusted persons.',
+  shamir_presentation_card_shareholder_title_1: 'Distributed approval using ',
+  shamir_presentation_card_shareholder_title_2: 'partial keys',
+  shamir_presentation_card_shareholder_details_1:
+    'Each trusted person holds a partial, encrypted and invisible key.',
+  shamir_presentation_card_shareholder_details_2:
+    'Once sufficient approvals have been obtained, these fragments are combined — according to the Shamir protocol — to reconstruct the complete key and unlock access. Distributed approval enhances security by preventing a single person from having access to all vaults.',
+  shamir_presentation_card_admin_title_1: 'Simple configuration in ',
+  shamir_presentation_card_admin_title_2: 'two steps',
+  shamir_presentation_card_admin_details_1:
+    'Set a minimum number of people required to unlock a user',
+  shamir_presentation_card_admin_details_2: 'Choose trusted persons authorised to approve requests',
+  shamir_presentation_start: 'Configure a protocol',
+  shamir_presentation_see_more: 'Learn more',
+
+  // SHAMIR - new config
   shamir_doc_link: 'Read the documentation.',
   shamir_config_name_title: 'Name & version',
   shamir_config_name: 'Configuration name',
@@ -439,7 +461,7 @@ const translations = {
     'Choose the trusted persons who have the right to participate in the protocol.',
   shamir_config_holders_explanation:
     'Each of these trusted persons will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of trusted persons.',
-  shamir_config_holders_number: '$n trusted person(s) selected.',
+  shamir_config_holders_number: '$n trusted person(s) selected$adminWarning.',
   shamir_config_holders_in_creation: 'Being created.',
   shamir_config_holders_warning_not_enough: 'You must still add',
   shamir_config_holders_warning_not_enough_number: 'at least $n trusted person(s).',
@@ -469,6 +491,9 @@ const translations = {
     'Minimum $min trusted person(s) among $total designated.',
   shamir_config_summary_details_risk_label: 'Security level:',
   shamir_config_summary_details_resilience_label: 'Resilience:',
+  shamir_config_summary_details_shareholders_label: 'Trusted persons:',
+  shamir_config_summary_details_support_email_label: 'Support email:',
+  shamir_config_summary_details_admin_not_shareholder: ' (which you are part of)',
   shamir_config_submit: 'Save this configuration',
   shamir_config_validate_submit: 'Save',
   shamir_config_validate_title: 'Do you want to save this fallback protocol?',
@@ -476,6 +501,8 @@ const translations = {
     'After validation, the configuration may only be modified with the consent of the trusted persons in accordance with the criteria defined in this protocol.',
   shamir_config_validate_info:
     'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
+  shamir_config_creation: 'Creation: ',
+  shamir_config_creation_content: '$date by $creator.',
 };
 
 export default translations;
