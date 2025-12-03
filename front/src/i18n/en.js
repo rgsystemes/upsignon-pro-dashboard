@@ -420,9 +420,13 @@ const translations = {
   licences_pool_number: '$n (pool)',
 
   // SHAMIR
-  shamir_title: 'Fallback protocol configuration (SHAMIR)',
+  shamir_doc_link: 'Read the documentation.',
+  shamir_tab_config: 'Configuration',
+  shamir_tab_requests: 'Requests',
+  shamir_tab_history: 'History',
 
   // SHAMIR - presentation
+  shamir_presentation_title: 'Fallback unlock protocol: Shamir',
   shamir_presentation_card_user_title_1: 'A secure protocol to ',
   shamir_presentation_card_user_title_2: 'recover access to a vault',
   shamir_presentation_card_user_details:
@@ -442,7 +446,7 @@ const translations = {
   shamir_presentation_see_more: 'Learn more',
 
   // SHAMIR - new config
-  shamir_doc_link: 'Read the documentation.',
+  shamir_config_title: 'Fallback unlock protocol configuration: Shamir',
   shamir_config_name_title: 'Name & version',
   shamir_config_name: 'Configuration name',
   shamir_config_creation_date: 'Creation date',

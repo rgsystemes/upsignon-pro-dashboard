@@ -6,7 +6,7 @@ export const ShamirPresentation = (p) => {
   const { onStartConfig } = p;
   return (
     <div>
-      <h2>{i18n.t('shamir_title')}</h2>
+      <h2>{i18n.t('shamir_presentation_title')}</h2>
       <div className="presentationCardsContainer">
         <div className="presentationCard">
           <div className="presentationCardHeader">

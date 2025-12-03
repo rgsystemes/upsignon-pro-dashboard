@@ -434,9 +434,13 @@ const translations = {
   licences_pool_number: '$n (mutualisées)',
 
   // SHAMIR
-  shamir_title: 'Configuration du protocole de secours (SHAMIR)',
+  shamir_doc_link: 'Consulter la documentation',
+  shamir_tab_config: 'Configuration',
+  shamir_tab_requests: 'Demandes',
+  shamir_tab_history: 'Historique',
 
   // SHAMIR - presentation
+  shamir_presentation_title: 'Protocole de déverrouillage de secours : Shamir',
   shamir_presentation_card_user_title_1: 'Un protocole sécurisé pour ',
   shamir_presentation_card_user_title_2: "récupérer l'accès à un coffre-fort",
   shamir_presentation_card_user_details:
@@ -457,7 +461,7 @@ const translations = {
   shamir_presentation_see_more: 'En savoir plus',
 
   // SHAMIR - new config
-  shamir_doc_link: 'Consulter la documentation',
+  shamir_config_title: 'Configuration du protocole de déverrouillage de secours : Shamir',
   shamir_config_name_title: 'Nom & version',
   shamir_config_name: 'Nom de la configuration',
   shamir_config_creation_date: 'Date de création',

@@ -7,7 +7,6 @@ import { ConfigSummary } from './components/ConfigSummary';
 
 export const CurrentConfig = (p) => {
   const { currentConfig } = p;
-  console.log(currentConfig);
   const minSharesSecurityComment = <MinSharesSecurityComment minShares={currentConfig.minShares} />;
   const resilienceComment = (
     <ShareholdersResilienceComment
@@ -17,7 +16,7 @@ export const CurrentConfig = (p) => {
   );
   return (
     <div>
-      <h2>{i18n.t('shamir_title')}</h2>
+      <h2>{i18n.t('shamir_presentation_title')}</h2>
       <ExternalLink href="https://upsignon.eu/shamir-doc">{i18n.t('shamir_doc_link')}</ExternalLink>
       <div style={{ marginTop: 20 }}>
         <ConfigSummary

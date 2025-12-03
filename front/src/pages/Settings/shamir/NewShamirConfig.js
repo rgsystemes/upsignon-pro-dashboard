@@ -228,7 +228,7 @@ export class NewShamirConfig extends React.Component {
     const creationDate = new Date();
     return (
       <>
-        <h2>{i18n.t('shamir_title')}</h2>
+        <h2>{i18n.t('shamir_config_title')}</h2>
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_doc_link')}
         </ExternalLink>
