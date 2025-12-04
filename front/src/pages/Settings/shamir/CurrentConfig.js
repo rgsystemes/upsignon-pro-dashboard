@@ -6,7 +6,7 @@ import { ShareholdersResilienceComment } from './components/ShareholdersResilien
 import { ConfigSummary } from './components/ConfigSummary';
 
 export const CurrentConfig = (p) => {
-  const { currentConfig } = p;
+  const { currentConfig, pendingNewConfig } = p;
   const minSharesSecurityComment = <MinSharesSecurityComment minShares={currentConfig.minShares} />;
   const resilienceComment = (
     <ShareholdersResilienceComment
@@ -20,6 +20,7 @@ export const CurrentConfig = (p) => {
       <ExternalLink href="https://upsignon.eu/shamir-doc">{i18n.t('shamir_doc_link')}</ExternalLink>
       <div style={{ marginTop: 20 }}>
         <ConfigSummary
+          alternateDesign
           name={currentConfig.name}
           creationDate={new Date(currentConfig.createdAt)}
           creatorEmail={currentConfig.creatorEmail}

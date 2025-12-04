@@ -12,15 +12,18 @@ export const ConfigSummary = (p) => {
     holders,
     supportEmail,
     showCreatorNotHolderWarning,
+    alternateDesign,
   } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
     <ShareholdersResilienceComment minShares={minShares} totalHolders={holders.length} />
   );
+
+  // TODO add approvedBy
   return (
-    <div className="shamirSummary">
+    <div className={`shamirSummary ${alternateDesign ? 'shamirSummaryAlt' : ''}`}>
       <div style={{ marginBottom: 20 }}>
-        <strong>{name}</strong>
+        <strong className="shamirConfigName">{name}</strong>
       </div>
       <div style={{ marginBottom: 20 }}>
         <strong>{i18n.t('shamir_config_creation')}</strong>

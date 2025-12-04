@@ -22,7 +22,8 @@
 
 .shamir-warning {
   display: inline-block;
-  min-width: 600px;
+  width: 600px;
+  max-width: 100%;
   margin-top: 0.5rem;
   font-size: 14px;
   line-height: 150%;
@@ -69,11 +70,19 @@
   border-color: #403EDD;
 }
 
-.shamirSummary {
+.shamirSummary:not(.shamirSummaryAlt) {
   border-radius: 4px;
   background-color: #F5F5F5;
   padding: 20px 50px;
   margin-bottom: 50px;
+}
+.shamirSummaryAlt {
+  padding: 20px 40px;
+}
+.shamirSummaryAlt .shamirConfigName {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 120%;
 }
 
 .shamirFormButtons {

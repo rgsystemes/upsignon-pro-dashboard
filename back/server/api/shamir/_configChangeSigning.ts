@@ -20,7 +20,7 @@ export type ShamirConfigChangeToSign = {
   nextShamirConfig: ShamirConfigToSign;
 };
 
-type ShamirChangeSignatures = {
+export type ShamirChangeSignatures = {
   [shareholderIdx: number]: {
     approvedAt: string;
     signature: string;

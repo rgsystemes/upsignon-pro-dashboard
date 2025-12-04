@@ -507,6 +507,15 @@ const translations = {
     'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
   shamir_config_creation: 'Creation: ',
   shamir_config_creation_content: '$date by $creator.',
+
+  // SHAMIR history
+  shamir_history_title: 'History of configurations',
+  shamir_history_version: 'Version',
+  shamir_history_activated_on: 'Activated on',
+  shamir_history_created_by: 'Created by',
+  shamir_history_state: 'State',
+  shamir_history_state_active: 'Active',
+  shamir_history_state_inactive: 'Inactive',
 };
 
 export default translations;

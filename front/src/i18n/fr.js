@@ -522,6 +522,15 @@ const translations = {
     "L'enregistrement de ce protocole prendra effet immédiatement. Le déverrouillage de secours d'un coffre deviendra possible après qu'il aura été déverrouillé au moins une fois à partir d'une version compatible de l'application.",
   shamir_config_creation: 'Creation : ',
   shamir_config_creation_content: 'le $date par $creator.',
+
+  // SHAMIR history
+  shamir_history_title: 'Historique des configurations',
+  shamir_history_version: 'Version',
+  shamir_history_activated_on: 'Activé le',
+  shamir_history_created_by: 'Créé par',
+  shamir_history_state: 'État',
+  shamir_history_state_active: 'Actif',
+  shamir_history_state_inactive: 'Inactif',
 };
 
 export default translations;

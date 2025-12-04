@@ -31,13 +31,13 @@ export const ShamirTab = (p) => {
     setCurrentPage('currentConfig');
   };
 
-  const [currentConfig, setCurrentConfig] = useState(null);
-  const fetchCurrentConfig = async () => {
+  const [configs, setConfigs] = useState([]);
+  const fetchConfigs = async () => {
     try {
       setIsLoading(true);
-      const { currentConfig } = await bankUrlFetch('/api/shamir-current-config', 'POST', null);
-      setCurrentConfig(currentConfig);
-      if (!!currentConfig) {
+      const { configs } = await bankUrlFetch('/api/shamir-configs', 'POST', null);
+      setConfigs(configs);
+      if (configs.find((c) => c.isActive)) {
         setCurrentPage(shamirPages.currentConfig);
       } else {
         setCurrentPage(shamirPages.presentation);
@@ -49,13 +49,20 @@ export const ShamirTab = (p) => {
     }
   };
   useEffect(() => {
-    fetchCurrentConfig();
+    fetchConfigs();
   }, []);
 
   const showNav =
     currentPage === shamirPages.currentConfig ||
     currentPage === shamirPages.requests ||
     currentPage === shamirPages.configurationHistory;
+
+  const currentConfigIdx = configs.findIndex((c) => c.isActive);
+  const currentConfig = currentConfigIdx >= 0 ? configs[currentConfigIdx] : null;
+  let pendingNewConfig = null;
+  if (currentConfigIdx === 1) {
+    pendingNewConfig = configs[0];
+  }
   return (
     <div style={{ marginTop: 20 }} className="shamirTabs">
       {showNav && (
@@ -101,10 +108,12 @@ export const ShamirTab = (p) => {
           />
         )}
         {currentPage === shamirPages.currentConfig && (
-          <CurrentConfig currentConfig={currentConfig} />
+          <CurrentConfig currentConfig={currentConfig} pendingNewConfig={pendingNewConfig} />
         )}
         {currentPage === shamirPages.requests && <ShamirRequests />}
-        {currentPage === shamirPages.configurationHistory && <ConfigurationHistory />}
+        {currentPage === shamirPages.configurationHistory && (
+          <ConfigurationHistory configs={configs} />
+        )}
       </div>
     </div>
   );
