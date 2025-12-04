@@ -3,12 +3,9 @@ import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
 import { Request, Response } from 'express';
 import { nextShamirConfigIndex } from './_nextShamirConfigIndex';
-import {
-  getShamirConfigChangeToSignForFirstConfig,
-  ShamirShareholderToSign,
-} from './_configChangeSigning';
+import { getShamirConfigChangeToSign, ShamirShareholderToSign } from './_configChangeSigning';
 
-export const shamirCreateFirstConfig = async (req: Request, res: Response): Promise<void> => {
+export const shamirCreateConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const validatedBody = Joi.attempt(
       req.body,
@@ -28,10 +25,16 @@ export const shamirCreateFirstConfig = async (req: Request, res: Response): Prom
     const bankId = req.proxyParamsBankId;
     // @ts-ignore
     const creatorEmail = req.session.adminEmail;
+
+    const previousConfigsRes = await db.query(
+      `SELECT change FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      [bankId],
+    );
+
     const nextShamirConfigIdx = await nextShamirConfigIndex(bankId);
     const configName = `Shamir ${nextShamirConfigIdx}`;
     const configRes = await db.query(
-      'INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active) VALUES ($1, $2, $3, $4, $5, true) RETURNING id, created_at',
+      'INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active) VALUES ($1, $2, $3, $4, $5, false) RETURNING id, created_at',
       [configName, minShares, bankId, supportEmail, creatorEmail],
     );
     const configId = configRes.rows[0].id;
@@ -65,14 +68,25 @@ export const shamirCreateFirstConfig = async (req: Request, res: Response): Prom
         };
       },
     );
-    const changeToSign = getShamirConfigChangeToSignForFirstConfig(
+
+    const newConfig = {
       minShares,
       creatorEmail,
       supportEmail,
       shareholders,
       createdAt,
-    );
+    };
+    let previousConfig = null;
+    if (previousConfigsRes.rows.length >= 1) {
+      const previousConfigChange = JSON.parse(previousConfigsRes.rows[0].change);
+      previousConfig = previousConfigChange.nextShamirConfig;
+    }
+
+    const changeToSign = getShamirConfigChangeToSign(previousConfig, newConfig);
     await db.query('UPDATE shamir_configs SET change=$1 WHERE id=$2', [changeToSign, configId]);
+    if (nextShamirConfigIdx === 1) {
+      await db.query('UPDATE shamir_configs SET is_active=$1 WHERE id=$2', [true, configId]);
+    }
     // TODO request for self-signing this config and change is_active afterwards ?
     res.status(200).end();
   } catch (e) {

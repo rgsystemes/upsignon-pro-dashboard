@@ -50,6 +50,7 @@ const fetchEnhancedConfig = async (
   shareholders: { email: string; nbShares: number; bankName: string }[];
   isActive: boolean;
   approvedAt: string | null;
+  isPending: boolean;
 }> => {
   const change = JSON.parse(config.change) as ShamirConfigChangeToSign;
   const shareholders = change.nextShamirConfig.shareholders;
@@ -78,6 +79,7 @@ const fetchEnhancedConfig = async (
       approvedAt = sortedApprovals[config.min_shares - 1].approvedAt;
     }
   }
+
   return {
     id: config.id,
     name: config.name,
@@ -88,5 +90,6 @@ const fetchEnhancedConfig = async (
     shareholders: enhancedShareholders,
     isActive: config.is_active,
     approvedAt,
+    isPending: !config.is_active && !approvedAt,
   };
 };

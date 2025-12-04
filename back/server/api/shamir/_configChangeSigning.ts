@@ -7,7 +7,7 @@ export type ShamirShareholderToSign = {
   vaultSigningPubKey: string;
   nbShares: number;
 };
-type ShamirConfigToSign = {
+export type ShamirConfigToSign = {
   minShares: number;
   creatorEmail: string;
   supportEmail: string;
@@ -27,22 +27,13 @@ export type ShamirChangeSignatures = {
   };
 };
 
-export const getShamirConfigChangeToSignForFirstConfig = (
-  minShares: number,
-  creatorEmail: string,
-  supportEmail: string,
-  shareholders: ShamirShareholderToSign[],
-  createdAt: string,
+export const getShamirConfigChangeToSign = (
+  previousConfig: ShamirConfigToSign | null,
+  newConfig: ShamirConfigToSign,
 ): string => {
   const configChange: ShamirConfigChangeToSign = {
-    previousShamirConfig: null,
-    nextShamirConfig: {
-      creatorEmail,
-      minShares,
-      supportEmail,
-      shareholders,
-      createdAt,
-    },
+    previousShamirConfig: previousConfig,
+    nextShamirConfig: newConfig,
   };
   const configChangeToSign = JSON.stringify(configChange);
 

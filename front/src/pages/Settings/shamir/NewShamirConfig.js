@@ -16,8 +16,10 @@ import { NameAndVersion } from './components/NameAndVersion';
 import { MinSharesSecurityComment } from './components/MinSharesSecurityComment';
 import { ShareholdersResilienceComment } from './components/ShareholdersResilienceComment';
 import { ConfigSummary } from './components/ConfigSummary';
+import { TextWithBold } from '../../../helpers/TextWithBold';
+import { InfoIcon } from '../../../helpers/icons/InfoIcon';
 
-// Props : setIsLoading, onConfigCreated, onCancel
+// Props : setIsLoading, onConfigCreated, onCancel, hasPreviousConfig
 export class NewShamirConfig extends React.Component {
   state = {
     nextShamirConfigIndex: null,
@@ -56,6 +58,8 @@ export class NewShamirConfig extends React.Component {
     }
     if (this.state.nextShamirConfigIndex === 1) {
       document.getElementById('submitValidationModal').showModal();
+    } else {
+      this.onValidateSubmit();
     }
   };
   onValidationCancel = () => {
@@ -64,14 +68,15 @@ export class NewShamirConfig extends React.Component {
   onValidateSubmit = async () => {
     try {
       this.props.setIsLoading(true);
-      await bankUrlFetch('/api/shamir-create-first-config', 'POST', {
+      await bankUrlFetch('/api/shamir-create-config', 'POST', {
         minShares: this.state.minShares,
         selectedHolderIds: this.state.selectedHolders.map((h) => h.id),
         supportEmail: this.state.supportEmail,
       });
       this.props.onConfigCreated();
     } catch (e) {
-      toast.error(e);
+      console.error(e);
+      toast.error(e.toString());
     } finally {
       this.props.setIsLoading(false);
     }
@@ -92,7 +97,8 @@ export class NewShamirConfig extends React.Component {
         adminEmail,
       }));
     } catch (e) {
-      toast.error(e);
+      console.error(e);
+      toast.error(e.toString());
     }
   };
 
@@ -101,7 +107,8 @@ export class NewShamirConfig extends React.Component {
       const { nextShamirConfigIndex } = await bankUrlFetch('/api/shamir-index', 'POST', null);
       this.setState({ nextShamirConfigIndex });
     } catch (e) {
-      toast.error(e);
+      console.error(e);
+      toast.error(e.toString());
     }
   };
 
@@ -228,12 +235,26 @@ export class NewShamirConfig extends React.Component {
     const creationDate = new Date();
     return (
       <>
-        <h2>{i18n.t('shamir_config_title')}</h2>
+        <h2>
+          {this.props.hasPreviousConfig
+            ? i18n.t('shamir_change_title')
+            : i18n.t('shamir_config_title')}
+          ;
+        </h2>
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_doc_link')}
         </ExternalLink>
 
-        <NameAndVersion name={configName} creationDate={creationDate} />
+        {this.props.hasPreviousConfig && (
+          <div className="shamirChangeWarning">
+            <div className="infoIconContainer">
+              <InfoIcon size={16} />
+            </div>
+            <TextWithBold text={i18n.t('shamir_change_info')} />
+          </div>
+        )}
+
+        <NameAndVersion name={configName} creationDate={creationDate} withTitle />
 
         <h3 className={`titleWithIcon`}>
           <CountingIcon size={20} />
@@ -344,6 +365,9 @@ export class NewShamirConfig extends React.Component {
           <span>{i18n.t('shamir_config_summary')}</span>
         </h3>
         <ConfigSummary
+          creationDesign={true}
+          isActive={false}
+          isPending={false}
           name={configName}
           creationDate={creationDate}
           creatorEmail={adminEmail}
@@ -360,7 +384,7 @@ export class NewShamirConfig extends React.Component {
         />
 
         <div className="shamirFormButtons">
-          <button onClick={this.onCancel} className="cancelButton">
+          <button onClick={this.onCancel} className="whiteButton">
             {i18n.t('cancel')}
           </button>
           <button
@@ -380,7 +404,7 @@ export class NewShamirConfig extends React.Component {
           </div>
           <div>{i18n.t('shamir_config_validate_info')}</div>
           <div className="shamirFormValidateButtons">
-            <button onClick={this.onValidationCancel} className="cancelButton">
+            <button onClick={this.onValidationCancel} className="whiteButton">
               {i18n.t('cancel')}
             </button>
             <button onClick={this.onValidateSubmit} className="submitButton">

@@ -1,10 +1,14 @@
 import { EditIcon } from '../../../../helpers/icons/EditIcon';
 import { i18n } from '../../../../i18n/i18n';
 import { MinSharesSecurityComment } from './MinSharesSecurityComment';
+import { ShamirState } from './ShamirState';
 import { ShareholdersResilienceComment } from './ShareholdersResilienceComment';
 
 export const ConfigSummary = (p) => {
   const {
+    creationDesign,
+    isActive,
+    isPending,
     name,
     creationDate,
     creatorEmail,
@@ -12,7 +16,6 @@ export const ConfigSummary = (p) => {
     holders,
     supportEmail,
     showCreatorNotHolderWarning,
-    alternateDesign,
   } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
@@ -21,9 +24,12 @@ export const ConfigSummary = (p) => {
 
   // TODO add approvedBy
   return (
-    <div className={`shamirSummary ${alternateDesign ? 'shamirSummaryAlt' : ''}`}>
+    <div className={`shamirSummary ${creationDesign ? '' : 'shamirSummaryAlt'}`}>
       <div style={{ marginBottom: 20 }}>
         <strong className="shamirConfigName">{name}</strong>
+      </div>
+      <div style={{ marginBottom: 20 }}>
+        {!creationDesign && <ShamirState isActive={isActive} isPending={isPending} />}
       </div>
       <div style={{ marginBottom: 20 }}>
         <strong>{i18n.t('shamir_config_creation')}</strong>

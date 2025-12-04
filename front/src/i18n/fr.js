@@ -31,7 +31,7 @@ const translations = {
   settings_tab_admins: 'Administrateurs',
   settings_tab_permissions: 'Autorisations',
   settings_tab_urls: 'Sites web pré-renseignés',
-  settings_tab_shamir: 'Récupération de secours',
+  settings_tab_shamir: 'Protocole de secours',
   menu_shared_devices: 'Appareils partagés',
   menu_shared_vaults: 'Éléments/dossiers partagés',
   menu_superadmin: 'Super-Admin',
@@ -438,6 +438,16 @@ const translations = {
   shamir_tab_config: 'Configuration',
   shamir_tab_requests: 'Demandes',
   shamir_tab_history: 'Historique',
+
+  // SHAMIR - change
+  shamir_change: 'Modifier',
+  shamir_change_title: 'Modification du protocole de déverrouillage de secours : Shamir',
+  shamir_change_info:
+    "La modification d’un protocole de secours (Shamir) est **soumise à validation** par les différentes personnes requises dans le protocole en cours. Si ce nouveau protocole est approuvé, **il ne sera appliqué par les différents coffres-forts qu'après leur prochain déverrouillage**. Les exigences de consensus pour les demandes en cours ne seront donc pas modifiées.",
+  shamir_change_pending_title: 'Modification du protocole en attente',
+  shamir_change_pending_view: 'Consulter',
+  shamir_change_pending_cancel: 'Annuler la demande',
+  shamir_change_pending_cancel_sucess: 'La nouvelle configuration a été annulée.',
 
   // SHAMIR - presentation
   shamir_presentation_title: 'Protocole de déverrouillage de secours : Shamir',

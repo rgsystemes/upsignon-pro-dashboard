@@ -76,9 +76,6 @@
   padding: 20px 50px;
   margin-bottom: 50px;
 }
-.shamirSummaryAlt {
-  padding: 20px 40px;
-}
 .shamirSummaryAlt .shamirConfigName {
   font-size: 30px;
   font-weight: 700;
@@ -101,7 +98,7 @@
   margin-top: 20px;
 }
 
-.shamirFormValidateButtons .cancelButton, .shamirFormValidateButtons .submitButton {
+.shamirFormValidateButtons .whiteButton, .shamirFormValidateButtons .submitButton {
   flex: 1;
   min-width: 0;
 }
@@ -127,4 +124,28 @@
   height: 20px;
   border-radius: 10px;
   background-color: #FED7D7;
+}
+
+.shamirChangeWarning {
+  display: flex;
+  padding: 12px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #7EA1FF;
+  background: #F1F5FF;
+  margin: 20px 0;
+}
+
+.infoIconContainer {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background: #C6D5FF;
 }

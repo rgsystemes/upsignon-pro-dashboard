@@ -43,26 +43,12 @@
   flex: 0;
   padding: 20px 24px;
   border-top: 1px solid #EAEBEF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .rightPanelClose button {
-  outline: none;
-  border: 1px solid rgba(88, 96, 129, 0.40);
-  border-radius: 6px;
-  background: none;
-  padding: 0 16px;
-  height: 48px;
-  cursor: pointer;
-  transition: all 0.2s ease;
   width: 100%;
-}
-
-.rightPanelClose button:hover {
-  background: rgba(88, 96, 129, 0.08);
-  border-color: rgba(88, 96, 129, 0.60);
-}
-
-.rightPanelClose button:focus {
-  outline: 2px solid rgba(88, 96, 129, 0.40);
-  outline-offset: 2px;
 }

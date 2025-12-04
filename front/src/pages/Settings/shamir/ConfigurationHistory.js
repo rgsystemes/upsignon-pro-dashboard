@@ -95,14 +95,7 @@ export const ConfigurationHistory = (p) => {
                 <td>{c.approvedAt ? new Date(c.approvedAt).toLocaleDateString() : '-'}</td>
                 <td>{c.creatorEmail}</td>
                 <td>
-                  <ShamirState
-                    color={c.isActive ? '#38B2AC' : 'rgba(46, 56, 98, 0.10)'}
-                    label={
-                      c.isActive
-                        ? i18n.t('shamir_history_state_active')
-                        : i18n.t('shamir_history_state_inactive')
-                    }
-                  />
+                  <ShamirState isActive={c.isActive} isPending={c.isPending} />
                 </td>
                 <td style={{ verticalAlign: 'middle' }}>
                   <button className="iconButton" onClick={() => setConfigToShow(c)}>
@@ -116,9 +109,11 @@ export const ConfigurationHistory = (p) => {
       </table>
       {configToShow && (
         <RightPanel onClose={() => setConfigToShow(null)}>
-          <div style={{ padding: 20 }}>
+          <div style={{ padding: 40 }}>
             <ConfigSummary
-              alternateDesign
+              creationDesign={false}
+              isActive={configToShow.isActive}
+              isPending={configToShow.isPending}
               name={configToShow.name}
               creationDate={new Date(configToShow.createdAt)}
               creatorEmail={configToShow.creatorEmail}

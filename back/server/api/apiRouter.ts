@@ -56,8 +56,9 @@ import { add_bank_sso_config } from './sso/add_bank_sso_config';
 import { delete_bank_sso_config } from './sso/delete_bank_sso_config';
 import { getNextShamirConfigIndex } from './shamir/shamir_next_config_index';
 import { shamirSearchUsers } from './shamir/shamir_search_users';
-import { shamirCreateFirstConfig } from './shamir/shamir_create_first_config';
+import { shamirCreateConfig } from './shamir/shamir_create_config';
 import { getShamirConfigs } from './shamir/shamir_configs';
+import { cancelPendingConfig } from './shamir/shamir_cancel_pending_config';
 
 export const apiRouter = express.Router();
 
@@ -187,6 +188,6 @@ apiRouter.get('/licences', (req, res) => get_licences(req, res, false));
 // SHAMIR
 apiRouter.post('/shamir-index', getNextShamirConfigIndex);
 apiRouter.post('/shamir-search-users', shamirSearchUsers);
-apiRouter.post('/shamir-submit-new-config', shamirCreateFirstConfig);
-apiRouter.post('/shamir-create-first-config', shamirCreateFirstConfig);
+apiRouter.post('/shamir-create-config', shamirCreateConfig);
 apiRouter.post('/shamir-configs', getShamirConfigs);
+apiRouter.post('/shamir-cancel-pending-config', cancelPendingConfig);

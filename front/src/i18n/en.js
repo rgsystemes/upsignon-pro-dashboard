@@ -32,7 +32,7 @@ const translations = {
   settings_tab_admins: 'Administrators',
   settings_tab_permissions: 'Permissions',
   settings_tab_urls: 'Prefilled websites',
-  settings_tab_shamir: 'Fallback recovery',
+  settings_tab_shamir: 'Fallback protocol',
   menu_shared_devices: 'Shared devices',
   menu_shared_vaults: 'Shared items/folders',
   menu_superadmin: 'Super-Admin',
@@ -424,6 +424,16 @@ const translations = {
   shamir_tab_config: 'Configuration',
   shamir_tab_requests: 'Requests',
   shamir_tab_history: 'History',
+
+  // SHAMIR - change
+  shamir_change: 'Edit',
+  shamir_change_title: 'Modification of the fallback unlocking protocol: Shamir',
+  shamir_change_info:
+    'The modification of a fallback protocol (Shamir) is **subject to validation** by the various persons required in the current protocol. If approved, **this new protocol will only be applied by the various vaults after their next unlocking**. The consensus requirements for current requests will therefore remain unchanged.',
+  shamir_change_pending_title: 'Pending protocol change',
+  shamir_change_pending_view: 'View',
+  shamir_change_pending_cancel: 'Cancel request',
+  shamir_change_pending_cancel_sucess: 'The new config has been canceled.',
 
   // SHAMIR - presentation
   shamir_presentation_title: 'Fallback unlock protocol: Shamir',

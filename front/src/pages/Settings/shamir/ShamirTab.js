@@ -16,6 +16,7 @@ const shamirPages = {
   presentation: 'presentation',
   currentConfig: 'currentConfig',
   newConfig: 'newConfig',
+  confgiChange: 'confgiChange',
   requests: 'requests',
   configurationHistory: 'configurationHistory',
 };
@@ -26,9 +27,6 @@ export const ShamirTab = (p) => {
   const [currentPage, setCurrentPage] = useState(null);
   const cancelNewConfig = () => {
     setCurrentPage(shamirPages.presentation);
-  };
-  const onConfigCreated = () => {
-    setCurrentPage('currentConfig');
   };
 
   const [configs, setConfigs] = useState([]);
@@ -43,7 +41,8 @@ export const ShamirTab = (p) => {
         setCurrentPage(shamirPages.presentation);
       }
     } catch (e) {
-      toast.error(e);
+      console.error(e);
+      toast.error(e.toString());
     } finally {
       setIsLoading(false);
     }
@@ -59,10 +58,7 @@ export const ShamirTab = (p) => {
 
   const currentConfigIdx = configs.findIndex((c) => c.isActive);
   const currentConfig = currentConfigIdx >= 0 ? configs[currentConfigIdx] : null;
-  let pendingNewConfig = null;
-  if (currentConfigIdx === 1) {
-    pendingNewConfig = configs[0];
-  }
+  const pendingNewConfig = configs.find((c) => c.isPending);
   return (
     <div style={{ marginTop: 20 }} className="shamirTabs">
       {showNav && (
@@ -102,13 +98,28 @@ export const ShamirTab = (p) => {
         )}
         {currentPage === shamirPages.newConfig && (
           <NewShamirConfig
+            hasPreviousConfig={false}
             setIsLoading={p.setIsLoading}
             onCancel={cancelNewConfig}
-            onConfigCreated={onConfigCreated}
+            onConfigCreated={fetchConfigs}
+          />
+        )}
+        {currentPage === shamirPages.configChange && (
+          <NewShamirConfig
+            hasPreviousConfig={true}
+            setIsLoading={p.setIsLoading}
+            onCancel={cancelNewConfig}
+            onConfigCreated={fetchConfigs}
           />
         )}
         {currentPage === shamirPages.currentConfig && (
-          <CurrentConfig currentConfig={currentConfig} pendingNewConfig={pendingNewConfig} />
+          <CurrentConfig
+            setIsLoading={setIsLoading}
+            currentConfig={currentConfig}
+            pendingNewConfig={pendingNewConfig}
+            onStartEdit={() => setCurrentPage(shamirPages.configChange)}
+            onDeletePendingConfig={fetchConfigs}
+          />
         )}
         {currentPage === shamirPages.requests && <ShamirRequests />}
         {currentPage === shamirPages.configurationHistory && (
