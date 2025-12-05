@@ -45,7 +45,7 @@ class SecurityChart extends React.Component {
         const sum = s.nbAccounts;
         return {
           ...s,
-          day: new Date(s.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
+          day: new Date(s.day).toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' }),
           nbAccounts: s.nbAccounts,
           nbAccountsWithNoPassword: this.usePctg
             ? (s.nbAccountsWithNoPassword / sum) * 100
@@ -177,11 +177,11 @@ class SecurityChart extends React.Component {
               top: 10,
               right: 30,
               left: 0,
-              bottom: 0,
+              bottom: 50,
             }}
           >
             <CartesianGrid strokeDasharray="3 10" />
-            <XAxis dataKey="day" />
+            <XAxis dataKey="day" angle={-45} textAnchor="end" height={80} />
             <YAxis
               allowDecimals={false}
               unit={this.usePctg ? '%' : 0}
