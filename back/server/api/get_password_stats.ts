@@ -15,7 +15,7 @@ export const get_password_stats = async (
     if (!asSuperadmin) {
       rawStats = await db.query(
         `SELECT
-        date_trunc('day', date) as day,
+        to_char(date_trunc('day', date AT TIME ZONE 'UTC'), 'YYYY-MM-DD') as day,
         nb_accounts,
         nb_codes,
         nb_accounts_strong,
@@ -32,7 +32,7 @@ export const get_password_stats = async (
     } else {
       rawStats = await db.query(
         `SELECT
-        date_trunc('day', date) as day,
+        to_char(date_trunc('day', date AT TIME ZONE 'UTC'), 'YYYY-MM-DD') as day,
         SUM(nb_accounts) AS nb_accounts,
         SUM(nb_codes) AS nb_codes,
         SUM(nb_accounts_strong) AS nb_accounts_strong,
@@ -70,7 +70,7 @@ export const get_password_stats = async (
     };
     const graph = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
-      if (row && row.day.toISOString().split('T')[0] === d) {
+      if (row && row.day === d) {
         lastValueUsed = {
           day: row.day,
           nbAccounts: row.nb_accounts,
