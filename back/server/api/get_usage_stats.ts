@@ -7,12 +7,12 @@ export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean)
     let rawStats: any = null;
     if (!asSuperadmin) {
       rawStats = await db.query(
-        "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users WHERE bank_id=$1 GROUP BY day ORDER BY day ASC",
+        "SELECT SUM(1) AS nb_users, to_char(date_trunc('day', created_at AT TIME ZONE 'UTC'), 'YYYY-MM-DD') as day  FROM users WHERE bank_id=$1 GROUP BY day ORDER BY day ASC",
         [req.proxyParamsBankId],
       );
     } else {
       rawStats = await db.query(
-        "SELECT SUM(1) AS nb_users, date_trunc('day', created_at) as day  FROM users GROUP BY day ORDER BY day ASC",
+        "SELECT SUM(1) AS nb_users, to_char(date_trunc('day', created_at AT TIME ZONE 'UTC'), 'YYYY-MM-DD') as day  FROM users GROUP BY day ORDER BY day ASC",
       );
     }
 
@@ -25,7 +25,7 @@ export const get_usage_stats = async (req: any, res: any, asSuperadmin: boolean)
     let lastNbUsers = 0;
     const usageStats = days.map((d) => {
       const row = rawStats.rows[lastStatIndex];
-      if (row && row.day.toISOString().split('T')[0] === d) {
+      if (row && row.day === d) {
         lastNbUsers += parseInt(row.nb_users, 10);
         lastStatIndex++;
       }

@@ -22,7 +22,7 @@ class UsageChart extends React.Component {
       this.setState({
         stats: stats.map((s) => ({
           ...s,
-          day: new Date(s.day).toLocaleDateString(undefined, { month: 'numeric', day: 'numeric' }),
+          day: new Date(s.day).toLocaleDateString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' }),
         })),
       });
     } catch (e) {
@@ -45,11 +45,11 @@ class UsageChart extends React.Component {
               top: 10,
               right: 30,
               left: 0,
-              bottom: 0,
+              bottom: 50,
             }}
           >
             <CartesianGrid strokeDasharray="3 10" />
-            <XAxis dataKey="day" />
+            <XAxis dataKey="day" angle={-45} textAnchor="end" height={80} />
             <YAxis allowDecimals={false} />
             <Tooltip />
             <Legend verticalAlign="top" />
