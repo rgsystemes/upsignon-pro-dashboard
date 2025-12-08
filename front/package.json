@@ -4,22 +4,22 @@
   "licence": "none",
   "private": true,
   "dependencies": {
-    "qrcode-generator": "^1.5.0",
-    "react": "^19.1.0",
-    "react-datepicker": "^8.4.0",
-    "react-dom": "^19.1.0",
+    "qrcode-generator": "^2.0.4",
+    "react": "^19.2.0",
+    "react-datepicker": "^8.10.0",
+    "react-dom": "^19.2.0",
     "react-toastify": "^11.0.5",
-    "react-tooltip": "^5.29.1",
-    "recharts": "^2.15.3"
+    "react-tooltip": "^5.30.0",
+    "recharts": "^3.5.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-datepicker": "^7.0.0",
-    "eslint": "^9.29.0",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.5.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "postcss-normalize": "^13.0.1",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "react-scripts": "^5.0.1"
   },
   "scripts": {
