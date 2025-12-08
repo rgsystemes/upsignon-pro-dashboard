@@ -1,5 +1,7 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
+import { EditableResellerCell } from '../../helpers/EditableResellerCell';
+import { ResellerSelector } from '../../helpers/ResellerSelector';
 import { Toggler } from '../../helpers/Toggler';
 import { baseFrontUrl, isSaasServer } from '../../helpers/env';
 import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
@@ -7,12 +9,7 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './Banks.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
-
-// eslint-disable-next-line no-extend-native
-Date.prototype.addWeeks = function (w) {
-  this.setTime(this.getTime() + w * 7 * 24 * 60 * 60 * 1000);
-  return this;
-};
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading, banks, fetchBanks
 class Banks extends React.Component {
@@ -21,15 +18,16 @@ class Banks extends React.Component {
     showAllSettings: false,
     showBankSettings: {},
     filterType: 0, // 0: all, 1: testing only
-    sortType: 0, // 0: name, 1: reseller, 2: expiration date
+    sortType: 1, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
     salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
+    selectedResellerIdForNewBank: null, // Selected reseller for new bank form
+    resellers: [],
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
   isTestingCheckboxRef = null;
   salesEmailRef = null;
-  resellerNameInputRef = null;
 
   insertBank = async () => {
     try {
@@ -38,18 +36,12 @@ class Banks extends React.Component {
       const newAdminEmail = this.newAdminEmailInputRef.value;
       const isTrial = this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
-      const resellerName = this.resellerNameInputRef?.value || null;
+      const resellerId = this.state.selectedResellerIdForNewBank || null;
       if (!newBankName || newBankName.length < 2) {
         this.newBankNameInputRef.style.borderColor = 'red';
         return;
       } else {
         this.newBankNameInputRef.style.borderColor = null;
-      }
-      if (!newAdminEmail) {
-        this.newAdminEmailInputRef.style.borderColor = 'red';
-        return;
-      } else {
-        this.newAdminEmailInputRef.style.borderColor = null;
       }
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
@@ -59,13 +51,14 @@ class Banks extends React.Component {
         adminEmail: newAdminEmail,
         isTrial,
         salesEmail,
-        resellerName,
+        resellerId,
       });
       await this.props.fetchBanks();
       this.newBankNameInputRef.value = null;
       this.newAdminEmailInputRef.value = null;
       this.isTestingCheckboxRef.checked = true;
-      window.alert(i18n.t('sasettings_new_bank_form_success'));
+      this.setState({ selectedResellerIdForNewBank: null });
+      toast.success(i18n.t('sasettings_new_bank_form_success'));
     } catch (e) {
       console.error(e);
     } finally {
@@ -86,12 +79,12 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
-  updateNbLicences = async (bankId, newNb) => {
+  updateResellerId = async (bankId, resellerId) => {
     try {
       this.props.setIsLoading(true);
       await bankUrlFetch('/api/update-bank', 'POST', {
-        nb_licences_sold: parseInt(newNb),
         id: bankId,
+        resellerId: resellerId,
       });
       await this.props.fetchBanks();
     } catch (e) {
@@ -125,6 +118,18 @@ class Banks extends React.Component {
       this.props.setIsLoading(false);
     }
   };
+
+  fetchResellers = async () => {
+    try {
+      const resellers = await bankUrlFetch('/api/resellers', 'GET', null);
+      this.setState({ resellers: resellers });
+    } catch (e) {
+      console.error('Error fetching resellers:', e);
+    }
+  };
+  componentDidMount() {
+    this.fetchResellers();
+  }
   toggleAllSettings = () => {
     this.setState((s) => {
       if (s.showAllSettings) {
@@ -157,6 +162,42 @@ class Banks extends React.Component {
   handleSalesRepFilterChange = (value) => {
     this.setState({ salesRepFilter: value });
     localStorage.setItem('banksSalesRepFilter', value);
+  };
+
+  sortByReseller = (a, b, ascending) => {
+    let comparison;
+    const resellerA = a.reseller_name?.toLowerCase();
+    const resellerB = b.reseller_name?.toLowerCase();
+    if (resellerA === resellerB) {
+      // resellers are sorted using selected order, but banks are always sorted in natural order.
+      return this.sortByBank(a, b, true);
+    } else if (!resellerA) comparison = 1;
+    else if (!resellerB) comparison = -1;
+    else if (resellerA && resellerB) comparison = resellerA.localeCompare(resellerB);
+    return ascending ? comparison : -comparison;
+  };
+  sortByBank = (a, b, ascending) => {
+    let comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    return ascending ? comparison : -comparison;
+  };
+  sortByRemainingTrialDays = (a, b, ascending) => {
+    const getExpirationValue = (bank) => {
+      if (!bank.settings?.IS_TESTING || !bank.settings?.TESTING_EXPIRATION_DATE) {
+        return Infinity; // Non-testing banks go to the end
+      }
+      const today = new Date();
+      const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
+      return expirationDate - today; // Sort by time remaining (expired first)
+    };
+    const expA = getExpirationValue(a);
+    const expB = getExpirationValue(b);
+    if (expA === expB) {
+      return this.sortByReseller(a, b, true);
+    } else if (expA < expB) {
+      return ascending ? 1 : -1;
+    } else {
+      return ascending ? -1 : 1;
+    }
   };
 
   render() {
@@ -213,33 +254,17 @@ class Banks extends React.Component {
       })
       .sort((a, b) => {
         let comparison = 0;
+        const ascending = this.state.sortDirection === 'asc';
 
         switch (this.state.sortType) {
-          case 1: // Sort by reseller
-            const resellerA = (a.settings?.RESELLER || '').toLowerCase();
-            const resellerB = (b.settings?.RESELLER || '').toLowerCase();
-            comparison = resellerA.localeCompare(resellerB);
-            break;
-
-          case 2: // Sort by expiration date/days remaining
-            const getExpirationValue = (bank) => {
-              if (!bank.settings?.IS_TESTING || !bank.settings?.TESTING_EXPIRATION_DATE) {
-                return Infinity; // Non-testing banks go to the end
-              }
-              const today = new Date();
-              const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
-              return expirationDate - today; // Sort by time remaining (expired first)
-            };
-            comparison = getExpirationValue(a) - getExpirationValue(b);
-            break;
-
-          case 0: // Sort by bank name (default)
+          case 0:
+            return this.sortByBank(a, b, ascending);
+          case 2:
+            return this.sortByRemainingTrialDays(a, b, ascending);
+          case 1:
           default:
-            comparison = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-            break;
+            return this.sortByReseller(a, b, ascending);
         }
-
-        return this.state.sortDirection === 'desc' ? -comparison : comparison;
       });
     return (
       <div>
@@ -258,18 +283,6 @@ class Banks extends React.Component {
             />
           </div>
           <div className="newBankInputContainer">
-            <label htmlFor="adminEmailInput">
-              {i18n.t('sasettings_new_bank_form_admin_email')}*
-            </label>
-            <input
-              id="adminEmailInput"
-              ref={(r) => {
-                this.newAdminEmailInputRef = r;
-              }}
-              placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
-            />
-          </div>
-          <div className="newBankInputContainer">
             <label htmlFor="isTestingCheckbox">
               {i18n.t('sasettings_new_bank_form_is_testing')}
             </label>
@@ -282,6 +295,34 @@ class Banks extends React.Component {
               }}
             />
           </div>
+          {isSaasServer && (
+            <div className="newBankInputContainer">
+              <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
+              <ResellerSelector
+                value={this.state.selectedResellerIdForNewBank}
+                onChange={(value) => this.setState({ selectedResellerIdForNewBank: value })}
+                placeholder={i18n.t('sasettings_select_reseller')}
+                resellers={this.state.resellers}
+              />
+            </div>
+          )}
+          <div
+            className="newBankInputContainer"
+            style={this.state.selectedResellerIdForNewBank ? { display: 'none' } : null}
+          >
+            <div>
+              <label htmlFor="adminEmailInput">
+                {i18n.t('sasettings_new_bank_form_admin_email_label')}
+              </label>
+              <input
+                id="adminEmailInput"
+                ref={(r) => {
+                  this.newAdminEmailInputRef = r;
+                }}
+                placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
+              />
+            </div>
+          </div>
           <div className="newBankInputContainer">
             <label htmlFor="salesEmail">{i18n.t('sasettings_new_bank_form_sales_email')}</label>
             <input
@@ -293,17 +334,7 @@ class Banks extends React.Component {
               defaultValue={localStorage.getItem('newBankSalesEmail')}
             />
           </div>
-          {isSaasServer && (
-            <div className="newBankInputContainer">
-              <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
-              <input
-                id="resellerName"
-                ref={(r) => {
-                  this.resellerNameInputRef = r;
-                }}
-              />
-            </div>
-          )}
+
           <div className="action" onClick={this.insertBank}>
             {i18n.t('add')}
           </div>
@@ -360,6 +391,7 @@ class Banks extends React.Component {
                 )}
                 <th
                   className="sortable-header"
+                  style={{ minWidth: 100 }}
                   onClick={() => this.handleSort(0)}
                   title={i18n.t('sasettings_click_to_sort')}
                 >
@@ -367,8 +399,8 @@ class Banks extends React.Component {
                   <br />
                   {this.getSortIcon(0)}
                 </th>
+                <th>{i18n.t('sasettings_nb_associated_licences')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
-                <th>{i18n.t('sasettings_nb_licences_sold')}</th>
                 <th>{i18n.t('sasettings_bank_created_at')}</th>
                 <th>{i18n.t('sasettings_bank_is_testing')}</th>
                 <th>{i18n.t('sasettings_bank_test_expires_at')}</th>
@@ -383,7 +415,7 @@ class Banks extends React.Component {
                 </th>
                 {isSaasServer && <th>{i18n.t('sasettings_bank_sales_rep')}</th>}
                 {!isRestrictedSuperadmin && (
-                  <th>
+                  <th style={{ minWidth: 200 }}>
                     <div>{i18n.t('settings_bank_settings')}</div>
                     <div
                       className="action"
@@ -415,14 +447,12 @@ class Banks extends React.Component {
                     </td>
                     <td>{bank.id}</td>
                     {isSaasServer && (
-                      <EditableCell
-                        value={bank.settings?.RESELLER || ''}
-                        onChange={(newVal) => {
-                          this.toggleBankSetting(bank.id, {
-                            ...bank.settings,
-                            RESELLER: newVal,
-                          });
+                      <EditableResellerCell
+                        value={bank.reseller_id}
+                        onChange={(newId) => {
+                          this.updateResellerId(bank.id, newId);
                         }}
+                        resellers={this.state.resellers}
                       />
                     )}
                     <EditableCell
@@ -432,19 +462,10 @@ class Banks extends React.Component {
                         this.updateBankName(bank.id, newVal);
                       }}
                     />
-                    <td
-                      className={bank.nb_users > bank.nb_licences_sold ? 'user-count-warning' : ''}
-                    >
+                    <td>{bank.nb_licences}</td>
+                    <td className={bank.nb_users > bank.nb_licences ? 'user-count-warning' : ''}>
                       {bank.nb_users}
                     </td>
-                    <EditableCell
-                      type="number"
-                      value={bank.nb_licences_sold}
-                      onChange={(newVal) => {
-                        if (newVal == null || newVal < 0) return;
-                        this.updateNbLicences(bank.id, newVal);
-                      }}
-                    />
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
                     <td>
                       <div className="testing-checkbox-container">
@@ -535,7 +556,7 @@ class Banks extends React.Component {
                                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                               )
                           ) {
-                            window.alert(i18n.t('sasettings_bank_sales_rep_must_be_email'));
+                            toast.warn(i18n.t('sasettings_bank_sales_rep_must_be_email'));
                             return;
                           }
                           this.toggleBankSetting(bank.id, {
@@ -593,8 +614,8 @@ class Banks extends React.Component {
                 <td></td>
                 {isSaasServer && <td></td>}
                 <td></td>
-                <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
+                <td>{filteredBanks.reduce((r, g) => r + parseInt(g.nb_users), 0)}</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -622,7 +643,15 @@ const InlineSetting = (props) => {
   return (
     <div className="inline-setting">
       <div className="inline-setting-content">{i18n.t(settingConf.banksTitle)}</div>
-      <div>
+      <div
+        onClick={() => {
+          toggleBankSetting(bank.id, {
+            ...bank.settings,
+            [settingNameInDB]: !resValue,
+          });
+        }}
+        className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
+      >
         {isRecommendedValue ? (
           <div className="recommendedParam">
             {i18n.t(settingConf.recommendedValue ? 'yes' : 'no')}
@@ -632,17 +661,6 @@ const InlineSetting = (props) => {
             {i18n.t(settingConf.recommendedValue ? 'no' : 'yes')}
           </div>
         )}
-        <div
-          className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
-          onClick={() => {
-            toggleBankSetting(bank.id, {
-              ...bank.settings,
-              [settingNameInDB]: !resValue,
-            });
-          }}
-        >
-          {i18n.t('settings_change')}
-        </div>
       </div>
     </div>
   );

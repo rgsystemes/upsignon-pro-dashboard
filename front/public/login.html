@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="icon" href="/favicon.png" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
-  <title>UpSignon PRO dashboard</title>
+  <title>UpSignOn PRO dashboard</title>
   <style>
     body {
       margin: auto;
@@ -22,7 +22,7 @@
 <body>
   <noscript>You need to enable JavaScript.</noscript>
   <div style="display:flex; flex-direction: column; align-items: center;">
-    <div style="margin-bottom: 20px;">Cliquez sur ce bouton pour vous connecter (ne fonctionne que si vous avez l'application UpSignon installée)</div>
+    <div style="margin-bottom: 20px;">Cliquez sur ce bouton pour vous connecter (ne fonctionne que si vous avez l'application UpSignOn installée)</div>
     <div id="UpSignOn"></div>
 
     <div style="margin: 50px auto 10px auto; width: 600px;">Si vous n'avez pas encore créé votre compte admin ou si vous avez perdu votre accès, saisissez votre adresse email ici. Attention, seules les adresses emails d'administrateur sont acceptées.</div>
@@ -70,7 +70,7 @@
   <script type="text/javascript">
     "use strict";
     var UpSignOn = (function () {
-      var UPSIGNON_GREEN = "rgb(0, 171, 169)";
+      var UPSIGNON_BLUE = "#2E3862";
       var UPSIGNON_DEEP_LINK = "upsignon://";
       var translations = {
         "confidentialConnection": {
@@ -79,9 +79,9 @@
           "en": "Confidential connection"
         },
         "download": {
-          "fr": "Télécharger l'application UpSignon",
-          "es": "Descargar la aplicación UpSignon",
-          "en": "Download the UpSignon app"
+          "fr": "Télécharger l'application UpSignOn",
+          "es": "Descargar la aplicación UpSignOn",
+          "en": "Download the UpSignOn app"
         }
       }
         ;
@@ -93,8 +93,18 @@
         return protocolURI;
       };
       var getSVGLogo = function (width) {
-        return `<svg width="${width}" height="${width}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" preserveAspectRatio="xMidYMid meet"><circle fill="${UPSIGNON_GREEN}" cx="70" cy="70" r="70"/><svg fill="white" stroke-width="0" x="20" y="20"><path d="M50.00,3.00a17 17 0 1 0 0,34a17 17 0 1 0 0,-34ZM50,7a10 10 0 0 1 0,20a10 10 0 1 1 0,-20ZM24.63,29.23A30 30 0 0 0 75.37,29.23A3.5 3.5 20 1 1 81.95,31.63A34 34 0 0 1 18.05,31.63A3.5 3.5 -20 1 1 24.63,29.23ZM8.65,35.05A47 47 0 0 0 91.35,35.05A3.5 3.5 20 1 1 97.92,37.44A51 51 0 0 1 2.08,37.44A3.5 3.5 -20 1 1 8.65,35.05ZM50.00,97.00a10,10 0 0 0 0,-20a10,10 0 0 0 0,20Z"/></svg></svg>`;
-      };
+        return `<div style="height:${width}px; width:${width}px; padding: 5px;">
+          <svg style="height: 100%;width:100%;" viewBox="0 0 75 77" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M55.7553 24.0229L3.40527 76.9829H10.7753L59.5053 27.8429C59.6453 27.7029 59.7053 27.4329 59.5053 27.2329L56.3653 24.1629C56.2253 23.8929 55.9553 23.8929 55.7553 24.0229Z" fill="#FFFFFF"/>
+<path d="M4.36512 38.4229L41.8351 0.542908H34.4651L0.685118 34.6629C0.545118 34.8029 0.485118 35.0729 0.685118 35.2729L3.75512 38.3429C3.95512 38.5429 4.23512 38.5429 4.36512 38.4129V38.4229Z" fill="#FFFFFF"/>
+<path d="M63.1956 31.5229L18.2256 76.9729H25.5956L66.8856 35.3429C67.0256 35.1429 67.0256 34.8629 66.8856 34.7329L63.8156 31.6629C63.6756 31.3229 63.4056 31.3229 63.2056 31.5229H63.1956Z" fill="#FFFFFF"/>
+<path d="M70.6347 39.0329L33.0947 76.9829H40.4647L74.3847 42.7929C74.5247 42.5929 74.5247 42.3129 74.3847 42.1829L71.3147 39.1129C71.1147 38.9129 70.8347 38.9129 70.6347 39.0429V39.0329Z" fill="#FFFFFF"/>
+<path d="M8.12559 42.7129L11.1956 45.7829C11.3956 45.9229 11.6756 45.9229 11.8056 45.7829L56.7156 0.462891H49.3456L8.12559 42.0929C7.92559 42.2929 7.92559 42.5729 8.12559 42.7029V42.7129Z" fill="#FFFFFF"/>
+<path d="M15.4946 50.2229L18.5646 53.2929C18.7646 53.4329 19.0446 53.4329 19.1746 53.2929L71.5246 0.4729H64.1547L15.4946 49.6129C15.3546 49.8129 15.3546 50.0929 15.4946 50.2229Z" fill="#FFFFFF"/>
+</svg>
+</div>
+`;
+      }
       var getButtonText = function () {
         var lang = navigator.language || navigator.userLanguage;
         return translations.confidentialConnection[lang.substring(0, 2)] || translations.confidentialConnection['en'];
@@ -106,7 +116,7 @@
       var addButtonContent = function (buttonContainer, protocolURI, uiConfig) {
         var linkElement = document.createElement("a");
         linkElement.href = protocolURI;
-        linkElement.style.backgroundColor = UPSIGNON_GREEN;
+        linkElement.style.backgroundColor = UPSIGNON_BLUE;
         linkElement.style.padding = uiConfig.padding || "5px 15px 5px 5px";
         linkElement.style.display = "flex";
         linkElement.style.flexDirection = "row";
@@ -120,7 +130,7 @@
         logoContainer.style.justifyContent = "center";
         logoContainer.innerHTML = getSVGLogo(uiConfig.logoWidth || 50);
         var textContainer = document.createElement("div");
-        textContainer.innerHTML = "<div>UpSignon</div><div>" + getButtonText() + "</div>";
+        textContainer.innerHTML = "<div>UpSignOn by Septeo</div><div>" + getButtonText() + "</div>";
         textContainer.style.lineHeight = "1.3em";
         textContainer.style.textAlign = "left";
         textContainer.style.color = "white";
@@ -157,7 +167,7 @@
         getSVGLogo: getSVGLogo,
         getButtonText: getButtonText,
         getDownloadText: getDownloadText,
-        color: UPSIGNON_GREEN
+        color: UPSIGNON_BLUE
       };
     })();
   </script>

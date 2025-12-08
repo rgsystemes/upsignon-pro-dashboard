@@ -1,7 +1,7 @@
 nav {
   flex-shrink: 0;
   border-right: 3px solid rgb(0, 171, 168);
-  overflow: scroll;
+  overflow: visible;
   padding-bottom: 40px;
   max-width: 230px;
 }
@@ -34,7 +34,7 @@ nav {
   align-items: center;
 }
 .logo img {
-  height: 2.5rem;
+  height: 90px;
   margin-bottom: 5px;
 }
 
@@ -52,6 +52,12 @@ nav {
   background-color: rgb(44, 82, 132);
   color: white;
 }
+.bankLink.reseller {
+  font-weight: bold;
+}
+.bankLink.resellerBank {
+  padding-left: 60px;
+}
 
 .currentBank {
   text-align: center;
@@ -61,6 +67,11 @@ nav {
   background-color: rgb(44, 83, 132);
   cursor: pointer;
   width: 100%;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+.reseller {
+  font-weight: bold;
 }
 .superadmin {
   background-color: rgb(246, 164, 0);

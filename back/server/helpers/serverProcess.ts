@@ -4,14 +4,9 @@ import https from 'https';
 import fs from 'fs';
 import { logInfo } from './logger';
 import { setupMSGraph } from './init_ms_graph';
+import { setupGlobalAgent } from './xmlHttpRequest';
 
-if (env.HTTP_PROXY) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const globalAgent = require('global-agent');
-  globalAgent.bootstrap();
-  // @ts-ignore
-  global.GLOBAL_AGENT.HTTP_PROXY = env.HTTP_PROXY;
-}
+setupGlobalAgent();
 
 export const startServer = (app: any, then: any): void => {
   setupMSGraph();
@@ -22,7 +17,7 @@ export const startServer = (app: any, then: any): void => {
     };
     const server = https.createServer(options, app).listen(env.SERVER_PORT, () => {
       logInfo(
-        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} HTTPS server listening`,
+        `${env.IS_PRODUCTION ? 'Production' : 'Dev'} HTTPS server listening`,
         server.address(),
       );
       then();
@@ -32,7 +27,7 @@ export const startServer = (app: any, then: any): void => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const server = app.listen(env.SERVER_PORT, () => {
       logInfo(
-        `${process.env.NODE_ENV === 'production' ? 'Production' : 'Dev'} HTTP server listening`,
+        `${env.IS_PRODUCTION ? 'Production' : 'Dev'} HTTP server listening`,
         server.address(),
       );
     });

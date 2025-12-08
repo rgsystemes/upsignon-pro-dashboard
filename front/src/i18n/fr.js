@@ -12,11 +12,15 @@ const translations = {
   add: 'Ajouter',
   close: 'Fermer',
   total: 'Total',
+  refresh: 'Rafraichir',
+  refresh_failed: 'La requête a échoué.',
   disconnect: 'Déconnexion',
   pagination_pages: 'pages',
   validate: 'Valider',
   cancel: 'Annuler',
-  request_error: 'La connexion au serveur a échouée, vous devez peut-être vous reconnecter.',
+  request_error: 'La requête au serveur a échouée, vous devez peut-être vous reconnecter.',
+  network_error: 'Erreur réseau',
+  unknown_error: 'Erreur inconnue',
   menu_overview: "Vue d'ensemble",
   menu_password_reset_requests: 'Demandes de réinitialisation de mot de passe',
   menu_users: 'Coffres-forts',
@@ -47,6 +51,7 @@ const translations = {
   user_filtering_by_deactivated_interval:
     'NB : Les vérifications ont lieu automatiquement à 1h et 13h tous les jours.',
   user_search: 'Rechercher un coffre-fort',
+  user_search_placeholder: 'Email ou id',
   user_unit_name: 'coffres-forts',
   user_id: 'Id',
   user_email: 'Email',
@@ -59,6 +64,15 @@ const translations = {
   user_nb_accounts_value: '$nb comptes',
   user_nb_shared_items_value: '$nb éléments/dossiers partagés',
   user_passwords_stats: 'Stats des mots de passe (non partagés uniquement)',
+  user_passwords_stats_tooltip_1:
+    "Les couleurs vert/orange/rouge sont celles affichées dans l'application. Elles combinent la force intrinsèque du mot de passe et son nombre d'occurrences.",
+  user_passwords_stats_tooltip_2:
+    'Le décompte fort/moyen/faible fait référence uniquement à la force intrinsèque du mot de passe.',
+  user_passwords_stats_tooltip_3:
+    'Un mot de passe fort non dupliqué sera vert, mais un mot de passe fort dupliqué sera orange ou rouge.',
+  user_passwords_stats_tooltip_4:
+    'Un mot de passe moyen non dupliqué sera orange, mais un mot de passe moyen dupliqué peut être rouge.',
+  user_passwords_stats_tooltip_5: 'Un mot de passe faible sera toujours rouge.',
   user_settings_override: 'Paramètres',
   shared_vault_passwords_stats: 'Stats des mots de passe',
   user_passwords_weak: '$nb faibles',
@@ -201,11 +215,11 @@ const translations = {
   extract_emails_duplicates: 'ayant au moins $n mots de passe dupliqués',
   extract_emails_weak: 'ayant au moins $n mots de passe faibles',
   extract_emails_medium: 'ayant au moins $n mots de passe moyens',
-  extract_emails_long_unused: "qui n'ont pas utilisé UpSignon depuis au moins $n jours",
+  extract_emails_long_unused: "qui n'ont pas utilisé UpSignOn depuis au moins $n jours",
   extract_emails_shared_device: 'qui partagent au moins un de leurs appareils',
   extract_emails: 'Récupérer les emails',
   extract_emails_msi:
-    "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignon 7.5.0)",
+    "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
   mail_writer: 'Envoyer un email',
   mail_writer_to_selection: 'Utiliser la liste de destinataires de la sélection ci-dessus.',
   mail_writer_to_all: "Envoyer à tous les détenteurs d'un coffre-fort.",
@@ -213,7 +227,6 @@ const translations = {
   mail_writer_placeholder: 'Écrivez votre message ici',
   mail_writer_send: 'Envoyer',
   mail_writer_success: 'SUCCÈS\n\nMail envoyé à $n destinataires',
-  mail_writer_error: 'ERREUR\n\n$e',
   mail_writer_empty_fields:
     "ERREUR\n\nL'object et le contenu ne peuvent pas être vides pour envoyer un email.",
   mail_writer_confirm_send:
@@ -248,10 +261,10 @@ const translations = {
   link_to_tutorials: "Tutoriels / notice d'utilisation pour les utilisateurs",
   link_to_changelogs: 'Notes de version',
   link_to_downloads: "Liens de téléchargement de l'application",
-  pro_server: 'Serveur UpSignon PRO',
+  pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
   setup_link_is_bank_specific: 'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
-  pro_server_url: 'URL de votre serveur UpSignon PRO',
+  pro_server_url: 'URL de votre serveur UpSignOn PRO',
   link_to_communicate: 'Lien à communiquer',
   preconfig_title: 'Préconfiguration du lien par stratégie de groupe.',
   preconfig_line1:
@@ -272,9 +285,20 @@ const translations = {
   sasettings_banks: 'Banques de coffres-forts',
   sasettings_banks_explanation:
     "Les banques de coffres-forts sont des zones hermétiques. Les utilisateurs ne pourront pas partager leurs comptes avec des personnes extérieures à leur banque. Cette fonctionnalité est particulièrement utile dans le cas de groupes d'entreprises qui mettent en commun leurs ressources informatiques mais veulent garder leur indépendance. Un même utilisateur peut avoir un coffre dans plusieurs banques.",
+  sasettings_direct_banks: 'Banques solitaires',
+  sasettings_resellers: 'Groupes de banques',
+  sasettings_reseller_name: 'Nom du groupe',
+  sasettings_reseller_created_at: 'Créé le',
+  sasettings_reseller_banks: 'Banques',
+  sasettings_reseller_name_placeholder: 'Saisir le nom du groupe',
+  sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce groupe de banques ?',
+  sasettings_reseller_delete_error_banks_associated:
+    'Impossible de supprimer ce groupe car des banques lui sont encore associées. Veuillez réassigner ou supprimer les banques associées en premier.',
+  sasettings_select_reseller: 'Sélectionner un groupe',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
   sasettings_new_bank_form_bank_name: 'Nom de la banque (2 à 50 caractères)',
+  sasettings_new_bank_form_admin_email_label: "Email de l'administrateur (pour email automatique)",
   sasettings_new_bank_form_admin_email: "Email de l'administrateur",
   sasettings_new_bank_form_is_testing: 'Test 30 jours',
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
@@ -288,12 +312,12 @@ const translations = {
   sasettings_bank_test_days_remaining: 'Jours restants',
   sasettings_bank_expired_since: 'Expiré depuis $days jour$s',
   sasettings_bank_days_remaining: '$days jour$s',
-  sasettings_bank_reseller: 'Revendeur',
+  sasettings_bank_reseller: 'Groupe de banques',
   sasettings_bank_sales_rep: 'Commercial',
   sasettings_bank_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_bank_open: 'Voir',
-  sasettings_nb_users: 'Nombre de coffres-forts',
-  sasettings_nb_licences_sold: 'Licences vendues',
+  sasettings_nb_users: 'Licences consommées (nb de coffres-forts)',
+  sasettings_nb_associated_licences: 'Licences commandées',
   sasettings_disable_reset_pwd_manual_admin_check:
     "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
   sasettings_disable_offline_desktop:
@@ -355,13 +379,13 @@ const translations = {
   sasettings_email_config_testing_error_alert: "Error d'envoi du mail : $e",
   bank_setting_microsoft_entra_title: 'Configuration Microsoft Entra ID (optionnel)',
   bank_setting_microsoft_entra_pitch:
-    "UpSignon peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
+    "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
   bank_setting_microsoft_entra_tuto:
     'Pour utiliser cette fonctionnalité, suivez les étapes ci-dessous :',
   bank_setting_microsoft_entra_tuto_step1:
-    "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignon' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
+    "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignOn' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
   bank_setting_microsoft_entra_tuto_step2:
-    "Dans 'Inscriptions d'applications' > UpSignon > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
+    "Dans 'Inscriptions d'applications' > UpSignOn > 'API autorisées' ajoutez les autorisations ci-dessous et demandez la validation d'un administrateur.",
   bank_setting_microsoft_entra_tuto_step3: 'Remplissez le formulaire ci-dessous.',
   bank_setting_microsoft_entra_tuto_step4:
     "Enfin, ajoutez des utilisateurs et des groupes à cette application d'entreprise.",
@@ -369,29 +393,44 @@ const translations = {
   bank_setting_microsoft_entra_tenant_id_label:
     "ID de client (alias tenant ID, alias ID de l'annuaire)",
   bank_setting_microsoft_entra_client_id_label:
-    "ID d\'application (Application d'entreprise > UpSignon > Vue d'ensemble)",
+    "ID d\'application (Application d'entreprise > UpSignOn > Vue d'ensemble)",
   bank_setting_microsoft_entra_app_resource_id_label:
-    "ID d\'objet (Application d'entreprise > UpSignon > Vue d'ensemble)",
+    "ID d\'objet (Application d'entreprise > UpSignOn > Vue d'ensemble)",
   bank_setting_microsoft_entra_client_secret_label:
-    "Secret client (Inscriptions d'application > UpSignon > Certificats & secrets)",
+    "Secret client (Inscriptions d'application > UpSignOn > Certificats & secrets)",
   bank_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   bank_setting_microsoft_entra_testing: 'Tester',
   bank_setting_microsoft_entra_test_start: 'Lancer le test',
-  bank_setting_microsoft_entra_test_error: 'Erreur lors du test de Microsoft Entra ID: $e',
   bank_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
-  bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignon:',
+  bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignOn:',
   bank_setting_microsoft_entra_test_user_authorized: 'Utilisateur autorisé :',
   bank_setting_microsoft_entra_test_user_gs: 'Groupes associés à cet utilisateur :',
+  licences_reseller_name: 'Groupe de banques',
   licences_bank_name: 'Banque',
-  licences_nb: 'Nombre de licences',
+  licences_bank_distribution: 'Répartition',
+  licences_bank_distribution_see_reseller: 'Voir la page licences du groupe de banques',
+  licences_bank_distribution_na: 'NA',
+  licences_bank_distribution_assign: 'Attribuer',
+  licences_bank_distribution_change: 'Modifier',
+  licences_bank_distribution_remove: 'Sup.',
+  licences_bank_distribution_remaining: 'restantes',
+  licences_nb: 'Licences commandées',
+  licences_is_montly: 'Mensuelle',
   licences_valid_from: 'Valides à partir de',
   licences_valid_until: "Valide jusqu'à",
   licences_to_be_renewed: 'Sera renouvellé',
   licences_none: "Aucune licence associée pour l'instant.",
   licences_none_explanation:
     'Vérifiez que votre serveur accepte les requêtes externes sur la route /licences.',
-  licences_all: 'Voici toutes les licences qui vous sont actuellement associées.',
+  licences_all: 'Voici toutes vos licences.',
+  licences_by_licence: 'Vue par licence',
+  licences_by_customer: 'Vue par client',
+  licences_pool: 'Licences mutualisées',
+  licences_pool_detail:
+    'Les licences mutualisées sont disponibles pour toutes les banques sur la base du premier arrivé premier servi.',
+  licences_attribution: 'Attributions',
+  licences_pool_number: '$n (mutualisées)',
 };
 
 export default translations;

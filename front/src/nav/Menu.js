@@ -2,17 +2,21 @@ import React from 'react';
 import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
-import { frontUrl, baseFrontUrl } from '../helpers/env';
+import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
-import bySepteoLogo from './bySepteoLogo.svg';
 
 // PROPS pages, banks, isSuperadmin, isSuperadminPage
 function Menu(props) {
-  const { pages, banks, isSuperadmin, isSuperadminPage } = props;
+  const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
-      <BankChooser banks={banks} isSuperadminPage={isSuperadminPage} isSuperadmin={isSuperadmin} />
+      <BankChooser
+        banks={banks}
+        resellers={resellers}
+        isSuperadminPage={isSuperadminPage}
+        isSuperadmin={isSuperadmin}
+      />
       <React.Fragment>
         {pages
           .filter((p) => !isSuperadminPage || !p.disabledForSuperadmin)
@@ -20,7 +24,7 @@ function Menu(props) {
             return (
               <a
                 key={p.key}
-                href={frontUrl + p.href}
+                href={bankFrontUrl + p.href}
                 className={`navItem ${p.isCurrent ? 'current' : ''}`}
               >
                 {p.title}
@@ -44,7 +48,10 @@ function Menu(props) {
         </div>
       </div>
       <div className="logo">
-        <img src={bySepteoLogo} alt="UpSignon logo" />
+        <img
+          src={`${process.env.PUBLIC_URL}//upsignon-by-septeo-vertical.svg`}
+          alt="UpSignOn by Septeo logo"
+        />
         <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
       </div>
     </nav>

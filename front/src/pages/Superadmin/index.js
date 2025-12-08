@@ -4,17 +4,19 @@ import { Admins } from './Admins';
 import '../../helpers/tabs.css';
 import './superadmin.css';
 import { Banks } from './Banks';
+import { Resellers } from './Resellers';
 import { ProServerUrl } from './ProServerUrl';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { EmailConfig } from './EmailConfig';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { isSaasServer } from '../../helpers/env';
 
-// Props setIsLoading, updateMenuBanks
+// Props setIsLoading, updateMenuBanks, updateMenuResellers
 class Superadmin extends React.Component {
   state = {
     banks: [],
     adminsBuildCounter: 0,
-    activeTab: 'banks', // 'banks', 'admins', 'settings'
+    activeTab: 'banks', // 'banks', 'resellers', 'admins', 'settings'
   };
   fetchBanks = async () => {
     try {
@@ -44,6 +46,14 @@ class Superadmin extends React.Component {
           >
             {i18n.t('sasettings_banks')}
           </button>
+          {isSaasServer && (
+            <button
+              className={`tab-button large ${activeTab === 'resellers' ? 'active' : ''}`}
+              onClick={() => this.setActiveTab('resellers')}
+            >
+              {i18n.t('sasettings_resellers')}
+            </button>
+          )}
           <button
             className={`tab-button large ${activeTab === 'admins' ? 'active' : ''}`}
             onClick={() => this.setActiveTab('admins')}
@@ -64,6 +74,13 @@ class Superadmin extends React.Component {
               setIsLoading={this.props.setIsLoading}
               banks={this.state.banks}
               fetchBanks={this.fetchBanks}
+            />
+          )}
+
+          {activeTab === 'resellers' && (
+            <Resellers
+              setIsLoading={this.props.setIsLoading}
+              updateMenuResellers={this.props.updateMenuResellers}
             />
           )}
 

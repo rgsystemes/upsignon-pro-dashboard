@@ -2,11 +2,13 @@ import React from 'react';
 import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading, banks
 class Admins extends React.Component {
   state = {
     admins: [],
+    resellers: [],
     adminRole: 'admin', // 'admin' | 'restricted_superadmin' | 'superadmin'
     visibleAdminChangeRightsView: [],
   };
@@ -18,6 +20,14 @@ class Admins extends React.Component {
       this.setState({ admins: admins });
     } catch (e) {
       console.error(e);
+    }
+  };
+  fetchResellers = async () => {
+    try {
+      const resellers = await bankUrlFetch('/api/resellers', 'GET', null);
+      this.setState({ resellers: resellers });
+    } catch (e) {
+      console.error('Error fetching resellers:', e);
     }
   };
   insertAdmin = async () => {
@@ -51,6 +61,21 @@ class Admins extends React.Component {
         bankId,
         willBelongToBank,
       });
+      await this.fetchAdmins();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+  updateAdminReseller = async (adminId, resellerId, willBelongToReseller) => {
+    try {
+      this.props.setIsLoading(true);
+      await bankUrlFetch('/api/update-admin-reseller', 'POST', {
+        adminId,
+        resellerId: willBelongToReseller ? resellerId : null,
+      });
+      await this.fetchResellers();
       await this.fetchAdmins();
     } catch (e) {
       console.error(e);
@@ -98,13 +123,12 @@ class Admins extends React.Component {
       this.props.setIsLoading(true);
       const { success } = await baseUrlFetch('/get_admin_invite', 'POST', { adminEmail });
       if (success) {
-        window.alert(i18n.t('settings_admin_invite_sent'));
+        toast.success(i18n.t('settings_admin_invite_sent'));
       } else {
-        window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
+        toast.error(i18n.t('sasettings_email_config_testing_error_alert', { e: '' }));
       }
     } catch (e) {
       console.error(e);
-      window.alert(i18n.t('sasettings_email_config_testing_error_alert', { e }));
     } finally {
       this.props.setIsLoading(false);
     }
@@ -123,6 +147,7 @@ class Admins extends React.Component {
   };
   componentDidMount() {
     this.fetchAdmins();
+    this.fetchResellers();
   }
   render() {
     return (
@@ -176,6 +201,9 @@ class Admins extends React.Component {
                   admin.id,
                 );
                 const showChangeRightsButton = admin.adminRole === 'admin';
+                const reseller = admin.reseller_id
+                  ? this.state.resellers.filter((r) => r.id === admin.reseller_id)[0]
+                  : null;
                 return (
                   <React.Fragment key={admin.id}>
                     <tr>
@@ -198,17 +226,34 @@ class Admins extends React.Component {
                       <td
                         style={{
                           backgroundColor:
-                            admin.admin_role != 'admin'
+                            admin.admin_role != 'admin' || !!admin.reseller_id
                               ? 'lightgrey'
                               : admin.banks && admin.banks.length > 0
-                                ? 'white'
+                                ? 'transparent'
                                 : 'red',
                         }}
                       >
-                        {admin.adminRole === 'admin' &&
-                          admin.banks?.map((g) => {
-                            return <div key={g.id}>{g.name}</div>;
-                          })}
+                        {admin.adminRole === 'admin' && (
+                          <>
+                            {admin.banks?.map((g) => {
+                              return (
+                                <div
+                                  key={g.id}
+                                >{`${g.reseller_name ? `${g.reseller_name}/` : ''}${g.name}`}</div>
+                              );
+                            })}
+                            {reseller && (
+                              <div>
+                                <strong>{reseller.name}</strong>
+                                <div style={{ marginLeft: 20 }}>
+                                  {reseller.banks?.map((b) => (
+                                    <div key={b.id}>{b.name}</div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
                       </td>
                       <td className={`${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
                         <div className="action" onClick={() => this.deleteAdmin(admin.id)}>
@@ -231,23 +276,80 @@ class Admins extends React.Component {
                             {i18n.t('close')}
                           </div>
                           {admin.admin_role != 'superadmin' && (
-                            <div style={{ marginTop: 15, margin: 'auto' }}>
-                              {this.props.banks.map((g) => {
-                                const doesBelongToBank = admin.banks?.some((ag) => ag.id === g.id);
-                                return (
-                                  <div key={g.id} style={{ display: 'flex', alignItems: 'center' }}>
-                                    <input
-                                      type="checkbox"
-                                      onChange={(v) => {
-                                        this.updateAdminBank(admin.id, g.id, !doesBelongToBank);
-                                      }}
-                                      checked={doesBelongToBank}
-                                      disabled={isRestrictedSuperadmin}
-                                    />
-                                    <div style={{ marginLeft: 5 }}>{g.name}</div>
-                                  </div>
-                                );
-                              })}
+                            <div style={{ marginTop: 15, margin: 'auto', display: 'flex' }}>
+                              <div
+                                style={{
+                                  width: 300,
+                                  marginRight: 30,
+                                  borderRight: '1px solid grey',
+                                }}
+                              >
+                                <h4>{i18n.t('sasettings_direct_banks')}</h4>
+                                {this.props.banks
+                                  .filter((b) => !b.reseller_id)
+                                  .map((b) => {
+                                    const doesBelongToBank = admin.banks?.some(
+                                      (ab) => ab.id === b.id,
+                                    );
+                                    return (
+                                      <BankCheckbox
+                                        key={b.id}
+                                        name={b.name}
+                                        onChange={(v) => {
+                                          this.updateAdminBank(admin.id, b.id, !doesBelongToBank);
+                                        }}
+                                        checked={doesBelongToBank}
+                                      />
+                                    );
+                                  })}
+                              </div>
+                              <div>
+                                <h4>{i18n.t('sasettings_resellers')}</h4>
+                                {this.state.resellers.map((r) => {
+                                  const doesBelongToReseller = admin.reseller_id === r.id;
+                                  return (
+                                    <div key={r.id}>
+                                      <ResellerCheckbox
+                                        key={r.id}
+                                        name={r.name}
+                                        onChange={(v) => {
+                                          this.updateAdminReseller(
+                                            admin.id,
+                                            r.id,
+                                            !doesBelongToReseller,
+                                          );
+                                        }}
+                                        checked={doesBelongToReseller}
+                                      />
+                                      <div
+                                        style={{ marginLeft: 20 }}
+                                        className={doesBelongToReseller ? 'disabledUI' : null}
+                                      >
+                                        {r.banks &&
+                                          r.banks.map((b) => {
+                                            const doesBelongToBank = admin.banks?.some(
+                                              (ab) => ab.id === b.id,
+                                            );
+                                            return (
+                                              <BankCheckbox
+                                                key={b.id}
+                                                name={b.name}
+                                                onChange={(v) => {
+                                                  this.updateAdminBank(
+                                                    admin.id,
+                                                    b.id,
+                                                    !doesBelongToBank,
+                                                  );
+                                                }}
+                                                checked={doesBelongToBank || doesBelongToReseller}
+                                              />
+                                            );
+                                          })}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
                             </div>
                           )}
                         </td>
@@ -280,6 +382,33 @@ const AdminRoleSelect = (p) => {
       </option>
       <option value="superadmin">{i18n.t('sasettings_superadmin_role_superadmin')}</option>
     </select>
+  );
+};
+
+const BankCheckbox = (p) => {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <input
+        type="checkbox"
+        onChange={p.onChange}
+        checked={p.checked}
+        disabled={isRestrictedSuperadmin}
+      />
+      <div style={{ marginLeft: 5 }}>{p.name}</div>
+    </div>
+  );
+};
+const ResellerCheckbox = (p) => {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', fontWeight: 'bold' }}>
+      <input
+        type="checkbox"
+        onChange={p.onChange}
+        checked={p.checked}
+        disabled={isRestrictedSuperadmin}
+      />
+      <div style={{ marginLeft: 5 }}>{p.name}</div>
+    </div>
   );
 };
 

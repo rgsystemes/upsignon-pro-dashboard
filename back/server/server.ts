@@ -8,16 +8,17 @@ import { logInfo } from './helpers/logger';
 import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
-import SessionStore from './helpers/sessionStore';
+import { PostgreSQLStore } from './helpers/sessionStore';
 import { loginRouter } from './login/loginRouter';
-import { get_available_banks } from './helpers/get_available_banks';
+import { get_available_banks } from './get_available_banks';
 import { superadminApiRouter } from './superadminapi/superadminApiRouter';
-import { get_server_url } from './helpers/get_server_url';
+import { get_server_url } from './get_server_url';
 import { disconnect } from './helpers/disconnect';
-import { updateSessionAuthorizations } from './helpers/updateSessionAuthorizations';
+import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
+import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
@@ -53,7 +54,7 @@ app.use(
     rolling: true,
     saveUninitialized: false,
     unset: 'destroy',
-    store: new SessionStore(),
+    store: new PostgreSQLStore(),
   }),
 );
 
@@ -63,10 +64,10 @@ if (!env.IS_PRODUCTION) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     try {
-      await updateSessionAuthorizations(
-        req,
+      await recomputeSessionAuthorizationsForAdminByEmail(
         // @ts-ignore
         env.DEV_FALLBACK_ADMIN_EMAIL,
+        req,
       );
       next();
     } catch (e) {
@@ -127,6 +128,11 @@ app.get('/server_url', get_server_url);
 app.use('/disconnect/', disconnect);
 
 app.use('/superadmin/api/', superadminApiRouter);
+app.use('/reseller/:resellerId/api/', (req, res, next) => {
+  // @ts-ignore
+  req.proxyParamsResellerId = req.params.resellerId;
+  return resellerApiRouter(req, res, next);
+});
 app.use('/:bankId/api/', (req, res, next) => {
   const bankId = req.params.bankId;
   // @ts-ignore
@@ -141,6 +147,7 @@ app.use(
     '/superadmin/settings/',
     '/superadmin/licences/',
     '/superadmin/',
+    '/reseller/:resellerId/',
     '/:bankId/users/',
     '/:bankId/shared_devices/',
     '/:bankId/shared_vaults/',

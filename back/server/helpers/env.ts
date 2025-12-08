@@ -1,5 +1,14 @@
 import fs from 'fs';
 
+/** ************************************************************************
+ * *************************************************************************
+ * ⚠️⚠️⚠️⚠️
+ * WHEN ADDING OR REMOVING A KEY HERE,
+ * ALSO CREATE AN ISSUE IN https://github.com/rgsystemes/devops/issues
+ * *************************************************************************
+ * *************************************************************************
+ */
+
 const {
   DB_USER,
   DB_PASS,
@@ -18,7 +27,7 @@ const {
   BACKEND_URL,
   FRONTEND_URL,
   DEV_FALLBACK_ADMIN_EMAIL,
-  DEV_FALLBACK_ADMIN_RESTRICTED,
+  DEV_FALLBACK_USE_DB_ROLE,
   HTTP_PROXY,
   EMAIL_ALLOW_INVALID_CERTIFICATE,
   USE_POSTFIX,
@@ -50,7 +59,7 @@ export default {
   BACKEND_URL: BACKEND_URL?.replace(/\/$/, '') || SERVER_URL?.replace(/\/$/, ''),
   FRONTEND_URL: FRONTEND_URL?.replace(/\/$/, '') || SERVER_URL?.replace(/\/$/, ''),
   DEV_FALLBACK_ADMIN_EMAIL,
-  DEV_FALLBACK_ADMIN_RESTRICTED: DEV_FALLBACK_ADMIN_RESTRICTED === 'true',
+  DEV_FALLBACK_USE_DB_ROLE: DEV_FALLBACK_USE_DB_ROLE === 'true',
   HTTP_PROXY,
   EMAIL_ALLOW_INVALID_CERTIFICATE,
   USE_POSTFIX: USE_POSTFIX_BOOL,

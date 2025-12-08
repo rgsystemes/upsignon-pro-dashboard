@@ -2,7 +2,7 @@ import express from 'express';
 import { delete_admin } from './delete_admin';
 import { delete_bank } from './delete_bank';
 import { get_banks } from './get_banks';
-import { update_bank } from './update_bank';
+import { update_bank_as_superadmin } from './update_bank';
 import { get_admins } from './get_admins';
 import { insert_bank } from './insert_bank';
 import { insert_admin } from './insert_admin';
@@ -27,6 +27,14 @@ import { send_email, send_email_precheck } from '../api/send_email';
 import { extract_emails_msi_install } from '../api/extract_emails_msi_install';
 import { get_licences } from '../api/get_licences';
 import { extract_admins } from '../api/extract_admins';
+import { get_resellers } from './reseller/get_resellers';
+import { add_reseller } from './reseller/add_reseller';
+import { update_reseller } from './reseller/update_reseller';
+import { delete_reseller } from './reseller/delete_reseller';
+import { update_admin_reseller } from './update_admin_reseller';
+import { licenceAssign } from '../helpers/licence_assign';
+import { startPullLicences } from './start_pull_licences';
+import { licenceSummary } from '../helpers/licence-summary';
 
 export const superadminApiRouter = express.Router();
 
@@ -44,13 +52,20 @@ superadminApiRouter.get('/admins', get_admins);
 superadminApiRouter.post('/insert-admin', insert_admin);
 superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-bank', update_admin_bank);
+superadminApiRouter.post('/update-admin-reseller', update_admin_reseller);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
 
 // BANKS
 superadminApiRouter.get('/banks', get_banks);
 superadminApiRouter.post('/insert-bank', insert_bank);
-superadminApiRouter.post('/update-bank', update_bank);
+superadminApiRouter.post('/update-bank', update_bank_as_superadmin);
 superadminApiRouter.post('/delete-bank/:id', delete_bank);
+
+// RESELLERS
+superadminApiRouter.get('/resellers', get_resellers);
+superadminApiRouter.post('/add-reseller', add_reseller);
+superadminApiRouter.post('/update-reseller', update_reseller);
+superadminApiRouter.post('/delete-reseller/:id', delete_reseller);
 
 // SETTINGS
 superadminApiRouter.post('/get-setting', get_setting);
@@ -103,4 +118,7 @@ superadminApiRouter.get('/get-password-stats', (req, res) => {
 superadminApiRouter.get('/get-usage-stats', (req, res) => get_usage_stats(req, res, true));
 
 // Licences
-superadminApiRouter.post('/get-licences', (req, res) => get_licences(req, res, true));
+superadminApiRouter.get('/licences', (req, res) => get_licences(req, res, true));
+superadminApiRouter.post('/licences-assign', (req, res) => licenceAssign(req, res, true));
+superadminApiRouter.post('/start-pull-licences', startPullLicences);
+superadminApiRouter.post('/licence-summary', (req, res) => licenceSummary(req, res, true));

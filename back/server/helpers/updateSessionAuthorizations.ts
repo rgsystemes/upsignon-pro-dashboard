@@ -1,33 +1,116 @@
+import { Request } from 'express';
+import { AdminRoles } from './adminRoles';
 import { db } from './db';
 import env from './env';
 import { logError } from './logger';
 
-export const updateSessionAuthorizations = async (req: any, email: string): Promise<void> => {
+export type SessionData = {
+  adminEmail: string;
+  adminId: string;
+  adminRole: AdminRoles;
+  banks: number[];
+};
+export const recomputeSessionAuthorizationsForAdminByEmail = async (
+  email: string,
+  req?: Request,
+): Promise<void> => {
   try {
-    req.session.adminEmail = email;
+    const adminRes = await db.query(`SELECT id FROM admins WHERE email=$1`, [email]);
 
-    // Check Superadmin
-    const adminRes = await db.query(
-      `SELECT
-        admins.admin_role,
-        CASE WHEN admins.admin_role != 'admin' THEN null ELSE array_agg(admin_banks.bank_id) END AS banks
-      FROM admins
-      LEFT JOIN admin_banks ON admins.id=admin_banks.admin_id
-      WHERE admins.email=$1
-      GROUP BY admins.id`,
-      [email],
-    );
-    if (adminRes.rowCount !== 0) {
-      if (!env.IS_PRODUCTION && email === env.DEV_FALLBACK_ADMIN_EMAIL) {
-        req.session.adminRole = env.DEV_FALLBACK_ADMIN_RESTRICTED
-          ? 'restricted_superadmin'
-          : 'superadmin';
-      } else {
-        req.session.adminRole = adminRes.rows[0].admin_role;
-      }
-      req.session.banks = adminRes.rows[0].banks?.filter((g: any) => g != null) ?? [];
+    if (adminRes.rows.length === 0) {
+      return;
+    }
+    await recomputeSessionAuthorizationsForAdminById(adminRes.rows[0].id, req);
+  } catch (e) {
+    logError('updateSessionAuthorizations', e);
+    return;
+  }
+};
+
+export const recomputeSessionAuthorizationsForAdminsByResellerId = async (
+  resellerId: string,
+  req?: Request,
+): Promise<void> => {
+  try {
+    const adminsRes = await db.query('SELECT id FROM admins WHERE reseller_id=$1', [resellerId]);
+    // @ts-ignore
+    const currentAdminId = req?.session?.adminId;
+    for (let i = 0; i < adminsRes.rows.length; i++) {
+      const adminId = adminsRes.rows[i].id;
+      await recomputeSessionAuthorizationsForAdminById(
+        adminId,
+        adminId === currentAdminId ? req : null,
+      );
     }
   } catch (e) {
     logError('updateSessionAuthorizations', e);
+    return;
+  }
+};
+
+export const recomputeSessionAuthorizationsForAdminById = async (
+  adminId: string,
+  req?: Request | null,
+): Promise<void> => {
+  try {
+    const adminRes = await db.query(
+      'SELECT email, admin_role, reseller_id FROM admins WHERE id=$1',
+      [adminId],
+    );
+    if (adminRes.rows.length === 0) {
+      return;
+    }
+    const adminEmail = adminRes.rows[0].email;
+
+    let adminRole = adminRes.rows[0].admin_role;
+    if (
+      !env.IS_PRODUCTION &&
+      !env.DEV_FALLBACK_USE_DB_ROLE &&
+      adminEmail === env.DEV_FALLBACK_ADMIN_EMAIL
+    ) {
+      adminRole = 'superadmin';
+    }
+    const resellerId = adminRes.rows[0].reseller_id;
+    const banksRes = await db.query('SELECT bank_id FROM admin_banks WHERE admin_id=$1', [adminId]);
+    const banksInResellerRes = await db.query('SELECT id FROM banks WHERE reseller_id=$1', [
+      resellerId,
+    ]);
+    const bankIds = [...banksRes.rows.map((b) => b.bank_id)];
+    for (let b of banksInResellerRes.rows) {
+      if (bankIds.indexOf(b.id) === -1) {
+        bankIds.push(b.id);
+      }
+    }
+    if (req) {
+      // @ts-ignore
+      req.session.adminEmail = adminEmail;
+      // @ts-ignore
+      req.session.adminId = adminId;
+      // @ts-ignore
+      req.session.adminRole = adminRole;
+      // @ts-ignore
+      req.session.banks = bankIds;
+      // NB, do not do 'req.session =', this breaks the system
+    } else {
+      const sessionRes = await db.query(
+        "SELECT session_id, session_data FROM admin_sessions WHERE session_data ->> 'adminEmail' = $1",
+        [adminEmail],
+      );
+      if (sessionRes.rows.length > 0) {
+        const newSession = {
+          ...sessionRes.rows[0].session_data,
+          adminEmail,
+          adminId,
+          adminRole,
+          banks: bankIds,
+        };
+        await db.query(`UPDATE admin_sessions SET session_data = $1 WHERE session_id = $2`, [
+          newSession,
+          sessionRes.rows[0].session_id,
+        ]);
+      }
+    }
+  } catch (e) {
+    logError('updateSessionAuthorizationsForAdmin', e);
   }
 };

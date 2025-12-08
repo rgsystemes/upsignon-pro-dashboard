@@ -3,6 +3,7 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import './userDevice.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { PwdResetRequestGrantButton } from '../../helpers/pwdResetRequestGrantButton';
 
 // PROPS = setIsLoading, devices, email, reloadDevices, close
 class UserDevices extends React.Component {
@@ -269,12 +270,10 @@ class UserDevices extends React.Component {
                         >
                           {i18n.t('delete')}
                         </div>
-                        <div
-                          className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
-                          onClick={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
-                        >
-                          {i18n.t('password_reset_request_grant')}
-                        </div>
+                        <PwdResetRequestGrantButton
+                          status={d.status}
+                          onGrantPress={() => this.grantPwdResetReqWithWarning(d.pwd_reset_id)}
+                        />
                       </td>
                     </tr>
                   );

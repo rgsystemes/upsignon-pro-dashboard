@@ -1,6 +1,6 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { frontUrl } from '../../helpers/env';
+import { bankFrontUrl } from '../../helpers/env';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { PaginationBar } from '../../helpers/paginationBar';
 import { i18n } from '../../i18n/i18n';
@@ -11,6 +11,8 @@ import { getDateBack1Month, getDateBack2Weeks } from '../../helpers/dateHelper';
 import { StatsCell } from '../../helpers/statsCell';
 import { settingsConfig } from '../../helpers/settingsConfig';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 const maxRenderedItems = 50;
 
@@ -126,10 +128,10 @@ class Users extends React.Component {
   }
 
   goToPageIndex = (p) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
+    window.location.href = `${bankFrontUrl}/users/?limit=${this.state.limit}&pageIndex=${p}&sortingType=${this.state.sortingType}`;
   };
   toggleSorting = (sortType) => {
-    window.location.href = `${frontUrl}/users/?limit=${this.state.limit}&pageIndex=${this.state.pageIndex}&sortingType=${sortType}`;
+    window.location.href = `${bankFrontUrl}/users/?limit=${this.state.limit}&pageIndex=${this.state.pageIndex}&sortingType=${sortType}`;
   };
 
   onSearch = async (ev) => {
@@ -175,7 +177,7 @@ class Users extends React.Component {
           }));
         } catch (e) {
           console.error(e);
-          window.alert(i18n.t('user_email_already_used_or_not_authorized', { email: newEmail }));
+          toast.error(i18n.t('user_email_already_used_or_not_authorized', { email: newEmail }));
         }
       }
     }
@@ -289,7 +291,7 @@ class Users extends React.Component {
               ref={(r) => (this.searchInput = r)}
               type="search"
               style={searchInputStyle}
-              placeholder="email or id"
+              placeholder={i18n.t('user_search_placeholder')}
               onChange={this.onSearch}
             />
           </div>
@@ -335,6 +337,7 @@ class Users extends React.Component {
           onClick={this.goToPageIndex}
           itemUnitName={i18n.t('user_unit_name')}
         />
+        <Tooltip id="pwd-strength-tooltip" />
         <table>
           <thead>
             <tr>
@@ -342,7 +345,24 @@ class Users extends React.Component {
               <th>{i18n.t('user_email')}</th>
               <th>{i18n.t('user_data')}</th>
               <th style={{ width: 150 }}>{i18n.t('user_general_stats')}</th>
-              <th style={{ width: 150 }}>{i18n.t('user_passwords_stats')}</th>
+              <th style={{ width: 150 }}>
+                <span>{i18n.t('user_passwords_stats')}</span>
+                <span
+                  className="info-icon"
+                  data-tooltip-id="pwd-strength-tooltip"
+                  data-tooltip-html={`<div>
+                  <p>${i18n.t('user_passwords_stats_tooltip_1')}</p>
+                  <p>${i18n.t('user_passwords_stats_tooltip_2')}</p>
+                  <ul>
+                    <li>${i18n.t('user_passwords_stats_tooltip_3')}</li>
+                    <li>${i18n.t('user_passwords_stats_tooltip_4')}</li>
+                    <li>${i18n.t('user_passwords_stats_tooltip_5')}</li>
+                  </ul>
+                  </div>`}
+                >
+                  ?
+                </span>
+              </th>
               <th>
                 <div>{i18n.t('user_settings_override')}</div>
                 <div className="action" style={{ color: 'white' }} onClick={this.toggleAllSettings}>
