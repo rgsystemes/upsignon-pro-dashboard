@@ -13,13 +13,6 @@
   gap: 50px;
 }
 
-.shamirTable th:nth-child(2) {
-  min-width: 250px;
-}
-.shamirTable th:nth-child(3) {
-  min-width: 250px;
-}
-
 .shamir-warning {
   display: inline-block;
   width: 600px;

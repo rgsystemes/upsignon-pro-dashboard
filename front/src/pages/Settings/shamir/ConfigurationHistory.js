@@ -61,7 +61,7 @@ export const ConfigurationHistory = (p) => {
   return (
     <div>
       <h2>{i18n.t('shamir_history_title')}</h2>
-      <table className={`table shamirTable`}>
+      <table className={`table`}>
         <thead className={`tableHeader`}>
           <tr>
             <th>

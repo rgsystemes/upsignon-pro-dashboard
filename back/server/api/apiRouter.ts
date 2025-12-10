@@ -59,6 +59,7 @@ import { shamirSearchUsers } from './shamir/shamir_search_users';
 import { shamirCreateConfig } from './shamir/shamir_create_config';
 import { getShamirConfigs } from './shamir/shamir_configs';
 import { cancelPendingConfig } from './shamir/shamir_cancel_pending_config';
+import { shamirRequests } from './shamir/shamir_requests';
 
 export const apiRouter = express.Router();
 
@@ -191,3 +192,4 @@ apiRouter.post('/shamir-search-users', shamirSearchUsers);
 apiRouter.post('/shamir-create-config', shamirCreateConfig);
 apiRouter.post('/shamir-configs', getShamirConfigs);
 apiRouter.post('/shamir-cancel-pending-config', cancelPendingConfig);
+apiRouter.post('/shamir-requests', shamirRequests);

@@ -284,7 +284,7 @@ export class NewShamirConfig extends React.Component {
         />
         {shouldShowShareHoldersTable && (
           <div>
-            <table className={`table shamirTable`}>
+            <table className={`table`}>
               <thead className={`tableHeader`}>
                 <tr>
                   <th>

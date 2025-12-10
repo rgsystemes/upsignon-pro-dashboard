@@ -87,7 +87,6 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     if (nextShamirConfigIdx === 1) {
       await db.query('UPDATE shamir_configs SET is_active=$1 WHERE id=$2', [true, configId]);
     }
-    // TODO request for self-signing this config and change is_active afterwards ?
     res.status(200).end();
   } catch (e) {
     logError('shamirCreateFirstConfig', e);

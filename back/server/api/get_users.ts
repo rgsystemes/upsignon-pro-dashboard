@@ -68,7 +68,13 @@ export const get_users = async (req: any, res: any): Promise<void> => {
     u.allowed_to_export AS allowed_to_export,
     u.allowed_offline_mobile AS allowed_offline_mobile,
     u.allowed_offline_desktop AS allowed_offline_desktop,
-    u.settings_override AS settings_override
+    u.settings_override AS settings_override,
+    (SELECT JSON_BUILD_OBJECT('config_name', sc.name, 'created_at', MIN(ss.created_at))
+      FROM shamir_configs AS sc
+      INNER JOIN shamir_shares AS ss
+        ON ss.shamir_config_id=sc.id AND ss.vault_id=u.id
+      GROUP BY sc.id
+      HAVING sc.min_shares <= SUM(ARRAY_LENGTH(ss.closed_shares, 1))) as shamir_setup
   FROM users AS u
   INNER JOIN banks AS b ON u.bank_id=b.id
   WHERE u.bank_id=$3

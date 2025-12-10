@@ -515,6 +515,7 @@ const translations = {
     "Indiquez l'adresse email sur laquelle les utilisateurs bloqués pourront vous contacter.",
   shamir_config_support_email_explanation: "Cette adresse email sera affichée dans l'application.",
   shamir_config_summary: 'Résumé de votre configuration',
+  shamir_config_summary_state: 'État :',
   shamir_config_summary_details_consensus_label: 'Consensus requis :',
   shamir_config_summary_details_consensus_content:
     'Minimum $min personne(s) de confiance parmi $total désignée(s).',
@@ -530,8 +531,9 @@ const translations = {
     "Après validation, la configuration ne pourra être modifiée qu'avec le consentement des personnes de confiance selon les critères définis dans ce protocole.",
   shamir_config_validate_info:
     "L'enregistrement de ce protocole prendra effet immédiatement. Le déverrouillage de secours d'un coffre deviendra possible après qu'il aura été déverrouillé au moins une fois à partir d'une version compatible de l'application.",
-  shamir_config_creation: 'Creation : ',
-  shamir_config_creation_content: 'le $date par $creator.',
+  shamir_config_creation: 'Date de création :',
+  shamir_config_creator: 'Créé par :',
+  shamir_config_approved_by: 'Approuvé par :',
 
   // SHAMIR history
   shamir_history_title: 'Historique des configurations',
@@ -541,6 +543,24 @@ const translations = {
   shamir_history_state: 'État',
   shamir_history_state_active: 'Actif',
   shamir_history_state_inactive: 'Inactif',
+
+  // SHAMIR requests
+  shamir_requests_title: 'Suivi des demandes de déverrouillage de coffres-forts',
+  shamir_requests_email: 'Email',
+  shamir_requests_created_at: 'Date',
+  shamir_requests_expires_at: "Date d'expiration",
+  shamir_requests_completed_at: "Date d'approbation",
+  shamir_requests_version: 'Version',
+  shamir_requests_state: 'État',
+  shamir_requests_state_expired: 'Expirée',
+  shamir_requests_state_completed: 'Terminée',
+  shamir_requests_state_aborted: 'Annulée',
+  shamir_requests_state_pending: 'En attente',
+
+  // SHAMIR vault
+  shamir_vault_col_name: 'Version du protocole de secours',
+  shamir_vault_created_at: 'Créé le :',
+  shamir_vault_unprotected: 'Non protégé',
 };
 
 export default translations;

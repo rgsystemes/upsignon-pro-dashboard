@@ -28,6 +28,9 @@ export const ShamirTab = (p) => {
   const cancelNewConfig = () => {
     setCurrentPage(shamirPages.presentation);
   };
+  const cancelConfigChange = () => {
+    setCurrentPage(shamirPages.currentConfig);
+  };
 
   const [configs, setConfigs] = useState([]);
   const fetchConfigs = async () => {
@@ -108,7 +111,7 @@ export const ShamirTab = (p) => {
           <NewShamirConfig
             hasPreviousConfig={true}
             setIsLoading={p.setIsLoading}
-            onCancel={cancelNewConfig}
+            onCancel={cancelConfigChange}
             onConfigCreated={fetchConfigs}
           />
         )}
@@ -121,7 +124,7 @@ export const ShamirTab = (p) => {
             onDeletePendingConfig={fetchConfigs}
           />
         )}
-        {currentPage === shamirPages.requests && <ShamirRequests />}
+        {currentPage === shamirPages.requests && <ShamirRequests setIsLoading={setIsLoading} />}
         {currentPage === shamirPages.configurationHistory && (
           <ConfigurationHistory configs={configs} />
         )}

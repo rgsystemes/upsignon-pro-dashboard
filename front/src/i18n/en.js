@@ -500,6 +500,7 @@ const translations = {
   shamir_config_support_email_explanation:
     'This email address will be displayed in the application.',
   shamir_config_summary: 'Summary of your configuration',
+  shamir_config_summary_state: 'State:',
   shamir_config_summary_details_consensus_label: 'Required consensus:',
   shamir_config_summary_details_consensus_content:
     'Minimum $min trusted person(s) among $total designated.',
@@ -515,8 +516,9 @@ const translations = {
     'After validation, the configuration may only be modified with the consent of the trusted persons in accordance with the criteria defined in this protocol.',
   shamir_config_validate_info:
     'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
-  shamir_config_creation: 'Creation: ',
-  shamir_config_creation_content: '$date by $creator.',
+  shamir_config_creation: 'Creation date:',
+  shamir_config_creator: 'Created by:',
+  shamir_config_approved_by: 'Approved by:',
 
   // SHAMIR history
   shamir_history_title: 'History of configurations',
@@ -526,6 +528,24 @@ const translations = {
   shamir_history_state: 'State',
   shamir_history_state_active: 'Active',
   shamir_history_state_inactive: 'Inactive',
+
+  // SHAMIR requests
+  shamir_requests_title: 'Tracking requests to unlock vaults',
+  shamir_requests_email: 'Email',
+  shamir_requests_created_at: 'Date',
+  shamir_requests_expires_at: 'Expiry date',
+  shamir_requests_completed_at: 'Approval date',
+  shamir_requests_version: 'Version',
+  shamir_requests_state: 'Status',
+  shamir_requests_state_expired: 'Expired',
+  shamir_requests_state_completed: 'Completed',
+  shamir_requests_state_aborted: 'Canceled',
+  shamir_requests_state_pending: 'Pending',
+
+  // SHAMIR vault
+  shamir_vault_col_name: 'Version of the fallback protocol',
+  shamir_vault_created_at: 'Create at :',
+  shamir_vault_unprotected: 'Unprotected',
 };
 
 export default translations;
