@@ -3,60 +3,37 @@ import { MinSharesSecurityComment } from './MinSharesSecurityComment';
 import { ShamirState } from './ShamirState';
 import { ShareholdersResilienceComment } from './ShareholdersResilienceComment';
 
-export const ConfigSummary = (p) => {
-  const {
-    creationDesign,
-    isActive,
-    isPending,
-    name,
-    creationDate,
-    creatorEmail,
-    minShares,
-    holders,
-    supportEmail,
-    showCreatorNotHolderWarning,
-  } = p;
+export const ConfigChangeSummary = (p) => {
+  const { name, minShares, holders, supportEmail, showCreatorNotHolderWarning, previousConfig } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
     <ShareholdersResilienceComment minShares={minShares} totalHolders={holders.length} />
   );
-  const approvers = [];
 
   return (
-    <div className={`shamirSummary ${creationDesign ? '' : 'shamirSummaryAlt'}`}>
+    <div className={`shamirSummary`}>
       <div style={{ marginBottom: 20 }}>
         <strong className="shamirConfigName">{name}</strong>
       </div>
-      {!creationDesign && (
-        <div style={{ marginBottom: 20 }}>
-          <label className={'bodyMedium'}>{i18n.t('shamir_config_summary_state')}</label>
-          <br />
-          <ShamirState isActive={isActive} isPending={isPending} />
-        </div>
-      )}
-      {!creationDesign && (
-        <div style={{ marginBottom: 20 }}>
-          <label className={'bodyMedium'}>{i18n.t('shamir_config_creation')}</label>
-          <br />
-          {creationDate.toLocaleDateString()}
-        </div>
-      )}
-      {!creationDesign && (
-        <div style={{ marginBottom: 20 }}>
-          <label className={'bodyMedium'}>{i18n.t('shamir_config_creator')}</label>
-          <br />
-          {creatorEmail}
-        </div>
-      )}
       <div style={{ marginBottom: 20 }}>
         <label className={'bodyMedium'}>
           {i18n.t('shamir_config_summary_details_consensus_label')}
         </label>
-        <br />
-        {i18n.t('shamir_config_summary_details_consensus_content', {
-          min: minShares,
-          total: holders.length,
-        })}
+        {previousConfig.minShares != minShares ||
+          (previousConfig.shareholders.length != holders.length && (
+            <div className="oldValue">
+              {i18n.t('shamir_config_summary_details_consensus_content', {
+                min: previousConfig.minShares,
+                total: previousConfig.shareholders.length,
+              })}
+            </div>
+          ))}
+        <div>
+          {i18n.t('shamir_config_summary_details_consensus_content', {
+            min: minShares,
+            total: holders.length,
+          })}
+        </div>
       </div>
       <div style={{ marginBottom: 20 }}>
         <label className={'bodyMedium'}>{i18n.t('shamir_config_summary_details_risk_label')}</label>
@@ -72,6 +49,14 @@ export const ConfigSummary = (p) => {
           <span>{i18n.t('shamir_config_summary_details_admin_not_shareholder')}</span>
         )}
         <div>
+          {previousConfig.shareholders
+            .filter((s) => !holders.find((h) => h.email === s.email && h.bankName === s.bankName))
+            .map((s) => (
+              <div
+                className="oldValue"
+                key={s.email + s.bankName}
+              >{`${s.email} - ${s.bankName}`}</div>
+            ))}
           {holders.map((h) => {
             return <div key={h.id}>{`${h.email} - ${h.bankName}`}</div>;
           })}
@@ -88,21 +73,11 @@ export const ConfigSummary = (p) => {
         <label className={'bodyMedium'}>
           {i18n.t('shamir_config_summary_details_support_email_label')}
         </label>
-        <br />
-        {supportEmail}
+        {previousConfig.supportEmail != supportEmail && (
+          <div className="oldValue">{previousConfig.supportEmail}</div>
+        )}
+        <div>{supportEmail}</div>
       </div>
-      {!creationDesign && (
-        <div style={{ marginBottom: 20 }}>
-          <label className={'bodyMedium'}>{i18n.t('shamir_config_approved_by')}</label>
-          <br />
-          <div>
-            {approvers.map((ap) => {
-              return <div key={ap.id}>{`${ap.email} - ${ap.bankName}`}</div>;
-            })}
-            {approvers.length === 0 && 'Ø'}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

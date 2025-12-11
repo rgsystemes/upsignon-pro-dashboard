@@ -18,8 +18,9 @@ import { ShareholdersResilienceComment } from './components/ShareholdersResilien
 import { ConfigSummary } from './components/ConfigSummary';
 import { TextWithBold } from '../../../helpers/TextWithBold';
 import { InfoIcon } from '../../../helpers/icons/InfoIcon';
+import { ConfigChangeSummary } from './components/ConfigChangeSummary';
 
-// Props : setIsLoading, onConfigCreated, onCancel, hasPreviousConfig
+// Props : setIsLoading, onConfigCreated, onCancel, previousConfig
 export class NewShamirConfig extends React.Component {
   state = {
     nextShamirConfigIndex: null,
@@ -228,18 +229,21 @@ export class NewShamirConfig extends React.Component {
     );
     const configName = `Shamir ${nextShamirConfigIndex || '_'}`;
     const creationDate = new Date();
+
+    // TODO spacings
+    // TODO voir avec DAnae l'ux de la sélection dez actoinnaires: un scroll pour le tableau, ou avec un tag
+    // ajouter la diff dnas le résumé quand on modifie
+    // wording séverine
+
+    const hasPreviousConfig = !!this.props.previousConfig;
     return (
       <>
-        <h2>
-          {this.props.hasPreviousConfig
-            ? i18n.t('shamir_change_title')
-            : i18n.t('shamir_config_title')}
-        </h2>
+        <h2>{hasPreviousConfig ? i18n.t('shamir_change_title') : i18n.t('shamir_config_title')}</h2>
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_doc_link')}
         </ExternalLink>
 
-        {this.props.hasPreviousConfig && (
+        {hasPreviousConfig && (
           <div className="shamirChangeWarning">
             <div className="infoIconContainer">
               <InfoIcon size={16} />
@@ -358,24 +362,41 @@ export class NewShamirConfig extends React.Component {
           <FileIcon size={20} />
           <span>{i18n.t('shamir_config_summary')}</span>
         </h3>
-        <ConfigSummary
-          creationDesign={true}
-          isActive={false}
-          isPending={false}
-          name={configName}
-          creationDate={creationDate}
-          creatorEmail={adminEmail}
-          minShares={minShares}
-          holders={selectedHolders.map((sh) => {
-            return {
-              id: sh.id,
-              email: sh.email,
-              bankName: sh.bankName,
-            };
-          })}
-          supportEmail={supportEmail}
-          showCreatorNotHolderWarning={!isAdminAShareholder}
-        />
+        {hasPreviousConfig ? (
+          <ConfigChangeSummary
+            name={configName}
+            minShares={minShares}
+            holders={selectedHolders.map((sh) => {
+              return {
+                id: sh.id,
+                email: sh.email,
+                bankName: sh.bankName,
+              };
+            })}
+            supportEmail={supportEmail}
+            showCreatorNotHolderWarning={!isAdminAShareholder}
+            previousConfig={this.props.previousConfig}
+          />
+        ) : (
+          <ConfigSummary
+            creationDesign={true}
+            isActive={false}
+            isPending={false}
+            name={configName}
+            creationDate={creationDate}
+            creatorEmail={adminEmail}
+            minShares={minShares}
+            holders={selectedHolders.map((sh) => {
+              return {
+                id: sh.id,
+                email: sh.email,
+                bankName: sh.bankName,
+              };
+            })}
+            supportEmail={supportEmail}
+            showCreatorNotHolderWarning={!isAdminAShareholder}
+          />
+        )}
 
         <div className="shamirFormButtons">
           <button onClick={this.onCancel} className="whiteButton">

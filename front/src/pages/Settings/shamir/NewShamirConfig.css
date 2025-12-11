@@ -142,3 +142,7 @@
   flex-shrink: 0;
   background: #C6D5FF;
 }
+.oldValue {
+  text-decoration-line: line-through;
+  text-decoration-color: rgba(0, 0, 0, 0.4);
+}

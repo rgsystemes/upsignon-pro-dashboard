@@ -101,7 +101,7 @@ export const ShamirTab = (p) => {
         )}
         {currentPage === shamirPages.newConfig && (
           <NewShamirConfig
-            hasPreviousConfig={false}
+            previousConfig={null}
             setIsLoading={p.setIsLoading}
             onCancel={cancelNewConfig}
             onConfigCreated={fetchConfigs}
@@ -109,7 +109,7 @@ export const ShamirTab = (p) => {
         )}
         {currentPage === shamirPages.configChange && (
           <NewShamirConfig
-            hasPreviousConfig={true}
+            previousConfig={currentConfig}
             setIsLoading={p.setIsLoading}
             onCancel={cancelConfigChange}
             onConfigCreated={fetchConfigs}
