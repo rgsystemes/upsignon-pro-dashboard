@@ -1,6 +1,5 @@
 import { i18n } from '../../../../i18n/i18n';
 import { MinSharesSecurityComment } from './MinSharesSecurityComment';
-import { ShamirState } from './ShamirState';
 import { ShareholdersResilienceComment } from './ShareholdersResilienceComment';
 
 export const ConfigChangeSummary = (p) => {
@@ -19,15 +18,15 @@ export const ConfigChangeSummary = (p) => {
         <label className={'bodyMedium'}>
           {i18n.t('shamir_config_summary_details_consensus_label')}
         </label>
-        {previousConfig.minShares != minShares ||
-          (previousConfig.shareholders.length != holders.length && (
-            <div className="oldValue">
-              {i18n.t('shamir_config_summary_details_consensus_content', {
-                min: previousConfig.minShares,
-                total: previousConfig.shareholders.length,
-              })}
-            </div>
-          ))}
+        {(previousConfig.minShares != minShares ||
+          previousConfig.shareholders.length != holders.length) && (
+          <div className="oldValue">
+            {i18n.t('shamir_config_summary_details_consensus_content', {
+              min: previousConfig.minShares,
+              total: previousConfig.shareholders.length,
+            })}
+          </div>
+        )}
         <div>
           {i18n.t('shamir_config_summary_details_consensus_content', {
             min: minShares,

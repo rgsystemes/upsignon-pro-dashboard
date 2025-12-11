@@ -52,8 +52,8 @@ export const ShamirRequests = (p) => {
       if (a.email > b.email) return sortByEmail;
     }
     if (sortByExpiryDate !== 0) {
-      if (a.expiredAt < b.expiredAt) return -sortByExpiryDate;
-      if (a.expiredAt > b.expiredAt) return sortByExpiryDate;
+      if (a.expiresAt < b.expiresAt) return -sortByExpiryDate;
+      if (a.expiresAt > b.expiresAt) return sortByExpiryDate;
     }
     if (sortByCompletedDate !== 0) {
       if (a.completedAt && !b.completedAt) return -sortByCompletedDate;
@@ -147,7 +147,7 @@ export const ShamirRequests = (p) => {
               <tr key={r.id}>
                 <td>{r.email}</td>
                 <td>{new Date(r.createdAt).toLocaleString()}</td>
-                <td>{new Date(r.expiredAt).toLocaleDateString()}</td>
+                <td>{new Date(r.expiresAt).toLocaleDateString()}</td>
                 <td>{r.completedAt && new Date(r.completedAt).toLocaleDateString()}</td>
                 <td>{r.shamirConfigName}</td>
                 <td>

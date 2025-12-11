@@ -60,7 +60,7 @@ const fetchEnhancedConfig = async (
       return {
         email: sh.vaultEmail,
         nbShares: sh.nbShares,
-        bankName: r.rows[0].name,
+        bankName: r.rows[0]?.name || '-',
       };
     }),
   );

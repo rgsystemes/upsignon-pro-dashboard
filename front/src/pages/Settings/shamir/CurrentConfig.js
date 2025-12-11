@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { ExternalLink } from '../../../helpers/ExternalLink/ExternalLink';
 import { i18n } from '../../../i18n/i18n';
-import { MinSharesSecurityComment } from './components/MinSharesSecurityComment';
-import { ShareholdersResilienceComment } from './components/ShareholdersResilienceComment';
 import { ConfigSummary } from './components/ConfigSummary';
 import './CurrentConfig.css';
 import { NameAndVersion } from './components/NameAndVersion';

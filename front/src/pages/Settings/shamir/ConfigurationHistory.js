@@ -39,7 +39,7 @@ export const ConfigurationHistory = (p) => {
   };
 
   const [configToShow, setConfigToShow] = useState(null);
-  const sortedConfigs = configs.sort((a, b) => {
+  const sortedConfigs = [...configs].sort((a, b) => {
     if (sortByVersion !== 0) {
       return (a.name < b.name ? -1 : a.name > b.name ? 1 : 0) * sortByVersion;
     }
