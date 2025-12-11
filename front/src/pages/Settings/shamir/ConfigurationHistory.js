@@ -57,6 +57,7 @@ export const ConfigurationHistory = (p) => {
     if (sortByState !== 0) {
       return (a.isActive < b.isActive ? -1 : a.isActive > b.isActive ? 1 : 0) * sortByState;
     }
+    return 0;
   });
   return (
     <div>
@@ -88,7 +89,7 @@ export const ConfigurationHistory = (p) => {
           </tr>
         </thead>
         <tbody>
-          {configs.map((c) => {
+          {sortedConfigs.map((c) => {
             return (
               <tr key={c.id}>
                 <td>{c.name}</td>

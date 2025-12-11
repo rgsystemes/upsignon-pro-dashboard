@@ -1,7 +1,6 @@
 import { i18n } from '../../i18n/i18n';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './RightPanel.css';
-import { toast } from 'react-toastify';
 
 export const RightPanel = (p) => {
   const { children, onClose, mainAction } = p;

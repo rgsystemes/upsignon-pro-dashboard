@@ -1,4 +1,3 @@
-import { EditIcon } from '../../../../helpers/icons/EditIcon';
 import { i18n } from '../../../../i18n/i18n';
 import { MinSharesSecurityComment } from './MinSharesSecurityComment';
 import { ShamirState } from './ShamirState';

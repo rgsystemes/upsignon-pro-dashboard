@@ -24,13 +24,11 @@ export class NewShamirConfig extends React.Component {
   state = {
     nextShamirConfigIndex: null,
     minShares: 3,
-    search: '',
     selectedHolders: [],
     searchedHolders: [],
     supportEmail: '',
     sortShareholder: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     sortBank: 0, // 0 (no sorting), -1 (desc), 1 (asc)
-    showSubmitValidation: false,
     adminEmail: '',
   };
   isSubmitable = () => {
@@ -92,7 +90,6 @@ export class NewShamirConfig extends React.Component {
       );
       this.setState((s) => ({
         ...s,
-        search,
         searchedHolders,
         adminEmail,
       }));
@@ -114,7 +111,7 @@ export class NewShamirConfig extends React.Component {
 
   componentDidMount() {
     this.fetchNextShamirConfigIndex();
-    this.onHolderSearchChange();
+    this.onHolderSearchChange('');
   }
 
   onSortHoldersByEmail = () => {
@@ -212,10 +209,8 @@ export class NewShamirConfig extends React.Component {
       selectedHolders,
       searchedHolders,
       supportEmail,
-      search,
       sortShareholder,
       sortBank,
-      showSubmitValidation,
       adminEmail,
     } = this.state;
 
@@ -239,7 +234,6 @@ export class NewShamirConfig extends React.Component {
           {this.props.hasPreviousConfig
             ? i18n.t('shamir_change_title')
             : i18n.t('shamir_config_title')}
-          ;
         </h2>
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_doc_link')}

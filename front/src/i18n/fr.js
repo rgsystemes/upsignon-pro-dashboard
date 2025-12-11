@@ -478,7 +478,7 @@ const translations = {
   shamir_config_min_shares:
     'Choisissez le nombre de personnes de confiance minimum qui sera requis pour déverrouiller un coffre-fort.',
   shamir_config_min_shares_explanation:
-    "Plus ce nombre est élevé, plus la sécurité est élevée, mais moins il sera pratique d'activer le protocole. Nous vous recommandons 2 à 4 personnes.",
+    "Plus ce nombre est élevé, plus le niveau de sécurité augmente, mais moins l'activation du protocole devient pratique. Nous vous recommandons 2 à 4 personnes.",
   shamir_config_min_shares_risk_1: 'Sécurité insuffisante.',
   shamir_config_min_shares_risk_1_details:
     "Chaque personne de confiance pourra déverrouiller n'importe quel coffre-fort à elle seule !",

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { ExternalLink } from '../../../helpers/ExternalLink/ExternalLink';
 import { i18n } from '../../../i18n/i18n';
 import { MinSharesSecurityComment } from './components/MinSharesSecurityComment';
@@ -11,14 +11,7 @@ import { toast } from 'react-toastify';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
 
 export const CurrentConfig = (p) => {
-  const { currentConfig, pendingNewConfig, onStartEdit, onDeletePendingConfig } = p;
-  const minSharesSecurityComment = <MinSharesSecurityComment minShares={currentConfig.minShares} />;
-  const resilienceComment = (
-    <ShareholdersResilienceComment
-      minShares={currentConfig.minShares}
-      totalHolders={currentConfig.shareholders.length}
-    />
-  );
+  const { currentConfig, pendingNewConfig, onStartEdit } = p;
   const [showPendingConfig, setShowPendingConfig] = useState(false);
   const onCancelPendingRequest = async (handleClose) => {
     try {

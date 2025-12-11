@@ -16,7 +16,7 @@ const shamirPages = {
   presentation: 'presentation',
   currentConfig: 'currentConfig',
   newConfig: 'newConfig',
-  confgiChange: 'confgiChange',
+  configChange: 'configChange',
   requests: 'requests',
   configurationHistory: 'configurationHistory',
 };

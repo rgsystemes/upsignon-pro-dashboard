@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
 import { Request, Response } from 'express';

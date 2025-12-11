@@ -508,7 +508,7 @@ const translations = {
   shamir_config_summary_details_resilience_label: 'Resilience:',
   shamir_config_summary_details_shareholders_label: 'Trusted persons:',
   shamir_config_summary_details_support_email_label: 'Support email:',
-  shamir_config_summary_details_admin_not_shareholder: ' (which you are part of)',
+  shamir_config_summary_details_admin_not_shareholder: ' (which you are not part of)',
   shamir_config_submit: 'Save this configuration',
   shamir_config_validate_submit: 'Save',
   shamir_config_validate_title: 'Do you want to save this fallback protocol?',
@@ -544,7 +544,7 @@ const translations = {
 
   // SHAMIR vault
   shamir_vault_col_name: 'Version of the fallback protocol',
-  shamir_vault_created_at: 'Create at :',
+  shamir_vault_created_at: 'Created at :',
   shamir_vault_unprotected: 'Unprotected',
 };
 

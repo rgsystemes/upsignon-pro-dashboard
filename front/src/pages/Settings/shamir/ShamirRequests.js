@@ -142,7 +142,7 @@ export const ShamirRequests = (p) => {
           </tr>
         </thead>
         <tbody>
-          {requests.map((r) => {
+          {sortedRequests.map((r) => {
             return (
               <tr key={r.id}>
                 <td>{r.email}</td>
