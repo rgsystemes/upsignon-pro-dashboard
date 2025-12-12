@@ -7,7 +7,7 @@ export const shamirRequests = async (req: Request, res: Response): Promise<void>
     // @ts-ignore
     const bankId = req.proxyParamsBankId;
     const requestRes = await db.query(
-      `SELECT srr.*, u.email, sc.name
+      `SELECT srr.*, u.email, sc.name, srr.expiry_date < current_timestamp(0) as expired
       FROM shamir_recovery_requests AS srr
       INNER JOIN shamir_configs AS sc ON sc.id=srr.shamir_config_id
       INNER JOIN user_devices AS ud ON ud.id=srr.device_id
@@ -24,7 +24,7 @@ export const shamirRequests = async (req: Request, res: Response): Promise<void>
           expiresAt: r.expiry_date,
           completedAt: r.completed_at,
           shamirConfigName: r.name,
-          status: r.status,
+          status: r.expired ? 'EXPIRED' : r.status,
         };
       }),
     });

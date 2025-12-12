@@ -99,7 +99,7 @@ export const ShamirRequests = (p) => {
                 sorting={sortByEmail}
               />
             </th>
-            <th>
+            <th style={{ minWidth: 190 }}>
               <span>{i18n.t('shamir_requests_created_at')}</span>
               <TableColSortIcon
                 size={12}
@@ -107,7 +107,7 @@ export const ShamirRequests = (p) => {
                 sorting={sortByDate}
               />
             </th>
-            <th>
+            <th style={{ minWidth: 190 }}>
               <span>{i18n.t('shamir_requests_expires_at')}</span>
               <TableColSortIcon
                 size={12}
@@ -115,7 +115,7 @@ export const ShamirRequests = (p) => {
                 sorting={sortByExpiryDate}
               />
             </th>
-            <th>
+            <th style={{ minWidth: 210 }}>
               <span>{i18n.t('shamir_requests_completed_at')}</span>
               <TableColSortIcon
                 size={12}
@@ -147,8 +147,8 @@ export const ShamirRequests = (p) => {
               <tr key={r.id}>
                 <td>{r.email}</td>
                 <td>{new Date(r.createdAt).toLocaleString()}</td>
-                <td>{new Date(r.expiresAt).toLocaleDateString()}</td>
-                <td>{r.completedAt && new Date(r.completedAt).toLocaleDateString()}</td>
+                <td>{new Date(r.expiresAt).toLocaleString()}</td>
+                <td>{r.completedAt && new Date(r.completedAt).toLocaleString()}</td>
                 <td>{r.shamirConfigName}</td>
                 <td>
                   <RequestState status={r.status} />
