@@ -36,6 +36,7 @@
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
     "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "start": "yarn build-server && node ./compiledServer/server.js"
+    "start": "yarn build-server && node ./compiledServer/server.js",
+    "postinstall": "npm rebuild bcrypt pg"
   }
 }
