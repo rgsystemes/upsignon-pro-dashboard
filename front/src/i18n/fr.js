@@ -523,14 +523,16 @@ const translations = {
   shamir_config_summary_details_resilience_label: 'Résilience :',
   shamir_config_summary_details_shareholders_label: 'Personnes de confiance :',
   shamir_config_summary_details_support_email_label: 'Email de support :',
+  shamir_config_summary_details_support_email_empty: 'Champ non renseigné.',
   shamir_config_summary_details_admin_not_shareholder: ' (dont vous ne faites pas partie)',
-  shamir_config_submit: 'Enregistrer cette configuration',
-  shamir_config_validate_submit: 'Enregistrer',
-  shamir_config_validate_title: 'Souhaitez-vous enregistrer ce protocole de secours ?',
+  shamir_config_submit: 'Valider cette configuration',
+  shamir_config_validate_submit: 'Valider',
+  shamir_config_validate_title: 'Souhaitez-vous valider ce protocole de secours ?',
   shamir_config_validate_warning:
     "Après validation, la configuration ne pourra être modifiée qu'avec le consentement des personnes de confiance selon les critères définis dans ce protocole.",
-  shamir_config_validate_info:
-    "L'enregistrement de ce protocole prendra effet immédiatement. Le déverrouillage de secours d'un coffre deviendra possible après qu'il aura été déverrouillé au moins une fois à partir d'une version compatible de l'application.",
+  shamir_config_validate_info: "L'enregistrement de ce protocole prendra effet immédiatement.",
+  shamir_config_validate_info_2:
+    "Le déverrouillage de secours d'un coffre-fort deviendra possible dès qu'il aura été réouvert au moins une fois.",
   shamir_config_creation: 'Date de création :',
   shamir_config_creator: 'Créé par :',
   shamir_config_approved_by: 'Approuvé par :',

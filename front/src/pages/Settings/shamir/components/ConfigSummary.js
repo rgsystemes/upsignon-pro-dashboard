@@ -89,7 +89,11 @@ export const ConfigSummary = (p) => {
           {i18n.t('shamir_config_summary_details_support_email_label')}
         </label>
         <br />
-        {supportEmail}
+        {supportEmail || (
+          <span style={{ color: '#E53E3E' }}>
+            {i18n.t('shamir_config_summary_details_support_email_empty')}
+          </span>
+        )}
       </div>
       {!creationDesign && (
         <div style={{ marginBottom: 20 }}>
@@ -99,7 +103,7 @@ export const ConfigSummary = (p) => {
             {approvers.map((ap) => {
               return <div key={ap.id}>{`${ap.email} - ${ap.bankName}`}</div>;
             })}
-            {approvers.length === 0 && 'Ø'}
+            {approvers.length === 0 && '--'}
           </div>
         </div>
       )}

@@ -1,0 +1,65 @@
+
+.hint14Regular {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: #323232;
+}
+
+.elementTitle20Bold {
+  color: #000;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 133%;
+}
+
+.bodyMedium {
+  /* Body | 16/Medium */
+  color: #586081;
+  /* font-family: Inter; */
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 20.8px */
+  margin: 0;
+}
+
+.body16Medium {
+  color: #111;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%;
+}
+.body16SemiBold {
+  color: #323232;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+}
+.textLgSemiBold {
+  color: #FFF;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.elementLink14Regular {
+  color: #366CFC;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+}

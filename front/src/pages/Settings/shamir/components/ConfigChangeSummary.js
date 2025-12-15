@@ -75,7 +75,13 @@ export const ConfigChangeSummary = (p) => {
         {previousConfig.supportEmail != supportEmail && (
           <div className="oldValue">{previousConfig.supportEmail}</div>
         )}
-        <div>{supportEmail}</div>
+        <div>
+          {supportEmail || (
+            <span style={{ color: '#E53E3E' }}>
+              {i18n.t('shamir_config_summary_details_support_email_empty')}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

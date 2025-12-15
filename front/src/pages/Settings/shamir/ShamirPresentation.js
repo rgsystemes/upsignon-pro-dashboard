@@ -6,18 +6,18 @@ export const ShamirPresentation = (p) => {
   const { onStartConfig } = p;
   return (
     <div>
-      <h2>{i18n.t('shamir_presentation_title')}</h2>
+      <h2 className="elementTitle20Bold">{i18n.t('shamir_presentation_title')}</h2>
       <div className="presentationCardsContainer">
         <div className="presentationCard">
           <div className="presentationCardHeader">
             <UserCardIllu />
           </div>
           <div className="presentationCardContent">
-            <h3>
+            <h3 className="body16Medium">
               {i18n.t('shamir_presentation_card_user_title_1')}
               <span className="coloredText">{i18n.t('shamir_presentation_card_user_title_2')}</span>
             </h3>
-            <div>{i18n.t('shamir_presentation_card_user_details')}</div>
+            <div className="hint14Regular">{i18n.t('shamir_presentation_card_user_details')}</div>
           </div>
         </div>
         <div className="presentationCard">
@@ -25,13 +25,13 @@ export const ShamirPresentation = (p) => {
             <ShareholderCardIllu />
           </div>
           <div className="presentationCardContent">
-            <h3>
+            <h3 className="body16Medium">
               {i18n.t('shamir_presentation_card_shareholder_title_1')}
               <span className="coloredText">
                 {i18n.t('shamir_presentation_card_shareholder_title_2')}
               </span>
             </h3>
-            <div>
+            <div className="hint14Regular">
               {i18n.t('shamir_presentation_card_shareholder_details_1')}
               <br />
               <br />
@@ -44,21 +44,25 @@ export const ShamirPresentation = (p) => {
             <AdminCardIllu />
           </div>
           <div className="presentationCardContent">
-            <h3>
+            <h3 className="body16Medium">
               {i18n.t('shamir_presentation_card_admin_title_1')}
               <span className="coloredText">
                 {i18n.t('shamir_presentation_card_admin_title_2')}
               </span>
             </h3>
-            <div>{i18n.t('shamir_presentation_card_admin_details_1')}</div>
-            <div>{i18n.t('shamir_presentation_card_admin_details_2')}</div>
+            <div className="hint14Regular">
+              1. {i18n.t('shamir_presentation_card_admin_details_1')}
+            </div>
+            <div className="hint14Regular">
+              2. {i18n.t('shamir_presentation_card_admin_details_2')}
+            </div>
           </div>
         </div>
       </div>
-      <button className="submitButton shamirStartButton" onClick={onStartConfig}>
+      <button className="submitButton shamirStartButton textLgSemiBold" onClick={onStartConfig}>
         {i18n.t('shamir_presentation_start')}
       </button>
-      <div className="seeMoreLink">
+      <div className="seeMoreLink elementLink">
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_presentation_see_more')}
         </ExternalLink>

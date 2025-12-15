@@ -2,10 +2,6 @@ import React from 'react';
 import { i18n } from '../../../i18n/i18n';
 import './NewShamirConfig.css';
 import { TableColSortIcon } from '../../../helpers/icons/TableColSortIcon';
-import { CountingIcon } from '../../../helpers/icons/CountingIcon';
-import { PersonRoundIcon } from '../../../helpers/icons/PersonRoundIcon';
-import { MailIcon } from '../../../helpers/icons/MailIcon';
-import { FileIcon } from '../../../helpers/icons/FileIcon';
 import { SearchBar } from '../../../helpers/SearchBar';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
 import { toast } from 'react-toastify';
@@ -19,6 +15,7 @@ import { ConfigSummary } from './components/ConfigSummary';
 import { TextWithBold } from '../../../helpers/TextWithBold';
 import { InfoIcon } from '../../../helpers/icons/InfoIcon';
 import { ConfigChangeSummary } from './components/ConfigChangeSummary';
+import { SelectedHolderTags } from './components/SelectedHolderTags';
 
 // Props : setIsLoading, onConfigCreated, onCancel, previousConfig
 export class NewShamirConfig extends React.Component {
@@ -170,18 +167,9 @@ export class NewShamirConfig extends React.Component {
   };
 
   getResultingHolderList = () => {
-    const { selectedHolders, searchedHolders, sortShareholder, sortBank } = this.state;
-    const res = [
-      ...searchedHolders.filter((h) => !selectedHolders.find((s) => s.id === h.id)),
-      ...selectedHolders.map((h) => {
-        return {
-          ...h,
-          isSelected: true,
-        };
-      }),
-    ];
+    const { searchedHolders, sortShareholder, sortBank } = this.state;
     if (sortShareholder !== 0) {
-      return res.sort((a, b) => {
+      return searchedHolders.sort((a, b) => {
         if (a.email === b.email) {
           if (a.bankName < b.bankName) return -sortShareholder;
           if (a.bankName > b.bankName) return sortShareholder;
@@ -191,7 +179,7 @@ export class NewShamirConfig extends React.Component {
       });
     }
     if (sortBank !== 0) {
-      return res.sort((a, b) => {
+      return searchedHolders.sort((a, b) => {
         if (a.bankName === b.bankName) {
           if (a.email < b.email) return -sortBank;
           if (a.email > b.email) return sortBank;
@@ -200,7 +188,7 @@ export class NewShamirConfig extends React.Component {
         return sortBank;
       });
     }
-    return res;
+    return searchedHolders;
   };
 
   render() {
@@ -215,7 +203,12 @@ export class NewShamirConfig extends React.Component {
       adminEmail,
     } = this.state;
 
-    const resultingHolderList = this.getResultingHolderList();
+    const resultingHolderList = this.getResultingHolderList().map((h) => {
+      return {
+        ...h,
+        isSelected: !!selectedHolders.find((s) => s.id === h.id),
+      };
+    });
 
     const areAllSelected =
       resultingHolderList.filter((h) => h.hasSharingPublicKey).length > 0 &&
@@ -230,15 +223,12 @@ export class NewShamirConfig extends React.Component {
     const configName = `Shamir ${nextShamirConfigIndex || '_'}`;
     const creationDate = new Date();
 
-    // TODO spacings
-    // TODO voir avec DAnae l'ux de la sélection dez actoinnaires: un scroll pour le tableau, ou avec un tag
-    // ajouter la diff dnas le résumé quand on modifie
-    // wording séverine
-
     const hasPreviousConfig = !!this.props.previousConfig;
     return (
       <>
-        <h2>{hasPreviousConfig ? i18n.t('shamir_change_title') : i18n.t('shamir_config_title')}</h2>
+        <h2 className="elementTitle20Bold">
+          {hasPreviousConfig ? i18n.t('shamir_change_title') : i18n.t('shamir_config_title')}
+        </h2>
         <ExternalLink href="https://upsignon.eu/shamir-doc">
           {i18n.t('shamir_doc_link')}
         </ExternalLink>
@@ -255,34 +245,45 @@ export class NewShamirConfig extends React.Component {
         <NameAndVersion name={configName} creationDate={creationDate} withTitle />
 
         <h3 className={`titleWithIcon`}>
-          <CountingIcon size={20} />
-          <span>{i18n.t('shamir_config_min_shares')}*</span>
+          1/ <span>{i18n.t('shamir_config_min_shares')}</span>
         </h3>
-        <p>{i18n.t('shamir_config_min_shares_explanation')}</p>
-        <input
-          type="number"
-          min={1}
-          value={minShares || ''}
-          onChange={(e) =>
-            this.setState({ minShares: e.target.value ? Number(e.target.value) : null })
-          }
-        />
-        {minSharesWarning}
+        <p className={'bodyMedium'}>{i18n.t('shamir_config_min_shares_explanation')}</p>
+        <div
+          style={{
+            display: 'inline-flex',
+            flexDirection: 'column',
+            alignItems: 'stretch',
+          }}
+        >
+          <input
+            type="number"
+            min={1}
+            value={minShares || ''}
+            onChange={(e) =>
+              this.setState({ minShares: e.target.value ? Number(e.target.value) : null })
+            }
+            className="minSharesInput"
+          />
+          {minSharesWarning}
+        </div>
 
         <h3 className={`titleWithIcon`}>
-          <PersonRoundIcon size={20} />
-          <span>{i18n.t('shamir_config_holders')}*</span>
+          2/ <span>{i18n.t('shamir_config_holders')}</span>
         </h3>
-        <p>{i18n.t('shamir_config_holders_explanation')}</p>
+        <p className={'bodyMedium'}>{i18n.t('shamir_config_holders_explanation')}</p>
 
         <SearchBar
           placeholder={i18n.t('shamir_config_holder_search')}
           onChange={(ev) => this.onHolderSearchChange(ev.target.value)}
           className="shareholderSearch"
         />
+        <SelectedHolderTags
+          holders={selectedHolders}
+          onRemoveHolder={(hId) => this.toggleShareholder(hId, false)}
+        />
         {shouldShowShareHoldersTable && (
-          <div>
-            <table className={`table`}>
+          <div className="shareholdersSelectContainer">
+            <table className={`table stickyHeader`}>
               <thead className={`tableHeader`}>
                 <tr>
                   <th>
@@ -310,6 +311,8 @@ export class NewShamirConfig extends React.Component {
                   </th>
                 </tr>
               </thead>
+            </table>
+            <table className={`table`}>
               <tbody>
                 {resultingHolderList.map((h) => {
                   return (
@@ -346,10 +349,9 @@ export class NewShamirConfig extends React.Component {
           </div>
         )}
         <h3 className={`titleWithIcon`}>
-          <MailIcon size={20} />
-          <span>{i18n.t('shamir_config_support_email')}*</span>
+          3/ <span>{i18n.t('shamir_config_support_email')}</span>
         </h3>
-        <p>{i18n.t('shamir_config_support_email_explanation')}</p>
+        <p className={'bodyMedium'}>{i18n.t('shamir_config_support_email_explanation')}</p>
         <input
           type="email"
           className="contactEmailInput"
@@ -358,8 +360,7 @@ export class NewShamirConfig extends React.Component {
           onChange={(e) => this.setState({ supportEmail: e.target.value })}
         />
 
-        <h3 className={`titleWithIcon`}>
-          <FileIcon size={20} />
+        <h3 className={`titleWithIcon`} style={{ marginBottom: 14 }}>
           <span>{i18n.t('shamir_config_summary')}</span>
         </h3>
         {hasPreviousConfig ? (
@@ -418,6 +419,7 @@ export class NewShamirConfig extends React.Component {
             <span>{i18n.t('shamir_config_validate_warning')}</span>
           </div>
           <div>{i18n.t('shamir_config_validate_info')}</div>
+          <div>{i18n.t('shamir_config_validate_info_2')}</div>
           <div className="shamirFormValidateButtons">
             <button onClick={this.onValidationCancel} className="whiteButton">
               {i18n.t('cancel')}

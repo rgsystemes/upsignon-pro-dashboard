@@ -508,14 +508,16 @@ const translations = {
   shamir_config_summary_details_resilience_label: 'Resilience:',
   shamir_config_summary_details_shareholders_label: 'Trusted persons:',
   shamir_config_summary_details_support_email_label: 'Support email:',
+  shamir_config_summary_details_support_email_empty: 'Mandatory field.',
   shamir_config_summary_details_admin_not_shareholder: ' (which you are not part of)',
-  shamir_config_submit: 'Save this configuration',
-  shamir_config_validate_submit: 'Save',
-  shamir_config_validate_title: 'Do you want to save this fallback protocol?',
+  shamir_config_submit: 'Validate this configuration',
+  shamir_config_validate_submit: 'Validate',
+  shamir_config_validate_title: 'Do you want to validate this fallback protocol?',
   shamir_config_validate_warning:
     'After validation, the configuration may only be modified with the consent of the trusted persons in accordance with the criteria defined in this protocol.',
-  shamir_config_validate_info:
-    'The registration of this protocol will take effect immediately. Emergency unlocking of a vault will become possible after it has been unlocked at least once from a compatible version of the application.',
+  shamir_config_validate_info: 'The registration of this protocol will take effect immediately.',
+  shamir_config_validate_info_2:
+    'Emergency unlocking of a vault will become possible after it has been reopened at least once.',
   shamir_config_creation: 'Creation date:',
   shamir_config_creator: 'Created by:',
   shamir_config_approved_by: 'Approved by:',

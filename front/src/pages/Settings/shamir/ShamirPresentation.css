@@ -1,4 +1,5 @@
 .presentationCardsContainer {
+  margin-top: 40px;
   display: flex;
   gap: 40px;
   align-items: stretch;

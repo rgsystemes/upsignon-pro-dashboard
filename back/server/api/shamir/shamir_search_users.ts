@@ -40,7 +40,6 @@ export const shamirSearchUsers = async (req: Request, res: Response): Promise<vo
       LEFT JOIN banks AS b ON b.id = u.bank_id
       WHERE ${whereClauses.join(' AND ')}
       ORDER BY u.email ASC, b.name ASC
-      LIMIT 15
     `;
     const searchRes = await db.query(query, params);
     res.status(200).json({

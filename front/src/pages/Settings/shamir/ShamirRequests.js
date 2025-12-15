@@ -87,7 +87,7 @@ export const ShamirRequests = (p) => {
 
   return (
     <div>
-      <h2>{i18n.t('shamir_requests_title')}</h2>
+      <h2 className="elementTitle20Bold">{i18n.t('shamir_requests_title')}</h2>
       <table className={`table`}>
         <thead className={`tableHeader`}>
           <tr>

@@ -31,7 +31,9 @@ export const CurrentConfig = (p) => {
     <div>
       <div className="currentConfigHeader">
         <div>
-          <h2>{i18n.t('shamir_presentation_title')}</h2>
+          <h2 className="elementTitle20Bold" style={{ marginBottom: 4 }}>
+            {i18n.t('shamir_presentation_title')}
+          </h2>
           <ExternalLink href="https://upsignon.eu/shamir-doc">
             {i18n.t('shamir_doc_link')}
           </ExternalLink>

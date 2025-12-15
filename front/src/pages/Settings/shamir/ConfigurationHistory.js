@@ -61,7 +61,7 @@ export const ConfigurationHistory = (p) => {
   });
   return (
     <div>
-      <h2>{i18n.t('shamir_history_title')}</h2>
+      <h2 className="elementTitle20Bold">{i18n.t('shamir_history_title')}</h2>
       <table className={`table`}>
         <thead className={`tableHeader`}>
           <tr>
@@ -93,7 +93,7 @@ export const ConfigurationHistory = (p) => {
             return (
               <tr key={c.id}>
                 <td>{c.name}</td>
-                <td>{c.approvedAt ? new Date(c.approvedAt).toLocaleDateString() : '-'}</td>
+                <td>{c.approvedAt ? new Date(c.approvedAt).toLocaleDateString() : '--'}</td>
                 <td>{c.creatorEmail}</td>
                 <td>
                   <ShamirState isActive={c.isActive} isPending={c.isPending} />

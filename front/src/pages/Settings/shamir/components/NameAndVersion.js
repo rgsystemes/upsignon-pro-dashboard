@@ -1,4 +1,3 @@
-import { EditIcon } from '../../../../helpers/icons/EditIcon';
 import { i18n } from '../../../../i18n/i18n';
 
 export const NameAndVersion = (p) => {
@@ -7,7 +6,6 @@ export const NameAndVersion = (p) => {
     <div>
       {withTitle && (
         <h3 className={`titleWithIcon`}>
-          <EditIcon size={20} />
           <span>{i18n.t('shamir_config_name_title')}</span>
         </h3>
       )}

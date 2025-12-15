@@ -6,7 +6,7 @@ export const ShareholdersResilienceComment = (p) => {
   return (
     <div>
       {margin < 0 && (
-        <span className={`shamir-warning forbidden`}>
+        <span className={`forbidden`}>
           {i18n.t('shamir_config_holders_warning_not_enough')}{' '}
           <strong>
             {i18n.t('shamir_config_holders_warning_not_enough_number', { n: -margin })}

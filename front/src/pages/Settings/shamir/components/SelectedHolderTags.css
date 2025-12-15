@@ -1,0 +1,26 @@
+.selectedHolderTagsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 7px 14px;
+  margin-bottom: 14px;
+  width: 100%;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.selectedHolderTag {
+  flex-shrink: 0;
+  flex-grow: 0;
+  border-radius: 17px;
+  background-color: #EEE;
+  color: #323232;
+  padding: 3px 11px;
+  display: flex;
+  align-items: center;
+}
+
+.tagRemove {
+  margin-left: 11px;
+}
