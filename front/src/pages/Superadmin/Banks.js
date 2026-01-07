@@ -34,7 +34,7 @@ class Banks extends React.Component {
       this.props.setIsLoading(true);
       const newBankName = this.newBankNameInputRef.value;
       const newAdminEmail = this.newAdminEmailInputRef.value;
-      const isTrial = this.isTestingCheckboxRef.checked;
+      const isTrial = isSaasServer && this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
       const resellerId = this.state.selectedResellerIdForNewBank || null;
       if (!newBankName || newBankName.length < 2) {
@@ -282,19 +282,21 @@ class Banks extends React.Component {
               placeholder={i18n.t('sasettings_new_bank_form_bank_name')}
             />
           </div>
-          <div className="newBankInputContainer">
-            <label htmlFor="isTestingCheckbox">
-              {i18n.t('sasettings_new_bank_form_is_testing')}
-            </label>
-            <input
-              id="isTestingCheckbox"
-              type="checkbox"
-              defaultChecked
-              ref={(r) => {
-                this.isTestingCheckboxRef = r;
-              }}
-            />
-          </div>
+          {isSaasServer && (
+            <div className="newBankInputContainer">
+              <label htmlFor="isTestingCheckbox">
+                {i18n.t('sasettings_new_bank_form_is_testing')}
+              </label>
+              <input
+                id="isTestingCheckbox"
+                type="checkbox"
+                defaultChecked
+                ref={(r) => {
+                  this.isTestingCheckboxRef = r;
+                }}
+              />
+            </div>
+          )}
           {isSaasServer && (
             <div className="newBankInputContainer">
               <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
@@ -402,17 +404,19 @@ class Banks extends React.Component {
                 <th>{i18n.t('sasettings_nb_associated_licences')}</th>
                 <th>{i18n.t('sasettings_nb_users')}</th>
                 <th>{i18n.t('sasettings_bank_created_at')}</th>
-                <th>{i18n.t('sasettings_bank_is_testing')}</th>
-                <th>{i18n.t('sasettings_bank_test_expires_at')}</th>
-                <th
-                  className="sortable-header"
-                  onClick={() => this.handleSort(2)}
-                  title={i18n.t('sasettings_click_to_sort')}
-                >
-                  {i18n.t('sasettings_bank_test_days_remaining')}
-                  <br />
-                  {this.getSortIcon(2)}
-                </th>
+                {isSaasServer && <th>{i18n.t('sasettings_bank_is_testing')}</th>}
+                {isSaasServer && <th>{i18n.t('sasettings_bank_test_expires_at')}</th>}
+                {isSaasServer && (
+                  <th
+                    className="sortable-header"
+                    onClick={() => this.handleSort(2)}
+                    title={i18n.t('sasettings_click_to_sort')}
+                  >
+                    {i18n.t('sasettings_bank_test_days_remaining')}
+                    <br />
+                    {this.getSortIcon(2)}
+                  </th>
+                )}
                 {isSaasServer && <th>{i18n.t('sasettings_bank_sales_rep')}</th>}
                 {!isRestrictedSuperadmin && (
                   <th style={{ minWidth: 200 }}>
@@ -467,83 +471,90 @@ class Banks extends React.Component {
                       {bank.nb_users}
                     </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
-                    <td>
-                      <div className="testing-checkbox-container">
-                        <input
-                          type="checkbox"
-                          checked={bank.settings?.IS_TESTING}
-                          onChange={() => {
+                    {isSaasServer && (
+                      <td>
+                        <div className="testing-checkbox-container">
+                          <input
+                            type="checkbox"
+                            checked={bank.settings?.IS_TESTING}
+                            onChange={() => {
+                              this.toggleBankSetting(bank.id, {
+                                ...bank.settings,
+                                IS_TESTING: !bank.settings?.IS_TESTING,
+                              });
+                            }}
+                            disabled={isRestrictedSuperadmin}
+                          ></input>
+                          &nbsp;{bank.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
+                        </div>
+                      </td>
+                    )}
+                    {isSaasServer &&
+                      (bank.settings?.IS_TESTING ? (
+                        <EditableCell
+                          type="date"
+                          value={bank.settings?.TESTING_EXPIRATION_DATE}
+                          className={
+                            !bank.settings?.TESTING_EXPIRATION_DATE ||
+                            new Date(bank.settings?.TESTING_EXPIRATION_DATE) < new Date()
+                              ? 'expired-date'
+                              : ''
+                          }
+                          onChange={(newVal) => {
                             this.toggleBankSetting(bank.id, {
                               ...bank.settings,
-                              IS_TESTING: !bank.settings?.IS_TESTING,
+                              TESTING_EXPIRATION_DATE: newVal,
                             });
                           }}
                           disabled={isRestrictedSuperadmin}
-                        ></input>
-                        &nbsp;{bank.settings?.IS_TESTING ? i18n.t('yes') : i18n.t('no')}
-                      </div>
-                    </td>
-                    {bank.settings?.IS_TESTING ? (
-                      <EditableCell
-                        type="date"
-                        value={bank.settings?.TESTING_EXPIRATION_DATE}
-                        className={
-                          !bank.settings?.TESTING_EXPIRATION_DATE ||
-                          new Date(bank.settings?.TESTING_EXPIRATION_DATE) < new Date()
-                            ? 'expired-date'
-                            : ''
-                        }
-                        onChange={(newVal) => {
-                          this.toggleBankSetting(bank.id, {
-                            ...bank.settings,
-                            TESTING_EXPIRATION_DATE: newVal,
-                          });
-                        }}
-                        disabled={isRestrictedSuperadmin}
-                      />
-                    ) : (
-                      <td>N/A</td>
-                    )}
-                    <td>
-                      {bank.settings?.IS_TESTING && bank.settings?.TESTING_EXPIRATION_DATE
-                        ? (() => {
-                            const today = new Date();
-                            const expirationDate = new Date(bank.settings.TESTING_EXPIRATION_DATE);
-                            const diffTime = expirationDate - today;
-                            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        />
+                      ) : (
+                        <td>N/A</td>
+                      ))}
+                    {isSaasServer && (
+                      <td>
+                        {bank.settings?.IS_TESTING && bank.settings?.TESTING_EXPIRATION_DATE
+                          ? (() => {
+                              const today = new Date();
+                              const expirationDate = new Date(
+                                bank.settings.TESTING_EXPIRATION_DATE,
+                              );
+                              const diffTime = expirationDate - today;
+                              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                            if (diffDays <= 0) {
-                              const expiredDays = Math.abs(diffDays);
-                              return (
-                                <span className="expired-text">
-                                  {i18n.t('sasettings_bank_expired_since', {
-                                    days: expiredDays,
-                                    s: expiredDays > 1 ? 's' : '',
-                                  })}
-                                </span>
-                              );
-                            } else if (diffDays <= 7) {
-                              return (
-                                <span className="expiring-soon-text">
-                                  {i18n.t('sasettings_bank_days_remaining', {
-                                    days: diffDays,
-                                    s: diffDays > 1 ? 's' : '',
-                                  })}
-                                </span>
-                              );
-                            } else {
-                              return (
-                                <span>
-                                  {i18n.t('sasettings_bank_days_remaining', {
-                                    days: diffDays,
-                                    s: diffDays > 1 ? 's' : '',
-                                  })}
-                                </span>
-                              );
-                            }
-                          })()
-                        : 'N/A'}
-                    </td>
+                              if (diffDays <= 0) {
+                                const expiredDays = Math.abs(diffDays);
+                                return (
+                                  <span className="expired-text">
+                                    {i18n.t('sasettings_bank_expired_since', {
+                                      days: expiredDays,
+                                      s: expiredDays > 1 ? 's' : '',
+                                    })}
+                                  </span>
+                                );
+                              } else if (diffDays <= 7) {
+                                return (
+                                  <span className="expiring-soon-text">
+                                    {i18n.t('sasettings_bank_days_remaining', {
+                                      days: diffDays,
+                                      s: diffDays > 1 ? 's' : '',
+                                    })}
+                                  </span>
+                                );
+                              } else {
+                                return (
+                                  <span>
+                                    {i18n.t('sasettings_bank_days_remaining', {
+                                      days: diffDays,
+                                      s: diffDays > 1 ? 's' : '',
+                                    })}
+                                  </span>
+                                );
+                              }
+                            })()
+                          : 'N/A'}
+                      </td>
+                    )}
                     {isSaasServer && (
                       <EditableCell
                         value={bank.settings?.SALES_REP || ''}
