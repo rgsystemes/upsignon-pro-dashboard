@@ -34,7 +34,7 @@ class Banks extends React.Component {
       this.props.setIsLoading(true);
       const newBankName = this.newBankNameInputRef.value;
       const newAdminEmail = this.newAdminEmailInputRef.value;
-      const isTrial = this.isTestingCheckboxRef.checked;
+      const isTrial = isSaasServer && this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
       const resellerId = this.state.selectedResellerIdForNewBank || null;
       if (!newBankName || newBankName.length < 2) {
@@ -282,19 +282,21 @@ class Banks extends React.Component {
               placeholder={i18n.t('sasettings_new_bank_form_bank_name')}
             />
           </div>
-          <div className="newBankInputContainer">
-            <label htmlFor="isTestingCheckbox">
-              {i18n.t('sasettings_new_bank_form_is_testing')}
-            </label>
-            <input
-              id="isTestingCheckbox"
-              type="checkbox"
-              defaultChecked
-              ref={(r) => {
-                this.isTestingCheckboxRef = r;
-              }}
-            />
-          </div>
+          {isSaasServer && (
+            <div className="newBankInputContainer">
+              <label htmlFor="isTestingCheckbox">
+                {i18n.t('sasettings_new_bank_form_is_testing')}
+              </label>
+              <input
+                id="isTestingCheckbox"
+                type="checkbox"
+                defaultChecked
+                ref={(r) => {
+                  this.isTestingCheckboxRef = r;
+                }}
+              />
+            </div>
+          )}
           {isSaasServer && (
             <div className="newBankInputContainer">
               <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
