@@ -2,6 +2,7 @@ import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { buildEmail } from 'upsignon-mail';
 
 export const grant_pwd_reset_request = async (
   req: any,
@@ -41,13 +42,22 @@ export const grant_pwd_reset_request = async (
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
 
-    const expirationTime = date.toLocaleTimeString().split(':').slice(0, 2).join(':');
+    const { html, text, subject } = await buildEmail({
+      templateName: 'resetPassword',
+      locales: 'fr',
+      args: {
+        deviceName,
+        code: requestToken,
+        expirationDate,
+      },
+    });
+
     await transporter.sendMail({
       from: emailConfig.EMAIL_SENDING_ADDRESS,
       to: emailAddress,
-      subject: 'UpSignOn: mot de passe oublié',
-      text: `Bonjour,\nVous avez effectué une demande de réinitialisation de votre mot de passe depuis votre appareil "${deviceName}".\n\nPour réinitiliaser votre mot de passe UpSignOn PRO, saisissez le code suivant :\n\n${requestToken}\n\nAttention, ce code n'est valide que pour l'appareil "${deviceName}" et expirera à ${expirationTime}.\n\nBonne journée,\nUpSignOn`,
-      html: `<body><p>Bonjour,</p><p>Vous avez effectué une demande de réinitialisation de votre mot de passe depuis votre appareil "${deviceName}".</p><p>Pour réinitiliaser votre mot de passe UpSignOn PRO, saisissez le code suivant :</p><p style="font-family:monospace;font-size: 20px; font-weight: bold; margin: 20px 0;">${requestToken}</p><p>Attention, ce code n'est valide que pour l'appareil "${deviceName}" et expirera à ${expirationTime}.</p><p>Bonne journée,<br/>UpSignOn</p></body>`,
+      subject,
+      text,
+      html,
     });
     res.status(200).end();
   } catch (e) {
