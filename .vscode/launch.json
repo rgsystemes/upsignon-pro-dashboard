@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+      {
+        "name": "Debug Backend",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "yarn",
+        "runtimeArgs": ["start"],
+        "cwd": "${workspaceFolder}/back",
+        "console": "integratedTerminal",
+        "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+      }
+    ]
+  }

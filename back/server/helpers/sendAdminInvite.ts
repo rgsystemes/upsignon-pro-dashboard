@@ -1,7 +1,7 @@
 import env from './env';
 import { logError } from './logger';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
-import { buildEmail } from 'upsignon-mail';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const ttlMinutes = 20;
 export const sendAdminInvite = async (
@@ -9,7 +9,7 @@ export const sendAdminInvite = async (
   userId: string,
   token: string,
   tokenExpiresAt: Date,
-  bankName: null | string,
+  acceptLanguage: string,
 ): Promise<void> => {
   try {
     const emailConfig = await getEmailConfig();
@@ -21,7 +21,7 @@ export const sendAdminInvite = async (
 
     const { text, html, subject } = await buildEmail({
       templateName: 'proAdminInvitation',
-      locales: 'fr',
+      locales: getBestLanguage(acceptLanguage),
       args: {
         adminImportLink: link,
         loginPageLink: env.BACKEND_URL + '/login.html',

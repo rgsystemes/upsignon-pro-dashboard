@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
-import { buildEmail } from 'upsignon-mail';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const grant_pwd_reset_request = async (
   req: any,
@@ -44,7 +44,7 @@ export const grant_pwd_reset_request = async (
 
     const { html, text, subject } = await buildEmail({
       templateName: 'resetPassword',
-      locales: 'fr',
+      locales: getBestLanguage(req.headers['accept-language']),
       args: {
         deviceName,
         code: requestToken,

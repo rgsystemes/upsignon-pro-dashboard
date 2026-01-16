@@ -5,7 +5,7 @@ import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
-import { buildEmail } from 'upsignon-mail';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 type BankSettings = {
   SALES_REP: string | null;
@@ -109,7 +109,15 @@ export const configureBankWithAdminEmailAndSendMail = async (
     const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
 
     const emailContent = validatedBody.isTrial
-      ? await getTrialEmail(bankLink, expDate!, adminLoginPage)
+      ? await buildEmail({
+          templateName: 'trialWelcome',
+          locales: getBestLanguage(req.headers['accept-language']),
+          args: {
+            activationLink: bankLink,
+            consoleLink: adminLoginPage,
+            trialEndDate: expDate!.toLocaleDateString('fr'),
+          },
+        })
       : getNonTrialEmail(bankLink, qr, validatedBody.adminEmail, adminLoginPage, cellSize);
 
     const emailConfig = await getEmailConfig();
@@ -131,22 +139,6 @@ export const configureBankWithAdminEmailAndSendMail = async (
 
   res.status(200).end();
 };
-
-async function getTrialEmail(
-  bankLink: string,
-  expDate: Date,
-  adminLoginPage: string,
-): Promise<{ text: string; html: string; subject: string }> {
-  return await buildEmail({
-    templateName: 'trialWelcome',
-    locales: 'fr',
-    args: {
-      activationLink: bankLink,
-      consoleLink: adminLoginPage,
-      trialEndDate: expDate.toLocaleDateString('fr'),
-    },
-  });
-}
 
 function getNonTrialEmail(
   bankLink: string,
