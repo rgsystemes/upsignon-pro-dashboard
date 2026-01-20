@@ -37,11 +37,7 @@ class Banks extends React.Component {
       const isTrial = isSaasServer && this.isTestingCheckboxRef.checked;
       const salesEmail = this.salesEmailRef.value;
       const resellerId = this.state.selectedResellerIdForNewBank || null;
-      if (!newBankName || newBankName.length < 2) {
-        this.newBankNameInputRef.style.borderColor = 'red';
-        toast.error(i18n.t('sasettings_new_bank_form_bank_name_too_long_or_short'));
-        return;
-      } else if (newBankName.length > 50) {
+      if (!newBankName || newBankName.length < 2 || newBankName.length > 50) {
         this.newBankNameInputRef.style.borderColor = 'red';
         toast.error(i18n.t('sasettings_new_bank_form_bank_name_too_long_or_short'));
         return;
