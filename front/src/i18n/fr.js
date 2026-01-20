@@ -304,6 +304,8 @@ const translations = {
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
   sasettings_new_bank_form_sales_email_placeholder: 'Vous par défaut',
   sasettings_new_bank_form_success: 'Banque créée et configurée, email envoyé.',
+  sasettings_new_bank_form_bank_name_too_long_or_short:
+    'Le nom de la banque doit faire entre 2 et 50 caractères.',
   sasettings_bank_name: 'Nom de la banque de coffres-forts',
   sasettings_bank_created_at: 'Crée le',
   sasettings_bank_is_testing: 'Phase de test',
