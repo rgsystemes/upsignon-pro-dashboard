@@ -32,6 +32,7 @@ const translations = {
   settings_tab_admins: 'Administrators',
   settings_tab_permissions: 'Permissions',
   settings_tab_urls: 'Prefilled websites',
+  settings_tab_shamir: 'Fallback protocol',
   menu_shared_devices: 'Shared devices',
   menu_shared_vaults: 'Shared items/folders',
   menu_superadmin: 'Super-Admin',
@@ -417,6 +418,136 @@ const translations = {
     'Pooled licences are available to all banks on a first come first served basis.',
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (pool)',
+
+  // SHAMIR
+  shamir_doc_link: 'Read the documentation.',
+  shamir_tab_config: 'Configuration',
+  shamir_tab_requests: 'Requests',
+  shamir_tab_history: 'History',
+
+  // SHAMIR - change
+  shamir_change: 'Edit',
+  shamir_change_title: 'Modification of the fallback unlocking protocol: Shamir',
+  shamir_change_info:
+    'The modification of a fallback protocol (Shamir) is **subject to validation** by the various persons required in the current protocol. If approved, **this new protocol will only be applied by the various vaults after their next unlocking**. The consensus requirements for current requests will therefore remain unchanged.',
+  shamir_change_pending_title: 'Pending protocol change',
+  shamir_change_pending_view: 'View',
+  shamir_change_pending_cancel: 'Cancel request',
+  shamir_change_pending_cancel_sucess: 'The new config has been canceled.',
+
+  // SHAMIR - presentation
+  shamir_presentation_title: 'Fallback unlock protocol: Shamir',
+  shamir_presentation_card_user_title_1: 'A secure protocol to ',
+  shamir_presentation_card_user_title_2: 'recover access to a vault',
+  shamir_presentation_card_user_details:
+    'The user initiates the recovery request by clicking on "Forgotten password" even if they no longer have access to any of their authorised devices. The system then waits for validation from the selected trusted persons.',
+  shamir_presentation_card_shareholder_title_1: 'Distributed approval using ',
+  shamir_presentation_card_shareholder_title_2: 'partial keys',
+  shamir_presentation_card_shareholder_details_1:
+    'Each trusted person holds a partial, encrypted and invisible key.',
+  shamir_presentation_card_shareholder_details_2:
+    'Once sufficient approvals have been obtained, these fragments are combined — according to the Shamir protocol — to reconstruct the complete key and unlock access. Distributed approval enhances security by preventing a single person from having access to all vaults.',
+  shamir_presentation_card_admin_title_1: 'Simple configuration in ',
+  shamir_presentation_card_admin_title_2: 'two steps',
+  shamir_presentation_card_admin_details_1:
+    'Set a minimum number of people required to unlock a user',
+  shamir_presentation_card_admin_details_2: 'Choose trusted persons authorised to approve requests',
+  shamir_presentation_start: 'Configure a protocol',
+  shamir_presentation_see_more: 'Learn more',
+
+  // SHAMIR - new config
+  shamir_config_title: 'Fallback unlock protocol configuration: Shamir',
+  shamir_config_name_title: 'Name & version',
+  shamir_config_name: 'Configuration name',
+  shamir_config_creation_date: 'Creation date',
+  shamir_config_min_shares:
+    'Choose the minimum number of trusted persons that will be required to unlock a vault.',
+  shamir_config_min_shares_explanation:
+    'The higher this number, the higher the security, but the less practical it will be to activate the protocol. We recommend 2 to 4 people.',
+  shamir_config_min_shares_risk_1: 'Insufficient security.',
+  shamir_config_min_shares_risk_1_details:
+    'Every trusted person will be able to unlock any vault on their own!',
+  shamir_config_min_shares_risk_2: 'Moderate security.',
+  shamir_config_min_shares_risk_3: 'Good security.',
+  shamir_config_min_shares_risk_4: 'Very good security.',
+  shamir_config_min_shares_risk_5: 'Extremely secure, but probably not very practical.',
+  shamir_config_holders:
+    'Choose the trusted persons who have the right to participate in the protocol.',
+  shamir_config_holders_explanation:
+    'Each of these trusted persons will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of trusted persons.',
+  shamir_config_holders_number: '$n trusted person(s) selected$adminWarning.',
+  shamir_config_holders_in_creation: 'Being created.',
+  shamir_config_holders_warning_not_enough: 'You must still add',
+  shamir_config_holders_warning_not_enough_number: 'at least $n trusted person(s).',
+  shamir_config_holders_warning_resilience_0_short: 'No resilience.',
+  shamir_config_holders_warning_resilience_0_details_1:
+    'The absence of a single trusted person prevents you from using the fallback protocol.',
+  shamir_config_holders_warning_resilience_0_details_2:
+    "The fallback protocol cannot be used to unlock a trusted person's vault.",
+  shamir_config_holders_warning_resilience_1_short: 'Low resilience.',
+  shamir_config_holders_warning_resilience_1_details:
+    'The protocol can be used even in the absence of one trusted person, except if the vault to unlock belongs to another trusted person.',
+  shamir_config_holders_warning_resilience_2_short: 'Good resilience.',
+  shamir_config_holders_warning_resilience_2_details:
+    "The protocol can be used even in the absence of one trusted person and including to unlock another trusted person's vault.",
+  shamir_config_holders_warning_resilience_3_short: 'Very good resilience.',
+  shamir_config_holders_warning_resilience_3_details:
+    'The protocol can be used even in the absence of $n trusted persons.',
+  shamir_config_holder_search: 'Search and select',
+  shamir_config_holder_email: 'Trusted person',
+  shamir_config_holder_bank_name: 'Bank',
+  shamir_config_support_email: 'Indicate the email address on which blocked users can contact you.',
+  shamir_config_support_email_explanation:
+    'This email address will be displayed in the application.',
+  shamir_config_summary: 'Summary of your configuration',
+  shamir_config_summary_state: 'State:',
+  shamir_config_summary_details_consensus_label: 'Required consensus:',
+  shamir_config_summary_details_consensus_content:
+    'Minimum $min trusted person(s) among $total designated.',
+  shamir_config_summary_details_risk_label: 'Security level:',
+  shamir_config_summary_details_resilience_label: 'Resilience:',
+  shamir_config_summary_details_shareholders_label: 'Trusted persons:',
+  shamir_config_summary_details_support_email_label: 'Support email:',
+  shamir_config_summary_details_support_email_empty: 'Mandatory field.',
+  shamir_config_summary_details_admin_not_shareholder: ' (which you are not part of)',
+  shamir_config_submit: 'Validate this configuration',
+  shamir_config_validate_submit: 'Validate',
+  shamir_config_validate_title: 'Do you want to validate this fallback protocol?',
+  shamir_config_validate_warning:
+    'After validation, the configuration may only be modified with the consent of the trusted persons in accordance with the criteria defined in this protocol.',
+  shamir_config_validate_info: 'The registration of this protocol will take effect immediately.',
+  shamir_config_validate_info_2:
+    'Emergency unlocking of a vault will become possible after it has been reopened at least once.',
+  shamir_config_creation: 'Creation date:',
+  shamir_config_creator: 'Created by:',
+  shamir_config_approved_by: 'Approved by:',
+
+  // SHAMIR history
+  shamir_history_title: 'History of configurations',
+  shamir_history_version: 'Version',
+  shamir_history_activated_on: 'Activated on',
+  shamir_history_created_by: 'Created by',
+  shamir_history_state: 'State',
+  shamir_history_state_active: 'Active',
+  shamir_history_state_inactive: 'Inactive',
+
+  // SHAMIR requests
+  shamir_requests_title: 'Tracking requests to unlock vaults',
+  shamir_requests_email: 'Email',
+  shamir_requests_created_at: 'Date',
+  shamir_requests_expires_at: 'Expiry date',
+  shamir_requests_completed_at: 'Approval date',
+  shamir_requests_version: 'Version',
+  shamir_requests_state: 'Status',
+  shamir_requests_state_expired: 'Expired',
+  shamir_requests_state_completed: 'Completed',
+  shamir_requests_state_aborted: 'Canceled',
+  shamir_requests_state_pending: 'Pending',
+
+  // SHAMIR vault
+  shamir_vault_col_name: 'Version of the fallback protocol',
+  shamir_vault_created_at: 'Created at :',
+  shamir_vault_unprotected: 'Unprotected',
 };
 
 export default translations;

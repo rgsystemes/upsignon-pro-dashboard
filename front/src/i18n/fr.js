@@ -31,6 +31,7 @@ const translations = {
   settings_tab_admins: 'Administrateurs',
   settings_tab_permissions: 'Autorisations',
   settings_tab_urls: 'Sites web pré-renseignés',
+  settings_tab_shamir: 'Protocole de secours',
   menu_shared_devices: 'Appareils partagés',
   menu_shared_vaults: 'Éléments/dossiers partagés',
   menu_superadmin: 'Super-Admin',
@@ -431,6 +432,137 @@ const translations = {
     'Les licences mutualisées sont disponibles pour toutes les banques sur la base du premier arrivé premier servi.',
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (mutualisées)',
+
+  // SHAMIR
+  shamir_doc_link: 'Consulter la documentation',
+  shamir_tab_config: 'Configuration',
+  shamir_tab_requests: 'Demandes',
+  shamir_tab_history: 'Historique',
+
+  // SHAMIR - change
+  shamir_change: 'Modifier',
+  shamir_change_title: 'Modification du protocole de déverrouillage de secours : Shamir',
+  shamir_change_info:
+    "La modification d’un protocole de secours (Shamir) est **soumise à validation** par les différentes personnes requises dans le protocole en cours. Si ce nouveau protocole est approuvé, **il ne sera appliqué par les différents coffres-forts qu'après leur prochain déverrouillage**. Les exigences de consensus pour les demandes en cours ne seront donc pas modifiées.",
+  shamir_change_pending_title: 'Modification du protocole en attente',
+  shamir_change_pending_view: 'Consulter',
+  shamir_change_pending_cancel: 'Annuler la demande',
+  shamir_change_pending_cancel_sucess: 'La nouvelle configuration a été annulée.',
+
+  // SHAMIR - presentation
+  shamir_presentation_title: 'Protocole de déverrouillage de secours : Shamir',
+  shamir_presentation_card_user_title_1: 'Un protocole sécurisé pour ',
+  shamir_presentation_card_user_title_2: "récupérer l'accès à un coffre-fort",
+  shamir_presentation_card_user_details:
+    'L’utilisateur initie la demande de récupération en cliquant sur “Mot de passe oublié” même si il n’a plus accès à aucun de ses appareils autorisés. Le système attend ensuite les validations des personnes de confiance sélectionnées.',
+  shamir_presentation_card_shareholder_title_1: 'Une approbation distribuée grâce aux ',
+  shamir_presentation_card_shareholder_title_2: 'clés partielles',
+  shamir_presentation_card_shareholder_details_1:
+    'Chaque personne de confiance détient une clé partielle, chiffrée et invisible.',
+  shamir_presentation_card_shareholder_details_2:
+    "Une fois les approbations suffisantes obtenues, ces fragments sont combinés — selon le protocole de Shamir — pour reconstituer la clé complète et débloquer l’accès. L'approbation distribuée permet de renforcer la sécurité, en évitant de donner l'accès à tous les coffres à une seule personne.",
+  shamir_presentation_card_admin_title_1: 'Une configuration simple en ',
+  shamir_presentation_card_admin_title_2: 'deux étapes',
+  shamir_presentation_card_admin_details_1:
+    'Définir un nombre de personnes minimum requis pour débloquer un utilisateur',
+  shamir_presentation_card_admin_details_2:
+    'Choisir les personnes de confiance autorisées à approuver les demandes',
+  shamir_presentation_start: 'Configurer un protocole',
+  shamir_presentation_see_more: 'En savoir plus',
+
+  // SHAMIR - new config
+  shamir_config_title: 'Configuration du protocole de déverrouillage de secours : Shamir',
+  shamir_config_name_title: 'Nom & version',
+  shamir_config_name: 'Nom de la configuration',
+  shamir_config_creation_date: 'Date de création',
+  shamir_config_min_shares:
+    'Choisissez le nombre de personnes de confiance minimum qui sera requis pour déverrouiller un coffre-fort.',
+  shamir_config_min_shares_explanation:
+    "Plus ce nombre est élevé, plus le niveau de sécurité augmente, mais moins l'activation du protocole devient pratique. Nous vous recommandons 2 à 4 personnes.",
+  shamir_config_min_shares_risk_1: 'Sécurité insuffisante.',
+  shamir_config_min_shares_risk_1_details:
+    "Chaque personne de confiance pourra déverrouiller n'importe quel coffre-fort à elle seule !",
+  shamir_config_min_shares_risk_2: 'Sécurité modérée.',
+  shamir_config_min_shares_risk_3: 'Bonne sécurité.',
+  shamir_config_min_shares_risk_4: 'Très bonne sécurité.',
+  shamir_config_min_shares_risk_5: 'Sécurité extrême, mais probablement peu pratique.',
+  shamir_config_holders:
+    'Choisissez les personnes de confiance qui auront le droit de participer au protocole.',
+  shamir_config_holders_explanation:
+    'Chacune de ces personnes recevra une part. Vous pouvez choisir des personnes dans toutes les banques auxquelles vous avez accès. Plus vous ajoutez de personnes, plus vous serez résilient aux départs et aux absences des personnes de confiance.',
+  shamir_config_holders_number: '$n personnes(s) de confiance sélectionnée(s)$adminWarning.',
+  shamir_config_holders_in_creation: 'En cours de création.',
+  shamir_config_holders_warning_not_enough: 'Vous devez ajouter encore',
+  shamir_config_holders_warning_not_enough_number: 'au moins $n personnes(s) de confiance.',
+  shamir_config_holders_warning_resilience_0_short: 'Aucune résilience.',
+  shamir_config_holders_warning_resilience_0_details_1:
+    "L'absence d'une seule personne de confiance vous empêche d'utiliser le protocole de secours.",
+  shamir_config_holders_warning_resilience_0_details_2:
+    "Le protocole de secours ne peut pas être utilisé pour déverrouiller le coffre d'une personne de confiance.",
+  shamir_config_holders_warning_resilience_1_short: 'Faible résilience.',
+  shamir_config_holders_warning_resilience_1_details:
+    "Le protocole de secours peut être utilisé même en l'absence d'une personne de confiance, sauf si le coffre-fort à déverrouiller est celui d'une autre personne de confiance.",
+  shamir_config_holders_warning_resilience_2_short: 'Bonne résilience.',
+  shamir_config_holders_warning_resilience_2_details:
+    "Le protocole de secours peut être utilisé même en l'absence d'une personne de confiance et y compris pour déverrouiller le coffre-fort d'une autre personne de confiance.",
+  shamir_config_holders_warning_resilience_3_short: 'Très bonne résilience.',
+  shamir_config_holders_warning_resilience_3_details:
+    "Le protocole de secours peut-être utilisé même en l'abscence de $n personnes de confiance.",
+  shamir_config_holder_search: 'Rechercher et sélectionner',
+  shamir_config_holder_email: 'Personne de confiance',
+  shamir_config_holder_bank_name: 'Banque',
+  shamir_config_support_email:
+    "Indiquez l'adresse email sur laquelle les utilisateurs bloqués pourront vous contacter.",
+  shamir_config_support_email_explanation: "Cette adresse email sera affichée dans l'application.",
+  shamir_config_summary: 'Résumé de votre configuration',
+  shamir_config_summary_state: 'État :',
+  shamir_config_summary_details_consensus_label: 'Consensus requis :',
+  shamir_config_summary_details_consensus_content:
+    'Minimum $min personne(s) de confiance parmi $total désignée(s).',
+  shamir_config_summary_details_risk_label: 'Niveau de sécurité :',
+  shamir_config_summary_details_resilience_label: 'Résilience :',
+  shamir_config_summary_details_shareholders_label: 'Personnes de confiance :',
+  shamir_config_summary_details_support_email_label: 'Email de support :',
+  shamir_config_summary_details_support_email_empty: 'Champ non renseigné.',
+  shamir_config_summary_details_admin_not_shareholder: ' (dont vous ne faites pas partie)',
+  shamir_config_submit: 'Valider cette configuration',
+  shamir_config_validate_submit: 'Valider',
+  shamir_config_validate_title: 'Souhaitez-vous valider ce protocole de secours ?',
+  shamir_config_validate_warning:
+    "Après validation, la configuration ne pourra être modifiée qu'avec le consentement des personnes de confiance selon les critères définis dans ce protocole.",
+  shamir_config_validate_info: "L'enregistrement de ce protocole prendra effet immédiatement.",
+  shamir_config_validate_info_2:
+    "Le déverrouillage de secours d'un coffre-fort deviendra possible dès qu'il aura été réouvert au moins une fois.",
+  shamir_config_creation: 'Date de création :',
+  shamir_config_creator: 'Créé par :',
+  shamir_config_approved_by: 'Approuvé par :',
+
+  // SHAMIR history
+  shamir_history_title: 'Historique des configurations',
+  shamir_history_version: 'Version',
+  shamir_history_activated_on: 'Activé le',
+  shamir_history_created_by: 'Créé par',
+  shamir_history_state: 'État',
+  shamir_history_state_active: 'Actif',
+  shamir_history_state_inactive: 'Inactif',
+
+  // SHAMIR requests
+  shamir_requests_title: 'Suivi des demandes de déverrouillage de coffres-forts',
+  shamir_requests_email: 'Email',
+  shamir_requests_created_at: 'Date',
+  shamir_requests_expires_at: "Date d'expiration",
+  shamir_requests_completed_at: "Date d'approbation",
+  shamir_requests_version: 'Version',
+  shamir_requests_state: 'État',
+  shamir_requests_state_expired: 'Expirée',
+  shamir_requests_state_completed: 'Terminée',
+  shamir_requests_state_aborted: 'Annulée',
+  shamir_requests_state_pending: 'En attente',
+
+  // SHAMIR vault
+  shamir_vault_col_name: 'Version du protocole de secours',
+  shamir_vault_created_at: 'Créé le :',
+  shamir_vault_unprotected: 'Non protégé',
 };
 
 export default translations;

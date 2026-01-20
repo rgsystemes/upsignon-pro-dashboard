@@ -68,7 +68,6 @@ nav {
   cursor: pointer;
   width: 100%;
   word-wrap: break-word;
-  box-sizing: border-box;
 }
 .reseller {
   font-weight: bold;

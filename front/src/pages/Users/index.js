@@ -370,6 +370,7 @@ class Users extends React.Component {
                 </div>
               </th>
               <th>{i18n.t('actions')}</th>
+              <th>{i18n.t('shamir_vault_col_name')}</th>
             </tr>
           </thead>
           <tbody>
@@ -500,6 +501,25 @@ class Users extends React.Component {
                           onClick={() => this.reactivateUser(u.user_id)}
                         >
                           {i18n.t('reactivate')}
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      {u.shamir_setup && (
+                        <div>
+                          <strong>{u.shamir_setup.config_name}</strong>
+                          <br />
+                          <br />
+                          {i18n.t('shamir_vault_created_at')}
+                          <br />
+                          {new Date(u.shamir_setup.created_at).toLocaleDateString()}
+                        </div>
+                      )}
+                      {!u.shamir_setup && (
+                        <div>
+                          <span style={{ fontSize: 20 }}>⚠️</span>
+                          <br />
+                          {i18n.t('shamir_vault_unprotected')}
                         </div>
                       )}
                     </td>
