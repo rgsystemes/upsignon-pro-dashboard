@@ -90,8 +90,8 @@ export class PostgreSQLStore extends expressSession.Store {
       sessionData.cookie.expires || this.getExpireDate(sessionData.cookie.maxAge);
     try {
       await db.query(
-        'UPDATE admin_sessions SET expiration_time=to_timestamp($1) WHERE session_id = $2',
-        [Math.trunc(expires.getTime() / 1000), sid],
+        'UPDATE admin_sessions SET expiration_time=to_timestamp($1), session_data=$2 WHERE session_id = $3',
+        [Math.trunc(expires.getTime() / 1000), sessionData, sid],
       );
       if (cb) cb();
     } catch (e) {
