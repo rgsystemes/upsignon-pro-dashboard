@@ -302,6 +302,8 @@ const translations = {
   sasettings_new_bank_form_sales_email: 'Sales referent email',
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
+  sasettings_new_bank_form_bank_name_too_long_or_short:
+    'Bank name length must be between 2 and 50 characters.',
   sasettings_bank_name: 'Bank of vaults name',
   sasettings_bank_created_at: 'Created on',
   sasettings_bank_is_testing: 'Testing',

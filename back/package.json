@@ -34,10 +34,14 @@
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   },
+  "dependenciesMeta": {
+    "bcrypt": {
+      "built": true
+    }
+  },
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
     "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "start": "yarn build-server && node ./compiledServer/server.js",
-    "postinstall": "npm rebuild bcrypt"
+    "start": "yarn build-server && node ./compiledServer/server.js"
   }
 }

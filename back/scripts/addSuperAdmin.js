@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config({ path: path.join(__dirname, '../.env'), quiet: true });
 
 const db = require('../compiledServer/helpers/db').db;
 
@@ -31,10 +31,14 @@ async function createTemporaryAdminTable() {
 async function createTemporaryAdmin() {
   const token = createToken(20);
   await db.query(`INSERT INTO temporary_admins (token) VALUES ($1)`, [token]);
-  console.log('You can log into your dashboard using this one-time link (valid for 5 minutes):');
-  console.log(
-    `${(process.env.BACKEND_URL || process.env.SERVER_URL).replace(/\/$/, '')}/manualConnect?token=${token}`,
-  );
+  if (!process.env.SERVER_URL) {
+    console.error('THIS SCRIPT DOES NOT WORK IN DEV MODE. SEE developerDoc.md');
+    // if the front and backend do not use the same URL,
+    // then the cookie system does not work with the manualConnect system.
+  } else {
+    console.log('You can log into your dashboard using this one-time link (valid for 5 minutes):');
+    console.log(`${process.env.SERVER_URL.replace(/\/$/, '')}/manualConnect?token=${token}`);
+  }
 }
 
 createTemporaryAdminTable()
