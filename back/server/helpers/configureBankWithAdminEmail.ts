@@ -115,7 +115,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
           args: {
             activationLink: bankLink,
             consoleLink: adminLoginPage,
-            trialEndDate: expDate!.toLocaleDateString('fr'),
+            trialEndDate: expDate!,
           },
         })
       : getNonTrialEmail(bankLink, qr, validatedBody.adminEmail, adminLoginPage, cellSize);
