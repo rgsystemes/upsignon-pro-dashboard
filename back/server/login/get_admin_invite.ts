@@ -33,7 +33,7 @@ export const getAdminInvite = async (req: any, res: any): Promise<void> => {
       token = getRes.rows[0].token;
       tokenExpiresAt = getRes.rows[0].token_expires_at;
     }
-    sendAdminInvite(adminEmail, admRes.id, token, tokenExpiresAt, null);
+    sendAdminInvite(adminEmail, admRes.id, token, tokenExpiresAt, req.headers['accept-language']);
     return res.status(200).json({ success: true });
   } catch (e) {
     logError('getAdminInvite', e);
