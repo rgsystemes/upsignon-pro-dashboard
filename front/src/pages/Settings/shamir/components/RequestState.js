@@ -1,6 +1,6 @@
 import { i18n } from '../../../../i18n/i18n';
 
-// {status: 'PENDING', 'COMPLETED', 'ABORTED' , 'EXPIRED'}
+// {status: 'PENDING', 'COMPLETED', 'ABORTED' , 'EXPIRED', 'REFUSED'}
 export const RequestState = (p) => {
   const { status } = p;
 
@@ -21,6 +21,10 @@ export const RequestState = (p) => {
       break;
     case 'EXPIRED':
       label = i18n.t('shamir_requests_state_expired');
+      color = '#E53E3E';
+      break;
+    case 'REFUSED':
+      label = i18n.t('shamir_requests_state_refused');
       color = '#E53E3E';
       break;
   }

@@ -555,6 +555,7 @@ const translations = {
   shamir_requests_version: 'Version',
   shamir_requests_state: 'État',
   shamir_requests_state_expired: 'Expirée',
+  shamir_requests_state_refused: 'Refusée',
   shamir_requests_state_completed: 'Terminée',
   shamir_requests_state_aborted: 'Annulée',
   shamir_requests_state_pending: 'En attente',
