@@ -32,7 +32,8 @@ export const shamirRequests = async (req: Request, res: Response): Promise<void>
           expiresAt: r.expiry_date,
           completedAt: r.completed_at,
           shamirConfigName: r.name,
-          status: r.expired ? 'EXPIRED' : r.is_refused ? 'REFUSED' : r.status,
+          status:
+            r.expired && r.status !== 'COMPLETED' ? 'EXPIRED' : r.is_refused ? 'REFUSED' : r.status,
         };
       }),
     });
