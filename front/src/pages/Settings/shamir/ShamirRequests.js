@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
 import { RequestState } from './components/RequestState';
 
-const REQUEST_STATE_ORDER = ['PENDING', 'ABORTED', 'EXPIRED', 'COMPLETED'];
+const REQUEST_STATE_ORDER = ['PENDING', 'ABORTED', 'EXPIRED', 'REFUSED', 'COMPLETED'];
 
 export const ShamirRequests = (p) => {
   const { setIsLoading } = p;
