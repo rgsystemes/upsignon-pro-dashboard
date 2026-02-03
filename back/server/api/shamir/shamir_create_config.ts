@@ -3,7 +3,11 @@ import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
 import { Request, Response } from 'express';
 import { nextShamirConfigIndex } from './_nextShamirConfigIndex';
-import { getShamirConfigChangeToSign, ShamirShareholderToSign } from './_configChangeSigning';
+import {
+  ShamirChange,
+  ShamirConfigFootprint,
+  ShamirShareholderFootprint,
+} from './_configChangeSigning';
 
 export const shamirCreateConfig = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -47,46 +51,56 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     }
     const shareholderRes = await db.query(
       `SELECT
-      u.email,
-      ub.public_id,
-      sh.nb_shares
-    FROM shamir_holders AS sh
-    INNER JOIN shamir_configs AS sc ON sc.id=sh.shamir_config_id
-    INNER JOIN users AS u ON u.id=sh.vault_id
-    INNER JOIN banks AS ub ON ub.id=u.bank_id
-    WHERE sc.id=$1`,
+        u.id,
+        u.email,
+        u.signing_public_key,
+        b.public_id as bank_public_id,
+        sh.nb_shares
+      FROM shamir_holders AS sh
+      INNER JOIN shamir_configs AS sc ON sc.id=sh.shamir_config_id
+      INNER JOIN users AS u ON u.id=sh.vault_id
+      INNER JOIN banks AS b ON b.id=u.bank_id
+      WHERE sc.id=$1`,
       [configId],
     );
-    // TODO add vaultSigningPublicKey here
-    const shareholders: ShamirShareholderToSign[] = shareholderRes.rows.map(
-      (h): ShamirShareholderToSign => {
+    const shareholders: ShamirShareholderFootprint[] = shareholderRes.rows.map(
+      (h): ShamirShareholderFootprint => {
         return {
+          vaultId: h.id,
           vaultEmail: h.email,
-          vaultBankPublicId: h.public_id,
-          vaultSigningPubKey: '',
+          vaultBankPublicId: h.bank_public_id,
+          vaultSigningPubKey: h.signing_public_key,
           nbShares: h.nb_shares,
         };
       },
     );
 
-    const newConfig = {
-      minShares,
-      creatorEmail,
-      supportEmail,
-      shareholders,
+    const newConfig: ShamirConfigFootprint = {
+      configId,
+      configName,
+      bankId,
       createdAt,
+      minShares,
+      supportEmail,
+      creatorEmail,
+      shareholders,
     };
     let previousConfig = null;
     if (previousConfigsRes.rows.length >= 1) {
       const previousConfigChange = JSON.parse(previousConfigsRes.rows[0].change);
-      previousConfig = previousConfigChange.nextShamirConfig;
+      previousConfig = previousConfigChange.thisShamirConfig;
     }
 
-    const changeToSign = getShamirConfigChangeToSign(previousConfig, newConfig);
-    await db.query('UPDATE shamir_configs SET change=$1 WHERE id=$2', [changeToSign, configId]);
-    if (nextShamirConfigIdx === 1) {
-      await db.query('UPDATE shamir_configs SET is_active=$1 WHERE id=$2', [true, configId]);
-    }
+    const configChange: ShamirChange = {
+      previousShamirConfig: previousConfig,
+      thisShamirConfig: newConfig,
+    };
+    const configChangeToSign = JSON.stringify(configChange);
+
+    await db.query('UPDATE shamir_configs SET change=$1 WHERE id=$2', [
+      configChangeToSign,
+      configId,
+    ]);
     res.status(200).end();
   } catch (e) {
     logError('shamirCreateFirstConfig', e);

@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
-import { ShamirChangeSignatures, ShamirConfigChangeToSign } from './_configChangeSigning';
+import {
+  ShamirChange,
+  ShamirChangeSignature,
+  ShamirShareholderFootprint,
+} from './_configChangeSigning';
 
 export const getShamirConfigs = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -33,7 +37,7 @@ type ShamirRawConfig = {
   created_at: string;
   support_email: string;
   creator_email: string;
-  change_signatures: ShamirChangeSignatures;
+  change_signatures: ShamirChangeSignature[];
   change: string;
   is_active: boolean;
 };
@@ -52,10 +56,10 @@ const fetchEnhancedConfig = async (
   approvedAt: string | null;
   isPending: boolean;
 }> => {
-  const change = JSON.parse(config.change) as ShamirConfigChangeToSign;
-  const shareholders = change.nextShamirConfig.shareholders;
+  const change = JSON.parse(config.change) as ShamirChange;
+  const shareholders = change.thisShamirConfig.shareholders;
   const enhancedShareholders = await Promise.all(
-    shareholders.map(async (sh) => {
+    shareholders.map(async (sh: ShamirShareholderFootprint) => {
       const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [sh.vaultBankPublicId]);
       return {
         email: sh.vaultEmail,
@@ -64,29 +68,27 @@ const fetchEnhancedConfig = async (
       };
     }),
   );
+
+  const approvingSignatures = config.change_signatures?.filter((cs) => cs.approved) || [];
   let approvedAt = null;
-  if (!change.previousShamirConfig) {
-    approvedAt = config.created_at;
-  } else {
-    const sortedApprovals = config.change_signatures
-      ? Object.values(config.change_signatures).sort((a, b) => {
-          if (a.approvedAt < b.approvedAt) return -1;
-          if (a.approvedAt > b.approvedAt) return 1;
-          return 0;
-        })
-      : [];
-    if (sortedApprovals.length >= config.min_shares) {
-      approvedAt = sortedApprovals[config.min_shares - 1].approvedAt;
+  let cumulatedApprovingShares = 0;
+  for (let i = 0; i < approvingSignatures.length; i++) {
+    const cs = approvingSignatures[i];
+    const sh = shareholders.find((s) => s.vaultId === cs.holderVaultId);
+    cumulatedApprovingShares += sh?.nbShares || 0;
+    if (cumulatedApprovingShares >= change.thisShamirConfig.minShares) {
+      approvedAt = cs.signedAt;
+      continue;
     }
   }
 
   return {
     id: config.id,
     name: config.name,
-    creatorEmail: change.nextShamirConfig.creatorEmail,
-    minShares: change.nextShamirConfig.minShares,
-    supportEmail: change.nextShamirConfig.supportEmail,
-    createdAt: change.nextShamirConfig.createdAt,
+    creatorEmail: change.thisShamirConfig.creatorEmail,
+    minShares: change.thisShamirConfig.minShares,
+    supportEmail: change.thisShamirConfig.supportEmail,
+    createdAt: change.thisShamirConfig.createdAt,
     shareholders: enhancedShareholders,
     isActive: config.is_active,
     approvedAt,

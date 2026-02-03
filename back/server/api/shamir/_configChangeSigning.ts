@@ -1,41 +1,32 @@
 // NB this content will be signed, so it must not contain
 // any data that could change if migrating from onprem to SaaS
 
-export type ShamirShareholderToSign = {
+export type ShamirChangeSignature = {
+  holderVaultId: number;
+  signedAt: string;
+  approved: boolean;
+  signature: string;
+};
+
+export type ShamirShareholderFootprint = {
+  vaultId: number;
   vaultEmail: string;
-  vaultBankPublicId: string;
+  vaultBankPublicId: number;
   vaultSigningPubKey: string;
   nbShares: number;
 };
-export type ShamirConfigToSign = {
-  minShares: number;
-  creatorEmail: string;
-  supportEmail: string;
-  shareholders: ShamirShareholderToSign[];
+
+export type ShamirConfigFootprint = {
+  configId: number;
+  configName: string;
+  bankId: string;
   createdAt: string;
+  minShares: number;
+  supportEmail: string;
+  creatorEmail: string;
+  shareholders: ShamirShareholderFootprint[];
 };
-
-export type ShamirConfigChangeToSign = {
-  previousShamirConfig: null | ShamirConfigToSign;
-  nextShamirConfig: ShamirConfigToSign;
-};
-
-export type ShamirChangeSignatures = {
-  [shareholderIdx: number]: {
-    approvedAt: string;
-    signature: string;
-  };
-};
-
-export const getShamirConfigChangeToSign = (
-  previousConfig: ShamirConfigToSign | null,
-  newConfig: ShamirConfigToSign,
-): string => {
-  const configChange: ShamirConfigChangeToSign = {
-    previousShamirConfig: previousConfig,
-    nextShamirConfig: newConfig,
-  };
-  const configChangeToSign = JSON.stringify(configChange);
-
-  return configChangeToSign;
+export type ShamirChange = {
+  previousShamirConfig: null | ShamirConfigFootprint;
+  thisShamirConfig: ShamirConfigFootprint;
 };

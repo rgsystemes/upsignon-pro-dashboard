@@ -38,7 +38,7 @@ export const ShamirTab = (p) => {
       setIsLoading(true);
       const { configs } = await bankUrlFetch('/api/shamir-configs', 'POST', null);
       setConfigs(configs);
-      if (configs.find((c) => c.isActive)) {
+      if (configs.length > 0) {
         setCurrentPage(shamirPages.currentConfig);
       } else {
         setCurrentPage(shamirPages.presentation);

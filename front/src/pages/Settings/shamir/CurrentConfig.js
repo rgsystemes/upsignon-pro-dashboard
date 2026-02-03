@@ -64,26 +64,28 @@ export const CurrentConfig = (p) => {
           </div>
         </div>
       )}
-      <div style={{ marginTop: 20 }}>
-        <ConfigSummary
-          creationDesign={false}
-          isActive={currentConfig.isActive}
-          isPending={currentConfig.isPending}
-          name={currentConfig.name}
-          creationDate={new Date(currentConfig.createdAt)}
-          creatorEmail={currentConfig.creatorEmail}
-          minShares={currentConfig.minShares}
-          holders={currentConfig.shareholders.map((sh) => {
-            return {
-              id: `${sh.email}${sh.bankName}`,
-              email: sh.email,
-              bankName: sh.bankName,
-            };
-          })}
-          supportEmail={currentConfig.supportEmail}
-          showCreatorNotHolderWarning={false}
-        />
-      </div>
+      {!!currentConfig && (
+        <div style={{ marginTop: 20 }}>
+          <ConfigSummary
+            creationDesign={false}
+            isActive={currentConfig.isActive}
+            isPending={currentConfig.isPending}
+            name={currentConfig.name}
+            creationDate={new Date(currentConfig.createdAt)}
+            creatorEmail={currentConfig.creatorEmail}
+            minShares={currentConfig.minShares}
+            holders={currentConfig.shareholders.map((sh) => {
+              return {
+                id: `${sh.email}${sh.bankName}`,
+                email: sh.email,
+                bankName: sh.bankName,
+              };
+            })}
+            supportEmail={currentConfig.supportEmail}
+            showCreatorNotHolderWarning={false}
+          />
+        </div>
+      )}
       {showPendingConfig && (
         <RightPanel
           onClose={() => setShowPendingConfig(false)}
