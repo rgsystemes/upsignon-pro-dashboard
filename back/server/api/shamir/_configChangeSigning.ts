@@ -11,7 +11,7 @@ export type ShamirChangeSignature = {
 export type ShamirShareholderFootprint = {
   vaultId: number;
   vaultEmail: string;
-  vaultBankPublicId: number;
+  vaultBankPublicId: string;
   vaultSigningPubKey: string;
   nbShares: number;
 };
@@ -19,7 +19,7 @@ export type ShamirShareholderFootprint = {
 export type ShamirConfigFootprint = {
   configId: number;
   configName: string;
-  bankId: string;
+  bankPublicId: string;
   createdAt: string;
   minShares: number;
   supportEmail: string;

@@ -75,10 +75,12 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       },
     );
 
+    const bankRes = await db.query('SELECT public_id FROM banks WHERE id=$1', [bankId]);
+
     const newConfig: ShamirConfigFootprint = {
       configId,
       configName,
-      bankId,
+      bankPublicId: bankRes.rows[0].public_id,
       createdAt,
       minShares,
       supportEmail,
