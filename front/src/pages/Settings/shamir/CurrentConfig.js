@@ -83,6 +83,7 @@ export const CurrentConfig = (p) => {
             })}
             supportEmail={currentConfig.supportEmail}
             showCreatorNotHolderWarning={false}
+            approvers={currentConfig.approvers}
           />
         </div>
       )}
@@ -113,6 +114,7 @@ export const CurrentConfig = (p) => {
               })}
               supportEmail={pendingNewConfig.supportEmail}
               showCreatorNotHolderWarning={false}
+              approvers={pendingNewConfig.approvers}
             />
           </div>
         </RightPanel>

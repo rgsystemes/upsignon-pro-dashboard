@@ -15,12 +15,12 @@ export const ConfigSummary = (p) => {
     holders,
     supportEmail,
     showCreatorNotHolderWarning,
+    approvers,
   } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
     <ShareholdersResilienceComment minShares={minShares} totalHolders={holders.length} />
   );
-  const approvers = [];
 
   return (
     <div className={`shamirSummary ${creationDesign ? '' : 'shamirSummaryAlt'}`}>
@@ -101,7 +101,7 @@ export const ConfigSummary = (p) => {
           <br />
           <div>
             {approvers.map((ap) => {
-              return <div key={ap.id}>{`${ap.email} - ${ap.bankName}`}</div>;
+              return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
             })}
             {approvers.length === 0 && '--'}
           </div>

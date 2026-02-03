@@ -404,6 +404,7 @@ export class NewShamirConfig extends React.Component {
             })}
             supportEmail={supportEmail}
             showCreatorNotHolderWarning={!isAdminAShareholder}
+            approvers={[]}
           />
         )}
 

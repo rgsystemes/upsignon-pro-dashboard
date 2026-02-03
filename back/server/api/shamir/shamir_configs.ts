@@ -55,6 +55,7 @@ const fetchEnhancedConfig = async (
   isActive: boolean;
   approvedAt: string | null;
   isPending: boolean;
+  approvers: { email: string | null; bankName: string | null }[];
 }> => {
   const change = JSON.parse(config.change) as ShamirChange;
   const shareholders = change.thisShamirConfig.shareholders;
@@ -62,6 +63,7 @@ const fetchEnhancedConfig = async (
     shareholders.map(async (sh: ShamirShareholderFootprint) => {
       const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [sh.vaultBankPublicId]);
       return {
+        vaultId: sh.vaultId,
         email: sh.vaultEmail,
         nbShares: sh.nbShares,
         bankName: r.rows[0]?.name || '-',
@@ -82,6 +84,40 @@ const fetchEnhancedConfig = async (
     }
   }
 
+  let approvers: { email: string | null; bankName: string | null }[];
+  if (change.previousShamirConfig == null) {
+    approvers = approvingSignatures.map((as) => {
+      const sh = enhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
+      return {
+        email: sh?.email || null,
+        bankName: sh?.bankName || null,
+      };
+    });
+  } else {
+    const rawPreviousShareholders = change.previousShamirConfig.shareholders;
+    approvers = await Promise.all(
+      approvingSignatures.map(async (as) => {
+        const prevShareholder = change.previousShamirConfig?.shareholders.find(
+          (s) => s.vaultId === as.holderVaultId,
+        );
+        if (!prevShareholder) {
+          return {
+            email: null,
+            bankName: null,
+          };
+        }
+
+        const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [
+          prevShareholder?.vaultBankPublicId,
+        ]);
+        return {
+          email: prevShareholder.vaultEmail,
+          bankName: r.rows[0]?.name || null,
+        };
+      }),
+    );
+  }
+
   return {
     id: config.id,
     name: config.name,
@@ -93,5 +129,6 @@ const fetchEnhancedConfig = async (
     isActive: config.is_active,
     approvedAt,
     isPending: !config.is_active && !approvedAt,
+    approvers,
   };
 };
