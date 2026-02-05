@@ -10,7 +10,7 @@ import {
 export const getShamirConfigs = async (req: Request, res: Response): Promise<void> => {
   try {
     const allConfigsRes = await db.query(
-      `SELECT * FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at ASC`,
+      `SELECT * FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC`,
       // @ts-ignore
       [req.proxyParamsBankId],
     );
@@ -51,7 +51,7 @@ const fetchEnhancedConfig = async (
   minShares: number;
   supportEmail: string;
   createdAt: string;
-  shareholders: { email: string; nbShares: number; bankName: string }[];
+  shareholders: { vaultId: number; email: string; nbShares: number; bankName: string }[];
   isActive: boolean;
   approvedAt: string | null;
   isPending: boolean;
@@ -66,7 +66,7 @@ const fetchEnhancedConfig = async (
         vaultId: sh.vaultId,
         email: sh.vaultEmail,
         nbShares: sh.nbShares,
-        bankName: r.rows[0]?.name || '-',
+        bankName: r.rows[0]?.name || '?',
       };
     }),
   );
@@ -92,6 +92,7 @@ const fetchEnhancedConfig = async (
     signers = allSignatures.map((as) => {
       const sh = thisConfigEnhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
       return {
+        vaultId: sh?.vaultId,
         email: sh?.email || '?',
         bankName: sh?.bankName || '?',
         approved: as.approved,
@@ -106,6 +107,7 @@ const fetchEnhancedConfig = async (
         if (!prevShareholder) {
           // should never happen
           return {
+            vaultId: 0,
             email: '?',
             bankName: '?',
             approved: as.approved,
@@ -116,6 +118,7 @@ const fetchEnhancedConfig = async (
           prevShareholder?.vaultBankPublicId,
         ]);
         return {
+          vaultId: prevShareholder.vaultId,
           email: prevShareholder.vaultEmail,
           bankName: r.rows[0]?.name || '?',
           approved: as.approved,

@@ -16,6 +16,7 @@ export const ConfigSummary = (p) => {
     supportEmail,
     showCreatorNotHolderWarning,
     signers,
+    previousConfig,
   } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
@@ -56,6 +57,17 @@ export const ConfigSummary = (p) => {
           {i18n.t('shamir_config_summary_details_consensus_label')}
         </label>
         <br />
+        {isPending &&
+          previousConfig &&
+          (previousConfig.minShares != minShares ||
+            previousConfig.shareholders.length != holders.length) && (
+            <div className="oldValue">
+              {i18n.t('shamir_config_summary_details_consensus_content', {
+                min: previousConfig.minShares,
+                total: previousConfig.shareholders.length,
+              })}
+            </div>
+          )}
         {i18n.t('shamir_config_summary_details_consensus_content', {
           min: minShares,
           total: holders.length,
@@ -75,8 +87,13 @@ export const ConfigSummary = (p) => {
           <span>{i18n.t('shamir_config_summary_details_admin_not_shareholder')}</span>
         )}
         <div>
+          {previousConfig?.shareholders
+            .filter((s) => !holders.find((h) => h.vaultId === s.vaultId))
+            .map((s) => (
+              <div className="oldValue" key={s.vaultId}>{`${s.email} - ${s.bankName}`}</div>
+            ))}
           {holders.map((h) => {
-            return <div key={h.id}>{`${h.email} - ${h.bankName}`}</div>;
+            return <div key={h.vaultId}>{`${h.email} - ${h.bankName}`}</div>;
           })}
         </div>
       </div>
@@ -92,6 +109,9 @@ export const ConfigSummary = (p) => {
           {i18n.t('shamir_config_summary_details_support_email_label')}
         </label>
         <br />
+        {previousConfig?.supportEmail !== supportEmail && (
+          <div className="oldValue">{previousConfig?.supportEmail}</div>
+        )}
         {supportEmail || (
           <span style={{ color: '#E53E3E' }}>
             {i18n.t('shamir_config_summary_details_support_email_empty')}
@@ -105,7 +125,7 @@ export const ConfigSummary = (p) => {
             <br />
             <div>
               {approvingShareholders.map((ap) => {
-                return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
+                return <div key={ap.vaultId}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
               })}
               {approvingShareholders.length === 0 && '--'}
             </div>
@@ -115,7 +135,7 @@ export const ConfigSummary = (p) => {
             <br />
             <div>
               {refusingShareholders.map((ap) => {
-                return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
+                return <div key={ap.vaultId}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
               })}
               {refusingShareholders.length === 0 && '--'}
             </div>

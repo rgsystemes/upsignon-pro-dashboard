@@ -395,13 +395,7 @@ export class NewShamirConfig extends React.Component {
             creationDate={creationDate}
             creatorEmail={adminEmail}
             minShares={minShares}
-            holders={selectedHolders.map((sh) => {
-              return {
-                id: sh.id,
-                email: sh.email,
-                bankName: sh.bankName,
-              };
-            })}
+            holders={selectedHolders}
             supportEmail={supportEmail}
             showCreatorNotHolderWarning={!isAdminAShareholder}
             signers={[]}

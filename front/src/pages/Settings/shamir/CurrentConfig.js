@@ -74,13 +74,7 @@ export const CurrentConfig = (p) => {
             creationDate={new Date(currentConfig.createdAt)}
             creatorEmail={currentConfig.creatorEmail}
             minShares={currentConfig.minShares}
-            holders={currentConfig.shareholders.map((sh) => {
-              return {
-                id: `${sh.email}${sh.bankName}`,
-                email: sh.email,
-                bankName: sh.bankName,
-              };
-            })}
+            holders={currentConfig.shareholders}
             supportEmail={currentConfig.supportEmail}
             showCreatorNotHolderWarning={false}
             signers={currentConfig.signers}
@@ -105,16 +99,11 @@ export const CurrentConfig = (p) => {
               creationDate={new Date(pendingNewConfig.createdAt)}
               creatorEmail={pendingNewConfig.creatorEmail}
               minShares={pendingNewConfig.minShares}
-              holders={pendingNewConfig.shareholders.map((sh) => {
-                return {
-                  id: `${sh.email}${sh.bankName}`,
-                  email: sh.email,
-                  bankName: sh.bankName,
-                };
-              })}
+              holders={pendingNewConfig.shareholders}
               supportEmail={pendingNewConfig.supportEmail}
               showCreatorNotHolderWarning={false}
               signers={pendingNewConfig.signers}
+              previousConfig={currentConfig}
             />
           </div>
         </RightPanel>

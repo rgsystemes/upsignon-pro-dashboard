@@ -119,13 +119,7 @@ export const ConfigurationHistory = (p) => {
               creationDate={new Date(configToShow.createdAt)}
               creatorEmail={configToShow.creatorEmail}
               minShares={configToShow.minShares}
-              holders={configToShow.shareholders.map((sh) => {
-                return {
-                  id: `${sh.email}${sh.bankName}`,
-                  email: sh.email,
-                  bankName: sh.bankName,
-                };
-              })}
+              holders={configToShow.shareholders}
               supportEmail={configToShow.supportEmail}
               showCreatorNotHolderWarning={false}
               signers={configToShow.signers}
