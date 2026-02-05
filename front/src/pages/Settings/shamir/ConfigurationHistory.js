@@ -128,7 +128,7 @@ export const ConfigurationHistory = (p) => {
               })}
               supportEmail={configToShow.supportEmail}
               showCreatorNotHolderWarning={false}
-              approvers={configToShow.approvers}
+              signers={configToShow.signers}
             />
           </div>
         </RightPanel>

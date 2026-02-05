@@ -59,8 +59,7 @@ export const ShamirTab = (p) => {
     currentPage === shamirPages.requests ||
     currentPage === shamirPages.configurationHistory;
 
-  const currentConfigIdx = configs.findIndex((c) => c.isActive);
-  const currentConfig = currentConfigIdx >= 0 ? configs[currentConfigIdx] : null;
+  const currentConfig = configs.find((c) => c.isActive);
   const pendingNewConfig = configs.find((c) => c.isPending);
   return (
     <div style={{ marginTop: 20 }} className="shamirTabs">

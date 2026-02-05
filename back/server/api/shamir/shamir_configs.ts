@@ -10,7 +10,7 @@ import {
 export const getShamirConfigs = async (req: Request, res: Response): Promise<void> => {
   try {
     const allConfigsRes = await db.query(
-      `SELECT * FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC`,
+      `SELECT * FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at ASC`,
       // @ts-ignore
       [req.proxyParamsBankId],
     );
@@ -55,12 +55,12 @@ const fetchEnhancedConfig = async (
   isActive: boolean;
   approvedAt: string | null;
   isPending: boolean;
-  approvers: { email: string | null; bankName: string | null }[];
+  signers: { email: string | null; bankName: string | null }[];
 }> => {
   const change = JSON.parse(config.change) as ShamirChange;
-  const shareholders = change.thisShamirConfig.shareholders;
-  const enhancedShareholders = await Promise.all(
-    shareholders.map(async (sh: ShamirShareholderFootprint) => {
+  const thisConfigShareholders = change.thisShamirConfig.shareholders;
+  const thisConfigEnhancedShareholders = await Promise.all(
+    thisConfigShareholders.map(async (sh: ShamirShareholderFootprint) => {
       const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [sh.vaultBankPublicId]);
       return {
         vaultId: sh.vaultId,
@@ -71,39 +71,44 @@ const fetchEnhancedConfig = async (
     }),
   );
 
-  const approvingSignatures = config.change_signatures?.filter((cs) => cs.approved) || [];
+  const allSignatures = config.change_signatures || [];
+  const approvingSignatures = allSignatures?.filter((s) => s.approved);
+  const signingShareholders = (change.previousShamirConfig || change.thisShamirConfig).shareholders;
+  const signingMinShares = (change.previousShamirConfig || change.thisShamirConfig).minShares;
   let approvedAt = null;
   let cumulatedApprovingShares = 0;
   for (let i = 0; i < approvingSignatures.length; i++) {
     const cs = approvingSignatures[i];
-    const sh = shareholders.find((s) => s.vaultId === cs.holderVaultId);
+    const sh = signingShareholders.find((s) => s.vaultId === cs.holderVaultId);
     cumulatedApprovingShares += sh?.nbShares || 0;
-    if (cumulatedApprovingShares >= change.thisShamirConfig.minShares) {
+    if (cumulatedApprovingShares >= signingMinShares) {
       approvedAt = cs.signedAt;
       continue;
     }
   }
 
-  let approvers: { email: string | null; bankName: string | null }[];
+  let signers: { email: string | null; bankName: string | null; approved: boolean }[];
   if (change.previousShamirConfig == null) {
-    approvers = approvingSignatures.map((as) => {
-      const sh = enhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
+    signers = allSignatures.map((as) => {
+      const sh = thisConfigEnhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
       return {
-        email: sh?.email || null,
-        bankName: sh?.bankName || null,
+        email: sh?.email || '?',
+        bankName: sh?.bankName || '?',
+        approved: as.approved,
       };
     });
   } else {
-    const rawPreviousShareholders = change.previousShamirConfig.shareholders;
-    approvers = await Promise.all(
-      approvingSignatures.map(async (as) => {
-        const prevShareholder = change.previousShamirConfig?.shareholders.find(
+    signers = await Promise.all(
+      allSignatures.map(async (as) => {
+        const prevShareholder = change.previousShamirConfig!.shareholders.find(
           (s) => s.vaultId === as.holderVaultId,
         );
         if (!prevShareholder) {
+          // should never happen
           return {
-            email: null,
-            bankName: null,
+            email: '?',
+            bankName: '?',
+            approved: as.approved,
           };
         }
 
@@ -112,7 +117,8 @@ const fetchEnhancedConfig = async (
         ]);
         return {
           email: prevShareholder.vaultEmail,
-          bankName: r.rows[0]?.name || null,
+          bankName: r.rows[0]?.name || '?',
+          approved: as.approved,
         };
       }),
     );
@@ -125,10 +131,10 @@ const fetchEnhancedConfig = async (
     minShares: change.thisShamirConfig.minShares,
     supportEmail: change.thisShamirConfig.supportEmail,
     createdAt: change.thisShamirConfig.createdAt,
-    shareholders: enhancedShareholders,
+    shareholders: thisConfigEnhancedShareholders,
     isActive: config.is_active,
     approvedAt,
     isPending: !config.is_active && !approvedAt,
-    approvers,
+    signers,
   };
 };

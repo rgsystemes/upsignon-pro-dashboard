@@ -522,6 +522,7 @@ const translations = {
   shamir_config_creation: 'Creation date:',
   shamir_config_creator: 'Created by:',
   shamir_config_approved_by: 'Approved by:',
+  shamir_config_refused_by: 'Refused by:',
 
   // SHAMIR history
   shamir_history_title: 'History of configurations',

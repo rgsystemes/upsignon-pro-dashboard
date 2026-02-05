@@ -15,12 +15,15 @@ export const ConfigSummary = (p) => {
     holders,
     supportEmail,
     showCreatorNotHolderWarning,
-    approvers,
+    signers,
   } = p;
   const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
   const resilience = (
     <ShareholdersResilienceComment minShares={minShares} totalHolders={holders.length} />
   );
+
+  const approvingShareholders = signers.filter((ap) => ap.approved);
+  const refusingShareholders = signers.filter((ap) => !ap.approved);
 
   return (
     <div className={`shamirSummary ${creationDesign ? '' : 'shamirSummaryAlt'}`}>
@@ -96,16 +99,28 @@ export const ConfigSummary = (p) => {
         )}
       </div>
       {!creationDesign && (
-        <div style={{ marginBottom: 20 }}>
-          <label className={'bodyMedium'}>{i18n.t('shamir_config_approved_by')}</label>
-          <br />
-          <div>
-            {approvers.map((ap) => {
-              return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
-            })}
-            {approvers.length === 0 && '--'}
+        <>
+          <div style={{ marginBottom: 20 }}>
+            <label className={'bodyMedium'}>{i18n.t('shamir_config_approved_by')}</label>
+            <br />
+            <div>
+              {approvingShareholders.map((ap) => {
+                return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
+              })}
+              {approvingShareholders.length === 0 && '--'}
+            </div>
           </div>
-        </div>
+          <div style={{ marginBottom: 20 }}>
+            <label className={'bodyMedium'}>{i18n.t('shamir_config_refused_by')}</label>
+            <br />
+            <div>
+              {refusingShareholders.map((ap) => {
+                return <div key={ap.id}>{`${ap.email || '--'} - ${ap.bankName || '--'}`}</div>;
+              })}
+              {refusingShareholders.length === 0 && '--'}
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

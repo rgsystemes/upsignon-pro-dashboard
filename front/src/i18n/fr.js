@@ -508,7 +508,7 @@ const translations = {
     "Le protocole de secours peut être utilisé même en l'absence d'une personne de confiance et y compris pour déverrouiller le coffre-fort d'une autre personne de confiance.",
   shamir_config_holders_warning_resilience_3_short: 'Très bonne résilience.',
   shamir_config_holders_warning_resilience_3_details:
-    "Le protocole de secours peut-être utilisé même en l'abscence de $n personnes de confiance.",
+    "Le protocole de secours peut être utilisé même en l'abscence de $n personnes de confiance.",
   shamir_config_holder_search: 'Rechercher et sélectionner',
   shamir_config_holder_email: 'Personne de confiance',
   shamir_config_holder_bank_name: 'Banque',
@@ -537,6 +537,7 @@ const translations = {
   shamir_config_creation: 'Date de création :',
   shamir_config_creator: 'Créé par :',
   shamir_config_approved_by: 'Approuvé par :',
+  shamir_config_refused_by: 'Refusé par :',
 
   // SHAMIR history
   shamir_history_title: 'Historique des configurations',
