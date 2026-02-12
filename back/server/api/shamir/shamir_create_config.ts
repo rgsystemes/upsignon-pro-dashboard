@@ -98,9 +98,10 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       thisShamirConfig: newConfig,
     };
     const configChangeToSign = JSON.stringify(configChange);
-
-    await db.query('UPDATE shamir_configs SET change=$1 WHERE id=$2', [
+    const willBeActive = previousConfig == null;
+    await db.query('UPDATE shamir_configs SET change=$1, is_active=$2 WHERE id=$3', [
       configChangeToSign,
+      willBeActive,
       configId,
     ]);
     res.status(200).end();
