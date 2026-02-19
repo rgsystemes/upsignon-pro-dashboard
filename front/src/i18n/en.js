@@ -279,7 +279,7 @@ const translations = {
   sasettings_superadmin_role_admin: 'Admin',
   sasettings_superadmin_role_restricted_superadmin: 'Restricted superadmin',
   sasettings_superadmin_role_superadmin: 'Superadmin',
-  sasettings_superadmins_invite: 'Autoriser',
+  sasettings_superadmins_invite: 'Authorize',
   sasettings_banks: 'Banks of vaults',
   sasettings_banks_explanation:
     'Banks of vaults are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
@@ -287,11 +287,12 @@ const translations = {
   sasettings_resellers: 'Groups of banks',
   sasettings_reseller_name: 'Group name',
   sasettings_reseller_created_at: 'Created on',
-  sasettings_reseller_banks: 'Banques',
+  sasettings_reseller_banks: 'Banks',
   sasettings_reseller_name_placeholder: 'Enter group name',
   sasettings_reseller_delete_warning: 'Are you sure you want to delete this group of banks?',
   sasettings_reseller_delete_error_banks_associated:
     'Cannot delete this group because there are still banks associated with it. Please reassign or delete the associated banks first.',
+  sasettings_reseller_open: 'See',
   sasettings_select_reseller: 'Select a group of banks',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Create a bank',
@@ -417,6 +418,8 @@ const translations = {
     'Pooled licences are available to all banks on a first come first served basis.',
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (pool)',
+  search_placeholder: 'Search...',
+  search_tooltip: 'Search for a bank of vaults',
 };
 
 export default translations;
