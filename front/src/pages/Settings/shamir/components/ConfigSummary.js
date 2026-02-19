@@ -23,8 +23,8 @@ export const ConfigSummary = (p) => {
     <ShareholdersResilienceComment minShares={minShares} totalHolders={holders.length} />
   );
 
-  const approvingShareholders = signers.filter((ap) => ap.approved);
-  const refusingShareholders = signers.filter((ap) => !ap.approved);
+  const approvingShareholders = (signers || []).filter((ap) => ap.approved);
+  const refusingShareholders = (signers || []).filter((ap) => !ap.approved);
 
   return (
     <div className={`shamirSummary ${creationDesign ? '' : 'shamirSummaryAlt'}`}>
@@ -59,8 +59,8 @@ export const ConfigSummary = (p) => {
         <br />
         {isPending &&
           previousConfig &&
-          (previousConfig.minShares != minShares ||
-            previousConfig.shareholders.length != holders.length) && (
+          (previousConfig.minShares !== minShares ||
+            previousConfig.shareholders.length !== holders.length) && (
             <div className="oldValue">
               {i18n.t('shamir_config_summary_details_consensus_content', {
                 min: previousConfig.minShares,

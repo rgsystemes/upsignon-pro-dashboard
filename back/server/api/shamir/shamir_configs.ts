@@ -55,7 +55,7 @@ const fetchEnhancedConfig = async (
   isActive: boolean;
   approvedAt: string | null;
   isPending: boolean;
-  signers: { email: string | null; bankName: string | null }[];
+  signers: { email: string | null; bankName: string | null; approved: boolean }[];
 }> => {
   const change = JSON.parse(config.change) as ShamirChange;
   const thisConfigShareholders = change.thisShamirConfig.shareholders;
@@ -83,7 +83,7 @@ const fetchEnhancedConfig = async (
     cumulatedApprovingShares += sh?.nbShares || 0;
     if (cumulatedApprovingShares >= signingMinShares) {
       approvedAt = cs.signedAt;
-      continue;
+      break;
     }
   }
 
