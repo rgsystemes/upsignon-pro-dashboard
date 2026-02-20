@@ -67,7 +67,7 @@ class ResellerBanks extends React.Component {
   render() {
     const banks = this.props.banks ?? [];
     const bankSearch = (this.props.bankSearch ?? '').trim().toLowerCase();
-    const searchableFields = ['id', 'name', 'nb_users', 'created_at'];
+    const searchableFields = ['id', 'name'];
     const filteredBanks = !bankSearch
       ? banks
       : banks.filter(bank =>
