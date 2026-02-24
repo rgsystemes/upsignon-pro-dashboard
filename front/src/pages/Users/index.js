@@ -70,7 +70,7 @@ class Users extends React.Component {
         'POST',
         null,
       );
-      const configNames = shamirCheck.impactedConfigs.map((c) => c.name).join(', ');
+      const configNames = shamirCheck.impactedConfigs?.map((c) => c.name).join(', ') || '';
 
       let confirmationMessage = i18n.t('user_delete_warning', { email: userEmail });
 
@@ -99,6 +99,7 @@ class Users extends React.Component {
       }
     } catch (e) {
       console.error(e);
+      toast.error(i18n.t('user_delete_error'));
     } finally {
       this.props.setIsLoading(false);
     }

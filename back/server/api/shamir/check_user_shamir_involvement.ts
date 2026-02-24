@@ -1,9 +1,14 @@
-import { db } from '../helpers/db';
-import { logError } from '../helpers/logger';
+import { db } from '../../helpers/db';
+import { logError } from '../../helpers/logger';
+import { inputSanitizer } from '../../helpers/sanitizer';
 
 export const check_user_shamir_involvement = async (req: any, res: any): Promise<void> => {
   try {
-    const userId = req.params.userId;
+    const userId = inputSanitizer.getNumberOrNull(req.params?.userId);
+    if (!userId) {
+      res.status(400).json({ error: 'Invalid userId paramter' });
+      return;
+    }
 
     // Check if user is a shareholder in any Shamir config
     const allConfigsRes = await db.query(

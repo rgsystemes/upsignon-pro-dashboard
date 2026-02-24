@@ -7,6 +7,7 @@ import { NameAndVersion } from './components/NameAndVersion';
 import { RightPanel } from '../../../helpers/RightPanel/RightPanel';
 import { toast } from 'react-toastify';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
+import { isRestrictedSuperadmin } from '../../../helpers/isRestrictedSuperadmin';
 
 export const CurrentConfig = (p) => {
   const { currentConfig, pendingNewConfig, onStartEdit } = p;
@@ -85,7 +86,11 @@ export const CurrentConfig = (p) => {
         <RightPanel
           onClose={() => setShowPendingConfig(false)}
           mainAction={(handleClose) => (
-            <button className="dangerButton" onClick={() => onCancelPendingRequest(handleClose)}>
+            <button
+              className="dangerButton"
+              onClick={() => onCancelPendingRequest(handleClose)}
+              disabled={isRestrictedSuperadmin}
+            >
               {i18n.t('shamir_change_pending_cancel')}
             </button>
           )}

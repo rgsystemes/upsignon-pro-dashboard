@@ -12,7 +12,7 @@ import { delete_bank_admin } from './delete_bank_admin';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
-import { check_user_shamir_involvement } from './check_user_shamir_involvement';
+import { check_user_shamir_involvement } from './shamir/check_user_shamir_involvement';
 import { extract_database } from './extract_database';
 import { extract_emails_for_duplicate_passwords } from './extract_emails_for_duplicate_passwords';
 import { extract_emails_for_long_unused } from './extract_emails_for_long_unused';

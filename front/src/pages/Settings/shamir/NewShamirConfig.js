@@ -16,6 +16,7 @@ import { TextWithBold } from '../../../helpers/TextWithBold';
 import { InfoIcon } from '../../../helpers/icons/InfoIcon';
 import { ConfigChangeSummary } from './components/ConfigChangeSummary';
 import { SelectedHolderTags } from './components/SelectedHolderTags';
+import { isRestrictedSuperadmin } from '../../../helpers/isRestrictedSuperadmin';
 
 // Props : setIsLoading, onConfigCreated, onCancel, previousConfig
 export class NewShamirConfig extends React.Component {
@@ -427,7 +428,11 @@ export class NewShamirConfig extends React.Component {
             <button onClick={this.onValidationCancel} className="whiteButton">
               {i18n.t('cancel')}
             </button>
-            <button onClick={this.onValidateSubmit} className="submitButton">
+            <button
+              onClick={this.onValidateSubmit}
+              disabled={isRestrictedSuperadmin}
+              className="submitButton"
+            >
               {i18n.t('shamir_config_validate_submit')}
             </button>
           </div>
