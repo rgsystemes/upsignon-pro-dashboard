@@ -4,10 +4,11 @@ import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
 import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
+import { Search } from '../components/Search';
 
-// PROPS pages, banks, isSuperadmin, isSuperadminPage
+// PROPS pages, banks, isSuperadmin, isSuperadminPage, onBankSearchChange, bankSearch
 function Menu(props) {
-  const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
+  const { pages, banks, resellers, isSuperadmin, isSuperadminPage, onBankSearchChange, bankSearch } = props;
   const dashboardVersion = require('../../package.json').version;
   return (
     <nav>
@@ -16,6 +17,12 @@ function Menu(props) {
         resellers={resellers}
         isSuperadminPage={isSuperadminPage}
         isSuperadmin={isSuperadmin}
+      />
+      <Search
+        placeholder={i18n.t('search_placeholder')}
+        onChange={onBankSearchChange}
+        value={bankSearch}
+        tooltip={i18n.t('search_tooltip')}
       />
       <React.Fragment>
         {pages

@@ -294,6 +294,7 @@ const translations = {
   sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce groupe de banques ?',
   sasettings_reseller_delete_error_banks_associated:
     'Impossible de supprimer ce groupe car des banques lui sont encore associées. Veuillez réassigner ou supprimer les banques associées en premier.',
+  sasettings_reseller_open: 'Voir',
   sasettings_select_reseller: 'Sélectionner un groupe',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
@@ -433,6 +434,8 @@ const translations = {
     'Les licences mutualisées sont disponibles pour toutes les banques sur la base du premier arrivé premier servi.',
   licences_attribution: 'Attributions',
   licences_pool_number: '$n (mutualisées)',
+  search_placeholder: 'Rechercher...',
+  search_tooltip: 'Rechercher une banque de coffres-forts',
 };
 
 export default translations;

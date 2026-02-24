@@ -29,6 +29,7 @@ class App extends React.Component {
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
     banks: [],
+    bankSearch: '',
     resellers: [],
     isSuperadminOrRestricted: false,
     isReady: false,
@@ -114,6 +115,9 @@ class App extends React.Component {
       console.error(e);
     }
   };
+  handleBankSearch = (value) => {
+    this.setState({ bankSearch: value });
+  };
   render() {
     if (!this.state.isReady) {
       return (
@@ -191,6 +195,8 @@ class App extends React.Component {
           resellerId={resellerId}
           banks={this.state.banks.filter((b) => b.reseller_id === resellerId)}
           refetchBanks={this.refetchBanks}
+          bankSearch={this.state.bankSearch}
+          onBankSearchChange={this.handleBankSearch}
         />
       );
       currentPage = 'reseller';
@@ -268,6 +274,8 @@ class App extends React.Component {
           resellers={this.state.resellers}
           isSuperadmin={this.state.isSuperadminOrRestricted}
           isSuperadminPage={bankId === 'superadmin'}
+          bankSearch={this.state.bankSearch}
+          onBankSearchChange={this.handleBankSearch}
         />
         {pageContent}
         <div

@@ -113,6 +113,7 @@ class Resellers extends React.Component {
           <table>
             <thead>
               <tr>
+                <th></th>
                 <th>{i18n.t('sasettings_reseller_name')}</th>
                 <th>{i18n.t('sasettings_reseller_created_at')}</th>
                 <th>{i18n.t('sasettings_reseller_banks')}</th>
@@ -123,6 +124,14 @@ class Resellers extends React.Component {
               {this.state.resellers.map((reseller) => {
                 return (
                   <tr key={reseller.id}>
+                    <td>
+                      <a
+                        className="action"
+                        href={baseFrontUrl + '/reseller/' + reseller.id + '/'}
+                      >
+                        {i18n.t('view_reseller') || 'Voir'}
+                      </a>
+                    </td>
                     <td>
                       <EditableCellContent
                         value={reseller.name}
