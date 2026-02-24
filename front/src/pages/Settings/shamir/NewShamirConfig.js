@@ -139,7 +139,10 @@ export class NewShamirConfig extends React.Component {
           selectedHolders: [
             ...s.selectedHolders,
             ...s.searchedHolders.filter(
-              (h) => !s.selectedHolders.find((s) => s.id === h.id) && h.hasSharingPublicKey,
+              (h) =>
+                !s.selectedHolders.find((s) => s.id === h.id) &&
+                h.hasSharingPublicKey &&
+                h.hasSigningPublicKey,
             ),
           ],
         };
@@ -211,8 +214,11 @@ export class NewShamirConfig extends React.Component {
     });
 
     const areAllSelected =
-      resultingHolderList.filter((h) => h.hasSharingPublicKey).length > 0 &&
-      !resultingHolderList.find((h) => !h.isSelected && h.hasSharingPublicKey);
+      resultingHolderList.filter((h) => h.hasSharingPublicKey && h.hasSigningPublicKey).length >
+        0 &&
+      !resultingHolderList.find(
+        (h) => !h.isSelected && h.hasSharingPublicKey && h.hasSigningPublicKey,
+      );
     const shouldShowShareHoldersTable = searchedHolders.length > 0 || selectedHolders.length > 0;
     const isAdminAShareholder = selectedHolders.find((h) => h.email === adminEmail) != null;
 
@@ -318,7 +324,7 @@ export class NewShamirConfig extends React.Component {
                   return (
                     <tr key={h.id}>
                       <td>
-                        {h.hasSharingPublicKey ? (
+                        {h.hasSharingPublicKey && h.hasSigningPublicKey ? (
                           <input
                             type="checkbox"
                             checked={!!h.isSelected}
@@ -326,7 +332,9 @@ export class NewShamirConfig extends React.Component {
                           />
                         ) : (
                           <em style={{ fontSize: 12 }}>
-                            {i18n.t('shamir_config_holders_in_creation')}
+                            {!h.hasSharingPublicKey
+                              ? i18n.t('shamir_config_holders_in_creation')
+                              : i18n.t('shamir_config_holders_not_ready')}
                           </em>
                         )}
                       </td>
@@ -387,15 +395,10 @@ export class NewShamirConfig extends React.Component {
             creationDate={creationDate}
             creatorEmail={adminEmail}
             minShares={minShares}
-            holders={selectedHolders.map((sh) => {
-              return {
-                id: sh.id,
-                email: sh.email,
-                bankName: sh.bankName,
-              };
-            })}
+            holders={selectedHolders}
             supportEmail={supportEmail}
             showCreatorNotHolderWarning={!isAdminAShareholder}
+            signers={[]}
           />
         )}
 

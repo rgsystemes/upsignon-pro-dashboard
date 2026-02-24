@@ -492,6 +492,7 @@ const translations = {
     'Chacune de ces personnes recevra une part. Vous pouvez choisir des personnes dans toutes les banques auxquelles vous avez accès. Plus vous ajoutez de personnes, plus vous serez résilient aux départs et aux absences des personnes de confiance.',
   shamir_config_holders_number: '$n personnes(s) de confiance sélectionnée(s)$adminWarning.',
   shamir_config_holders_in_creation: 'En cours de création.',
+  shamir_config_holders_not_ready: "Doit d'abord déverrouiller son coffre.",
   shamir_config_holders_warning_not_enough: 'Vous devez ajouter encore',
   shamir_config_holders_warning_not_enough_number: 'au moins $n personnes(s) de confiance.',
   shamir_config_holders_warning_resilience_0_short: 'Aucune résilience.',
@@ -507,7 +508,7 @@ const translations = {
     "Le protocole de secours peut être utilisé même en l'absence d'une personne de confiance et y compris pour déverrouiller le coffre-fort d'une autre personne de confiance.",
   shamir_config_holders_warning_resilience_3_short: 'Très bonne résilience.',
   shamir_config_holders_warning_resilience_3_details:
-    "Le protocole de secours peut-être utilisé même en l'abscence de $n personnes de confiance.",
+    "Le protocole de secours peut être utilisé même en l'abscence de $n personnes de confiance.",
   shamir_config_holder_search: 'Rechercher et sélectionner',
   shamir_config_holder_email: 'Personne de confiance',
   shamir_config_holder_bank_name: 'Banque',
@@ -536,6 +537,7 @@ const translations = {
   shamir_config_creation: 'Date de création :',
   shamir_config_creator: 'Créé par :',
   shamir_config_approved_by: 'Approuvé par :',
+  shamir_config_refused_by: 'Refusé par :',
 
   // SHAMIR history
   shamir_history_title: 'Historique des configurations',

@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
 import { db } from '../../helpers/db';
 import { logError } from '../../helpers/logger';
-import { ShamirChangeSignatures, ShamirConfigChangeToSign } from './_configChangeSigning';
+import {
+  ShamirChange,
+  ShamirChangeSignature,
+  ShamirShareholderFootprint,
+} from './_configChangeSigning';
 
 export const getShamirConfigs = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -33,7 +37,7 @@ type ShamirRawConfig = {
   created_at: string;
   support_email: string;
   creator_email: string;
-  change_signatures: ShamirChangeSignatures;
+  change_signatures: ShamirChangeSignature[];
   change: string;
   is_active: boolean;
 };
@@ -47,49 +51,93 @@ const fetchEnhancedConfig = async (
   minShares: number;
   supportEmail: string;
   createdAt: string;
-  shareholders: { email: string; nbShares: number; bankName: string }[];
+  shareholders: { vaultId: number; email: string; nbShares: number; bankName: string }[];
   isActive: boolean;
   approvedAt: string | null;
   isPending: boolean;
+  signers: { email: string | null; bankName: string | null; approved: boolean }[];
 }> => {
-  const change = JSON.parse(config.change) as ShamirConfigChangeToSign;
-  const shareholders = change.nextShamirConfig.shareholders;
-  const enhancedShareholders = await Promise.all(
-    shareholders.map(async (sh) => {
+  const change = JSON.parse(config.change) as ShamirChange;
+  const thisConfigShareholders = change.thisShamirConfig.shareholders;
+  const thisConfigEnhancedShareholders = await Promise.all(
+    thisConfigShareholders.map(async (sh: ShamirShareholderFootprint) => {
       const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [sh.vaultBankPublicId]);
       return {
+        vaultId: sh.vaultId,
         email: sh.vaultEmail,
         nbShares: sh.nbShares,
-        bankName: r.rows[0]?.name || '-',
+        bankName: r.rows[0]?.name || '?',
       };
     }),
   );
+
+  const allSignatures = config.change_signatures || [];
+  const approvingSignatures = allSignatures?.filter((s) => s.approved);
+  const signingShareholders = (change.previousShamirConfig || change.thisShamirConfig).shareholders;
+  const signingMinShares = (change.previousShamirConfig || change.thisShamirConfig).minShares;
   let approvedAt = null;
-  if (!change.previousShamirConfig) {
-    approvedAt = config.created_at;
-  } else {
-    const sortedApprovals = config.change_signatures
-      ? Object.values(config.change_signatures).sort((a, b) => {
-          if (a.approvedAt < b.approvedAt) return -1;
-          if (a.approvedAt > b.approvedAt) return 1;
-          return 0;
-        })
-      : [];
-    if (sortedApprovals.length >= config.min_shares) {
-      approvedAt = sortedApprovals[config.min_shares - 1].approvedAt;
+  let cumulatedApprovingShares = 0;
+  for (let i = 0; i < approvingSignatures.length; i++) {
+    const cs = approvingSignatures[i];
+    const sh = signingShareholders.find((s) => s.vaultId === cs.holderVaultId);
+    cumulatedApprovingShares += sh?.nbShares || 0;
+    if (cumulatedApprovingShares >= signingMinShares) {
+      approvedAt = cs.signedAt;
+      break;
     }
+  }
+
+  let signers: { email: string | null; bankName: string | null; approved: boolean }[];
+  if (change.previousShamirConfig == null) {
+    signers = allSignatures.map((as) => {
+      const sh = thisConfigEnhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
+      return {
+        vaultId: sh?.vaultId,
+        email: sh?.email || '?',
+        bankName: sh?.bankName || '?',
+        approved: as.approved,
+      };
+    });
+  } else {
+    signers = await Promise.all(
+      allSignatures.map(async (as) => {
+        const prevShareholder = change.previousShamirConfig!.shareholders.find(
+          (s) => s.vaultId === as.holderVaultId,
+        );
+        if (!prevShareholder) {
+          // should never happen
+          return {
+            vaultId: 0,
+            email: '?',
+            bankName: '?',
+            approved: as.approved,
+          };
+        }
+
+        const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [
+          prevShareholder?.vaultBankPublicId,
+        ]);
+        return {
+          vaultId: prevShareholder.vaultId,
+          email: prevShareholder.vaultEmail,
+          bankName: r.rows[0]?.name || '?',
+          approved: as.approved,
+        };
+      }),
+    );
   }
 
   return {
     id: config.id,
     name: config.name,
-    creatorEmail: change.nextShamirConfig.creatorEmail,
-    minShares: change.nextShamirConfig.minShares,
-    supportEmail: change.nextShamirConfig.supportEmail,
-    createdAt: change.nextShamirConfig.createdAt,
-    shareholders: enhancedShareholders,
+    creatorEmail: change.thisShamirConfig.creatorEmail,
+    minShares: change.thisShamirConfig.minShares,
+    supportEmail: change.thisShamirConfig.supportEmail,
+    createdAt: change.thisShamirConfig.createdAt,
+    shareholders: thisConfigEnhancedShareholders,
     isActive: config.is_active,
     approvedAt,
     isPending: !config.is_active && !approvedAt,
+    signers,
   };
 };

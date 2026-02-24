@@ -35,7 +35,8 @@ export const shamirSearchUsers = async (req: Request, res: Response): Promise<vo
         u.id,
         u.email,
         b.name as bank_name,
-        LENGTH(u.sharing_public_key_2) > 0 as has_sharing_public_key
+        (u.sharing_public_key_2 IS NOT NULL AND LENGTH(u.sharing_public_key_2) > 0) as has_sharing_public_key,
+        (u.signing_public_key IS NOT NULL AND LENGTH(u.signing_public_key) > 0) as has_signing_public_key
       FROM users AS u
       LEFT JOIN banks AS b ON b.id = u.bank_id
       WHERE ${whereClauses.join(' AND ')}
@@ -48,6 +49,7 @@ export const shamirSearchUsers = async (req: Request, res: Response): Promise<vo
         email: u.email,
         bankName: u.bank_name,
         hasSharingPublicKey: u.has_sharing_public_key,
+        hasSigningPublicKey: u.has_signing_public_key,
       })),
       // @ts-ignore
       adminEmail: req.session.adminEmail,

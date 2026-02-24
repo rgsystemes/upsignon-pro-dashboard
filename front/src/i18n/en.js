@@ -477,6 +477,7 @@ const translations = {
     'Each of these trusted persons will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of trusted persons.',
   shamir_config_holders_number: '$n trusted person(s) selected$adminWarning.',
   shamir_config_holders_in_creation: 'Being created.',
+  shamir_config_holders_not_ready: 'Needs vault opening first.',
   shamir_config_holders_warning_not_enough: 'You must still add',
   shamir_config_holders_warning_not_enough_number: 'at least $n trusted person(s).',
   shamir_config_holders_warning_resilience_0_short: 'No resilience.',
@@ -521,6 +522,7 @@ const translations = {
   shamir_config_creation: 'Creation date:',
   shamir_config_creator: 'Created by:',
   shamir_config_approved_by: 'Approved by:',
+  shamir_config_refused_by: 'Refused by:',
 
   // SHAMIR history
   shamir_history_title: 'History of configurations',
