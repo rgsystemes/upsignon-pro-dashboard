@@ -11,13 +11,13 @@ import { SearchByFields } from '../../helpers/SearchByFields';
 class ResellerBanks extends React.Component {
   state = {
     bankToDeleteId: null,
-    bankSearch: '',
+    search: '',
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
   
-  handleBankSearch = (value) => {
-    this.setState({ bankSearch: value });
+  handleSearch = (value) => {
+    this.setState({ search: value });
   };
 
   insertBank = async () => {
@@ -150,8 +150,8 @@ class ResellerBanks extends React.Component {
         </div>
         <Search
           placeholder={i18n.t('search_placeholder')}
-          onChange={this.handleBankSearch}
-          value={this.state.bankSearch || ''}
+          onChange={this.handleSearch}
+          value={this.state.search || ''}
           tooltip={i18n.t('search_tooltip')}
         />
         <table>

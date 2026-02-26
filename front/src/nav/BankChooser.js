@@ -8,27 +8,27 @@ import { SearchByFields } from '../helpers/SearchByFields';
 class BankChooser extends React.Component {
   state = {
     showList: false,
-    bankSearch: '',
+    search: '',
   };
 
   toggleBankList = () => {
     this.setState((s) => ({ ...s, showList: !s.showList }));
   };
 
-  handleBankSearchChange = (value) => {
-    this.setState({ bankSearch: value });
+  handleSearch = (value) => {
+    this.setState({ search: value });
   };
 
   render() {
     const currentBank = this.props.banks.find((b) => b.id === parseInt(bankId));
     const currentReseller = this.props.resellers.find((r) => r.id == resellerId);
-    
+
     const directBanks = this.props.banks.filter(
       (b) => this.props.resellers.find((r) => r.id === b.reseller_id) == null,
     );
 
     const banks = this.props.banks ?? [];
-    const bankSearch = (this.state.bankSearch ?? '').trim().toLowerCase();
+    const bankSearch = (this.state.search ?? '').trim().toLowerCase();
     const filteredDirectBanks = SearchByFields(directBanks, bankSearch, ['id', 'name']);
     const filteredBanks = SearchByFields(banks, bankSearch, ['id', 'name']);
 
@@ -76,8 +76,8 @@ class BankChooser extends React.Component {
             )}
             <Search
               placeholder={i18n.t('search_placeholder')}
-              onChange={this.handleBankSearchChange}
-              value={this.state.bankSearch || ''}
+              onChange={this.handleSearch}
+              value={this.state.search || ''}
               tooltip={i18n.t('search_tooltip')}
             />
             {this.props.resellers &&
