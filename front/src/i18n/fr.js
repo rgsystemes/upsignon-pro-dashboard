@@ -85,6 +85,11 @@ const translations = {
   user_passwords_duplicated: 'dont $nb dupliqués',
   user_delete_warning:
     'Attention, vous allez supprimer le coffre-fort $email et toutes ses données. Cette action est irréversible.',
+  user_delete_shamir_warning:
+    "ATTENTION : Le coffre-fort $email est actionnaire dans les configurations Shamir suivantes utilisées pour protéger certains coffres-forts : $configs.\n\nIl est fortement recommandé de mettre à jour ces configurations Shamir et d'attendre que tous les utilisateurs aient migré vers la nouvelle configuration avant de supprimer cet utilisateur.\n\nÊtes-vous absolument certain de vouloir supprimer ce coffre-fort ?",
+  user_delete_shamir_forbidden:
+    "SUPPRESSION INTERDITE\n\nLe coffre-fort $email est actionnaire dans les configurations Shamir suivantes utilisées pour protéger certains coffres-forts : $configs.\n\nLa suppression de cet utilisateur rendrait impossible l'obtention du consensus Shamir, ce qui empêcherait la récupération des coffres-forts protégés.\n\nVous devez d'abord mettre à jour la configuration Shamir et attendre que tous les utilisateurs aient migré vers la nouvelle configuration.",
+  user_delete_error: 'La suppression du coffre-fort a échouée.',
   user_change_email_confirm:
     "Êtes-vous sûr de vouloir changer l'adresse email de ce coffre-fort de $oldEmail à $newEmail ?\nCeci sera pris en compte de façon transparente dans l'application (à partir de la version 4.6).",
   user_email_already_used_or_not_authorized:

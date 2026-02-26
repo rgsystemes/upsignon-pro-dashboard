@@ -86,6 +86,11 @@ const translations = {
   user_passwords_duplicated: 'of which $nb duplicated',
   user_delete_warning:
     'Beware, you are about to delete the vault $email and all his data. This is irrerversible.',
+  user_delete_shamir_warning:
+    'WARNING: The vault $email is a shareholder in the following Shamir configurations used in the protection of some vaults: $configs.\n\nIt is strongly recommended to update these Shamir configurations and wait for all users to migrate to the new configuration before deleting this user.\n\nAre you absolutely sure you want to delete this vault?',
+  user_delete_shamir_forbidden:
+    'DELETION FORBIDDEN\n\nThe vault $email is a shareholder in the following Shamir configurations used in the protection of some vaults: $configs.\n\nDeleting this user would make it impossible to obtain Shamir consensus, which would prevent the recovery of protected vaults.\n\nYou must first update the Shamir configuration and wait for all users to migrate to the new configuration.',
+  user_delete_error: 'The vault deletion has failed.',
   user_change_email_confirm:
     "Are you sure you want to changer this user's email address from $oldEmail to $newEmail?\nThis will be taken into account in the application in a transparent manner for the user (with version 4.6 and above).",
   user_email_already_used_or_not_authorized:

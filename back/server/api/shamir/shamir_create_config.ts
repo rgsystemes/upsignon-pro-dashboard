@@ -11,6 +11,13 @@ import {
 
 export const shamirCreateConfig = async (req: Request, res: Response): Promise<void> => {
   try {
+    /// It is already required to be superadmin, restricted_superadmin, group admin or bank admin.
+    /// But this route should be forbidden to restricted_superadmin
+    // @ts-ignore
+    if (req.session.adminRole === 'restricted_superadmin') {
+      res.status(401).end();
+      return;
+    }
     const validatedBody = Joi.attempt(
       req.body,
       Joi.object({
