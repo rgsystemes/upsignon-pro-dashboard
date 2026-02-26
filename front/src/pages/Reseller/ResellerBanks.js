@@ -5,14 +5,20 @@ import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { Search } from '../../components/Search';
+import { SearchByFields } from '../../helpers/SearchByFields';
 
-// Props : setIsLoading, banks, fetchBanks, bankSearch, onBankSearchChange
+// Props : setIsLoading, banks, fetchBanks
 class ResellerBanks extends React.Component {
   state = {
     bankToDeleteId: null,
+    bankSearch: '',
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
+  
+  handleBankSearch = (value) => {
+    this.setState({ bankSearch: value });
+  };
 
   insertBank = async () => {
     try {
@@ -66,17 +72,8 @@ class ResellerBanks extends React.Component {
 
   render() {
     const banks = this.props.banks ?? [];
-    const bankSearch = (this.props.bankSearch ?? '').trim().toLowerCase();
-    const searchableFields = ['id', 'name'];
-    const filteredBanks = !bankSearch
-      ? banks
-      : banks.filter(bank =>
-          searchableFields.some(field =>
-            String(bank[field] ?? '')
-              .toLowerCase()
-              .includes(bankSearch)
-          )
-        );
+    const bankSearch = (this.state.bankSearch ?? '').trim().toLowerCase();
+    const filteredBanks = SearchByFields(banks, bankSearch, ['id', 'name']);
     const bankToDelete = banks.find((g) => g.id === this.state.bankToDeleteId);
     if (bankToDelete) {
       return (
@@ -153,8 +150,8 @@ class ResellerBanks extends React.Component {
         </div>
         <Search
           placeholder={i18n.t('search_placeholder')}
-          onChange={this.props.onBankSearchChange}
-          value={this.props.bankSearch || ''}
+          onChange={this.handleBankSearch}
+          value={this.state.bankSearch || ''}
           tooltip={i18n.t('search_tooltip')}
         />
         <table>

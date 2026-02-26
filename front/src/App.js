@@ -115,9 +115,7 @@ class App extends React.Component {
       console.error(e);
     }
   };
-  handleBankSearch = (value) => {
-    this.setState({ bankSearch: value });
-  };
+
   render() {
     if (!this.state.isReady) {
       return (
@@ -195,8 +193,6 @@ class App extends React.Component {
           resellerId={resellerId}
           banks={this.state.banks.filter((b) => b.reseller_id === resellerId)}
           refetchBanks={this.refetchBanks}
-          bankSearch={this.state.bankSearch}
-          onBankSearchChange={this.handleBankSearch}
         />
       );
       currentPage = 'reseller';

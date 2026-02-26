@@ -1,5 +1,3 @@
-import React from 'react';
-
 const styles = {
   container: {
     maxWidth: '18rem',
@@ -28,11 +26,8 @@ export function Search({
   value,
   tooltip,
 }) {
-  const [internalValue, setInternalValue] = React.useState(value !== undefined ? value : '');
-
   const handleChange = (e) => {
     const value = e.target.value;
-    setInternalValue(value);
     if (onChange) onChange(value);
   };
 
@@ -40,7 +35,7 @@ export function Search({
     <div style={{ ...styles.container, ...style }}>
       <input
         type="search"
-        value={internalValue}
+        value={value}
         onChange={handleChange}
         placeholder={placeholder}
         title={tooltip}
