@@ -108,19 +108,21 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     ]);
 
     // Send email notification
-    const prevConf = previousConfigsRes.rows[0];
-    const prevShareholders = await getShareholdersEmailsForConfig(prevConf.id);
-    const acceptLanguage = req.headers['accept-language'];
-    await sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins({
-      trustedPersonEmails: prevShareholders,
-      supportEmail: prevConf.support_email,
-      bankId,
-      bankName: bankRes.rows[0].name,
-      shamirConfigName: prevConf.name,
-      creatorEmail: prevConf.creator_email,
-      minApprovers: prevConf.min_shares,
-      acceptLanguage,
-    });
+    if (previousConfigsRes.rows.length >= 1) {
+      const prevConf = previousConfigsRes.rows[0];
+      const prevShareholders = await getShareholdersEmailsForConfig(prevConf.id);
+      const acceptLanguage = req.headers['accept-language'];
+      await sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins({
+        trustedPersonEmails: prevShareholders,
+        supportEmail: prevConf.support_email,
+        bankId,
+        bankName: bankRes.rows[0].name,
+        shamirConfigName: prevConf.name,
+        creatorEmail: prevConf.creator_email,
+        minApprovers: prevConf.min_shares,
+        acceptLanguage,
+      });
+    }
     res.status(200).end();
   } catch (e) {
     logError('shamirCreateFirstConfig', e);

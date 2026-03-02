@@ -25,16 +25,6 @@ export const sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins = as
   acceptLanguage,
 }: TShamirConfigChangeAwaitingApproval): Promise<void> => {
   try {
-    console.log(
-      trustedPersonEmails,
-      supportEmail,
-      bankId,
-      bankName,
-      shamirConfigName,
-      creatorEmail,
-      minApprovers,
-      acceptLanguage,
-    );
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
 

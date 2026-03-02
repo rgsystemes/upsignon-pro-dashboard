@@ -29,22 +29,25 @@ export const cancelPendingConfig = async (req: Request, res: Response): Promise<
         return;
       }
     }
+    // compute shareholder emails before deleting the config
+    const shareholders = await getShareholdersEmailsForConfig(configId);
     await db.query('DELETE FROM shamir_configs WHERE id=$1 AND is_active=false', [configId]);
 
     // Send email notification
     const bankRes = await db.query('SELECT name FROM banks WHERE id = $1', [bankId]);
-    const activeConfig = allConfigsRes.rows.find((c) => c.is_active)!;
-    const shareholders = await getShareholdersEmailsForConfig(configId);
+    const activeConfig = allConfigsRes.rows.find((c) => c.is_active);
     const acceptLanguage = req.headers['accept-language'];
-    await sendShamirConfigChangeCancelledToTrustedPersonsCCAdmins({
-      trustedPersonEmails: shareholders,
-      supportEmail: activeConfig.support_email,
-      bankId,
-      bankName: bankRes.rows[0].name,
-      shamirConfigName: activeConfig.name,
-      creatorEmail: activeConfig.creator_email,
-      acceptLanguage,
-    });
+    if (activeConfig) {
+      await sendShamirConfigChangeCancelledToTrustedPersonsCCAdmins({
+        trustedPersonEmails: shareholders,
+        supportEmail: activeConfig.support_email,
+        bankId,
+        bankName: bankRes.rows[0].name,
+        shamirConfigName: activeConfig.name,
+        creatorEmail: activeConfig.creator_email,
+        acceptLanguage,
+      });
+    }
     res.status(200).end();
   } catch (e) {
     logError('cancelPendingConfig', e);

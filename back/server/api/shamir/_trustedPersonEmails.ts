@@ -2,7 +2,7 @@ import { db } from '../../helpers/db';
 
 /**
  * Get the emails of the shareholders of the shamir config associated to a config.
- * @param configIf The id of the shamir config.
+ * @param configId The id of the shamir config.
  * @returns Array of emails (string[]), or empty array if not found.
  */
 export async function getShareholdersEmailsForConfig(configId: number): Promise<string[]> {
