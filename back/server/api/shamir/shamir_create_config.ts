@@ -8,6 +8,8 @@ import {
   ShamirConfigFootprint,
   ShamirShareholderFootprint,
 } from './_configChangeSigning';
+import { sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins } from '../../emails/shamir/sendShamirConfigChangeAwaitingApproval';
+import { getShareholdersEmailsForConfig } from './_trustedPersonEmails';
 
 export const shamirCreateConfig = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -31,7 +33,7 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     const creatorEmail = req.session.adminEmail;
 
     const previousConfigsRes = await db.query(
-      `SELECT change FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      `SELECT id, creator_email, name, min_shares, change, support_email FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
       [bankId],
     );
 
@@ -75,7 +77,7 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       },
     );
 
-    const bankRes = await db.query('SELECT public_id FROM banks WHERE id=$1', [bankId]);
+    const bankRes = await db.query('SELECT name, public_id FROM banks WHERE id=$1', [bankId]);
 
     const newConfig: ShamirConfigFootprint = {
       configId,
@@ -104,6 +106,21 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       willBeActive,
       configId,
     ]);
+
+    // Send email notification
+    const prevConf = previousConfigsRes.rows[0];
+    const prevShareholders = await getShareholdersEmailsForConfig(prevConf.id);
+    const acceptLanguage = req.headers['accept-language'];
+    await sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins({
+      trustedPersonEmails: prevShareholders,
+      supportEmail: prevConf.support_email,
+      bankId,
+      bankName: bankRes.rows[0].name,
+      shamirConfigName: prevConf.name,
+      creatorEmail: prevConf.creator_email,
+      minApprovers: prevConf.min_shares,
+      acceptLanguage,
+    });
     res.status(200).end();
   } catch (e) {
     logError('shamirCreateFirstConfig', e);

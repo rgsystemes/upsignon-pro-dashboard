@@ -66,4 +66,5 @@ export default {
   SENDING_MAIL: SENDING_MAIL || `ne-pas-repondre@${DKIM_HOSTNAME}`,
   DKIM_KEY_SELECTOR,
   DKIM_PRIVATE_KEY,
+  IS_SAAS: (BACKEND_URL || SERVER_URL)?.replace(/\/$/, '').endsWith('.upsignon.eu'),
 };

@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { logError } from '../../helpers/logger';
 import { db } from '../../helpers/db';
 import Joi from 'joi';
+import { sendShamirConfigChangeCancelledToTrustedPersonsCCAdmins } from '../../emails/shamir/sendShamirConfigChangeCancelled';
+import { getShareholdersEmailsForConfig } from './_trustedPersonEmails';
 
 export const cancelPendingConfig = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -17,7 +19,7 @@ export const cancelPendingConfig = async (req: Request, res: Response): Promise<
 
     // Check we only delete the latest config that is not yet active
     const allConfigsRes = await db.query(
-      `SELECT id, is_active, created_at FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC`,
+      `SELECT id, name, creator_email, is_active, support_email, created_at FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC`,
       [bankId],
     );
     if (allConfigsRes.rows.length > 0) {
@@ -27,10 +29,22 @@ export const cancelPendingConfig = async (req: Request, res: Response): Promise<
         return;
       }
     }
+    await db.query('DELETE FROM shamir_configs WHERE id=$1 AND is_active=false', [configId]);
 
-    await db.query('DELETE FROM shamir_configs WHERE id=$1 AND is_active=false', [
-      validatedBody.configId,
-    ]);
+    // Send email notification
+    const bankRes = await db.query('SELECT name FROM banks WHERE id = $1', [bankId]);
+    const activeConfig = allConfigsRes.rows.find((c) => c.is_active)!;
+    const shareholders = await getShareholdersEmailsForConfig(configId);
+    const acceptLanguage = req.headers['accept-language'];
+    await sendShamirConfigChangeCancelledToTrustedPersonsCCAdmins({
+      trustedPersonEmails: shareholders,
+      supportEmail: activeConfig.support_email,
+      bankId,
+      bankName: bankRes.rows[0].name,
+      shamirConfigName: activeConfig.name,
+      creatorEmail: activeConfig.creator_email,
+      acceptLanguage,
+    });
     res.status(200).end();
   } catch (e) {
     logError('cancelPendingConfig', e);
