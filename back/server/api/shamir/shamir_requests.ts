@@ -16,8 +16,7 @@ export const shamirRequests = async (req: Request, res: Response): Promise<void>
       ), 0)) AS is_refused
       FROM shamir_recovery_requests AS srr
       INNER JOIN shamir_configs AS sc ON sc.id=srr.shamir_config_id
-      INNER JOIN user_devices AS ud ON ud.id=srr.device_id
-      INNER JOIN users AS u ON u.id=ud.user_id
+      INNER JOIN users AS u ON u.id=srr.vault_id
       LEFT JOIN shamir_holders sh ON sh.shamir_config_id = srr.shamir_config_id
       WHERE sc.bank_id=$1
       GROUP BY sc.id, srr.id, u.id`,
