@@ -510,8 +510,6 @@ const translations = {
   shamir_config_summary_details_consensus_label: 'Required consensus:',
   shamir_config_summary_details_consensus_content:
     'Minimum $min trusted person(s) among $total designated.',
-  shamir_config_summary_details_risk_label: 'Security level:',
-  shamir_config_summary_details_resilience_label: 'Resilience:',
   shamir_config_summary_details_shareholders_label: 'Trusted persons:',
   shamir_config_summary_details_support_email_label: 'Support email:',
   shamir_config_summary_details_support_email_empty: 'Mandatory field.',
