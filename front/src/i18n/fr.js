@@ -525,8 +525,6 @@ const translations = {
   shamir_config_summary_details_consensus_label: 'Consensus requis :',
   shamir_config_summary_details_consensus_content:
     'Minimum $min personne(s) de confiance parmi $total désignée(s).',
-  shamir_config_summary_details_risk_label: 'Niveau de sécurité :',
-  shamir_config_summary_details_resilience_label: 'Résilience :',
   shamir_config_summary_details_shareholders_label: 'Personnes de confiance :',
   shamir_config_summary_details_support_email_label: 'Email de support :',
   shamir_config_summary_details_support_email_empty: 'Champ non renseigné.',

@@ -33,10 +33,6 @@ export const ConfigChangeSummary = (p) => {
             total: holders.length,
           })}
         </div>
-      </div>
-      <div style={{ marginBottom: 20 }}>
-        <label className={'bodyMedium'}>{i18n.t('shamir_config_summary_details_risk_label')}</label>
-        <br />
         <div>{minSharesWarning}</div>
       </div>
       <div style={{ marginBottom: 20 }}>
@@ -57,12 +53,6 @@ export const ConfigChangeSummary = (p) => {
             return <div key={h.id}>{`${h.email} - ${h.bankName}`}</div>;
           })}
         </div>
-      </div>
-      <div style={{ marginBottom: 20 }}>
-        <label className={'bodyMedium'}>
-          {i18n.t('shamir_config_summary_details_resilience_label')}
-        </label>
-        <br />
         <div>{resilience}</div>
       </div>
       <div style={{ marginBottom: 20 }}>
