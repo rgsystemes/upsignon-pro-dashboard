@@ -22,10 +22,9 @@ class Banks extends React.Component {
     filterType: 0, // 0: all, 1: testing only
     sortType: 1, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
-    salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
     selectedResellerIdForNewBank: null, // Selected reseller for new bank form
     resellers: [],
-    search: localStorage.getItem('banksSuperadminSearch') || '',
+    search: localStorage.getItem('search') || '',
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -162,11 +161,6 @@ class Banks extends React.Component {
     return this.state.sortDirection === 'asc' ? '↑' : '↓';
   };
 
-  handleSalesRepFilterChange = (value) => {
-    this.setState({ salesRepFilter: value });
-    localStorage.setItem('banksSalesRepFilter', value);
-  };
-
   sortByReseller = (a, b, ascending) => {
     let comparison;
     const resellerA = a.reseller_name?.toLowerCase();
@@ -204,7 +198,7 @@ class Banks extends React.Component {
   };
   handleSearch = (value) => {
     this.setState({ search: value });
-    localStorage.setItem('banksSuperadminSearch', value);
+    localStorage.setItem('search', value);
   };
 
   render() {
@@ -246,8 +240,8 @@ class Banks extends React.Component {
     }
 
     const filteredBanks = SearchByFields(this.props.banks, this.state.search, [
+      'id',
       'name',
-      'reseller_name',
       'settings.SALES_REP',
     ])
       .filter((bank) => this.state.filterType === 0 || bank.settings?.IS_TESTING)
@@ -365,7 +359,7 @@ class Banks extends React.Component {
             />
           </div>
         )}
-        {(this.state.salesRepFilter || this.state.filterType !== 0) && (
+        {(this.state.search || this.state.filterType !== 0) && (
           <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
         {this.props.banks.length > 0 && (
