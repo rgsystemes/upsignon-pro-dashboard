@@ -346,7 +346,6 @@ const translations = {
   user_force_safe_browser_setup: 'Browser strengthened security mode',
   sasettings_filter_all_banks: 'All banks',
   sasettings_filter_testing_banks: 'Testing banks',
-  sasettings_sales_rep_filter_placeholder: 'Search a sales rep...',
   sasettings_filtered_list_warning: 'Active filter',
   sasettings_click_to_sort: 'Click to sort',
   sasettings_bank_delete_warning:

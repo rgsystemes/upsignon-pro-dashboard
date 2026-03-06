@@ -37,15 +37,6 @@
   font-weight: bold;
 }
 
-/* Sales Rep Filter Input */
-.sales-rep-filter-input {
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  width: 250px;
-}
-
 /* Table Styles */
 .sortable-header {
   cursor: pointer;

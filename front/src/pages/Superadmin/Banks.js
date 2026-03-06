@@ -10,6 +10,8 @@ import { i18n } from '../../i18n/i18n';
 import './Banks.css';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { toast } from 'react-toastify';
+import { Search } from '../../components/Search';
+import { SearchByFields } from '../../helpers/SearchByFields';
 
 // Props : setIsLoading, banks, fetchBanks
 class Banks extends React.Component {
@@ -20,9 +22,9 @@ class Banks extends React.Component {
     filterType: 0, // 0: all, 1: testing only
     sortType: 1, // 0: name, 1: reseller, 2: expiration date
     sortDirection: 'asc', // 'asc' or 'desc'
-    salesRepFilter: localStorage.getItem('banksSalesRepFilter') || '', // Filter by sales rep name
     selectedResellerIdForNewBank: null, // Selected reseller for new bank form
     resellers: [],
+    search: localStorage.getItem('search') || '',
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
@@ -160,11 +162,6 @@ class Banks extends React.Component {
     return this.state.sortDirection === 'asc' ? '↑' : '↓';
   };
 
-  handleSalesRepFilterChange = (value) => {
-    this.setState({ salesRepFilter: value });
-    localStorage.setItem('banksSalesRepFilter', value);
-  };
-
   sortByReseller = (a, b, ascending) => {
     let comparison;
     const resellerA = a.reseller_name?.toLowerCase();
@@ -199,6 +196,10 @@ class Banks extends React.Component {
     } else {
       return ascending ? -1 : 1;
     }
+  };
+  handleSearch = (value) => {
+    this.setState({ search: value });
+    localStorage.setItem('search', value);
   };
 
   render() {
@@ -239,24 +240,14 @@ class Banks extends React.Component {
       );
     }
 
-    const filteredBanks = this.props.banks
-      .filter((bank) => {
-        // Filter by type (all or testing only)
-        const typeFilter = this.state.filterType === 0 || bank.settings?.IS_TESTING;
-
-        // Filter by sales rep
-        const salesRepFilter =
-          !this.state.salesRepFilter ||
-          (bank.settings?.SALES_REP || '')
-            .toLowerCase()
-            .includes(this.state.salesRepFilter.toLowerCase());
-
-        return typeFilter && salesRepFilter;
-      })
+    const filteredBanks = SearchByFields(this.props.banks, this.state.search, [
+      'id',
+      'name',
+      'settings.SALES_REP',
+    ])
+      .filter((bank) => this.state.filterType === 0 || bank.settings?.IS_TESTING)
       .sort((a, b) => {
-        let comparison = 0;
         const ascending = this.state.sortDirection === 'asc';
-
         switch (this.state.sortType) {
           case 0:
             return this.sortByBank(a, b, ascending);
@@ -361,18 +352,15 @@ class Banks extends React.Component {
                 onSelect={(filterType) => this.setState({ filterType })}
               />
             </div>
-            <div>
-              <input
-                type="text"
-                className="sales-rep-filter-input"
-                placeholder={i18n.t('sasettings_sales_rep_filter_placeholder')}
-                value={this.state.salesRepFilter}
-                onChange={(e) => this.handleSalesRepFilterChange(e.target.value)}
-              />
-            </div>
+            <Search
+              placeholder={i18n.t('search_placeholder')}
+              onChange={this.handleSearch}
+              value={this.state.search || ''}
+              tooltip={i18n.t('search_tooltip')}
+            />
           </div>
         )}
-        {(this.state.salesRepFilter || this.state.filterType !== 0) && (
+        {(this.state.search || this.state.filterType !== 0) && (
           <div className="filter-warning">⚠️ {i18n.t('sasettings_filtered_list_warning')}</div>
         )}
         {this.props.banks.length > 0 && (
