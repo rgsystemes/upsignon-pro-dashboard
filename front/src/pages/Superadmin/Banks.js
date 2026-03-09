@@ -355,7 +355,7 @@ class Banks extends React.Component {
               placeholder={i18n.t('search_placeholder')}
               onChange={this.handleSearch}
               value={this.state.search || ''}
-              tooltip={i18n.t('search_tooltip')}
+              tooltip={i18n.t('search_bank_or_sale_tooltip')}
             />
           </div>
         )}
