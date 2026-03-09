@@ -243,6 +243,7 @@ class Banks extends React.Component {
     const filteredBanks = SearchByFields(this.props.banks, this.state.search, [
       'id',
       'name',
+      'reseller_name',
       'settings.SALES_REP',
     ])
       .filter((bank) => this.state.filterType === 0 || bank.settings?.IS_TESTING)
@@ -356,7 +357,7 @@ class Banks extends React.Component {
               placeholder={i18n.t('search_placeholder')}
               onChange={this.handleSearch}
               value={this.state.search || ''}
-              tooltip={i18n.t('search_tooltip')}
+              tooltip={i18n.t('search_bank_or_sale_tooltip')}
             />
           </div>
         )}

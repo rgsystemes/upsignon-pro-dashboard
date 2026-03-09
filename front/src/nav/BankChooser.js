@@ -28,9 +28,19 @@ class BankChooser extends React.Component {
     );
 
     const banks = this.props.banks ?? [];
-    const bankSearch = (this.state.search ?? '').trim().toLowerCase();
-    const filteredDirectBanks = SearchByFields(directBanks, bankSearch, ['id', 'name']);
-    const filteredBanks = SearchByFields(banks, bankSearch, ['id', 'name']);
+    const search = (this.state.search ?? '').trim().toLowerCase();
+    const filteredDirectBanks = SearchByFields(directBanks, search, ['id', 'name']);
+
+    const resellerData = (this.props.resellers ?? [])
+      .map((r) => {
+        const resellerBanks = banks.filter((b) => b.reseller_id === r.id);
+        const resellerMatches = !search || SearchByFields([r], search, ['name']).length > 0;
+        const visibleBanks = resellerMatches
+          ? resellerBanks
+          : SearchByFields(resellerBanks, search, ['id', 'name']);
+        return { reseller: r, banks: visibleBanks, visible: resellerMatches || visibleBanks.length > 0 };
+      })
+      .filter((rd) => rd.visible);
 
     return (
       <div
@@ -80,8 +90,7 @@ class BankChooser extends React.Component {
               value={this.state.search || ''}
               tooltip={i18n.t('search_tooltip')}
             />
-            {this.props.resellers &&
-              this.props.resellers.map((r) => {
+            {resellerData.map(({ reseller: r, banks: resellerBanks }) => {
                 return (
                   <React.Fragment key={r.id}>
                     <a
@@ -90,20 +99,17 @@ class BankChooser extends React.Component {
                     >
                       {r.name}
                     </a>
-                    {filteredBanks &&
-                      filteredBanks
-                          .filter((b) => b.reseller_id === r.id)
-                        .map((b) => {
-                          return (
-                            <a
-                              key={b.id}
-                              className="bankLink resellerBank"
-                              href={baseFrontUrl + '/' + b.id + '/'}
-                            >
-                              {b.name}
-                            </a>
-                          );
-                        })}
+                    {resellerBanks.map((b) => {
+                      return (
+                        <a
+                          key={b.id}
+                          className="bankLink resellerBank"
+                          href={baseFrontUrl + '/' + b.id + '/'}
+                        >
+                          {b.name}
+                        </a>
+                      );
+                    })}
                   </React.Fragment>
                 );
               })}

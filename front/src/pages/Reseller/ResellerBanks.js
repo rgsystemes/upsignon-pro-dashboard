@@ -73,8 +73,8 @@ class ResellerBanks extends React.Component {
 
   render() {
     const banks = this.props.banks ?? [];
-    const bankSearch = (this.state.bankSearch ?? '').trim().toLowerCase();
-    const filteredBanks = SearchByFields(banks, bankSearch, ['id', 'name']);
+    const search = (this.state.search ?? '').trim().toLowerCase();
+    const filteredBanks = SearchByFields(banks, search, ['id', 'name']);
     const bankToDelete = banks.find((g) => g.id === this.state.bankToDeleteId);
     if (bankToDelete) {
       return (
