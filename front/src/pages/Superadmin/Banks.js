@@ -242,6 +242,7 @@ class Banks extends React.Component {
     const filteredBanks = SearchByFields(this.props.banks, this.state.search, [
       'id',
       'name',
+      'reseller_name',
       'settings.SALES_REP',
     ])
       .filter((bank) => this.state.filterType === 0 || bank.settings?.IS_TESTING)
