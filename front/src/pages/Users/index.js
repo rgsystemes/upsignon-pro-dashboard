@@ -61,17 +61,47 @@ class Users extends React.Component {
   };
 
   deleteUserWithWarning = async (userId, userEmail) => {
-    const confirmation = window.confirm(i18n.t('user_delete_warning', { email: userEmail }));
-    if (confirmation) {
-      try {
-        this.props.setIsLoading(true);
+    try {
+      this.props.setIsLoading(true);
+
+      // Check if user is a shareholder in any Shamir config
+      const shamirCheck = await bankUrlFetch(
+        `/api/check-user-shamir-involvement/${userId}`,
+        'POST',
+        null,
+      );
+      const configNames = shamirCheck.impactedConfigs?.map((c) => c.name).join(', ') || '';
+
+      let confirmationMessage = i18n.t('user_delete_warning', { email: userEmail });
+
+      if (shamirCheck.isShareholder) {
+        if (!shamirCheck.canDelete) {
+          // User is a shareholder and deletion would break consensus - FORBIDDEN
+          alert(
+            i18n.t('user_delete_shamir_forbidden', {
+              email: userEmail,
+              configs: configNames,
+            }),
+          );
+          return;
+        } else {
+          confirmationMessage = i18n.t('user_delete_shamir_warning', {
+            email: userEmail,
+            configs: configNames,
+          });
+        }
+      }
+
+      const confirmation = window.confirm(confirmationMessage);
+      if (confirmation) {
         await bankUrlFetch(`/api/delete-user/${userId}`, 'POST', null);
         await this.loadUsers();
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.props.setIsLoading(false);
       }
+    } catch (e) {
+      console.error(e);
+      toast.error(i18n.t('user_delete_error'));
+    } finally {
+      this.props.setIsLoading(false);
     }
   };
   reactivateUser = async (userId) => {
@@ -370,6 +400,7 @@ class Users extends React.Component {
                 </div>
               </th>
               <th>{i18n.t('actions')}</th>
+              <th>{i18n.t('shamir_vault_col_name')}</th>
             </tr>
           </thead>
           <tbody>
@@ -500,6 +531,25 @@ class Users extends React.Component {
                           onClick={() => this.reactivateUser(u.user_id)}
                         >
                           {i18n.t('reactivate')}
+                        </div>
+                      )}
+                    </td>
+                    <td>
+                      {u.shamir_setup && (
+                        <div>
+                          <strong>{u.shamir_setup.config_name}</strong>
+                          <br />
+                          <br />
+                          {i18n.t('shamir_vault_created_at')}
+                          <br />
+                          {new Date(u.shamir_setup.created_at).toLocaleDateString()}
+                        </div>
+                      )}
+                      {!u.shamir_setup && (
+                        <div>
+                          <span style={{ fontSize: 20 }}>⚠️</span>
+                          <br />
+                          {i18n.t('shamir_vault_unprotected')}
                         </div>
                       )}
                     </td>

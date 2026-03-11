@@ -9,12 +9,12 @@ import { ServerRedirection } from './ServerRedirection';
 import { MicrosoftEntraConfig } from './MicrosoftEntraConfig';
 import { OpenidConfiguration } from './OpenidConfiguration';
 import '../../helpers/tabs.css';
-import './settings.css';
+import { ShamirTab } from './shamir/ShamirTab';
 
 // Props setIsLoading, isSuperAdmin, otherBanks
 class Settings extends React.Component {
   state = {
-    activeTab: 'setup', // 'setup', 'options', 'admins', 'permissions', 'urls'
+    activeTab: 'setup', // 'setup', 'options', 'admins', 'permissions', 'urls', 'shamir'
   };
 
   setActiveTab = (tabName) => {
@@ -40,6 +40,12 @@ class Settings extends React.Component {
             onClick={() => this.setActiveTab('options')}
           >
             {i18n.t('settings_tab_options')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'shamir' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('shamir')}
+          >
+            {i18n.t('settings_tab_shamir')}
           </button>
           <button
             className={`tab-button ${activeTab === 'admins' ? 'active' : ''}`}
@@ -73,6 +79,7 @@ class Settings extends React.Component {
           {activeTab === 'options' && <OtherSettings setIsLoading={this.props.setIsLoading} />}
 
           {activeTab === 'admins' && <BankAdmins setIsLoading={this.props.setIsLoading} />}
+          {activeTab === 'shamir' && <ShamirTab setIsLoading={this.props.setIsLoading} />}
 
           {activeTab === 'permissions' && (
             <div>

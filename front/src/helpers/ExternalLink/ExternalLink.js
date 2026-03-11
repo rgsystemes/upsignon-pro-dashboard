@@ -1,0 +1,24 @@
+import './ExternalLink.css';
+
+export const ExternalLink = (p) => {
+  const iconSize = 16;
+  return (
+    <a href={p.href} target="_blank" className="externalLink">
+      <span>{p.children}</span>
+      <span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width={iconSize}
+          height={iconSize}
+          viewBox="0 0 16 16"
+          fill="none"
+        >
+          <path
+            d="M14.2222 14.2222H1.77778V1.77778H8V0H1.77778C1.30628 0 0.854097 0.187301 0.520699 0.520699C0.187301 0.854097 0 1.30628 0 1.77778V14.2222C0 14.6937 0.187301 15.1459 0.520699 15.4793C0.854097 15.8127 1.30628 16 1.77778 16H14.2222C15.2 16 16 15.2 16 14.2222V8H14.2222V14.2222ZM9.77778 0V1.77778H12.9689L4.23111 10.5156L5.48444 11.7689L14.2222 3.03111V6.22222H16V0H9.77778Z"
+            fill="#366CFC"
+          />
+        </svg>
+      </span>
+    </a>
+  );
+};
