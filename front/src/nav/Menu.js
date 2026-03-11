@@ -5,10 +5,11 @@ import { baseUrlFetch } from '../helpers/urlFetch';
 import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
 
-// PROPS pages, banks, isSuperadmin, isSuperadminPage
+// PROPS pages, banks, resellers, isSuperadmin, isSuperadminPage
 function Menu(props) {
   const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = require('../../package.json').version;
+  
   return (
     <nav>
       <BankChooser

@@ -17,6 +17,7 @@
     "qrcode-generator": "^2.0.4",
     "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail#v1.0.3",
     "upsignon-ms-entra": "git+https://github.com/rgsystemes/upsignon-ms-entra",
+    "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail.git#v1.0.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -34,10 +35,14 @@
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"
   },
+  "dependenciesMeta": {
+    "bcrypt": {
+      "built": true
+    }
+  },
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
     "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "start": "yarn build-server && node ./compiledServer/server.js",
-    "postinstall": "npm rebuild bcrypt"
+    "start": "yarn build-server && node ./compiledServer/server.js"
   }
 }

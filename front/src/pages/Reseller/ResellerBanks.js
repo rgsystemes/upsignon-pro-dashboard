@@ -1,29 +1,33 @@
 import React from 'react';
 import { EditableCell } from '../../helpers/EditableCell';
-import { EditableResellerCell } from '../../helpers/EditableResellerCell';
-import { ResellerSelector } from '../../helpers/ResellerSelector';
-import { Toggler } from '../../helpers/Toggler';
 import { baseFrontUrl } from '../../helpers/env';
-import { autolockDelaySettings, settingsConfig } from '../../helpers/settingsConfig';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { Search } from '../../components/Search';
+import { SearchByFields } from '../../helpers/SearchByFields';
 
 // Props : setIsLoading, banks, fetchBanks
 class ResellerBanks extends React.Component {
   state = {
     bankToDeleteId: null,
+    search: '',
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
+  
+  handleSearch = (value) => {
+    this.setState({ search: value });
+  };
 
   insertBank = async () => {
     try {
       this.props.setIsLoading(true);
       const newBankName = this.newBankNameInputRef.value;
       const newAdminEmail = this.newAdminEmailInputRef.value;
-      if (!newBankName || newBankName.length < 2) {
+      if (!newBankName || newBankName.length < 2 || newBankName.length > 50) {
         this.newBankNameInputRef.style.borderColor = 'red';
+        toast.error(i18n.t('sasettings_new_bank_form_bank_name_too_long_or_short'));
         return;
       } else {
         this.newBankNameInputRef.style.borderColor = null;
@@ -68,7 +72,10 @@ class ResellerBanks extends React.Component {
   };
 
   render() {
-    const bankToDelete = this.props.banks.find((g) => g.id === this.state.bankToDeleteId);
+    const banks = this.props.banks ?? [];
+    const search = (this.state.search ?? '').trim().toLowerCase();
+    const filteredBanks = SearchByFields(banks, search, ['id', 'name']);
+    const bankToDelete = banks.find((g) => g.id === this.state.bankToDeleteId);
     if (bankToDelete) {
       return (
         <div>
@@ -142,27 +149,32 @@ class ResellerBanks extends React.Component {
             {i18n.t('add')}
           </div>
         </div>
-
-        {this.props.banks.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>{i18n.t('sasettings_bank_id')}</th>
-                <th
-                  className="sortable-header"
-                  style={{ minWidth: 100 }}
-                  title={i18n.t('sasettings_click_to_sort')}
-                >
-                  {i18n.t('sasettings_bank_name')}
-                </th>
-                <th>{i18n.t('sasettings_nb_users')}</th>
-                <th>{i18n.t('sasettings_bank_created_at')}</th>
-                {!isRestrictedSuperadmin && <th>{i18n.t('actions')}</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.banks.map((bank) => {
+        <Search
+          placeholder={i18n.t('search_placeholder')}
+          onChange={this.handleSearch}
+          value={this.state.search || ''}
+          tooltip={i18n.t('search_tooltip')}
+        />
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>{i18n.t('sasettings_bank_id')}</th>
+              <th
+                className="sortable-header"
+                style={{ minWidth: 100 }}
+                title={i18n.t('sasettings_click_to_sort')}
+              >
+                {i18n.t('sasettings_bank_name')}
+              </th>
+              <th>{i18n.t('sasettings_nb_users')}</th>
+              <th>{i18n.t('sasettings_bank_created_at')}</th>
+              {!isRestrictedSuperadmin && <th>{i18n.t('actions')}</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredBanks.length > 0 ? (
+              filteredBanks.map((bank) => {
                 return (
                   <tr key={bank.id}>
                     <td>
@@ -176,7 +188,6 @@ class ResellerBanks extends React.Component {
                       </span>
                     </td>
                     <td>{bank.id}</td>
-
                     <EditableCell
                       value={bank.name}
                       onChange={(newVal) => {
@@ -200,18 +211,24 @@ class ResellerBanks extends React.Component {
                     )}
                   </tr>
                 );
-              })}
-              <tr className="total-row">
-                <td>{i18n.t('total')}</td>
-                <td></td>
-                <td></td>
-                <td>{this.props.banks.reduce((r, b) => r + parseInt(b.nb_users), 0)}</td>
-                <td></td>
-                {!isRestrictedSuperadmin && <td></td>}
+              })
+            ) : (
+              <tr>
+                <td colSpan={!isRestrictedSuperadmin ? 6 : 5} style={{ textAlign: 'center', color: '#888' }}>
+                  {i18n.t('no_banks_found') || 'Aucune banque trouvée'}
+                </td>
               </tr>
-            </tbody>
-          </table>
-        )}
+            )}
+            <tr className="total-row">
+              <td>{i18n.t('total')}</td>
+              <td></td>
+              <td></td>
+              <td>{filteredBanks.reduce((r, b) => r + parseInt(b.nb_users), 0)}</td>
+              <td></td>
+              {!isRestrictedSuperadmin && <td></td>}
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }

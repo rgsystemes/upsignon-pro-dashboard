@@ -1,16 +1,24 @@
 import React from 'react';
 import { baseFrontUrl, bankId, resellerId } from '../helpers/env';
 import { i18n } from '../i18n/i18n';
+import { Search } from '../components/Search';
+import { SearchByFields } from '../helpers/SearchByFields';
 
-// Props: banks, isSuperadmin, isSuperadminPage
+// Props: banks, resellers, isSuperadminPage, isSuperadmin
 class BankChooser extends React.Component {
   state = {
     showList: false,
+    search: '',
   };
 
   toggleBankList = () => {
     this.setState((s) => ({ ...s, showList: !s.showList }));
   };
+
+  handleSearch = (value) => {
+    this.setState({ search: value });
+  };
+
   render() {
     const currentBank = this.props.banks.find((b) => b.id === parseInt(bankId));
     const currentReseller = this.props.resellers.find((r) => r.id == resellerId);
@@ -18,6 +26,22 @@ class BankChooser extends React.Component {
     const directBanks = this.props.banks.filter(
       (b) => this.props.resellers.find((r) => r.id === b.reseller_id) == null,
     );
+
+    const banks = this.props.banks ?? [];
+    const search = (this.state.search ?? '').trim().toLowerCase();
+    const filteredDirectBanks = SearchByFields(directBanks, search, ['id', 'name']);
+
+    const resellerData = (this.props.resellers ?? [])
+      .map((r) => {
+        const resellerBanks = banks.filter((b) => b.reseller_id === r.id);
+        const resellerMatches = !search || SearchByFields([r], search, ['name']).length > 0;
+        const visibleBanks = resellerMatches
+          ? resellerBanks
+          : SearchByFields(resellerBanks, search, ['id', 'name']);
+        return { reseller: r, banks: visibleBanks, visible: resellerMatches || visibleBanks.length > 0 };
+      })
+      .filter((rd) => rd.visible);
+
     return (
       <div
         style={{
@@ -60,8 +84,13 @@ class BankChooser extends React.Component {
                 {i18n.t('menu_superadmin')}
               </a>
             )}
-            {this.props.resellers &&
-              this.props.resellers.map((r) => {
+            <Search
+              placeholder={i18n.t('search_placeholder')}
+              onChange={this.handleSearch}
+              value={this.state.search || ''}
+              tooltip={i18n.t('search_tooltip')}
+            />
+            {resellerData.map(({ reseller: r, banks: resellerBanks }) => {
                 return (
                   <React.Fragment key={r.id}>
                     <a
@@ -70,24 +99,21 @@ class BankChooser extends React.Component {
                     >
                       {r.name}
                     </a>
-                    {this.props.banks &&
-                      this.props.banks
-                        .filter((b) => b.reseller_id === r.id)
-                        .map((b) => {
-                          return (
-                            <a
-                              key={b.id}
-                              className="bankLink resellerBank"
-                              href={baseFrontUrl + '/' + b.id + '/'}
-                            >
-                              {b.name}
-                            </a>
-                          );
-                        })}
+                    {resellerBanks.map((b) => {
+                      return (
+                        <a
+                          key={b.id}
+                          className="bankLink resellerBank"
+                          href={baseFrontUrl + '/' + b.id + '/'}
+                        >
+                          {b.name}
+                        </a>
+                      );
+                    })}
                   </React.Fragment>
                 );
               })}
-            {directBanks.map((b) => {
+            {filteredDirectBanks.map((b) => {
               return (
                 <a key={b.id} className="bankLink" href={baseFrontUrl + '/' + b.id + '/'}>
                   {b.name}

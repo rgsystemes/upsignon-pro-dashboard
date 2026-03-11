@@ -285,7 +285,7 @@ const translations = {
   sasettings_superadmin_role_admin: 'Admin',
   sasettings_superadmin_role_restricted_superadmin: 'Restricted superadmin',
   sasettings_superadmin_role_superadmin: 'Superadmin',
-  sasettings_superadmins_invite: 'Autoriser',
+  sasettings_superadmins_invite: 'Authorize',
   sasettings_banks: 'Banks of vaults',
   sasettings_banks_explanation:
     'Banks of vaults are hermetically sealed areas. Users will not be able to share accounts with people outside their bank. This feature is especially useful in the case of business groups that pool their IT resources but want to keep their independence. The same user can have a safe in several banks.',
@@ -293,11 +293,12 @@ const translations = {
   sasettings_resellers: 'Groups of banks',
   sasettings_reseller_name: 'Group name',
   sasettings_reseller_created_at: 'Created on',
-  sasettings_reseller_banks: 'Banques',
+  sasettings_reseller_banks: 'Banks',
   sasettings_reseller_name_placeholder: 'Enter group name',
   sasettings_reseller_delete_warning: 'Are you sure you want to delete this group of banks?',
   sasettings_reseller_delete_error_banks_associated:
     'Cannot delete this group because there are still banks associated with it. Please reassign or delete the associated banks first.',
+  sasettings_reseller_open: 'See',
   sasettings_select_reseller: 'Select a group of banks',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Create a bank',
@@ -308,6 +309,8 @@ const translations = {
   sasettings_new_bank_form_sales_email: 'Sales referent email',
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
+  sasettings_new_bank_form_bank_name_too_long_or_short:
+    'Bank name length must be between 2 and 50 characters.',
   sasettings_bank_name: 'Bank of vaults name',
   sasettings_bank_created_at: 'Created on',
   sasettings_bank_is_testing: 'Testing',
@@ -349,7 +352,6 @@ const translations = {
   user_force_safe_browser_setup: 'Browser strengthened security mode',
   sasettings_filter_all_banks: 'All banks',
   sasettings_filter_testing_banks: 'Testing banks',
-  sasettings_sales_rep_filter_placeholder: 'Search a sales rep...',
   sasettings_filtered_list_warning: 'Active filter',
   sasettings_click_to_sort: 'Click to sort',
   sasettings_bank_delete_warning:
@@ -554,6 +556,11 @@ const translations = {
   shamir_vault_col_name: 'Version of the fallback protocol',
   shamir_vault_created_at: 'Created at :',
   shamir_vault_unprotected: 'Unprotected',
+
+  // SEARCH
+  search_placeholder: 'Search...',
+  search_tooltip: 'Search for a bank of vaults',
+  search_bank_or_sale_tooltip: 'Search for a group of banks, a bank of vaults, or a salesperson',
 };
 
 export default translations;

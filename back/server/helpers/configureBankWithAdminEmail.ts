@@ -5,6 +5,7 @@ import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 type BankSettings = {
   SALES_REP: string | null;
@@ -108,7 +109,15 @@ export const configureBankWithAdminEmailAndSendMail = async (
     const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
 
     const emailContent = validatedBody.isTrial
-      ? getTrialEmail(bankLink, qr, expDate!, validatedBody.adminEmail, adminLoginPage, cellSize)
+      ? await buildEmail({
+          templateName: 'trialWelcome',
+          locales: getBestLanguage(req.headers['accept-language']),
+          args: {
+            activationLink: bankLink,
+            consoleLink: adminLoginPage,
+            trialEndDate: expDate!,
+          },
+        })
       : getNonTrialEmail(bankLink, qr, validatedBody.adminEmail, adminLoginPage, cellSize);
 
     const emailConfig = await getEmailConfig();
@@ -120,9 +129,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
       to: validatedBody.adminEmail,
       cc: useCc ? [salesEmail!] : undefined,
       replyTo: salesEmail ?? undefined,
-      subject: validatedBody.isTrial
-        ? 'Ouverture de votre banque de test UpSignOn PRO'
-        : 'Ouverture de votre banque UpSignOn PRO',
+      subject: emailContent.subject,
       text: emailContent.text,
       html: emailContent.html,
     });
@@ -133,74 +140,13 @@ export const configureBankWithAdminEmailAndSendMail = async (
   res.status(200).end();
 };
 
-function getTrialEmail(
-  bankLink: string,
-  qr: QRCode,
-  expDate: Date,
-  adminEmail: string,
-  adminLoginPage: string,
-  qrCellSize: number,
-): { text: string; html: string } {
-  const text = `
-Bonjour,
-\n\n
-Merci pour votre demande de test de notre coffre-fort de mots de passe UpSignOn PRO.
-\n\n
-Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien : ${bankLink}
-\n\n
-Votre banque de coffres-forts sera bloquée automatiquement le ${expDate.toLocaleDateString('fr')} à l’issue de votre période de test.
-\n\n
-Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email [${adminEmail}](mailto:${adminEmail}) sur la page [${adminLoginPage}](${adminLoginPage}).
-\n\n
-N'hésitez pas à répondre à ce mail pour toute question.
-\n\n
-Cordialement,
-\n\n
-L'équipe Septeo IT Solutions.
-    `;
-  const html = `
-  <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
-    <p>Bonjour,</p>
-    <p>
-      Merci pour votre demande de test de notre coffre-fort de mots de passe <b>UpSignOn PRO</b>.
-    </p>
-    <p>
-      Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien&nbsp;:
-      <br>
-      <a href="${bankLink}" target="_blank">${bankLink}</a>
-    </p>
-    <p>
-      Ou de façon équivalente en scannant ce QR code&nbsp;:<br>
-      <img src="${qr.createDataURL(qrCellSize, 0)}" alt="QR Code" style="margin: 12px 0;" />
-    </p>
-    <p>
-      Votre banque de coffres-forts sera bloquée automatiquement le <b>${expDate.toLocaleDateString('fr')}</b> à l’issue de votre période de test.
-    </p>
-    <p>
-      Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email
-      <a href="mailto:${adminEmail}">${adminEmail}</a>
-      sur la page
-      <a href="${adminLoginPage}" target="_blank">${adminLoginPage}</a>.
-    </p>
-    <p>
-      N'hésitez pas à répondre à ce mail pour toute question.
-    </p>
-    <p>
-      Cordialement,<br>
-      L'équipe Septeo IT Solutions.
-    </p>
-  </div>
-`;
-  return { text, html };
-}
-
 function getNonTrialEmail(
   bankLink: string,
   qr: any,
   adminEmail: string,
   adminLoginPage: string,
   qrCellSize: number,
-): { text: string; html: string } {
+): { text: string; html: string; subject: string } {
   const text = `
 Bonjour,
 \n\n
@@ -246,5 +192,5 @@ L'équipe Septeo IT Solutions.
     </p>
   </div>
 `;
-  return { text, html };
+  return { text, html, subject: 'Ouverture de votre banque UpSignOn PRO' };
 }

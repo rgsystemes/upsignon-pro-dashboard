@@ -300,6 +300,7 @@ const translations = {
   sasettings_reseller_delete_warning: 'Êtes-vous sûr de vouloir supprimer ce groupe de banques ?',
   sasettings_reseller_delete_error_banks_associated:
     'Impossible de supprimer ce groupe car des banques lui sont encore associées. Veuillez réassigner ou supprimer les banques associées en premier.',
+  sasettings_reseller_open: 'Voir',
   sasettings_select_reseller: 'Sélectionner un groupe',
   sasettings_bank_id: 'ID',
   sasettings_new_bank_form_title: 'Créer une banque',
@@ -310,6 +311,8 @@ const translations = {
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
   sasettings_new_bank_form_sales_email_placeholder: 'Vous par défaut',
   sasettings_new_bank_form_success: 'Banque créée et configurée, email envoyé.',
+  sasettings_new_bank_form_bank_name_too_long_or_short:
+    'Le nom de la banque doit faire entre 2 et 50 caractères.',
   sasettings_bank_name: 'Nom de la banque de coffres-forts',
   sasettings_bank_created_at: 'Crée le',
   sasettings_bank_is_testing: 'Phase de test',
@@ -357,7 +360,6 @@ const translations = {
   user_allow_unsafe_browser_setup: 'Config. navigateurs simplifiée',
   sasettings_filter_all_banks: 'Toutes les banques',
   sasettings_filter_testing_banks: 'Banques de test',
-  sasettings_sales_rep_filter_placeholder: 'Rechercher un commercial...',
   sasettings_filtered_list_warning: 'Filtre actif',
   sasettings_click_to_sort: 'Cliquer pour trier',
   sasettings_force_safe_browser_setup:
@@ -569,6 +571,12 @@ const translations = {
   shamir_vault_col_name: 'Version du protocole de secours',
   shamir_vault_created_at: 'Créé le :',
   shamir_vault_unprotected: 'Non protégé',
+
+  // SEARCH
+  search_placeholder: 'Rechercher...',
+  search_tooltip: 'Rechercher une banque de coffres-forts',
+  search_bank_or_sale_tooltip:
+    'Rechercher un groupe de banques, une banque de coffres-forts, ou un commercial',
 };
 
 export default translations;

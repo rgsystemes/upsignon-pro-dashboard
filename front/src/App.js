@@ -30,6 +30,7 @@ class App extends React.Component {
     nb_shared_devices: null,
     nb_pwd_reset_requests: null,
     banks: [],
+    bankSearch: '',
     resellers: [],
     isSuperadminOrRestricted: false,
     isReady: false,
@@ -115,6 +116,7 @@ class App extends React.Component {
       console.error(e);
     }
   };
+
   render() {
     if (!this.state.isReady) {
       return (
@@ -269,6 +271,8 @@ class App extends React.Component {
           resellers={this.state.resellers}
           isSuperadmin={this.state.isSuperadminOrRestricted}
           isSuperadminPage={bankId === 'superadmin'}
+          bankSearch={this.state.bankSearch}
+          onBankSearchChange={this.handleBankSearch}
         />
         {pageContent}
         <div
