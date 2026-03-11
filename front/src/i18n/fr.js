@@ -435,7 +435,7 @@ const translations = {
   licences_pool_number: '$n (mutualisées)',
   search_placeholder: 'Rechercher...',
   search_tooltip: 'Rechercher une banque de coffres-forts',
-  search_bank_or_sale_tooltip: 'Rechercher une banque de coffres-forts ou un commercial',
+  search_bank_or_sale_tooltip: 'Rechercher un groupe de banques, une banque de coffres-forts, ou un commercial',
 };
 
 export default translations;

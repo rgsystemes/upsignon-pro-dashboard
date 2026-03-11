@@ -421,7 +421,7 @@ const translations = {
   licences_pool_number: '$n (pool)',
   search_placeholder: 'Search...',
   search_tooltip: 'Search for a bank of vaults',
-  search_bank_or_sale_tooltip: 'Search for a bank of vaults or a salesperson',
+  search_bank_or_sale_tooltip: 'Search for a group of banks, a bank of vaults, or a salesperson',
 };
 
 export default translations;
