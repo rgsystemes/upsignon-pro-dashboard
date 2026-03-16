@@ -25,7 +25,7 @@ export const configureBankWithAdminEmailAndSendMail = async (
 ): Promise<void> => {
   // @ts-ignore
   const sessionAdminEmail: string = req.session?.adminEmail;
-  const salesEmail = validatedBody.salesEmail || sessionAdminEmail;
+  const salesEmail = validatedBody.salesEmail; // Important ! do not add a fallback. Otherwise the reseller's admin could be set as the Septeo sales and receive trial emails.
 
   let newBankSettings: BankSettings = {
     SALES_REP: salesEmail,
