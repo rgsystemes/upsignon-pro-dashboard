@@ -14,9 +14,10 @@ export const getShamirConfigs = async (req: Request, res: Response): Promise<voi
       // @ts-ignore
       [req.proxyParamsBankId],
     );
+    const activeConfigCreateDate = allConfigsRes.rows.find((c) => c.is_active)?.created_at;
     const configs = await Promise.all(
       allConfigsRes.rows.map(async (c) => {
-        return await fetchEnhancedConfig(c);
+        return await fetchEnhancedConfig(c, activeConfigCreateDate);
       }),
     );
 
@@ -44,6 +45,7 @@ type ShamirRawConfig = {
 
 const fetchEnhancedConfig = async (
   config: ShamirRawConfig,
+  activeConfigCreateDate: String,
 ): Promise<{
   id: number;
   name: string;
@@ -137,7 +139,7 @@ const fetchEnhancedConfig = async (
     shareholders: thisConfigEnhancedShareholders,
     isActive: config.is_active,
     approvedAt,
-    isPending: !config.is_active && !approvedAt,
+    isPending: !config.is_active && activeConfigCreateDate < config.created_at,
     signers,
   };
 };
