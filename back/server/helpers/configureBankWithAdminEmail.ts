@@ -99,13 +99,6 @@ export const configureBankWithAdminEmailAndSendMail = async (
     }
     const { url } = settingsRes.rows[0].value;
     const bankLink = `${url}/${insertedBank.public_id}`;
-    const qr = qrcode(0, 'L');
-    qr.addData(bankLink);
-    qr.make();
-    const size = 150;
-    const nbPixels = qr.getModuleCount();
-    const cellSize = Math.round(size / nbPixels);
-
     const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
 
     const emailContent = validatedBody.isTrial
@@ -118,7 +111,15 @@ export const configureBankWithAdminEmailAndSendMail = async (
             trialEndDate: expDate!,
           },
         })
-      : getNonTrialEmail(bankLink, qr, validatedBody.adminEmail, adminLoginPage, cellSize);
+      : await buildEmail({
+          templateName: 'proBankOpening',
+          locales: getBestLanguage(req.headers['accept-language']),
+          args: {
+            bankSetupUrl: bankLink,
+            consoleLink: adminLoginPage,
+            userEmail: validatedBody.adminEmail,
+          },
+        });
 
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
@@ -139,58 +140,3 @@ export const configureBankWithAdminEmailAndSendMail = async (
 
   res.status(200).end();
 };
-
-function getNonTrialEmail(
-  bankLink: string,
-  qr: any,
-  adminEmail: string,
-  adminLoginPage: string,
-  qrCellSize: number,
-): { text: string; html: string; subject: string } {
-  const text = `
-Bonjour,
-\n\n
-Merci d'avoir choisi notre solution UpSignOn PRO pour la gestion de vos mots de passe!
-\n\n
-Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien : ${bankLink}
-\n\n
-Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email [${adminEmail}](mailto:${adminEmail}) sur la page [${adminLoginPage}](${adminLoginPage}).
-\n\n
-N'hésitez pas à répondre à ce mail pour toute question.
-\n\n
-Cordialement,
-\n\n
-L'équipe Septeo IT Solutions.
-    `;
-  const html = `
-  <div style="font-family: Arial, sans-serif; font-size: 15px; color: #222;">
-    <p>Bonjour,</p>
-    <p>
-      Merci d'avoir choisi notre solution UpSignOn PRO pour la gestion de vos mots de passe!
-    </p>
-    <p>
-      Vous trouverez les instructions à suivre pour ouvrir vos coffres-forts sur ce lien&nbsp;:
-      <br>
-      <a href="${bankLink}" target="_blank">${bankLink}</a>
-    </p>
-    <p>
-      Ou de façon équivalente en scannant ce QR code&nbsp;:<br>
-      <img src="${qr.createDataURL(qrCellSize, 0)}" alt="QR Code" style="margin: 12px 0;" />
-    </p>
-    <p>
-      Une fois votre coffre-fort créé, vous pourrez accéder à la console de supervision en saisissant votre adresse email
-      <a href="mailto:${adminEmail}">${adminEmail}</a>
-      sur la page
-      <a href="${adminLoginPage}" target="_blank">${adminLoginPage}</a>.
-    </p>
-    <p>
-      N'hésitez pas à répondre à ce mail pour toute question.
-    </p>
-    <p>
-      Cordialement,<br>
-      L'équipe Septeo IT Solutions.
-    </p>
-  </div>
-`;
-  return { text, html, subject: 'Ouverture de votre banque UpSignOn PRO' };
-}
