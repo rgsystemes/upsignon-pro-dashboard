@@ -41,6 +41,7 @@ type ShamirRawConfig = {
   change_signatures: ShamirChangeSignature[];
   change: string;
   is_active: boolean;
+  shareholder_emails: string;
 };
 
 const fetchEnhancedConfig = async (
@@ -59,14 +60,29 @@ const fetchEnhancedConfig = async (
   isPending: boolean;
   signers: { email: string | null; bankName: string | null; approved: boolean }[];
 }> => {
+  // share holder emails session cache
+  // do not make it global cache otherwise the cache could get very big in SaaS
+  // and it would need cleaning from time to time
+  const shareHolderEmailsCache: { [vaultId: number]: string } = {};
+  const getShareHolderEmailFromDbWithCache = async (vaultId: number): Promise<string> => {
+    if (!shareHolderEmailsCache.hasOwnProperty(vaultId)) {
+      const dbRes = await db.query('SELECT email FROM users WHERE id=$1', [vaultId]);
+      const dbUser = dbRes.rows[0];
+      shareHolderEmailsCache[vaultId] = dbUser?.email;
+    }
+    return shareHolderEmailsCache[vaultId];
+  };
+
   const change = JSON.parse(config.change) as ShamirChange;
+  const shareholderEmails = JSON.parse(config.shareholder_emails) as { [vaultId: number]: string };
   const thisConfigShareholders = change.thisShamirConfig.shareholders;
   const thisConfigEnhancedShareholders = await Promise.all(
     thisConfigShareholders.map(async (sh: ShamirShareholderFootprint) => {
       const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [sh.vaultBankPublicId]);
+      const emailInDb = await getShareHolderEmailFromDbWithCache(sh.vaultId);
       return {
         vaultId: sh.vaultId,
-        email: sh.vaultEmail,
+        email: emailInDb || shareholderEmails[sh.vaultId],
         nbShares: sh.nbShares,
         bankName: r.rows[0]?.name || '?',
       };
@@ -89,18 +105,15 @@ const fetchEnhancedConfig = async (
     }
   }
 
-  let signers: { email: string | null; bankName: string | null; approved: boolean }[];
-  if (change.previousShamirConfig == null) {
-    signers = allSignatures.map((as) => {
-      const sh = thisConfigEnhancedShareholders.find((es) => es.vaultId === as.holderVaultId);
-      return {
-        vaultId: sh?.vaultId,
-        email: sh?.email || '?',
-        bankName: sh?.bankName || '?',
-        approved: as.approved,
-      };
-    });
-  } else {
+  let signers: { email: string | null; bankName: string | null; approved: boolean }[] = [];
+  if (change.previousShamirConfig != null) {
+    const prevConfShareHolderEmailsRes = await db.query(
+      'SELECT shareholder_emails FROM shamir_configs WHERE id=$1',
+      [change.previousShamirConfig.configId],
+    );
+    const prevConfShareHolderEmails = JSON.parse(
+      prevConfShareHolderEmailsRes.rows[0].shareholder_emails,
+    ) as { [vaulId: number]: string };
     signers = await Promise.all(
       allSignatures.map(async (as) => {
         const prevShareholder = change.previousShamirConfig!.shareholders.find(
@@ -119,9 +132,10 @@ const fetchEnhancedConfig = async (
         const r = await db.query('SELECT name FROM banks WHERE public_id=$1', [
           prevShareholder?.vaultBankPublicId,
         ]);
+        const emailInDb = await getShareHolderEmailFromDbWithCache(prevShareholder.vaultId);
         return {
           vaultId: prevShareholder.vaultId,
-          email: prevShareholder.vaultEmail,
+          email: emailInDb || prevConfShareHolderEmails[prevShareholder.vaultId],
           bankName: r.rows[0]?.name || '?',
           approved: as.approved,
         };

@@ -72,11 +72,12 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       WHERE sc.id=$1`,
       [configId],
     );
+    const shareholderEmails: { [vaultId: number]: string } = {};
     const shareholders: ShamirShareholderFootprint[] = shareholderRes.rows.map(
       (h): ShamirShareholderFootprint => {
+        shareholderEmails[h.id] = h.email;
         return {
           vaultId: h.id,
-          vaultEmail: h.email,
           vaultBankPublicId: h.bank_public_id,
           vaultSigningPubKey: h.signing_public_key,
           nbShares: h.nb_shares,
@@ -108,11 +109,10 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     };
     const configChangeToSign = JSON.stringify(configChange);
     const willBeActive = previousConfig == null;
-    await db.query('UPDATE shamir_configs SET change=$1, is_active=$2 WHERE id=$3', [
-      configChangeToSign,
-      willBeActive,
-      configId,
-    ]);
+    await db.query(
+      'UPDATE shamir_configs SET change=$1, is_active=$2, shareholder_emails=$3 WHERE id=$4',
+      [configChangeToSign, willBeActive, JSON.stringify(shareholderEmails), configId],
+    );
 
     // Send email notification
     if (previousConfigsRes.rows.length >= 1) {
