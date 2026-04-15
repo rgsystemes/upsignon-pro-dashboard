@@ -8,8 +8,7 @@
     "rootDir": "server",
     "outDir": "compiledServer",
     "sourceMap": true,
-    "removeComments": true,
-    "skipLibCheck": true
+    "removeComments": true
   },
   "compileOnSave": true
 }
