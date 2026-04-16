@@ -46,8 +46,9 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
 
     const nextShamirConfigIdx = await nextShamirConfigIndex(bankId);
     const configName = `Shamir ${nextShamirConfigIdx}`;
+
     const configRes = await db.query(
-      'INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active) VALUES ($1, $2, $3, $4, $5, false) RETURNING id, created_at',
+      "INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active, shareholder_emails) VALUES ($1, $2, $3, $4, $5, false, '') RETURNING id, created_at",
       [configName, minShares, bankId, supportEmail, creatorEmail],
     );
     const configId = configRes.rows[0].id;
