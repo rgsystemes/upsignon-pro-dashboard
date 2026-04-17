@@ -565,6 +565,7 @@ const translations = {
   shamir_requests_state_refused: 'Refusée',
   shamir_requests_state_completed: 'Terminée',
   shamir_requests_state_aborted: 'Annulée',
+  shamir_requests_state_approved: 'Approuvée - non terminée',
   shamir_requests_state_pending: 'En attente',
 
   // SHAMIR vault
