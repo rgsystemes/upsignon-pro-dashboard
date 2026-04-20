@@ -45,7 +45,7 @@ export const ConfigChangeSummary = (p) => {
         )}
         <div>
           {previousConfig.shareholders
-            .filter((s) => !holders.find((h) => h.vaultId === s.vaultId))
+            .filter((s) => !holders.find((h) => h.id === s.vaultId))
             .map((s) => (
               <div className="oldValue" key={s.vaultId}>{`${s.email} - ${s.bankName}`}</div>
             ))}
