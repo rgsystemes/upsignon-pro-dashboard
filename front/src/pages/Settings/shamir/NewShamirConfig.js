@@ -26,6 +26,7 @@ export class NewShamirConfig extends React.Component {
     minShares: 3,
     selectedHolders: [],
     searchedHolders: [],
+    holderSearch: '',
     supportEmail: '',
     sortShareholder: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     sortBank: 0, // 0 (no sorting), -1 (desc), 1 (asc)
@@ -102,12 +103,17 @@ export class NewShamirConfig extends React.Component {
       this.setState((s) => ({
         ...s,
         searchedHolders,
+        holderSearch: search,
         adminEmail,
       }));
     } catch (e) {
       console.error(e);
       toast.error(e.toString());
     }
+  };
+
+  onRefreshHolders = () => {
+    this.onHolderSearchChange(this.state.holderSearch || '');
   };
 
   fetchNextShamirConfigIndex = async () => {
@@ -304,73 +310,84 @@ export class NewShamirConfig extends React.Component {
           onRemoveHolder={(hId) => this.toggleShareholder(hId, false)}
         />
         {shouldShowShareHoldersTable && (
-          <div className="shareholdersSelectContainer">
-            <table className={`table stickyHeader`}>
-              <thead className={`tableHeader`}>
-                <tr>
-                  <th>
-                    <input
-                      type="checkbox"
-                      checked={areAllSelected}
-                      onChange={(ev) => this.toggleSelectAll(ev.target.checked)}
-                    />
-                  </th>
-                  <th>
-                    <span>{i18n.t('shamir_config_holder_email')}</span>
-                    <TableColSortIcon
-                      size={12}
-                      onClick={this.onSortHoldersByEmail}
-                      sorting={sortShareholder}
-                    />
-                  </th>
-                  <th>
-                    <span>{i18n.t('shamir_config_holder_bank_name')}</span>
-                    <TableColSortIcon
-                      size={12}
-                      onClick={this.onSortHoldersByBank}
-                      sorting={sortBank}
-                    />
-                  </th>
-                </tr>
-              </thead>
-            </table>
-            <table className={`table`}>
-              <tbody>
-                {resultingHolderList.map((h) => {
-                  return (
-                    <tr key={h.id}>
-                      <td>
-                        {h.hasSharingPublicKey && h.hasSigningPublicKey ? (
-                          <input
-                            type="checkbox"
-                            checked={!!h.isSelected}
-                            onChange={(ev) => this.toggleShareholder(h.id, ev.target.checked)}
-                          />
-                        ) : (
-                          <em style={{ fontSize: 12 }}>
-                            {!h.hasSharingPublicKey
-                              ? i18n.t('shamir_config_holders_in_creation')
-                              : i18n.t('shamir_config_holders_not_ready')}
-                          </em>
-                        )}
-                      </td>
-                      <td>{h.email}</td>
-                      <td>{h.bankName}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div style={{ marginTop: 10 }}>
-              {i18n.t('shamir_config_holders_number', {
-                n: selectedHolders.length,
-                adminWarning: isAdminAShareholder
-                  ? ''
-                  : i18n.t('shamir_config_summary_details_admin_not_shareholder'),
-              })}
+          <>
+            <div className="shareholdersTableToolbar">
+              <button
+                type="button"
+                className="whiteButton refreshShareholdersButton"
+                onClick={this.onRefreshHolders}
+              >
+                {i18n.t('refresh')}
+              </button>
             </div>
-            {resilience}
-          </div>
+            <div className="shareholdersSelectContainer">
+              <table className={`table stickyHeader`}>
+                <thead className={`tableHeader`}>
+                  <tr>
+                    <th>
+                      <input
+                        type="checkbox"
+                        checked={areAllSelected}
+                        onChange={(ev) => this.toggleSelectAll(ev.target.checked)}
+                      />
+                    </th>
+                    <th>
+                      <span>{i18n.t('shamir_config_holder_email')}</span>
+                      <TableColSortIcon
+                        size={12}
+                        onClick={this.onSortHoldersByEmail}
+                        sorting={sortShareholder}
+                      />
+                    </th>
+                    <th>
+                      <span>{i18n.t('shamir_config_holder_bank_name')}</span>
+                      <TableColSortIcon
+                        size={12}
+                        onClick={this.onSortHoldersByBank}
+                        sorting={sortBank}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <table className={`table`}>
+                <tbody>
+                  {resultingHolderList.map((h) => {
+                    return (
+                      <tr key={h.id}>
+                        <td>
+                          {h.hasSharingPublicKey && h.hasSigningPublicKey ? (
+                            <input
+                              type="checkbox"
+                              checked={!!h.isSelected}
+                              onChange={(ev) => this.toggleShareholder(h.id, ev.target.checked)}
+                            />
+                          ) : (
+                            <em style={{ fontSize: 12 }}>
+                              {!h.hasSharingPublicKey
+                                ? i18n.t('shamir_config_holders_in_creation')
+                                : i18n.t('shamir_config_holders_not_ready')}
+                            </em>
+                          )}
+                        </td>
+                        <td>{h.email}</td>
+                        <td>{h.bankName}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div style={{ marginTop: 10 }}>
+                {i18n.t('shamir_config_holders_number', {
+                  n: selectedHolders.length,
+                  adminWarning: isAdminAShareholder
+                    ? ''
+                    : i18n.t('shamir_config_summary_details_admin_not_shareholder'),
+                })}
+              </div>
+              {resilience}
+            </div>
+          </>
         )}
         <h3 className={`titleWithIcon`}>
           3/ <span>{i18n.t('shamir_config_support_email')}</span>

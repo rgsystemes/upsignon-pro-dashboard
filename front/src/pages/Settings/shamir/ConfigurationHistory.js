@@ -7,7 +7,7 @@ import { RightPanel } from '../../../helpers/RightPanel/RightPanel';
 import { ConfigSummary } from './components/ConfigSummary';
 
 export const ConfigurationHistory = (p) => {
-  const { configs } = p;
+  const { configs, onRefresh } = p;
 
   const [sortByVersion, setSortByVersion] = useState(0);
   const [sortByActivatedOn, setSortByActivatedOn] = useState(0);
@@ -62,6 +62,11 @@ export const ConfigurationHistory = (p) => {
   return (
     <div>
       <h2 className="elementTitle20Bold">{i18n.t('shamir_history_title')}</h2>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+        <button type="button" className="whiteButton" onClick={onRefresh} disabled={!onRefresh}>
+          {i18n.t('refresh')}
+        </button>
+      </div>
       <table className={`table`}>
         <thead className={`tableHeader`}>
           <tr>

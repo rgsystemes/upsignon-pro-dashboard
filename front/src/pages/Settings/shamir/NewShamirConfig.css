@@ -167,6 +167,16 @@
   width: auto;
 }
 
+.shareholdersTableToolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 6px 0 10px;
+}
+
+.refreshShareholdersButton {
+  padding: 6px 14px;
+}
+
 .shareholdersSelectContainer table.table th:first-of-type, .shareholdersSelectContainer table.table tbody td:first-of-type {
   width: 20%;
 }

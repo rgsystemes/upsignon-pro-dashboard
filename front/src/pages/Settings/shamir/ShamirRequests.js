@@ -88,6 +88,11 @@ export const ShamirRequests = (p) => {
   return (
     <div>
       <h2 className="elementTitle20Bold">{i18n.t('shamir_requests_title')}</h2>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+        <button type="button" className="whiteButton" onClick={fetchRequests}>
+          {i18n.t('refresh')}
+        </button>
+      </div>
       <table className={`table`}>
         <thead className={`tableHeader`}>
           <tr>
