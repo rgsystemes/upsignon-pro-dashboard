@@ -40,9 +40,15 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     const creatorEmail = req.session.adminEmail;
 
     const previousConfigsRes = await db.query(
-      `SELECT id, creator_email, name, min_shares, change, support_email FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      `SELECT id, creator_email, name, min_shares, change, support_email, is_active FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
       [bankId],
     );
+
+    // Only one pending config is allowed at a time.
+    if (previousConfigsRes.rows.length >= 1 && !previousConfigsRes.rows[0].is_active) {
+      res.status(400).end();
+      return;
+    }
 
     const nextShamirConfigIdx = await nextShamirConfigIndex(bankId);
     const configName = `Shamir ${nextShamirConfigIdx}`;

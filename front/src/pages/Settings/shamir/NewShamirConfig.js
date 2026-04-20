@@ -63,7 +63,11 @@ export class NewShamirConfig extends React.Component {
   onValidationCancel = () => {
     document.getElementById('submitValidationModal').close();
   };
+
+  isValidating = false;
   onValidateSubmit = async () => {
+    if (this.isValidating) return;
+    this.isValidating = true;
     try {
       this.props.setIsLoading(true);
       await bankUrlFetch('/api/shamir-create-config', 'POST', {
@@ -77,6 +81,7 @@ export class NewShamirConfig extends React.Component {
       toast.error(e.toString());
     } finally {
       this.props.setIsLoading(false);
+      this.isValidating = false;
     }
   };
   onHolderSearchChange = async (search) => {
