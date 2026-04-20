@@ -507,6 +507,7 @@ const translations = {
   shamir_config_support_email: 'Indicate the email address on which blocked users can contact you.',
   shamir_config_support_email_explanation:
     'This email address will be displayed in the application.',
+  shamir_config_support_email_invalid: 'Please enter a valid email address.',
   shamir_config_summary: 'Summary of your configuration',
   shamir_config_summary_state: 'State:',
   shamir_config_summary_details_consensus_label: 'Required consensus:',

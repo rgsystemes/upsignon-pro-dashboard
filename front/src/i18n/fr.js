@@ -522,6 +522,7 @@ const translations = {
   shamir_config_support_email:
     "Indiquez l'adresse email sur laquelle les utilisateurs bloqués pourront vous contacter.",
   shamir_config_support_email_explanation: "Cette adresse email sera affichée dans l'application.",
+  shamir_config_support_email_invalid: 'Veuillez saisir une adresse email valide.',
   shamir_config_summary: 'Résumé de votre configuration',
   shamir_config_summary_state: 'État :',
   shamir_config_summary_details_consensus_label: 'Consensus requis :',

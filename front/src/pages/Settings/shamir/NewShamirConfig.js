@@ -31,6 +31,12 @@ export class NewShamirConfig extends React.Component {
     sortBank: 0, // 0 (no sorting), -1 (desc), 1 (asc)
     adminEmail: '',
   };
+
+  isValidSupportEmail = (email) => {
+    // Keep validation simple and strict enough for UI submit gating.
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((email || '').trim());
+  };
+
   isSubmitable = () => {
     if (!this.state.nextShamirConfigIndex) {
       return false;
@@ -38,7 +44,7 @@ export class NewShamirConfig extends React.Component {
     if (!this.state.minShares || this.state.minShares < 1) {
       return false;
     }
-    if (!this.state.supportEmail || this.state.supportEmail.length === 0) {
+    if (!this.isValidSupportEmail(this.state.supportEmail)) {
       return false;
     }
     if (this.state.selectedHolders.length < this.state.minShares) {
@@ -228,6 +234,8 @@ export class NewShamirConfig extends React.Component {
       );
     const shouldShowShareHoldersTable = searchedHolders.length > 0 || selectedHolders.length > 0;
     const isAdminAShareholder = selectedHolders.find((h) => h.email === adminEmail) != null;
+    const isSupportEmailInvalid =
+      supportEmail.trim().length > 0 && !this.isValidSupportEmail(supportEmail);
 
     const minSharesWarning = <MinSharesSecurityComment minShares={minShares} />;
     const resilience = (
@@ -270,8 +278,11 @@ export class NewShamirConfig extends React.Component {
             type="number"
             min={1}
             value={minShares || ''}
+            onWheel={(e) => e.target.blur()}
             onChange={(e) =>
-              this.setState({ minShares: e.target.value ? Number(e.target.value) : null })
+              this.setState({
+                minShares: e.target.value ? Math.floor(Number(e.target.value)) : null,
+              })
             }
             className="minSharesInput"
           />
@@ -369,9 +380,14 @@ export class NewShamirConfig extends React.Component {
           type="email"
           className="contactEmailInput"
           value={supportEmail}
+          required
+          aria-invalid={isSupportEmailInvalid}
           placeholder="contact@mail.com"
           onChange={(e) => this.setState({ supportEmail: e.target.value })}
         />
+        {isSupportEmailInvalid && (
+          <div className="supportEmailError">{i18n.t('shamir_config_support_email_invalid')}</div>
+        )}
 
         <h3 className={`titleWithIcon`} style={{ marginBottom: 14 }}>
           <span>{i18n.t('shamir_config_summary')}</span>

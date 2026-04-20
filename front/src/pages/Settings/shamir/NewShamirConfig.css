@@ -68,6 +68,12 @@
   border-color: #403EDD;
 }
 
+.supportEmailError {
+  color: #E53E3E;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
 .shamirSummary:not(.shamirSummaryAlt) {
   border-radius: 4px;
   background-color: #F5F5F5;
