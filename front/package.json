@@ -1,25 +1,25 @@
 {
   "name": "upsignon-pro-dashboard",
-  "version": "2.10.0.0",
+  "version": "2.11.0.0",
   "licence": "none",
   "private": true,
   "dependencies": {
     "qrcode-generator": "^2.0.4",
-    "react": "^19.2.0",
-    "react-datepicker": "^8.10.0",
-    "react-dom": "^19.2.0",
+    "react": "^19.2.4",
+    "react-datepicker": "^9.1.0",
+    "react-dom": "^19.2.4",
     "react-toastify": "^11.0.5",
     "react-tooltip": "^5.30.0",
-    "recharts": "^3.5.0"
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-datepicker": "^7.0.0",
-    "eslint": "^9.39.1",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "postcss-normalize": "^13.0.1",
-    "prettier": "^3.6.2",
+    "prettier": "^3.8.1",
     "react-scripts": "^5.0.1"
   },
   "scripts": {

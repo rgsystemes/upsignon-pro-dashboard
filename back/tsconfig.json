@@ -8,7 +8,8 @@
     "rootDir": "server",
     "outDir": "compiledServer",
     "sourceMap": true,
-    "removeComments": true
+    "removeComments": true,
+    "types": ["node"] /* Explicit test/runtime globals for TS6 */
   },
   "compileOnSave": true
 }
