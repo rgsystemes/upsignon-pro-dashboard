@@ -17,6 +17,7 @@ import { InfoIcon } from '../../../helpers/icons/InfoIcon';
 import { ConfigChangeSummary } from './components/ConfigChangeSummary';
 import { SelectedHolderTags } from './components/SelectedHolderTags';
 import { isRestrictedSuperadmin } from '../../../helpers/isRestrictedSuperadmin';
+import { shamirDocLink } from './components/docLink';
 
 // Props : setIsLoading, onConfigCreated, onCancel, previousConfig
 export class NewShamirConfig extends React.Component {
@@ -236,9 +237,7 @@ export class NewShamirConfig extends React.Component {
         <h2 className="elementTitle20Bold">
           {hasPreviousConfig ? i18n.t('shamir_change_title') : i18n.t('shamir_config_title')}
         </h2>
-        <ExternalLink href="https://upsignon.eu/shamir-doc">
-          {i18n.t('shamir_doc_link')}
-        </ExternalLink>
+        <ExternalLink href={shamirDocLink}>{i18n.t('shamir_doc_link')}</ExternalLink>
 
         {hasPreviousConfig && (
           <div className="shamirChangeWarning">
