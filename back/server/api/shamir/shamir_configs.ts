@@ -73,8 +73,21 @@ const fetchEnhancedConfig = async (
     return shareHolderEmailsCache[vaultId];
   };
 
+  const parseShareholderEmails = (
+    shareholderEmailsRaw: string | null | undefined,
+  ): { [vaultId: number]: string } => {
+    if (!shareholderEmailsRaw || !shareholderEmailsRaw.trim()) {
+      return {};
+    }
+    try {
+      return JSON.parse(shareholderEmailsRaw) as { [vaultId: number]: string };
+    } catch {
+      return {};
+    }
+  };
+
   const change = JSON.parse(config.change) as ShamirChange;
-  const shareholderEmails = JSON.parse(config.shareholder_emails) as { [vaultId: number]: string };
+  const shareholderEmails = parseShareholderEmails(config.shareholder_emails);
   const thisConfigShareholders = change.thisShamirConfig.shareholders;
   const thisConfigEnhancedShareholders = await Promise.all(
     thisConfigShareholders.map(async (sh: ShamirShareholderFootprint) => {
