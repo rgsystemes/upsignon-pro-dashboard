@@ -1,5 +1,6 @@
 import { ExternalLink } from '../../../helpers/ExternalLink/ExternalLink';
 import { i18n } from '../../../i18n/i18n';
+import { shamirDocLink } from './components/docLink';
 import './ShamirPresentation.css';
 
 export const ShamirPresentation = (p) => {
@@ -63,9 +64,7 @@ export const ShamirPresentation = (p) => {
         {i18n.t('shamir_presentation_start')}
       </button>
       <div className="seeMoreLink elementLink">
-        <ExternalLink href="https://upsignon.eu/shamir-doc">
-          {i18n.t('shamir_presentation_see_more')}
-        </ExternalLink>
+        <ExternalLink href={shamirDocLink}>{i18n.t('shamir_presentation_see_more')}</ExternalLink>
       </div>
     </div>
   );

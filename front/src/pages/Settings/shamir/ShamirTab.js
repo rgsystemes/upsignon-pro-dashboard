@@ -54,6 +54,11 @@ export const ShamirTab = (p) => {
     fetchConfigs();
   }, []);
 
+  const refreshConfigHistory = async () => {
+    await fetchConfigs();
+    setCurrentPage(shamirPages.configurationHistory);
+  };
+
   const showNav =
     currentPage === shamirPages.currentConfig ||
     currentPage === shamirPages.requests ||
@@ -125,7 +130,7 @@ export const ShamirTab = (p) => {
         )}
         {currentPage === shamirPages.requests && <ShamirRequests setIsLoading={setIsLoading} />}
         {currentPage === shamirPages.configurationHistory && (
-          <ConfigurationHistory configs={configs} />
+          <ConfigurationHistory configs={configs} onRefresh={refreshConfigHistory} />
         )}
       </div>
     </div>

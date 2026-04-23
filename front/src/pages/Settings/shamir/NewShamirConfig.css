@@ -68,6 +68,12 @@
   border-color: #403EDD;
 }
 
+.supportEmailError {
+  color: #E53E3E;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
 .shamirSummary:not(.shamirSummaryAlt) {
   border-radius: 4px;
   background-color: #F5F5F5;
@@ -159,6 +165,16 @@
   position: relative;
   border-radius: 5px;
   width: auto;
+}
+
+.shareholdersTableToolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 6px 0 10px;
+}
+
+.refreshShareholdersButton {
+  padding: 6px 14px;
 }
 
 .shareholdersSelectContainer table.table th:first-of-type, .shareholdersSelectContainer table.table tbody td:first-of-type {

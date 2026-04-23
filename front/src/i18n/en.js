@@ -484,7 +484,8 @@ const translations = {
     'Each of these trusted persons will receive a share. You can choose people from all the banks you have access to. The more people you add, the more resilient you will be to departures and absences of trusted persons.',
   shamir_config_holders_number: '$n trusted person(s) selected$adminWarning.',
   shamir_config_holders_in_creation: 'Being created.',
-  shamir_config_holders_not_ready: 'Needs vault opening first.',
+  shamir_config_holders_not_ready:
+    'Needs vault opening first with an up to date version of the app.',
   shamir_config_holders_warning_not_enough: 'You must still add',
   shamir_config_holders_warning_not_enough_number: 'at least $n trusted person(s).',
   shamir_config_holders_warning_resilience_0_short: 'No resilience.',
@@ -507,6 +508,7 @@ const translations = {
   shamir_config_support_email: 'Indicate the email address on which blocked users can contact you.',
   shamir_config_support_email_explanation:
     'This email address will be displayed in the application.',
+  shamir_config_support_email_invalid: 'Please enter a valid email address.',
   shamir_config_summary: 'Summary of your configuration',
   shamir_config_summary_state: 'State:',
   shamir_config_summary_details_consensus_label: 'Required consensus:',
@@ -550,6 +552,7 @@ const translations = {
   shamir_requests_state_refused: 'Refused',
   shamir_requests_state_completed: 'Completed',
   shamir_requests_state_aborted: 'Canceled',
+  shamir_requests_state_approved: 'Approved - not completed',
   shamir_requests_state_pending: 'Pending',
 
   // SHAMIR vault

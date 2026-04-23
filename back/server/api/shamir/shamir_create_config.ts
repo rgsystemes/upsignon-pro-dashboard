@@ -40,15 +40,22 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     const creatorEmail = req.session.adminEmail;
 
     const previousConfigsRes = await db.query(
-      `SELECT id, creator_email, name, min_shares, change, support_email FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
+      `SELECT id, creator_email, name, min_shares, change, support_email, is_active FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC LIMIT 1`,
       [bankId],
     );
 
+    // Only one pending config is allowed at a time.
+    if (previousConfigsRes.rows.length >= 1 && !previousConfigsRes.rows[0].is_active) {
+      res.status(400).end();
+      return;
+    }
+
     const nextShamirConfigIdx = await nextShamirConfigIndex(bankId);
     const configName = `Shamir ${nextShamirConfigIdx}`;
+
     const configRes = await db.query(
-      'INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active) VALUES ($1, $2, $3, $4, $5, false) RETURNING id, created_at',
-      [configName, minShares, bankId, supportEmail, creatorEmail],
+      'INSERT INTO shamir_configs (name, min_shares, bank_id, support_email, creator_email, is_active, shareholder_emails) VALUES ($1, $2, $3, $4, $5, false, $6) RETURNING id, created_at',
+      [configName, minShares, bankId, supportEmail, creatorEmail, JSON.stringify({})],
     );
     const configId = configRes.rows[0].id;
     const createdAt = configRes.rows[0].created_at;
@@ -72,11 +79,12 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
       WHERE sc.id=$1`,
       [configId],
     );
+    const shareholderEmails: { [vaultId: number]: string } = {};
     const shareholders: ShamirShareholderFootprint[] = shareholderRes.rows.map(
       (h): ShamirShareholderFootprint => {
+        shareholderEmails[h.id] = h.email;
         return {
           vaultId: h.id,
-          vaultEmail: h.email,
           vaultBankPublicId: h.bank_public_id,
           vaultSigningPubKey: h.signing_public_key,
           nbShares: h.nb_shares,
@@ -108,11 +116,10 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     };
     const configChangeToSign = JSON.stringify(configChange);
     const willBeActive = previousConfig == null;
-    await db.query('UPDATE shamir_configs SET change=$1, is_active=$2 WHERE id=$3', [
-      configChangeToSign,
-      willBeActive,
-      configId,
-    ]);
+    await db.query(
+      'UPDATE shamir_configs SET change=$1, is_active=$2, shareholder_emails=$3 WHERE id=$4',
+      [configChangeToSign, willBeActive, JSON.stringify(shareholderEmails), configId],
+    );
 
     // Send email notification
     if (previousConfigsRes.rows.length >= 1) {

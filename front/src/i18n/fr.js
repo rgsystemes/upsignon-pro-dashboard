@@ -499,7 +499,8 @@ const translations = {
     'Chacune de ces personnes recevra une part. Vous pouvez choisir des personnes dans toutes les banques auxquelles vous avez accès. Plus vous ajoutez de personnes, plus vous serez résilient aux départs et aux absences des personnes de confiance.',
   shamir_config_holders_number: '$n personnes(s) de confiance sélectionnée(s)$adminWarning.',
   shamir_config_holders_in_creation: 'En cours de création.',
-  shamir_config_holders_not_ready: "Doit d'abord déverrouiller son coffre.",
+  shamir_config_holders_not_ready:
+    "Doit d'abord déverrouiller son coffre avec une version de l'application à jour.",
   shamir_config_holders_warning_not_enough: 'Vous devez ajouter encore',
   shamir_config_holders_warning_not_enough_number: 'au moins $n personnes(s) de confiance.',
   shamir_config_holders_warning_resilience_0_short: 'Aucune résilience.',
@@ -522,6 +523,7 @@ const translations = {
   shamir_config_support_email:
     "Indiquez l'adresse email sur laquelle les utilisateurs bloqués pourront vous contacter.",
   shamir_config_support_email_explanation: "Cette adresse email sera affichée dans l'application.",
+  shamir_config_support_email_invalid: 'Veuillez saisir une adresse email valide.',
   shamir_config_summary: 'Résumé de votre configuration',
   shamir_config_summary_state: 'État :',
   shamir_config_summary_details_consensus_label: 'Consensus requis :',
@@ -565,6 +567,7 @@ const translations = {
   shamir_requests_state_refused: 'Refusée',
   shamir_requests_state_completed: 'Terminée',
   shamir_requests_state_aborted: 'Annulée',
+  shamir_requests_state_approved: 'Approuvée - non terminée',
   shamir_requests_state_pending: 'En attente',
 
   // SHAMIR vault

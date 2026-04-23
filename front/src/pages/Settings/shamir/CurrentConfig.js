@@ -8,6 +8,7 @@ import { RightPanel } from '../../../helpers/RightPanel/RightPanel';
 import { toast } from 'react-toastify';
 import { bankUrlFetch } from '../../../helpers/urlFetch';
 import { isRestrictedSuperadmin } from '../../../helpers/isRestrictedSuperadmin';
+import { shamirDocLink } from './components/docLink';
 
 export const CurrentConfig = (p) => {
   const { currentConfig, pendingNewConfig, onStartEdit } = p;
@@ -35,9 +36,7 @@ export const CurrentConfig = (p) => {
           <h2 className="elementTitle20Bold" style={{ marginBottom: 4 }}>
             {i18n.t('shamir_presentation_title')}
           </h2>
-          <ExternalLink href="https://upsignon.eu/shamir-doc">
-            {i18n.t('shamir_doc_link')}
-          </ExternalLink>
+          <ExternalLink href={shamirDocLink}>{i18n.t('shamir_doc_link')}</ExternalLink>
         </div>
         <button
           className={`whiteButton ${pendingNewConfig ? 'disabled' : ''}`}
