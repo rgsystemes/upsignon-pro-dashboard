@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
-import qrcode from 'qrcode-generator';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';

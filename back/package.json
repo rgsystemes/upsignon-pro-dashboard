@@ -14,7 +14,6 @@
     "nodemailer": "^8.0.5",
     "path": "^0.12.7",
     "pg": "^8.20.0",
-    "qrcode-generator": "^2.0.4",
     "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail.git#v1.0.5",
     "upsignon-ms-entra": "git+https://github.com/rgsystemes/upsignon-ms-entra.git#v1.0.4",
     "uuid": "^13.0.0"
