@@ -1,0 +1,11 @@
+.externalLink {
+  color: #366CFC;
+  cursor: pointer;
+}
+
+.externalLink span:first-child {
+  margin-right: 10px;
+}
+.externalLink svg {
+  vertical-align: text-bottom;
+}

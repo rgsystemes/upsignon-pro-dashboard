@@ -1,0 +1,92 @@
+.whiteButton {
+  outline: none;
+  border-radius: 6px;
+  border: 1px solid rgba(88, 96, 129, 0.40);
+  background-color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.whiteButton:hover {
+  border-color: rgba(88, 96, 129, 0.60);
+  background-color: #f8f9fa;
+}
+.whiteButton:focus {
+  border-color: #4D54D1;
+  box-shadow: 0 0 0 3px rgba(77, 84, 209, 0.15);
+}
+.whiteButton.disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.submitButton {
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  background: #4D54D1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 540px;
+  height: 48px;
+  padding: 0 24px;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 18px;
+}
+.submitButton:hover {
+  background: #3d44b5;
+}
+.submitButton:focus {
+  box-shadow: 0 0 0 3px rgba(77, 84, 209, 0.3);
+}
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #4D54D1;
+}
+
+.submitButton.submitButtonAlt {
+  min-width: 0;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.dangerButton {
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  background-color: #E53E3E;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+  padding: 0 24px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.dangerButton:hover {
+  background-color: #C53030;
+}
+.dangerButton:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.3);
+}
+.whiteButton.disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}

@@ -1,0 +1,30 @@
+.customModal::backdrop {
+  background-color: rgba(0, 0, 0, 0.48);
+}
+.customModal {
+  border: none;
+  border-radius: 8px;
+  border: 1px solid rgba(46, 56, 98, 0.10);
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 16px 36px;
+  max-width: 650px;
+}
+
+.modalCloseButton {
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.modalHeader h2 {
+  margin: 0;
+  flex: 1;
+}

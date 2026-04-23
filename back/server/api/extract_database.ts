@@ -42,7 +42,13 @@ export const extract_database = async (
       u.deactivated AS deactivated,
       ud.revocation_date AS revocation_date,
       ud.use_safe_browser_setup AS use_safe_browser_setup,
-      ud.enrollment_method AS enrollment_method
+      ud.enrollment_method AS enrollment_method,
+      (SELECT CONCAT(sc.name, ' - ',  MIN(ss.created_at))
+        FROM shamir_configs AS sc
+        INNER JOIN shamir_shares AS ss
+          ON ss.shamir_config_id=sc.id AND ss.vault_id=u.id
+        GROUP BY sc.id
+        HAVING sc.min_shares <= SUM(ARRAY_LENGTH(ss.closed_shares, 1))) as shamir_setup
     FROM users AS u
     INNER JOIN user_devices AS ud ON ud.user_id=u.id
     ${isSuperadminPage ? 'INNER JOIN banks AS b ON u.bank_id=b.id' : ''}

@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './helpers/newTheme.css';
 import { baseUrlFetch, bankUrlFetch } from './helpers/urlFetch';
 import { Loader } from './helpers/loader';
 import './helpers/tableStyle.css';
