@@ -13,6 +13,7 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
     // Check if user is a shareholder in any Shamir config
     const allConfigsRes = await db.query(
       `SELECT
+        b.name as bank_name,
         sc.id as config_id,
         sc.name as config_name,
         sc.min_shares,
@@ -22,6 +23,7 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
         (SELECT EXISTS(SELECT 1 FROM shamir_shares WHERE shamir_config_id = sc.id AND holder_vault_id=sh.vault_id)) as has_protected_vaults
       FROM shamir_holders AS sh
       INNER JOIN shamir_configs AS sc ON sc.id = sh.shamir_config_id
+      INNER JOIN banks AS b ON b.id = sc.bank_id
       WHERE sh.vault_id = $1`,
       [userId],
     );
@@ -33,6 +35,7 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
         const wouldBreakConsensus = remainingShares < row.min_shares;
 
         return {
+          bankName: row.bank_name,
           configId: row.config_id,
           configName: row.config_name,
           isActive: row.is_active,

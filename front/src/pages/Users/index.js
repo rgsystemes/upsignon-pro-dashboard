@@ -70,7 +70,7 @@ class Users extends React.Component {
         'POST',
         null,
       );
-      const configNames = shamirCheck.impactedConfigs?.map((c) => c.name).join(', ') || '';
+      const configNames = shamirCheck.impactedConfigs?.map((c) => `${c.bankName} - ${c.name}`).join(', ') || '';
 
       let confirmationMessage = i18n.t('user_delete_warning', { email: userEmail });
 
