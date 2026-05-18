@@ -1,18 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config({ path: path.join(__dirname, '../.env'), quiet: true });
-
+  
 const db = require('../compiledServer/helpers/db').db;
 
-function createToken(length) {
-  var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
 
 async function createTemporaryAdminTable() {
   try {
@@ -29,7 +21,7 @@ async function createTemporaryAdminTable() {
 }
 
 async function createTemporaryAdmin() {
-  const token = createToken(20);
+  const token = crypto.randomUUID();
   await db.query(`INSERT INTO temporary_admins (token) VALUES ($1)`, [token]);
   if (!process.env.SERVER_URL) {
     console.error('THIS SCRIPT DOES NOT WORK IN DEV MODE. SEE developerDoc.md');
