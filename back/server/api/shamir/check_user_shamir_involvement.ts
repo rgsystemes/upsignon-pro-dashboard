@@ -43,7 +43,7 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
           hasProtectedVaults: row.has_protected_vaults,
         };
       })
-      .filter((c) => c.isActive || (c.wouldBreakConsensus && c.hasProtectedVaults));
+      .filter((c) => c.isActive || c.hasProtectedVaults);
 
     if (shareholderConfigs.length === 0) {
       // User is not a shareholder, deletion is safe
@@ -60,7 +60,11 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
     res.status(200).json({
       isShareholder: true,
       canDelete: !wouldBreakAnyConsensus,
-      impactedConfigs: shareholderConfigs.map((c) => ({ id: c.configId, name: c.configName })),
+      impactedConfigs: shareholderConfigs.map((c) => ({
+        id: c.configId,
+        name: c.configName,
+        bankName: c.bankName,
+      })),
     });
   } catch (e) {
     logError('check_user_shamir_involvement', e);
