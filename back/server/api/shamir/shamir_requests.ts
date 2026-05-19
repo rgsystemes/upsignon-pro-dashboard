@@ -52,7 +52,7 @@ export const shamirRequests = async (req: Request, res: Response): Promise<void>
 };
 
 const _shamirRequestStatusHelper = (r: {
-  status: 'PENDING' | 'ABORTED' | 'COMPLETED';
+  status: 'PENDING' | 'ABORTED' | 'COMPLETED' | 'CLOSED';
   is_refused: boolean;
   is_approved: boolean;
   expired: boolean;
@@ -60,7 +60,7 @@ const _shamirRequestStatusHelper = (r: {
   if (r.status === 'COMPLETED') return 'COMPLETED';
   if (r.is_refused) return 'REFUSED';
   if (r.status === 'ABORTED') return 'ABORTED';
-  if (r.expired) return 'EXPIRED';
+  if (r.expired) return 'EXPIRED'; // status may be PENDING or CLOSED
   if (r.is_approved) return 'APPROVED';
   return 'PENDING';
 };
