@@ -61,8 +61,13 @@ app.use(
 // DEV MODE
 if (!env.IS_PRODUCTION) {
   app.use(async (req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    const origin = req.headers.origin || env.FRONTEND_URL;
+    res.setHeader('Access-Control-Allow-Origin', origin!);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
     try {
       await recomputeSessionAuthorizationsForAdminByEmail(
         // @ts-ignore
