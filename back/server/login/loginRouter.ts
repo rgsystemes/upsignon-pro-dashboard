@@ -184,12 +184,22 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
       );
     } catch {}
     if (!dbRes || dbRes.rowCount !== 1) return res.status(401).send('CONNECTION ERROR');
-    if (isTokenExpired(dbRes.rows[0].token_expires_at))
+    if (isTokenExpired(dbRes.rows[0].token_expires_at)) {
       return res.status(401).send('CONNECTION ERROR');
+    }
+    
     await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
-    await recomputeSessionAuthorizationsForAdminById(userId, req);
-    redirectToDefaultPath(req, res);
+    // FIX: Regenerate session ID after successful authentication to prevent session fixation
+    // Regenerate the session before setting authentication data
+    req.session.regenerate(async (err?: any) => {
+      if (err) {
+        logError('/redirection/ - session regeneration failed', err);
+        return res.status(500).send('Session error');
+      }
+      await recomputeSessionAuthorizationsForAdminById(userId, req);
+      redirectToDefaultPath(req, res);
+    });
   } catch (e) {
     logError('/redirection/', e);
     res.status(444).end();
