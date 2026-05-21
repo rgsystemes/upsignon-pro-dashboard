@@ -187,11 +187,10 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     if (isTokenExpired(dbRes.rows[0].token_expires_at)) {
       return res.status(401).send('CONNECTION ERROR');
     }
-    
+
     await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
-    // FIX: Regenerate session ID after successful authentication to prevent session fixation
-    // Regenerate the session before setting authentication data
+    // Regenerate session ID after successful authentication to prevent session fixation
     req.session.regenerate(async (err?: any) => {
       if (err) {
         logError('/redirection/ - session regeneration failed', err);
