@@ -12,6 +12,7 @@ import { delete_bank_admin } from './delete_bank_admin';
 import { delete_pwd_reset_request } from './delete_pwd_reset_request';
 import { delete_url } from './delete_url';
 import { delete_user } from './delete_user';
+import { check_user_shamir_involvement } from './shamir/check_user_shamir_involvement';
 import { extract_database } from './extract_database';
 import { extract_emails_for_duplicate_passwords } from './extract_emails_for_duplicate_passwords';
 import { extract_emails_for_long_unused } from './extract_emails_for_long_unused';
@@ -54,6 +55,12 @@ import { get_bank_url } from './get_bank_url';
 import { get_bank_sso_config } from './sso/get_bank_sso_config';
 import { add_bank_sso_config } from './sso/add_bank_sso_config';
 import { delete_bank_sso_config } from './sso/delete_bank_sso_config';
+import { getNextShamirConfigIndex } from './shamir/shamir_next_config_index';
+import { shamirSearchUsers } from './shamir/shamir_search_users';
+import { shamirCreateConfig } from './shamir/shamir_create_config';
+import { getShamirConfigs } from './shamir/shamir_configs';
+import { cancelPendingConfig } from './shamir/shamir_cancel_pending_config';
+import { shamirRequests } from './shamir/shamir_requests';
 
 export const apiRouter = express.Router();
 
@@ -179,3 +186,12 @@ apiRouter.post('/delete_sso_configuration', delete_bank_sso_config);
 
 // Licences
 apiRouter.get('/licences', (req, res) => get_licences(req, res, false));
+
+// SHAMIR
+apiRouter.post('/shamir-index', getNextShamirConfigIndex);
+apiRouter.post('/shamir-search-users', shamirSearchUsers);
+apiRouter.post('/shamir-create-config', shamirCreateConfig);
+apiRouter.post('/shamir-configs', getShamirConfigs);
+apiRouter.post('/shamir-cancel-pending-config', cancelPendingConfig);
+apiRouter.post('/shamir-requests', shamirRequests);
+apiRouter.post('/check-user-shamir-involvement/:userId', check_user_shamir_involvement);

@@ -48,7 +48,7 @@ export const grant_pwd_reset_request = async (
       args: {
         deviceName,
         code: requestToken,
-        expirationDate,
+        expirationDate: date,
       },
     });
 

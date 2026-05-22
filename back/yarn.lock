@@ -2279,9 +2279,9 @@ unpipe@~1.0.0:
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
   integrity sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==
 
-"upsignon-mail@git+https://github.com/rgsystemes/upsignon-mail.git#v1.0.5":
-  version "1.0.5"
-  resolved "git+https://github.com/rgsystemes/upsignon-mail.git#82b7802720b19e46ddf3b2e47b4989d98096e377"
+"upsignon-mail@git+https://github.com/rgsystemes/upsignon-mail#v1.0.7":
+  version "1.0.7"
+  resolved "git+https://github.com/rgsystemes/upsignon-mail#5f960ff3b9a3cc7a75bcaefb336a4e7cdc7d6412"
   dependencies:
     "@react-email/components" "1.0.11"
     "@react-email/render" "2.0.5"
