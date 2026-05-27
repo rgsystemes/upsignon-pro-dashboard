@@ -41,7 +41,7 @@
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
     "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "wbuild-server": "rmdir /s /q ./compiledServer && tsc -p .",
+    "wbuild-server": "tsc -p .",
     "start": "yarn build-server && node ./compiledServer/server.js",
     "wstart": "yarn wbuild-server && node ./compiledServer/server.js"
   }
