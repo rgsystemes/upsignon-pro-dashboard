@@ -20,6 +20,7 @@ import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
+import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
@@ -34,7 +35,7 @@ app.use((req, res, next) => {
 });
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
-app.disable('x-powered-by');
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -95,12 +96,23 @@ app.use((req, res, next) => {
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 
-app.get('/login.html', (req, res) => {
-  res.status(200).sendFile('login.html', {
-    root: path.resolve(frontBuildDir),
-    dotfiles: 'deny',
-  });
-});
+app.get(
+  '/login.html',
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        'script-src': ["'self'", "'unsafe-inline'"],
+      },
+    },
+  }),
+  (req, res) => {
+    res.status(200).sendFile('login.html', {
+      root: path.resolve(frontBuildDir),
+      dotfiles: 'deny',
+    });
+  },
+);
 app.get('/no-admin-bank.html', (req, res) => {
   res.status(200).sendFile('no-admin-bank.html', {
     root: path.resolve(frontBuildDir),
