@@ -19,6 +19,7 @@ import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
+import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 replacePublicUrlInFront(frontBuildDir);
@@ -63,7 +64,8 @@ if (!env.IS_PRODUCTION) {
   app.use(async (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', env.FRONTEND_URL!);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
     if (req.method === 'OPTIONS') {
       return res.sendStatus(204);
     }
@@ -77,6 +79,7 @@ if (!env.IS_PRODUCTION) {
     } catch (e) {
       console.error(e);
       res.sendStatus(444).end();
+      return;
     }
   });
 }
@@ -106,6 +109,10 @@ app.get('/no-admin-bank.html', (req, res) => {
 });
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
+app.get('/csrf-token', sendCsrfToken);
+// The login router is intentionally mounted before CSRF checks because it is used by the
+// external UpSignOn authentication flow before a dashboard session exists.
+app.use(csrfProtection);
 app.post('/get_admin_invite', getAdminInvite);
 
 // CHECK SESSION VALIDITY

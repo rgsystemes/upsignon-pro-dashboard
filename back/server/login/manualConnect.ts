@@ -1,4 +1,5 @@
 import { db } from '../helpers/db';
+import { rotateCsrfToken } from '../helpers/csrf';
 import { logError } from '../helpers/logger';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 
@@ -17,9 +18,16 @@ export const manualConnect = async (req: any, res: any): Promise<void> => {
     );
 
     if (dbRes.rowCount === 1) {
-      req.session.adminEmail = 'temporaryAdmin';
-      req.session.adminRole = 'superadmin';
-      redirectToDefaultPath(req, res);
+      req.session.regenerate((err?: Error) => {
+        if (err) {
+          logError('manualConnect - session regeneration failed', err);
+          return res.status(500).end();
+        }
+        req.session.adminEmail = 'temporaryAdmin';
+        req.session.adminRole = 'superadmin';
+        rotateCsrfToken(req);
+        return redirectToDefaultPath(req, res);
+      });
     } else {
       return res.status(400).send('Token expired.');
     }

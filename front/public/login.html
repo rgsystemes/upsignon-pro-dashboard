@@ -36,6 +36,32 @@
   <script type="text/javascript">
     var preventMultipleClicksLock = null;
     var timer = null;
+    var csrfTokenPromise = null;
+
+    async function getCsrfToken() {
+      if (!csrfTokenPromise) {
+        csrfTokenPromise = fetch(`${window.location.href.replace('login.html', 'csrf-token')}`, {
+          method: 'GET',
+          cache: 'no-store',
+          mode: 'same-origin',
+        }).then(async (res) => {
+          if (!res.ok) {
+            throw new Error('CSRF token request failed');
+          }
+          const body = await res.json();
+          if (!body.csrfToken) {
+            throw new Error('Missing CSRF token');
+          }
+          return body.csrfToken;
+        }).catch((error) => {
+          csrfTokenPromise = null;
+          throw error;
+        });
+      }
+
+      return csrfTokenPromise;
+    }
+
     document.getElementById("loginForm").addEventListener("submit", async (event) => {
       event.preventDefault();
       const adminEmail = document.getElementById('adminEmail').value;
@@ -45,6 +71,7 @@
       timer = setTimeout(() => {
         preventMultipleClicksLock = null;
       }, 10000);
+      const csrfToken = await getCsrfToken();
       const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
         method: 'POST',
         body: JSON.stringify({ adminEmail }),
@@ -52,6 +79,7 @@
         mode: 'same-origin',
         headers: new Headers({
           'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
         }),
         keepalive: false,
       });
