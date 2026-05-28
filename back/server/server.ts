@@ -4,7 +4,7 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 import express from 'express';
 import { startServer } from './helpers/serverProcess';
-import { logInfo } from './helpers/logger';
+import { logInfo, sanitizeUrlForLogs } from './helpers/logger';
 import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
@@ -89,7 +89,7 @@ if (!env.IS_PRODUCTION) {
 app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
-  logInfo(adminEmail || 'unconnected user', req.method, req.url);
+  logInfo(adminEmail || 'unconnected user', req.method, sanitizeUrlForLogs(req));
   next();
 });
 
