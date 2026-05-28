@@ -16,14 +16,12 @@ import { get_server_url } from './get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
-import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { getAdminInvite } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
-replacePublicUrlInFront(frontBuildDir);
 
 const app = express();
 app.use((req, res, next) => {

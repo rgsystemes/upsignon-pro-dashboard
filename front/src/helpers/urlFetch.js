@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import { i18n } from '../i18n/i18n';
-import { bankOrResellerServerUrl, baseServerUrl } from './env';
+import { bankOrResellerServerUrl, baseServerUrl, isDevelopment } from './env';
 
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 let csrfTokenPromise;
@@ -10,8 +10,8 @@ async function getCsrfToken() {
     csrfTokenPromise = fetch(`${baseServerUrl}/csrf-token`, {
       method: 'GET',
       cache: 'no-store',
-      mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
-      credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin',
+      mode: isDevelopment ? 'cors' : 'same-origin',
+      credentials: isDevelopment ? 'include' : 'same-origin',
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -46,10 +46,10 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
       method,
       body: bodyText,
       cache: 'no-store',
-      mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
+      mode: isDevelopment ? 'cors' : 'same-origin',
       headers,
       keepalive: true,
-      credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin',
+      credentials: isDevelopment ? 'include' : 'same-origin',
     });
   } catch (e) {
     toast.error(i18n.t('network_error'));
