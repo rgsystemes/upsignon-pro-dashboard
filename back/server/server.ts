@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path';
+import fs from 'fs/promises';
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 import express from 'express';
@@ -22,6 +22,7 @@ import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
+const loginHtmlPath = path.resolve(frontBuildDir, 'login.html');
 
 const app = express();
 app.use((req, res, next) => {
@@ -94,23 +95,16 @@ app.use((req, res, next) => {
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 
-app.get(
-  '/login.html',
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        'script-src': ["'self'", "'unsafe-inline'"],
-      },
-    },
-  }),
-  (req, res) => {
-    res.status(200).sendFile('login.html', {
-      root: path.resolve(frontBuildDir),
-      dotfiles: 'deny',
-    });
-  },
-);
+app.get('/login.html', async (_req, res) => {
+  try {
+    let loginHtml = await fs.readFile(loginHtmlPath, 'utf-8');
+
+    res.status(200).type('html').send(loginHtml);
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500).end();
+  }
+});
 app.get('/no-admin-bank.html', (req, res) => {
   res.status(200).sendFile('no-admin-bank.html', {
     root: path.resolve(frontBuildDir),
