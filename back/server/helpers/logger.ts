@@ -8,32 +8,16 @@ export const logError = (...m: any[]): void => {
   console.error(new Date().toISOString().split('.')[0], ...m);
 };
 
-const SENSITIVE_QUERY_PARAMS = new Set([
-  'token',
-  'access_token',
-  'refresh_token',
-  'id_token',
-  'code',
-  'auth_code',
-  'connectiontoken',
-  'vaultauthcode',
-  'invitationauthcode',
-  'synccode',
-  'reset_token',
-  'password',
-  'secret',
-  'client_secret',
-  'api_key',
-  'apikey',
-  'key',
-]);
+const SENSITIVE_QUERY_PARAM_FRAGMENTS = ['token', 'code', 'password', 'secret', 'key'];
 
 export const sanitizeUrlForLogs = (req: Request): string => {
   try {
     const parsedUrl = new URL(req.originalUrl, `${req.protocol}://${req.headers.host}`);
 
     for (const key of Array.from(parsedUrl.searchParams.keys())) {
-      if (SENSITIVE_QUERY_PARAMS.has(key.toLowerCase())) {
+      const normalizedKey = key.toLowerCase();
+
+      if (SENSITIVE_QUERY_PARAM_FRAGMENTS.some((fragment) => normalizedKey.includes(fragment))) {
         parsedUrl.searchParams.set(key, '[REDACTED]');
       }
     }
