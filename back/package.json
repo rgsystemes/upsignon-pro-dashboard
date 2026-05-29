@@ -40,10 +40,11 @@
     }
   },
   "scripts": {
-    "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
-    "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "wbuild-server": "tsc -p .",
+    "lint": "eslint \"./server/**/*.{js,ts,tsx}\" --quiet --fix",
+    "build-server": "rm -rf ./compiledServer && tsc",
+    "wbuild-server": "tsc",
     "start": "yarn build-server && node ./compiledServer/server.js",
-    "wstart": "yarn wbuild-server && node ./compiledServer/server.js"
+    "wstart": "yarn wbuild-server && node ./compiledServer/server.js",
+    "prettier:check": "prettier --check \"./server/**/*.{js,ts,tsx}\""
   }
 }

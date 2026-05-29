@@ -46,7 +46,7 @@ type ShamirRawConfig = {
 
 const fetchEnhancedConfig = async (
   config: ShamirRawConfig,
-  activeConfigCreateDate: String,
+  activeConfigCreateDate: string,
 ): Promise<{
   id: number;
   name: string;
