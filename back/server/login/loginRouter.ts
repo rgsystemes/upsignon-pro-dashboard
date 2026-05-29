@@ -6,6 +6,7 @@ import env from '../helpers/env';
 import { logError } from '../helpers/logger';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 import { recomputeSessionAuthorizationsForAdminById } from '../helpers/updateSessionAuthorizations';
+import { LOCKOUT_DURATION_MIN, loginLimiter, MAX_LOGIN_ATTEMPTS } from './rateLimiter';
 
 export const loginRouter = express.Router();
 
@@ -81,7 +82,7 @@ loginRouter.get('/button-config', async (req: any, res: any) => {
   }
 });
 
-loginRouter.post('/connect', async (req: any, res: any) => {
+loginRouter.post('/connect', loginLimiter, async (req: any, res: any) => {
   try {
     const password = req.body.password;
     const id = req.body.userId;
@@ -89,19 +90,33 @@ loginRouter.post('/connect', async (req: any, res: any) => {
     if (!id) return res.status(401).end();
     if (!password) return res.status(401).end();
 
+    // Check for account lockout
+    const lockoutCheck = await db.query('SELECT lockout_until FROM admins WHERE id=$1', [id]);
+    if (lockoutCheck.rows[0]?.lockout_until > new Date()) {
+      return res.status(429).json({ error: 'Account temporarily locked' });
+    }
+
     const isOk = await checkPassword(id, password);
-    if (!isOk) return res.status(401).end();
+    if (!isOk) {
+      await db.query(
+        `UPDATE admins SET failed_attempts = COALESCE(failed_attempts, 0) + 1,
+         lockout_until = CASE WHEN COALESCE(failed_attempts, 0) >= $2 
+           THEN NOW() + INTERVAL '$3 minutes' ELSE lockout_until END
+         WHERE id=$1`,
+        [id, MAX_LOGIN_ATTEMPTS, LOCKOUT_DURATION_MIN],
+      );
+      return res.status(401).end();
+    }
 
     const connectionToken = uuidv4();
     const expiresAt = new Date();
     const ttl = 30000; // 30 seconds
     expiresAt.setTime(expiresAt.getTime() + ttl);
     try {
-      await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
-        connectionToken,
-        expiresAt,
-        id,
-      ]);
+      await db.query(
+        'UPDATE admins SET failed_attempts=0, lockout_until=null, token=$1, token_expires_at=$2 WHERE id=$3',
+        [connectionToken, expiresAt, id],
+      );
     } catch {
       return res.status(400).end();
     }
