@@ -95,16 +95,6 @@ app.use((req, res, next) => {
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 
-app.get('/login.html', async (_req, res) => {
-  try {
-    let loginHtml = await fs.readFile(loginHtmlPath, 'utf-8');
-
-    res.status(200).type('html').send(loginHtml);
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500).end();
-  }
-});
 app.get('/no-admin-bank.html', (req, res) => {
   res.status(200).sendFile('no-admin-bank.html', {
     root: path.resolve(frontBuildDir),
