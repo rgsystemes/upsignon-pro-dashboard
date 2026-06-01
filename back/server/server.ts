@@ -16,7 +16,7 @@ import { get_server_url } from './get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
-import { getAdminInvite } from './login/get_admin_invite';
+import { getAdminInvite, inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 import helmet from 'helmet';
@@ -107,7 +107,7 @@ app.get('/csrf-token', sendCsrfToken);
 // The login router is intentionally mounted before CSRF checks because it is used by the
 // external UpSignOn authentication flow before a dashboard session exists.
 app.use(csrfProtection);
-app.post('/get_admin_invite', getAdminInvite);
+app.post('/get_admin_invite', inviteRateLimiter, getAdminInvite);
 
 // CHECK SESSION VALIDITY
 app.use((req, res, next) => {
