@@ -126,12 +126,8 @@ const translations = {
     'Voulez-vous supprimer cette demande de réinitialisation de mot de passe ?',
   password_reset_request_grant_warning:
     "Assurez-vous que la requête a bien été faite par l'utilisateur lui-même.\n\nAccorder ?",
-  settings_server_redirection: 'DANGER : Redirection',
-  settings_server_redirection_explanation:
-    "Si vous souhaitez migrer vers un autre serveur (revenir en SAAS ou passer en auto-hébergement), cette option peut être utilisée pour simplifier la migration de vos utilisateurs après transfert de la base de données. Contactez-nous avant d'utiliser cette option.",
-  settings_server_redirection_new_url_label: 'Rediriger cette banque vers',
-  settings_server_redirection_confirm:
-    'Êtes-vous sûr ? Cette action interrompra le service pour cette banque',
+  settings_server_redirection: 'ATTENTION : Redirection !',
+  settings_server_redirection_new_url_label: 'Cette banque est redirigée vers',
   settings_openid_config:
     'Single Sign On (optionnel) - enrôlement et mot de passe oublié - app v7.13.0 et plus',
   settings_openid_config_pitch:
