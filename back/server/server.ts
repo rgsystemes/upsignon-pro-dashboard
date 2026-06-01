@@ -19,6 +19,7 @@ import { manualConnect } from './login/manualConnect';
 import { getAdminInvite, inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
+import { enforceTrustedOrigin } from './helpers/requestSecurity';
 import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
@@ -101,6 +102,7 @@ app.get('/no-admin-bank.html', (req, res) => {
     dotfiles: 'deny',
   });
 });
+app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 app.get('/csrf-token', sendCsrfToken);
