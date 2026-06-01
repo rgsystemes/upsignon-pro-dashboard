@@ -23,7 +23,6 @@ import { enforceTrustedOrigin } from './helpers/requestSecurity';
 import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
-const loginHtmlPath = path.resolve(frontBuildDir, 'login.html');
 
 const app = express();
 app.use((req, res, next) => {
