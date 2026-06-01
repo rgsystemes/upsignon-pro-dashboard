@@ -38,20 +38,17 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     preventMultipleClicksLock = null;
   }, 10000);
   const csrfToken = await getCsrfToken();
-  const res = await fetch(
-    `${window.location.href.replace('login.html', 'get_admin_invite')}`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ adminEmail }),
-      cache: 'no-store',
-      mode: 'same-origin',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
-      }),
-      keepalive: false,
-    },
-  );
+  const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
+    method: 'POST',
+    body: JSON.stringify({ adminEmail }),
+    cache: 'no-store',
+    mode: 'same-origin',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken,
+    }),
+    keepalive: false,
+  });
   const content = await res.text();
   if (!content || !res.ok) {
     window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
@@ -64,7 +61,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
   }
 });
 
-'use strict';
+('use strict');
 var UpSignOn = (function () {
   var UPSIGNON_BLUE = '#2E3862';
   var UPSIGNON_DEEP_LINK = 'upsignon://';
@@ -128,12 +125,19 @@ var UpSignOn = (function () {
     linkElement.style.justifyContent = 'flex-start';
     linkElement.style.textDecoration = 'none';
     linkElement.style.borderRadius = uiConfig.borderRadius || '5px';
+
     var logoContainer = document.createElement('div');
     logoContainer.style.display = 'flex';
     logoContainer.style.justifyContent = 'center';
-    logoContainer.innerHTML = getSVGLogo(uiConfig.logoWidth || 50);
+    logoContainer.innerHTML = getSVGLogo(uiConfig.logoWidth || 40);
+
     var textContainer = document.createElement('div');
-    textContainer.innerHTML = '<div>UpSignOn by Septeo</div><div>' + getButtonText() + '</div>';
+    var brandDiv = document.createElement('div');
+    brandDiv.textContent = 'UpSignOn by Septeo';
+    var buttonTextDiv = document.createElement('div');
+    buttonTextDiv.textContent = getButtonText();
+    textContainer.appendChild(brandDiv);
+    textContainer.appendChild(buttonTextDiv);
     textContainer.style.lineHeight = '1.3em';
     textContainer.style.textAlign = 'left';
     textContainer.style.color = 'white';
@@ -141,31 +145,25 @@ var UpSignOn = (function () {
     var padding = uiConfig.spaceBetween || '5px';
     textContainer.style.paddingLeft = padding;
     textContainer.style.paddingRight = padding;
+
     linkElement.appendChild(logoContainer);
     linkElement.appendChild(textContainer);
-    buttonContainer.innerHTML = '';
+
+    // Clear container safely
+    while (buttonContainer.firstChild) {
+      buttonContainer.removeChild(buttonContainer.firstChild);
+    }
     buttonContainer.appendChild(linkElement);
 
     var websiteLinkNode = document.createElement('a');
     websiteLinkNode.innerText = getDownloadText();
     websiteLinkNode.target = '_blank';
-    websiteLinkNode.href = 'https://upsignon.eu/download';
+    websiteLinkNode.href = 'https://upsignon.eu';
     buttonContainer.appendChild(websiteLinkNode);
-  };
-
-  var changeText = function (buttonContainer, newTextNodes, removeWebsiteFallBack) {
-    buttonContainer.querySelector('a:first-of-type>:last-child').innerHTML = newTextNodes;
-    if (removeWebsiteFallBack) {
-      var websiteLink = buttonContainer.querySelector("a[href='https://upsignon.eu/']");
-      if (websiteLink) {
-        websiteLink.style.display = 'none';
-      }
-    }
   };
 
   return {
     addButtonContent: addButtonContent,
-    changeText: changeText,
     getProtocolURI: getProtocolURI,
     getSVGLogo: getSVGLogo,
     getButtonText: getButtonText,
