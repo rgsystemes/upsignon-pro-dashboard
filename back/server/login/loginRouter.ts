@@ -28,9 +28,9 @@ const buttonConfigs = {
 };
 
 /* HELPERS */
-
+const BCRYPT_COST_FACTOR = 12;
 const hashPassword = async (password: string): Promise<string> => {
-  return await bcrypt.hash(password, 10);
+  return await bcrypt.hash(password, BCRYPT_COST_FACTOR);
 };
 
 const passwordIsOk = async (password: string, passwordHash: string): Promise<boolean> => {
@@ -39,6 +39,18 @@ const passwordIsOk = async (password: string, passwordHash: string): Promise<boo
 
 const isTokenExpired = (expired_at: Date) => {
   return expired_at.getTime() < new Date().getTime();
+};
+
+const migratePasswordHashingIfNeeded = async (
+  userId: string,
+  password: string,
+  existingHash: string,
+) => {
+  const rounds = bcrypt.getRounds(existingHash);
+  if (rounds < BCRYPT_COST_FACTOR) {
+    const newHash = await hashPassword(password);
+    await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [newHash, userId]);
+  }
 };
 
 const checkPassword = async (userId: string, password: string): Promise<boolean> => {
@@ -50,6 +62,9 @@ const checkPassword = async (userId: string, password: string): Promise<boolean>
     } catch {}
     if (!dbRes || dbRes.rowCount === 0) return false;
     const isOk: boolean = await passwordIsOk(password, dbRes.rows[0].password_hash);
+    if (isOk) {
+      await migratePasswordHashingIfNeeded(userId, password, dbRes.rows[0].password_hash);
+    }
     return isOk;
   } catch {
     return false;
