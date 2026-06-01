@@ -63,7 +63,9 @@ export class EmailConfig extends React.Component {
     try {
       event.preventDefault();
       this.props.setIsLoading(true);
-      await bankUrlFetch(`/api/test-email?email=${this.testingEmailInputRef.value}`, 'GET');
+      await bankUrlFetch('/api/test-email', 'POST', {
+        email: this.testingEmailInputRef.value,
+      });
       toast.info(i18n.t('sasettings_email_config_testing_alert'));
     } catch (e) {
       console.error(e);

@@ -8,7 +8,7 @@ export const test_email = async (req: any, res: any): Promise<void> => {
       res.status(401).json({ error: 'Not allowed for restricted superadmin' });
       return;
     }
-    const userEmail = req.query.email;
+    const userEmail = req.body?.email;
     if (!userEmail) return res.status(400).end();
 
     const emailConfig = await getEmailConfig();
