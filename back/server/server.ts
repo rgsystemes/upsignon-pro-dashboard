@@ -95,12 +95,6 @@ app.use((req, res, next) => {
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 
-app.get('/no-admin-bank.html', (req, res) => {
-  res.status(200).sendFile('no-admin-bank.html', {
-    root: path.resolve(frontBuildDir),
-    dotfiles: 'deny',
-  });
-});
 app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
