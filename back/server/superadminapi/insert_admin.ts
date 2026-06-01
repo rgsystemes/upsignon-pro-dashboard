@@ -2,8 +2,7 @@ import Joi from 'joi';
 import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
-
-const ALLOWED_ADMIN_ROLES = ['superadmin', 'restricted_superadmin', 'admin'] as const;
+import { ALLOWED_ADMIN_ROLES } from '../helpers/adminRoles';
 
 export const insert_admin = async (req: any, res: any): Promise<void> => {
   try {
