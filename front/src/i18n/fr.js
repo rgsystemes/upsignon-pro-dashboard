@@ -226,7 +226,7 @@ const translations = {
   extract_emails: 'Récupérer les emails',
   extract_emails_msi:
     "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
-  mail_writer: 'Envoyer un email',
+  mail_writer: 'Envoyer un email (max 100 destinataires autorisés)',
   mail_writer_to_selection: 'Utiliser la liste de destinataires de la sélection ci-dessus.',
   mail_writer_to_all: "Envoyer à tous les détenteurs d'un coffre-fort.",
   mail_writer_subject_placeholder: 'Objet',

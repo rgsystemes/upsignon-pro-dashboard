@@ -225,7 +225,7 @@ const translations = {
   extract_emails: 'Extract emails',
   extract_emails_msi:
     'Extract vaults having the msi version of the Windows app (since UpSignOn 7.5.0)',
-  mail_writer: 'Sending an email',
+  mail_writer: 'Sending an email (max 100 recipients allowed)',
   mail_writer_to_selection: 'Use recipients from above selection.',
   mail_writer_to_all: 'Send to all vault holders.',
   mail_writer_subject_placeholder: 'Subject',
