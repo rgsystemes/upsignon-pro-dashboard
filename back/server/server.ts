@@ -93,6 +93,9 @@ app.use((req, res, next) => {
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
+app.get('/trial-request', (_req, res) => {
+  res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
+});
 
 app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);

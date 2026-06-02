@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
       port: 8090,
     },
     define: {
-      'PUBLIC_URL': JSON.stringify(env.PUBLIC_URL || ''),
+      PUBLIC_URL: JSON.stringify(env.PUBLIC_URL || ''),
     },
     build: {
       outDir: 'build',
@@ -59,6 +59,7 @@ export default defineConfig(({ mode }) => {
         input: {
           main: 'index.html',
           login: 'login.html',
+          'trial-request': 'trial-request.html',
           'no-admin-bank': 'no-admin-bank.html',
         },
       },
