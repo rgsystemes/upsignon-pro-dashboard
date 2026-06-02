@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
         input: {
           main: 'index.html',
           login: 'login.html',
+          'trial-request': 'trial-request.html',
           'no-admin-bank': 'no-admin-bank.html',
         },
       },
