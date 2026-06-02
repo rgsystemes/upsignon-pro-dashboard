@@ -45,7 +45,6 @@ import { send_email, send_email_precheck } from './send_email';
 import { update_user_setting } from './update_user_setting';
 import { extract_emails_msi_install } from './extract_emails_msi_install';
 import { getRedirectionUrl } from './get_redirection_url';
-import { setRedirectionUrl } from './set_redirection_url';
 import { get_bank_entra_config } from './get_bank_entra_config';
 import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
@@ -170,7 +169,6 @@ apiRouter.post('/bank-settings-update', update_bank);
 
 // SERVER REDIRECTION
 apiRouter.post('/redirection_url', getRedirectionUrl);
-apiRouter.post('/set_redirection_url', setRedirectionUrl);
 
 // Microsoft Entra
 apiRouter.get('/bank-entra-config', get_bank_entra_config);
