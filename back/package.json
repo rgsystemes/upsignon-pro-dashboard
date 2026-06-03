@@ -1,6 +1,6 @@
 {
   "name": "upsignon-pro-dashboard-back",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "licence": "none",
   "private": true,
   "dependencies": {
@@ -14,8 +14,7 @@
     "nodemailer": "^8.0.5",
     "path": "^0.12.7",
     "pg": "^8.20.0",
-    "qrcode-generator": "^2.0.4",
-    "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail.git#v1.0.5",
+    "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail#v1.0.9",
     "upsignon-ms-entra": "git+https://github.com/rgsystemes/upsignon-ms-entra.git#v1.0.4",
     "uuid": "^13.0.0"
   },
@@ -42,6 +41,8 @@
   "scripts": {
     "lint": "eslint './server/**/*.{js,ts,tsx}' --quiet --fix",
     "build-server": "rm -rf ./compiledServer && tsc -p .",
-    "start": "yarn build-server && node ./compiledServer/server.js"
+    "wbuild-server": "tsc -p .",
+    "start": "yarn build-server && node ./compiledServer/server.js",
+    "wstart": "yarn wbuild-server && node ./compiledServer/server.js"
   }
 }

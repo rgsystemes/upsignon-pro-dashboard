@@ -16,6 +16,7 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
       mode: process.env.NODE_ENV === 'development' ? 'cors' : 'same-origin',
       headers,
       keepalive: true,
+      credentials: process.env.NODE_ENV === 'development' ? 'include' : 'same-origin',
     });
   } catch (e) {
     toast.error(i18n.t('network_error'));
