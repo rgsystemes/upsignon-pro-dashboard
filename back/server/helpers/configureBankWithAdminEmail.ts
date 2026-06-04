@@ -139,3 +139,99 @@ export const configureBankWithAdminEmailAndSendMail = async (
 
   res.status(200).end();
 };
+
+export const createTrialBank = async (args: {
+  bankName: string;
+  adminEmail: string;
+  resellerName: string | null;
+  lang: 'fr' | 'en';
+}): Promise<void> => {
+  const insertedAdminRes = await db.query(
+    `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') ON CONFLICT (email) DO NOTHING RETURNING id`,
+    [args.adminEmail],
+  );
+  if (insertedAdminRes.rowCount === 0) {
+    throw new Error(`Admin with email ${args.adminEmail} already exists`);
+  }
+  const adminId = insertedAdminRes.rows[0].id;
+
+  let expDate = new Date();
+  expDate.setDate(expDate.getDate() + 30);
+  expDate.setMilliseconds(0);
+  expDate.setSeconds(0);
+  expDate.setMinutes(0);
+  expDate.setHours(0);
+  let newBankSettings = {
+    IS_TESTING: true,
+    TESTING_EXPIRATION_DATE: expDate,
+  };
+  let resellerId = null;
+  if (args.resellerName) {
+    const resellerInsertRes = await db.query(
+      'INSERT INTO resellers (name) VALUES ($1) RETURNING id',
+      [args.resellerName],
+    );
+    resellerId = resellerInsertRes.rows[0].id;
+  }
+  const bankInsertRes = await db.query(
+    'INSERT INTO banks (name, settings, reseller_id) VALUES ($1, $2, $3) RETURNING id, public_id',
+    [args.bankName, newBankSettings, resellerId],
+  );
+
+  if (resellerId) {
+    await db.query(
+      'INSERT INTO admin_resellers (admin_id, reseller_id) VALUES ($1, $2) ON CONFLICT (admin_id, reseller_id) DO NOTHING',
+      [adminId, resellerId],
+    );
+  }
+  {
+    await db.query(
+      'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
+      [adminId, bankInsertRes.rows[0].id],
+    );
+  }
+
+  const insertedBank = bankInsertRes.rows[0];
+  // add allowed emails
+  const emailPattern = '*@' + args.adminEmail.split('@')[1].trim().toLowerCase();
+  await db.query('INSERT INTO allowed_emails (pattern, bank_id) VALUES (lower($1), $2)', [
+    emailPattern,
+    insertedBank.id,
+  ]);
+
+  /////////////////////
+  // SEND EMAIL
+  /////////////////////
+  const settingsRes = await db.query(
+    "SELECT value FROM settings WHERE key='PRO_SERVER_URL_CONFIG'",
+  );
+  if (settingsRes.rowCount === 0) {
+    throw new Error('PRO_SERVER_URL_CONFIG setting is missing');
+  }
+  const { url } = settingsRes.rows[0].value;
+  const bankLink = `${url}/${insertedBank.public_id}`;
+  const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
+
+  const emailContent = await buildEmail({
+    templateName: 'trialWelcome',
+    locales: getBestLanguage(args.lang),
+    args: {
+      activationLink: bankLink,
+      consoleLink: adminLoginPage,
+      trialEndDate: expDate!,
+    },
+  });
+
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+
+  transporter.sendMail({
+    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+    to: args.adminEmail,
+    subject: emailContent.subject,
+    text: emailContent.text,
+    html: emailContent.html,
+  });
+
+  forceProStatusUpdate();
+};

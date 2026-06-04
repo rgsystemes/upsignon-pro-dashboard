@@ -59,31 +59,34 @@ const UI_TEXTS = {
     },
     businessSectorPlaceholder: 'Veuillez sélectionner',
     businessSectorOptions: [
-      'Industrie',
-      'Commerce / Distribution',
-      'Bâtiment / Immobilier / Travaux publics',
-      'Transport / Logistique',
-      'Arts / Médias / Communication',
-      'IT/Telecom',
-      'Secteur Public',
-      'Education',
-      'Santé',
-      'Banque et Finance',
-      'MSP Infogérance',
-      'Association',
-      'Étudiant',
-      'Particulier',
+      { value: 'industry', label: 'Industrie' },
+      { value: 'retail_distribution', label: 'Commerce / Distribution' },
+      {
+        value: 'construction_real_estate_civil_engineering',
+        label: 'Bâtiment / Immobilier / Travaux publics',
+      },
+      { value: 'transport_logistics', label: 'Transport / Logistique' },
+      { value: 'arts_medias_communication', label: 'Arts / Médias / Communication' },
+      { value: 'it_telecom', label: 'IT/Telecom' },
+      { value: 'public_sector', label: 'Secteur Public' },
+      { value: 'education', label: 'Education' },
+      { value: 'health', label: 'Santé' },
+      { value: 'bank', label: 'Banque et Finance' },
+      { value: 'managed_service_provider', label: 'MSP Infogérance' },
+      { value: 'non_profit_organization', label: 'Association' },
+      { value: 'student', label: 'Étudiant' },
+      { value: 'individual', label: 'Particulier' },
     ],
     employeeCountPlaceholder: 'Veuillez sélectionner',
     employeeCountOptions: [
-      '1 à 49',
-      '50 à 99',
-      '100 à 249',
-      '250 à 499',
-      '500 à 999',
-      '1000 à 4999',
-      '5000 à 9999',
-      '10 000 et plus',
+      { value: '1-49', label: '1 à 49' },
+      { value: '50-99', label: '50 à 99' },
+      { value: '100-249', label: '100 à 249' },
+      { value: '250-499', label: '250 à 499' },
+      { value: '500-999', label: '500 à 999' },
+      { value: '1000-4999', label: '1000 à 4999' },
+      { value: '5000-9999', label: '5000 à 9999' },
+      { value: '10000+', label: '10 000 et plus' },
     ],
     submitButton: 'Envoyer',
     sendingStatus: 'Envoi en cours...',
@@ -137,31 +140,34 @@ const UI_TEXTS = {
     },
     businessSectorPlaceholder: 'Please select',
     businessSectorOptions: [
-      'Industry',
-      'Retail / Distribution',
-      'Construction / Real estate / Public works',
-      'Transport / Logistics',
-      'Arts / Media / Communication',
-      'IT / Telecom',
-      'Public sector',
-      'Education',
-      'Healthcare',
-      'Banking and Finance',
-      'MSP Managed Services',
-      'Non-profit',
-      'Student',
-      'Individual',
+      { value: 'industry', label: 'Industry' },
+      { value: 'retail_distribution', label: 'Retail / Distribution' },
+      {
+        value: 'construction_real_estate_civil_engineering',
+        label: 'Construction / Real estate / Public works',
+      },
+      { value: 'transport_logistics', label: 'Transport / Logistics' },
+      { value: 'arts_medias_communication', label: 'Arts / Media / Communication' },
+      { value: 'it_telecom', label: 'IT / Telecom' },
+      { value: 'public_sector', label: 'Public sector' },
+      { value: 'education', label: 'Education' },
+      { value: 'health', label: 'Healthcare' },
+      { value: 'bank', label: 'Banking and Finance' },
+      { value: 'managed_service_provider', label: 'MSP Managed Services' },
+      { value: 'non_profit_organization', label: 'Non-profit' },
+      { value: 'student', label: 'Student' },
+      { value: 'individual', label: 'Individual' },
     ],
     employeeCountPlaceholder: 'Please select',
     employeeCountOptions: [
-      '1 to 49',
-      '50 to 99',
-      '100 to 249',
-      '250 to 499',
-      '500 to 999',
-      '1000 to 4999',
-      '5000 to 9999',
-      '10,000 and above',
+      { value: '1-49', label: '1 to 49' },
+      { value: '50-99', label: '50 to 99' },
+      { value: '100-249', label: '100 to 249' },
+      { value: '250-499', label: '250 to 499' },
+      { value: '500-999', label: '500 to 999' },
+      { value: '1000-4999', label: '1000 to 4999' },
+      { value: '5000-9999', label: '5000 to 9999' },
+      { value: '10000+', label: '10,000 and above' },
     ],
     submitButton: 'Submit',
     sendingStatus: 'Sending...',
@@ -212,14 +218,22 @@ const rebuildSelect = (selectNode, placeholder, options) => {
   placeholderOption.textContent = placeholder;
   selectNode.appendChild(placeholderOption);
 
-  options.forEach((optionText) => {
+  options.forEach((optionInput) => {
+    const optionValue = typeof optionInput === 'string' ? optionInput : optionInput.value;
+    const optionLabel = typeof optionInput === 'string' ? optionInput : optionInput.label;
     const option = document.createElement('option');
-    option.value = optionText;
-    option.textContent = optionText;
+    option.value = optionValue;
+    option.textContent = optionLabel;
     selectNode.appendChild(option);
   });
 
-  if (previousValue && options.includes(previousValue)) {
+  if (
+    previousValue &&
+    options.some((optionInput) => {
+      const optionValue = typeof optionInput === 'string' ? optionInput : optionInput.value;
+      return optionValue === previousValue;
+    })
+  ) {
     selectNode.value = previousValue;
   } else {
     selectNode.value = '';
@@ -259,6 +273,12 @@ const applyStaticTranslations = () => {
 const setStatus = (message, isError = false) => {
   statusNode.textContent = message;
   statusNode.style.color = isError ? '#9f1d1d' : '#54617d';
+};
+
+const getCookieValue = (name) => {
+  const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const match = document.cookie.match(new RegExp(`(?:^|; )${escapedName}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : '';
 };
 
 const getFieldContainer = (fieldName) => {
@@ -373,13 +393,21 @@ languageSelect.addEventListener('change', (event) => {
   setActivity(currentActivity);
 });
 
+// Track submission state to prevent double submission
+let isSubmitting = false;
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
+
+  // Prevent double submission
+  if (isSubmitting) {
+    return;
+  }
 
   if (!validateForm()) {
     return;
   }
 
+  isSubmitting = true;
   setStatus(UI_TEXTS[currentLanguage].sendingStatus);
   submitButton.disabled = true;
 
@@ -396,6 +424,7 @@ form.addEventListener('submit', async (event) => {
     employeeCount: form.employeeCount.value,
     marketingConsent: form.marketingConsent.checked,
     privacyConsent: form.privacyConsent.checked,
+    hutk: getCookieValue('hubspotutk'),
   };
 
   try {
@@ -412,11 +441,10 @@ form.addEventListener('submit', async (event) => {
     }
 
     setStatus(UI_TEXTS[currentLanguage].successStatus);
-    form.reset();
-    setActivity(null);
   } catch (error) {
     setStatus(UI_TEXTS[currentLanguage].errorStatus, true);
   } finally {
+    isSubmitting = false;
     submitButton.disabled = false;
   }
 });

@@ -21,6 +21,7 @@ import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 import { enforceTrustedOrigin } from './helpers/requestSecurity';
 import helmet from 'helmet';
+import { trialRequestRouter } from './trialRequest/trialRequestRouter';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 
@@ -112,6 +113,9 @@ app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 app.get('/csrf-token', sendCsrfToken);
+if (!env.IS_PRODUCTION || env.IS_SAAS) {
+  app.use('/trial-request', trialRequestRouter);
+}
 // The login router is intentionally mounted before CSRF checks because it is used by the
 // external UpSignOn authentication flow before a dashboard session exists.
 app.use(csrfProtection);

@@ -4,6 +4,7 @@
   "licence": "none",
   "private": true,
   "dependencies": {
+    "@hubspot/api-client": "^13.4.0",
     "@types/mime": "4.0.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
