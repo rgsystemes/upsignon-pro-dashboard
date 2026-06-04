@@ -44,6 +44,15 @@ export default defineConfig(({ mode }) => {
     server: {
       host: 'localhost',
       port: 8090,
+      proxy: env.PUBLIC_URL
+        ? {
+            '/csrf-token': env.PUBLIC_URL,
+            '/get_admin_invite': env.PUBLIC_URL,
+            '/trial-request/submit': env.PUBLIC_URL,
+            '/login': env.PUBLIC_URL,
+            '/manualConnect': env.PUBLIC_URL,
+          }
+        : undefined,
     },
     preview: {
       host: 'localhost',
