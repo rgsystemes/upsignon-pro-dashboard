@@ -46,6 +46,7 @@
     "wbuild-server": "tsc",
     "start": "yarn build-server && node ./compiledServer/server.js",
     "wstart": "yarn wbuild-server && node ./compiledServer/server.js",
-    "prettier:check": "prettier --check \"./server/**/*.{js,ts,tsx}\""
+    "prettier:check": "prettier --check \"./server/**/*.{js,ts,tsx}\"",
+    "test": "tsc && node --test \"./compiledServer/**/*.test.js\""
   }
 }
