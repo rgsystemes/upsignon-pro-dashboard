@@ -14,7 +14,17 @@ import {
 } from './hubspotHelper';
 import { db } from '../helpers/db';
 
-const trialRequestRouter = Router();
+export const trialRequestRouter = Router();
+
+export const trialRequestCorsMiddleware = (req: any, res: any, next: any) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://upsignon.eu');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+};
 const TRIAL_REQUEST_TOKEN_TTL_MS = 1000 * 60 * 60 * 24;
 const TRIAL_REQUEST_ERROR_CODES = {
   INVALID_EMAIL_DOMAIN: 'INVALID_EMAIL_DOMAIN',
@@ -300,5 +310,3 @@ trialRequestRouter.get('/confirm-status', async (req, res) => {
   const { status, success, code } = await confirmRequest();
   return res.status(status).json({ ok: success, code });
 });
-
-export { trialRequestRouter };
