@@ -94,6 +94,13 @@ const UI_TEXTS = {
       'Demande reçue. Vérifiez votre boîte email pour valider votre adresse et finaliser la création de la banque test.',
     errorStatus:
       "Impossible d'envoyer la demande pour le moment. Merci de réessayer dans quelques instants.",
+    serverErrors: {
+      INVALID_EMAIL_DOMAIN:
+        "Veuillez utiliser une adresse email valide provenant de votre entreprise ou d'un fournisseur personnel.",
+      ACCOUNT_ALREADY_EXISTS: 'Un compte existe déjà pour cette adresse email.',
+      TRIAL_REQUEST_SUBMIT_FAILED:
+        "Impossible d'envoyer la demande pour le moment. Merci de réessayer dans quelques instants.",
+    },
     consent: {
       msp: {
         marketingIntro: "Septeo IT Solutions s'engage à protéger et à respecter votre vie privée.",
@@ -174,6 +181,13 @@ const UI_TEXTS = {
     successStatus:
       'Request received. Please check your email inbox to validate your email address and complete the test vault creation.',
     errorStatus: 'Unable to submit your request right now. Please try again in a few moments.',
+    serverErrors: {
+      INVALID_EMAIL_DOMAIN:
+        'Please use a valid email address from your company or a personal email provider.',
+      ACCOUNT_ALREADY_EXISTS: 'An account already exists for this email address.',
+      TRIAL_REQUEST_SUBMIT_FAILED:
+        'Unable to submit your request right now. Please try again in a few moments.',
+    },
     consent: {
       msp: {
         marketingIntro:
@@ -273,6 +287,14 @@ const applyStaticTranslations = () => {
 const setStatus = (message, isError = false) => {
   statusNode.textContent = message;
   statusNode.style.color = isError ? '#9f1d1d' : '#54617d';
+};
+
+const getSubmitErrorMessage = (errorCode) => {
+  if (!errorCode) {
+    return UI_TEXTS[currentLanguage].errorStatus;
+  }
+
+  return UI_TEXTS[currentLanguage].serverErrors[errorCode] || UI_TEXTS[currentLanguage].errorStatus;
 };
 
 const getCookieValue = (name) => {
@@ -437,7 +459,15 @@ form.addEventListener('submit', async (event) => {
     });
 
     if (!response.ok) {
-      throw new Error('request_failed');
+      let errorCode = null;
+      try {
+        const errorBody = await response.json();
+        errorCode = errorBody?.code || null;
+      } catch {
+        // Ignore parsing errors and fallback to generic message.
+      }
+      setStatus(getSubmitErrorMessage(errorCode), true);
+      return;
     }
 
     setStatus(UI_TEXTS[currentLanguage].successStatus);

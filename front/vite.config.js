@@ -49,6 +49,7 @@ export default defineConfig(({ mode }) => {
             '/csrf-token': env.PUBLIC_URL,
             '/get_admin_invite': env.PUBLIC_URL,
             '/trial-request/submit': env.PUBLIC_URL,
+            '/trial-request/confirm-status': env.PUBLIC_URL,
             '/login': env.PUBLIC_URL,
             '/manualConnect': env.PUBLIC_URL,
           }
@@ -69,6 +70,7 @@ export default defineConfig(({ mode }) => {
           main: 'index.html',
           login: 'login.html',
           'trial-request': 'trial-request.html',
+          'trial-request-confirm': 'trial-request-confirm.html',
           'no-admin-bank': 'no-admin-bank.html',
         },
       },

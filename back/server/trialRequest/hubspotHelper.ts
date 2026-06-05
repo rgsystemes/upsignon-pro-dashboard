@@ -1,6 +1,6 @@
-import * as hubspot from '@hubspot/api-client';
-import { FilterOperatorEnum } from '@hubspot/api-client/lib/codegen/crm/contacts/models/Filter.js';
-import { PublicUpdateSubscriptionStatusRequestLegalBasisEnum } from '@hubspot/api-client/lib/codegen/communication_preferences/models/all';
+// import * as hubspot from '@hubspot/api-client';
+// import { FilterOperatorEnum } from '@hubspot/api-client/lib/codegen/crm/contacts/models/Filter.js';
+// import { PublicUpdateSubscriptionStatusRequestLegalBasisEnum } from '@hubspot/api-client/lib/codegen/communication_preferences/models/all';
 import env from '../helpers/env';
 
 export const DIRECT_ACTIVITY_HUBSPOT_MAPPING = {
@@ -237,74 +237,74 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
   await submitWithRetry();
 };
 
-export const createHubspotProspect = async (payload: SignedTrialPayload): Promise<void> => {
-  assertHubspotEnvConfig();
+// export const createHubspotProspect = async (payload: SignedTrialPayload): Promise<void> => {
+//   assertHubspotEnvConfig();
 
-  try {
-    await submitHubspotTrialForm(payload);
-  } catch (error) {
-    console.error('Failed to submit HubSpot trial form:', error);
-  }
+//   try {
+//     await submitHubspotTrialForm(payload);
+//   } catch (error) {
+//     console.error('Failed to submit HubSpot trial form:', error);
+//   }
 
-  const hubspotClient = new hubspot.Client({
-    accessToken: env.HUBSPOT_RG_API_TOKEN,
-  });
+//   const hubspotClient = new hubspot.Client({
+//     accessToken: env.HUBSPOT_RG_API_TOKEN,
+//   });
 
-  const contactProperties: Record<string, string> = {
-    email: payload.email,
-    firstname: payload.firstname,
-    lastname: payload.lastname,
-    phone: payload.phone,
-    company: payload.company,
-    zip: payload.zip,
-    marketing_assignment_picklist: 'SIT - UpSignOn',
-    langue_principale: payload.language === 'fr' ? 'Francais' : 'Anglais',
-  };
-  if (payload.activityType === 'enterprise') {
-    contactProperties['secteur_d_activite__it_solutions_'] =
-      DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector];
-    contactProperties['nombre_de_salaries__hr_solutions_'] =
-      COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount];
-  }
+//   const contactProperties: Record<string, string> = {
+//     email: payload.email,
+//     firstname: payload.firstname,
+//     lastname: payload.lastname,
+//     phone: payload.phone,
+//     company: payload.company,
+//     zip: payload.zip,
+//     marketing_assignment_picklist: 'SIT - UpSignOn',
+//     langue_principale: payload.language === 'fr' ? 'Francais' : 'Anglais',
+//   };
+//   if (payload.activityType === 'enterprise') {
+//     contactProperties['secteur_d_activite__it_solutions_'] =
+//       DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector];
+//     contactProperties['nombre_de_salaries__hr_solutions_'] =
+//       COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount];
+//   }
 
-  const searchResult = await hubspotClient.crm.contacts.searchApi.doSearch({
-    filterGroups: [
-      {
-        filters: [
-          {
-            propertyName: 'email',
-            operator: FilterOperatorEnum.Eq,
-            value: payload.email,
-          },
-        ],
-      },
-    ],
-    limit: 1,
-    properties: ['email'],
-  });
+//   const searchResult = await hubspotClient.crm.contacts.searchApi.doSearch({
+//     filterGroups: [
+//       {
+//         filters: [
+//           {
+//             propertyName: 'email',
+//             operator: FilterOperatorEnum.Eq,
+//             value: payload.email,
+//           },
+//         ],
+//       },
+//     ],
+//     limit: 1,
+//     properties: ['email'],
+//   });
 
-  if (searchResult.total > 0 && searchResult.results[0]?.id) {
-    await hubspotClient.crm.contacts.basicApi.update(searchResult.results[0].id, {
-      properties: contactProperties,
-    });
-    return;
-  }
+//   if (searchResult.total > 0 && searchResult.results[0]?.id) {
+//     await hubspotClient.crm.contacts.basicApi.update(searchResult.results[0].id, {
+//       properties: contactProperties,
+//     });
+//     return;
+//   }
 
-  await hubspotClient.crm.contacts.basicApi.create({
-    properties: contactProperties,
-  });
+//   await hubspotClient.crm.contacts.basicApi.create({
+//     properties: contactProperties,
+//   });
 
-  if (payload.marketingConsent) {
-    try {
-      await hubspotClient.communicationPreferences.statusApi.subscribe({
-        subscriptionId: env.HUBSPOT_RG_NEWSLETTER_SUBSCRIPTION_ID!,
-        emailAddress: payload.email,
-        legalBasis: PublicUpdateSubscriptionStatusRequestLegalBasisEnum.ConsentWithNotice,
-        legalBasisExplanation:
-          'The user voluntarily subscribed to the newsletter when signing up for a trial on the UpSignOn website.',
-      });
-    } catch (error) {
-      console.error('Failed to subscribe contact to newsletter:', error);
-    }
-  }
-};
+//   if (payload.marketingConsent) {
+//     try {
+//       await hubspotClient.communicationPreferences.statusApi.subscribe({
+//         subscriptionId: env.HUBSPOT_RG_NEWSLETTER_SUBSCRIPTION_ID!,
+//         emailAddress: payload.email,
+//         legalBasis: PublicUpdateSubscriptionStatusRequestLegalBasisEnum.ConsentWithNotice,
+//         legalBasisExplanation:
+//           'The user voluntarily subscribed to the newsletter when signing up for a trial on the UpSignOn website.',
+//       });
+//     } catch (error) {
+//       console.error('Failed to subscribe contact to newsletter:', error);
+//     }
+//   }
+// };
