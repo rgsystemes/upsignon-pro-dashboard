@@ -206,6 +206,40 @@
         color: var(--muted);
       }
 
+      .successPanel {
+        display: none;
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid #cfe5d7;
+        border-radius: 6px;
+        background: #f3fbf6;
+      }
+
+      .successMessage {
+        margin: 0;
+        color: #1f5131;
+        font-size: 1.1rem;
+        font-weight: 600;
+        line-height: 1.45;
+      }
+
+      .linkButton {
+        margin-top: 12px;
+        border: 0;
+        background: transparent;
+        color: #1a5bbf;
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .linkButton:hover,
+      .linkButton:focus {
+        color: #0f4699;
+      }
+
       @media (max-width: 760px) {
         .card {
           padding: 18px;
@@ -223,106 +257,117 @@
     <main class="page">
       <section class="card">
         <h1>Tester 1 mois gratuitement</h1>
-        <p class="subtitle">Quelle est votre activité ?</p>
+        <div id="trialRequestContent">
+          <p class="subtitle">Quelle est votre activité ?</p>
 
-        <div class="activity" role="radiogroup" aria-label="Type d'activité">
-          <button id="mspBtn" type="button" data-activity="msp">MSP, Revendeur, Infogérance</button>
-          <button id="enterpriseBtn" type="button" data-activity="enterprise">
-            Entreprise privée ou publique
-          </button>
+          <div class="activity" role="radiogroup" aria-label="Type d'activité">
+            <button id="mspBtn" type="button" data-activity="msp">
+              MSP, Revendeur, Infogérance
+            </button>
+            <button id="enterpriseBtn" type="button" data-activity="enterprise">
+              Entreprise privée ou publique
+            </button>
+          </div>
+
+          <form id="trialRequestForm" novalidate style="display: none">
+            <input id="activityType" name="activityType" type="hidden" value="msp" />
+
+            <div class="grid">
+              <div class="field">
+                <label for="firstname">Prénom*</label>
+                <input id="firstname" name="firstname" required />
+              </div>
+              <div class="field">
+                <label for="lastname">Nom*</label>
+                <input id="lastname" name="lastname" required />
+              </div>
+              <div class="field">
+                <label for="email">E-mail*</label>
+                <input id="email" name="email" type="email" required />
+              </div>
+              <div class="field">
+                <label for="phone">Numéro de téléphone*</label>
+                <input id="phone" name="phone" type="tel" required />
+              </div>
+              <div class="field">
+                <label for="company">Nom de l'entreprise*</label>
+                <input id="company" name="company" required />
+              </div>
+              <div class="field">
+                <label for="zip">Code postal*</label>
+                <input id="zip" name="zip" required />
+              </div>
+
+              <div id="enterpriseFields" class="field">
+                <label for="businessSector">Secteur d'activité*</label>
+                <select id="businessSector" name="businessSector">
+                  <option value="">Veuillez sélectionner</option>
+                  <option>Industrie</option>
+                  <option>Commerce / Distribution</option>
+                  <option>Bâtiment / Immobilier / Travaux publics</option>
+                  <option>Transport / Logistique</option>
+                  <option>Arts / Médias / Communication</option>
+                  <option>IT/Telecom</option>
+                  <option>Secteur Public</option>
+                  <option>Education</option>
+                  <option>Santé</option>
+                  <option>Banque et Finance</option>
+                  <option>MSP Infogérance</option>
+                  <option>Association</option>
+                  <option>Étudiant</option>
+                  <option>Particulier</option>
+                </select>
+              </div>
+
+              <div id="enterpriseEmployees" class="field">
+                <label for="employeeCount">Nombre de salariés</label>
+                <select id="employeeCount" name="employeeCount">
+                  <option value="">Veuillez sélectionner</option>
+                  <option>1 à 49</option>
+                  <option>50 à 99</option>
+                  <option>100 à 249</option>
+                  <option>250 à 499</option>
+                  <option>500 à 999</option>
+                  <option>1000 a 4999</option>
+                  <option>5000 a 9999</option>
+                  <option>10 000 et plus</option>
+                </select>
+              </div>
+              <div class="field languageRow">
+                <label for="languageSelect">Langue</label>
+                <select id="languageSelect" name="language">
+                  <option value="fr">Français</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="consent">
+              <p id="marketingIntro" class="status" style="margin: 0"></p>
+              <label>
+                <input id="marketingConsent" name="marketingConsent" type="checkbox" />
+                <span id="marketingConsentText"></span>
+              </label>
+              <label>
+                <input id="privacyConsent" name="privacyConsent" type="checkbox" required />
+                <span id="privacyConsentText"></span>
+              </label>
+              <div id="privacyConsentError" class="fieldError"></div>
+            </div>
+
+            <div class="actions">
+              <button class="submit" id="submitButton" type="submit">Envoyer</button>
+              <span id="status" class="status" aria-live="polite"></span>
+            </div>
+          </form>
         </div>
 
-        <form id="trialRequestForm" novalidate style="display: none">
-          <input id="activityType" name="activityType" type="hidden" value="msp" />
-
-          <div class="grid">
-            <div class="field">
-              <label for="firstname">Prénom*</label>
-              <input id="firstname" name="firstname" required />
-            </div>
-            <div class="field">
-              <label for="lastname">Nom*</label>
-              <input id="lastname" name="lastname" required />
-            </div>
-            <div class="field">
-              <label for="email">E-mail*</label>
-              <input id="email" name="email" type="email" required />
-            </div>
-            <div class="field">
-              <label for="phone">Numéro de téléphone*</label>
-              <input id="phone" name="phone" type="tel" required />
-            </div>
-            <div class="field">
-              <label for="company">Nom de l'entreprise*</label>
-              <input id="company" name="company" required />
-            </div>
-            <div class="field">
-              <label for="zip">Code postal*</label>
-              <input id="zip" name="zip" required />
-            </div>
-
-            <div id="enterpriseFields" class="field">
-              <label for="businessSector">Secteur d'activité*</label>
-              <select id="businessSector" name="businessSector">
-                <option value="">Veuillez sélectionner</option>
-                <option>Industrie</option>
-                <option>Commerce / Distribution</option>
-                <option>Bâtiment / Immobilier / Travaux publics</option>
-                <option>Transport / Logistique</option>
-                <option>Arts / Médias / Communication</option>
-                <option>IT/Telecom</option>
-                <option>Secteur Public</option>
-                <option>Education</option>
-                <option>Santé</option>
-                <option>Banque et Finance</option>
-                <option>MSP Infogérance</option>
-                <option>Association</option>
-                <option>Étudiant</option>
-                <option>Particulier</option>
-              </select>
-            </div>
-
-            <div id="enterpriseEmployees" class="field">
-              <label for="employeeCount">Nombre de salariés</label>
-              <select id="employeeCount" name="employeeCount">
-                <option value="">Veuillez sélectionner</option>
-                <option>1 à 49</option>
-                <option>50 à 99</option>
-                <option>100 à 249</option>
-                <option>250 à 499</option>
-                <option>500 à 999</option>
-                <option>1000 a 4999</option>
-                <option>5000 a 9999</option>
-                <option>10 000 et plus</option>
-              </select>
-            </div>
-            <div class="field languageRow">
-              <label for="languageSelect">Langue</label>
-              <select id="languageSelect" name="language">
-                <option value="fr">Français</option>
-                <option value="en">English</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="consent">
-            <p id="marketingIntro" class="status" style="margin: 0"></p>
-            <label>
-              <input id="marketingConsent" name="marketingConsent" type="checkbox" />
-              <span id="marketingConsentText"></span>
-            </label>
-            <label>
-              <input id="privacyConsent" name="privacyConsent" type="checkbox" required />
-              <span id="privacyConsentText"></span>
-            </label>
-            <div id="privacyConsentError" class="fieldError"></div>
-          </div>
-
-          <div class="actions">
-            <button class="submit" id="submitButton" type="submit">Envoyer</button>
-            <span id="status" class="status" aria-live="polite"></span>
-          </div>
-        </form>
+        <div id="successPanel" class="successPanel" aria-live="polite">
+          <p id="successMessage" class="successMessage"></p>
+          <button id="showFormButton" class="linkButton" type="button">
+            Revenir au formulaire
+          </button>
+        </div>
       </section>
     </main>
 

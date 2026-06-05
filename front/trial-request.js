@@ -16,6 +16,10 @@ const privacyConsentText = document.getElementById('privacyConsentText');
 const privacyConsentError = document.getElementById('privacyConsentError');
 const submitButton = document.getElementById('submitButton');
 const statusNode = document.getElementById('status');
+const trialRequestContent = document.getElementById('trialRequestContent');
+const successPanel = document.getElementById('successPanel');
+const successMessageNode = document.getElementById('successMessage');
+const showFormButton = document.getElementById('showFormButton');
 
 const labels = {
   languageSelect: document.querySelector('label[for="languageSelect"]'),
@@ -92,6 +96,7 @@ const UI_TEXTS = {
     sendingStatus: 'Envoi en cours...',
     successStatus:
       'Demande reçue. Vérifiez votre boîte email pour valider votre adresse et finaliser la création de la banque test.',
+    showFormButton: 'Revenir au formulaire',
     errorStatus:
       "Impossible d'envoyer la demande pour le moment. Merci de réessayer dans quelques instants.",
     serverErrors: {
@@ -180,6 +185,7 @@ const UI_TEXTS = {
     sendingStatus: 'Sending...',
     successStatus:
       'Request received. Please check your email inbox to validate your email address and complete the test vault creation.',
+    showFormButton: 'Back to the form',
     errorStatus: 'Unable to submit your request right now. Please try again in a few moments.',
     serverErrors: {
       INVALID_EMAIL_DOMAIN:
@@ -222,6 +228,7 @@ const detectLanguage = () => {
 
 let currentLanguage = detectLanguage();
 let currentActivity = null;
+let isSuccessState = false;
 
 const rebuildSelect = (selectNode, placeholder, options) => {
   const previousValue = selectNode.value;
@@ -282,11 +289,29 @@ const applyStaticTranslations = () => {
   rebuildSelect(employeeCount, t.employeeCountPlaceholder, t.employeeCountOptions);
 
   submitButton.textContent = t.submitButton;
+  showFormButton.textContent = t.showFormButton;
+  if (isSuccessState) {
+    successMessageNode.textContent = t.successStatus;
+  }
 };
 
 const setStatus = (message, isError = false) => {
   statusNode.textContent = message;
   statusNode.style.color = isError ? '#9f1d1d' : '#54617d';
+};
+
+const showSuccessPanel = () => {
+  isSuccessState = true;
+  trialRequestContent.style.display = 'none';
+  successMessageNode.textContent = UI_TEXTS[currentLanguage].successStatus;
+  successPanel.style.display = 'block';
+};
+
+const hideSuccessPanel = () => {
+  isSuccessState = false;
+  successPanel.style.display = 'none';
+  trialRequestContent.style.display = 'block';
+  setActivity(currentActivity);
 };
 
 const getSubmitErrorMessage = (errorCode) => {
@@ -394,6 +419,11 @@ const setActivity = (activity) => {
     return;
   }
 
+  if (isSuccessState) {
+    form.style.display = 'none';
+    return;
+  }
+
   form.style.display = 'block';
   enterpriseFields.style.display = isEnterprise ? 'flex' : 'none';
   enterpriseEmployees.style.display = isEnterprise ? 'flex' : 'none';
@@ -413,6 +443,11 @@ languageSelect.addEventListener('change', (event) => {
   currentLanguage = nextLanguage;
   applyStaticTranslations();
   setActivity(currentActivity);
+});
+
+showFormButton.addEventListener('click', () => {
+  hideSuccessPanel();
+  form.elements.firstname?.focus();
 });
 
 // Track submission state to prevent double submission
@@ -470,7 +505,8 @@ form.addEventListener('submit', async (event) => {
       return;
     }
 
-    setStatus(UI_TEXTS[currentLanguage].successStatus);
+    setStatus('');
+    showSuccessPanel();
   } catch (error) {
     setStatus(UI_TEXTS[currentLanguage].errorStatus, true);
   } finally {
