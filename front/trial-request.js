@@ -517,3 +517,33 @@ form.addEventListener('submit', async (event) => {
 
 applyStaticTranslations();
 setActivity(null);
+
+// SEND CONTENT HEIGHT TO PARENT FOR IFRAME RESIZING
+var sentHeight = null;
+
+const sendHeight = () => {
+  if (window.parent) {
+    const height = document.body.offsetHeight;
+    if (sentHeight !== height) {
+      // keep the "+50" to avoid scrollbars appearing in case of minor miscalculations
+      window.parent.postMessage({ frameHeight: height + 50 }, '*');
+      sentHeight = height;
+    }
+  }
+};
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+
+if (typeof MutationObserver !== 'undefined') {
+  const mutationObserver = new MutationObserver(sendHeight);
+  mutationObserver.observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+    attributes: true,
+  });
+}
+
+// Initial height send in case content is already loaded
+sendHeight();
