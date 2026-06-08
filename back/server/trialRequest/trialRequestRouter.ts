@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import Joi from 'joi';
 import { createHmac, timingSafeEqual } from 'crypto';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
 import env from '../helpers/env';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 import { logError } from '../helpers/logger';
@@ -166,22 +167,6 @@ const verifySignedPayload = (token: string): SignedTrialPayload | null => {
   }
 };
 
-const buildValidationEmailContent = (confirmLink: string, language: 'fr' | 'en') => {
-  if (language === 'en') {
-    return {
-      subject: 'Please confirm your email address',
-      text: `Thank you for your trial request. Please confirm your email address by clicking this link: ${confirmLink}`,
-      html: `<p>Thank you for your trial request.</p><p>Please confirm your email address by clicking this link:</p><p><a href="${confirmLink}">Confirm my email address</a></p>`,
-    };
-  }
-
-  return {
-    subject: 'Merci de valider votre adresse email',
-    text: `Merci pour votre demande d'essai. Merci de valider votre adresse email en cliquant sur ce lien : ${confirmLink}`,
-    html: `<p>Merci pour votre demande d'essai.</p><p>Merci de valider votre adresse email en cliquant sur ce lien :</p><p><a href="${confirmLink}">Valider mon adresse email</a></p>`,
-  };
-};
-
 const sendTrialValidationEmail = async ({
   recipient,
   language,
@@ -193,15 +178,21 @@ const sendTrialValidationEmail = async ({
 }) => {
   const emailConfig = await getEmailConfig();
   const transporter = getMailTransporter(emailConfig, { debug: false });
-  const confirmLink = `${env.FRONTEND_URL}/trial-request-confirm?token=${encodeURIComponent(token)}&lang=${language}`;
-  const content = buildValidationEmailContent(confirmLink, language);
+  const emailValidationLink = `${env.FRONTEND_URL}/trial-request-confirm?token=${encodeURIComponent(token)}&lang=${language}`;
+  const { html, text, subject } = await buildEmail({
+    templateName: 'trialEmailValidation',
+    locales: getBestLanguage(language),
+    args: {
+      emailValidationLink,
+    },
+  });
 
   await transporter.sendMail({
-    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+    from: emailConfig.EMAIL_SENDING_ADDRESS,
     to: recipient,
-    subject: content.subject,
-    text: content.text,
-    html: content.html,
+    subject,
+    text,
+    html,
   });
 };
 
