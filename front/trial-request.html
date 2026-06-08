@@ -31,26 +31,14 @@
 
       body {
         margin: 0;
-        background: var(--bg);
+        background: transparent;
         color: var(--text);
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       }
 
       .page {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
-
-      .card {
-        width: min(960px, 100%);
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--card);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-        padding: 24px;
+        min-height: 0;
+        padding: 20px;
       }
 
       h1 {
@@ -242,7 +230,7 @@
 
       @media (max-width: 760px) {
         .card {
-          padding: 18px;
+          padding: 10px;
         }
 
         .activity,
