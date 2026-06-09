@@ -83,7 +83,7 @@ const assertHubspotEnvConfig = (): void => {
 
 const buildHubspotFormFields = (
   payload: SignedTrialPayload,
-): Array<{ name: string; value: string }> => {
+): Array<{ name: string; value: string; objectTypeId: '0-1' }> => {
   const fields: Array<{ name: string; value: string }> = [
     { name: 'email', value: payload.email },
     { name: 'firstname', value: payload.firstname },
