@@ -6,6 +6,7 @@ const backToSiteNode = document.getElementById('backToSite');
 const CONFIRM_STATUS_BY_CODE = {
   INVALID_CONFIRM_LINK: 'error',
   EXPIRED_CONFIRM_LINK: 'error',
+  TRIAL_ALREADY_CONFIRMED: 'success',
   TRIAL_CREATED: 'success',
   CONFIRM_UNEXPECTED_ERROR: 'error',
 };
@@ -34,6 +35,11 @@ const UI_TEXTS = {
         title: 'Validation expirée',
         message:
           "Ce lien de validation est invalide ou a expiré. Merci de soumettre une nouvelle demande d'essai.",
+      },
+      TRIAL_ALREADY_CONFIRMED: {
+        title: 'Demande déjà validée',
+        message:
+          "Cette demande d'essai a déjà été validée. Si besoin, consultez vos emails pour retrouver les informations d'accès.",
       },
       TRIAL_CREATED: {
         title: 'Environnement de test créé',
@@ -70,6 +76,11 @@ const UI_TEXTS = {
         title: 'Confirmation expired',
         message:
           'This confirmation link is invalid or has expired. Please submit a new trial request.',
+      },
+      TRIAL_ALREADY_CONFIRMED: {
+        title: 'Request already confirmed',
+        message:
+          'This trial request has already been confirmed. Please check your emails for access details.',
       },
       TRIAL_CREATED: {
         title: 'Trial environment created',
@@ -146,12 +157,13 @@ const confirmTrialRequest = async (language, token) => {
   }
 
   try {
-    const params = new URLSearchParams({ token, lang: language });
-    const response = await fetch(`/trial-request/confirm-status?${params.toString()}`, {
-      method: 'GET',
+    const response = await fetch('/trial-request/confirm-status', {
+      method: 'POST',
       headers: {
         Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ token, lang: language }),
     });
 
     let responseCode = null;

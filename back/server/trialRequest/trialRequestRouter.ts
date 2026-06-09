@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import Joi from 'joi';
-import { createHmac, timingSafeEqual } from 'crypto';
+import { createHash, createHmac, timingSafeEqual } from 'crypto';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 import env from '../helpers/env';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
@@ -14,6 +14,12 @@ import {
   TrialRequestBody,
 } from './hubspotHelper';
 import { db } from '../helpers/db';
+import {
+  claimConfirmationToken,
+  ensureConfirmationTable,
+  markConfirmationCompleted,
+  releaseConfirmationClaim,
+} from './emailValidation';
 
 export const trialRequestRouter = Router();
 
@@ -36,6 +42,7 @@ const TRIAL_REQUEST_ERROR_CODES = {
 const TRIAL_CONFIRM_CODES = {
   INVALID_CONFIRM_LINK: 'INVALID_CONFIRM_LINK',
   EXPIRED_CONFIRM_LINK: 'EXPIRED_CONFIRM_LINK',
+  TRIAL_ALREADY_CONFIRMED: 'TRIAL_ALREADY_CONFIRMED',
   TRIAL_CREATED: 'TRIAL_CREATED',
   CONFIRM_UNEXPECTED_ERROR: 'CONFIRM_UNEXPECTED_ERROR',
 } as const;
@@ -61,6 +68,10 @@ const TRIAL_CONFIRM_TRANSLATIONS: Record<
       status: 400,
       success: false,
     },
+    TRIAL_ALREADY_CONFIRMED: {
+      status: 200,
+      success: true,
+    },
     TRIAL_CREATED: {
       status: 200,
       success: true,
@@ -78,6 +89,10 @@ const TRIAL_CONFIRM_TRANSLATIONS: Record<
     EXPIRED_CONFIRM_LINK: {
       status: 400,
       success: false,
+    },
+    TRIAL_ALREADY_CONFIRMED: {
+      status: 200,
+      success: true,
     },
     TRIAL_CREATED: {
       status: 200,
@@ -166,6 +181,8 @@ const verifySignedPayload = (token: string): SignedTrialPayload | null => {
     return null;
   }
 };
+
+const hashToken = (token: string): string => createHash('sha256').update(token).digest('hex');
 
 const sendTrialValidationEmail = async ({
   recipient,
@@ -270,34 +287,76 @@ trialRequestRouter.post('/submit', async (req, res) => {
   }
 });
 
-trialRequestRouter.get('/confirm-status', async (req, res) => {
-  const confirmRequest = async (): Promise<TrialConfirmResponse> => {
-    const requestedLanguage = req.query.lang === 'en' ? 'en' : 'fr';
-    try {
-      const token = req.query.token;
-      if (!token || typeof token !== 'string') {
-        return buildConfirmResponse(TRIAL_CONFIRM_CODES.INVALID_CONFIRM_LINK, requestedLanguage);
-      }
+const confirmRequest = async ({
+  token,
+  requestedLanguage,
+}: {
+  token: string;
+  requestedLanguage: 'fr' | 'en';
+}): Promise<TrialConfirmResponse> => {
+  let tokenHash: string | null = null;
+  let tokenWasClaimed = false;
 
-      const payload = verifySignedPayload(token);
-      if (!payload) {
-        return buildConfirmResponse(TRIAL_CONFIRM_CODES.EXPIRED_CONFIRM_LINK, requestedLanguage);
-      }
-
-      await submitHubspotTrialForm(payload);
-      await createTrialBank({
-        bankName: payload.company.toUpperCase(),
-        adminEmail: payload.email,
-        resellerName: payload.activityType === 'msp' ? `${payload.company} (interne)` : null,
-        lang: requestedLanguage,
-      });
-
-      return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage);
-    } catch (error) {
-      logError('trialRequestRouter GET /confirm', error);
-      return buildConfirmResponse(TRIAL_CONFIRM_CODES.CONFIRM_UNEXPECTED_ERROR, requestedLanguage);
+  try {
+    const payload = verifySignedPayload(token);
+    if (!payload) {
+      return buildConfirmResponse(TRIAL_CONFIRM_CODES.EXPIRED_CONFIRM_LINK, requestedLanguage);
     }
-  };
-  const { status, success, code } = await confirmRequest();
-  return res.status(status).json({ ok: success, code });
+
+    await ensureConfirmationTable();
+    tokenHash = hashToken(token);
+    tokenWasClaimed = await claimConfirmationToken(tokenHash);
+
+    if (!tokenWasClaimed) {
+      return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
+    }
+
+    await submitHubspotTrialForm(payload);
+    await createTrialBank({
+      bankName: payload.company.toUpperCase(),
+      adminEmail: payload.email,
+      resellerName: payload.activityType === 'msp' ? `${payload.company} (interne)` : null,
+      lang: requestedLanguage,
+    });
+
+    await markConfirmationCompleted(tokenHash);
+    return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage);
+  } catch (error) {
+    if (tokenWasClaimed && tokenHash) {
+      try {
+        await releaseConfirmationClaim(tokenHash);
+      } catch (cleanupError) {
+        logError('trialRequestRouter POST /confirm-status cleanup', cleanupError);
+      }
+    }
+    logError('trialRequestRouter POST /confirm-status', error);
+    return buildConfirmResponse(TRIAL_CONFIRM_CODES.CONFIRM_UNEXPECTED_ERROR, requestedLanguage);
+  }
+};
+
+trialRequestRouter.post('/confirm-status', async (req, res) => {
+  try {
+    const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
+    const safeBody = Joi.attempt(
+      req.body,
+      Joi.object({
+        token: Joi.string().trim().required(),
+        lang: Joi.string().valid('fr', 'en').optional(),
+      }),
+    ) as { token: string; lang?: 'fr' | 'en' };
+
+    const { status, success, code } = await confirmRequest({
+      token: safeBody.token,
+      requestedLanguage,
+    });
+
+    return res.status(status).json({ ok: success, code });
+  } catch {
+    const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
+    const response = buildConfirmResponse(
+      TRIAL_CONFIRM_CODES.INVALID_CONFIRM_LINK,
+      requestedLanguage,
+    );
+    return res.status(response.status).json({ ok: response.success, code: response.code });
+  }
 });
