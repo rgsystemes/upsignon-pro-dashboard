@@ -61,7 +61,6 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
   }
 });
 
-('use strict');
 var UpSignOn = (function () {
   var UPSIGNON_BLUE = '#2E3862';
   var UPSIGNON_DEEP_LINK = 'upsignon://';

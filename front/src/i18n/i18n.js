@@ -1,6 +1,6 @@
 class I18n {
   static instance = null;
-  static translationsByLanguage = import.meta.glob('./*.js', {
+  static translationsByLanguage = import.meta.glob(['./*.js', '!./i18n.js'], {
     eager: true,
     import: 'default',
   });

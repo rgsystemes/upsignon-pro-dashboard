@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs/promises';
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 import express from 'express';
