@@ -11,7 +11,11 @@ const getOriginFromUrl = (urlValue: string): string | null => {
   }
 };
 
-const allowedOrigins = new Set([env.FRONTEND_URL, env.BACKEND_URL]);
+const allowedOrigins = new Set(
+  [env.FRONTEND_URL, env.BACKEND_URL]
+    .map((value) => (value ? getOriginFromUrl(value) : null))
+    .filter((origin): origin is string => Boolean(origin)),
+);
 
 export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunction) => {
   if (SAFE_METHODS.has(req.method.toUpperCase())) {
