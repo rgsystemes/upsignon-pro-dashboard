@@ -113,6 +113,34 @@ const getToken = () => {
   return token ? token.trim() : '';
 };
 
+let csrfTokenPromise = null;
+
+const getCsrfToken = async () => {
+  if (!csrfTokenPromise) {
+    csrfTokenPromise = fetch('/csrf-token', {
+      method: 'GET',
+      cache: 'no-store',
+      credentials: 'same-origin',
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error('CSRF token request failed');
+        }
+        const body = await res.json();
+        if (!body.csrfToken) {
+          throw new Error('Missing CSRF token');
+        }
+        return body.csrfToken;
+      })
+      .catch((error) => {
+        csrfTokenPromise = null;
+        throw error;
+      });
+  }
+
+  return csrfTokenPromise;
+};
+
 const setState = ({ language, mode, title, message }) => {
   const texts = UI_TEXTS[language];
   document.documentElement.lang = language;
@@ -157,13 +185,16 @@ const confirmTrialRequest = async (language, token) => {
   }
 
   try {
+    const csrfToken = await getCsrfToken();
     const response = await fetch('/trial-request/confirm-status', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
       },
       body: JSON.stringify({ token, lang: language }),
+      credentials: 'same-origin',
     });
 
     let responseCode = null;

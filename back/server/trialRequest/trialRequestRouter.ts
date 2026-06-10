@@ -20,6 +20,7 @@ import {
   markConfirmationCompleted,
   releaseConfirmationClaim,
 } from './emailValidation';
+import { csrfProtection } from '../helpers/csrf';
 
 export const trialRequestRouter = Router();
 
@@ -334,7 +335,7 @@ const confirmRequest = async ({
   }
 };
 
-trialRequestRouter.post('/confirm-status', async (req, res) => {
+trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
   try {
     const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
     const safeBody = Joi.attempt(
