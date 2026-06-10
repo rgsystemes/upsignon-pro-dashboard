@@ -6,7 +6,6 @@ import env from '../helpers/env';
 import { logError } from '../helpers/logger';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 import { recomputeSessionAuthorizationsForAdminById } from '../helpers/updateSessionAuthorizations';
-import { LOCKOUT_DURATION_MIN, loginLimiter, MAX_LOGIN_ATTEMPTS } from './rateLimiter';
 
 export const loginRouter = express.Router();
 
@@ -97,7 +96,9 @@ loginRouter.get('/button-config', async (req: any, res: any) => {
   }
 });
 
-loginRouter.post('/connect', loginLimiter, async (req: any, res: any) => {
+const LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS = 5;
+const LOGIN_ROUTER_CONNECT_LOCKOUT_DURATION_MIN = 15;
+loginRouter.post('/connect', async (req: any, res: any) => {
   try {
     const password = req.body.password;
     const id = req.body.userId;
@@ -118,7 +119,7 @@ loginRouter.post('/connect', loginLimiter, async (req: any, res: any) => {
          lockout_until = CASE WHEN COALESCE(failed_attempts, 0) >= $2 
            THEN NOW() + INTERVAL '$3 minutes' ELSE lockout_until END
          WHERE id=$1`,
-        [id, MAX_LOGIN_ATTEMPTS, LOCKOUT_DURATION_MIN],
+        [id, LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS, LOGIN_ROUTER_CONNECT_LOCKOUT_DURATION_MIN],
       );
       return res.status(401).end();
     }
