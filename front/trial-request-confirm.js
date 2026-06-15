@@ -115,6 +115,10 @@ const getToken = () => {
 
 let csrfTokenPromise = null;
 
+const resetCsrfTokenCache = () => {
+  csrfTokenPromise = null;
+};
+
 const getCsrfToken = async () => {
   if (!csrfTokenPromise) {
     csrfTokenPromise = fetch('/csrf-token', {
@@ -133,12 +137,25 @@ const getCsrfToken = async () => {
         return body.csrfToken;
       })
       .catch((error) => {
-        csrfTokenPromise = null;
+        resetCsrfTokenCache();
         throw error;
       });
   }
 
   return csrfTokenPromise;
+};
+
+const isInvalidCsrfTokenResponse = async (response) => {
+  if (response.status !== 403) {
+    return false;
+  }
+
+  try {
+    const body = await response.clone().json();
+    return body?.message === 'Invalid CSRF token';
+  } catch {
+    return false;
+  }
 };
 
 const setState = ({ language, mode, title, message }) => {
@@ -185,17 +202,27 @@ const confirmTrialRequest = async (language, token) => {
   }
 
   try {
-    const csrfToken = await getCsrfToken();
-    const response = await fetch('/trial-request/confirm-status', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken,
-      },
-      body: JSON.stringify({ token, lang: language }),
-      credentials: 'same-origin',
-    });
+    let response;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const csrfToken = await getCsrfToken();
+      response = await fetch('/trial-request/confirm-status', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ token, lang: language }),
+        credentials: 'same-origin',
+      });
+
+      if (attempt === 0 && (await isInvalidCsrfTokenResponse(response))) {
+        resetCsrfTokenCache();
+        continue;
+      }
+
+      break;
+    }
 
     let responseCode = null;
     try {
