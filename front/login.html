@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="./favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>UpSignOn PRO dashboard</title>
+    <style>
+      body {
+        margin: auto;
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+          'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>You need to enable JavaScript.</noscript>
+    <div style="display: flex; flex-direction: column; align-items: center">
+      <div style="margin-bottom: 20px">
+        Cliquez sur ce bouton pour vous connecter (ne fonctionne que si vous avez l'application
+        UpSignOn installée)
+      </div>
+      <div id="UpSignOn"></div>
+
+      <div style="margin: 50px auto 10px auto; width: 600px">
+        Si vous n'avez pas encore créé votre compte admin ou si vous avez perdu votre accès,
+        saisissez votre adresse email ici. Attention, seules les adresses emails d'administrateur
+        sont acceptées.
+      </div>
+      <form id="loginForm">
+        <input type="text" id="adminEmail" name="adminEmail" placeholder="Adresse email" />
+        <input type="submit" value="Envoyer" />
+      </form>
+    </div>
+    <iframe style="display: none" id="automaticAppOpener"></iframe>
+
+    <script src="./login.js"></script>
+  </body>
+</html>

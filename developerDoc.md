@@ -4,9 +4,8 @@
 - create a db
 - start the upsignon-pro-server to setup the db
 - configure your front/.env and /back/.env files
-
   - front/.env
-    -> PUBLIC_URL = https://localhost:3001 (backend)
+    -> PUBLIC_URL = http://localhost:3001 (backend)
   - back/.env
     -> BACKEND_URL=http://localhost:3001
     -> FRONTEND_URL=http://localhost:8090

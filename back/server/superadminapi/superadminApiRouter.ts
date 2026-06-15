@@ -45,7 +45,7 @@ superadminApiRouter.use(async (req: any, res: any, next) => {
   next();
 });
 
-superadminApiRouter.get('/test-email', test_email);
+superadminApiRouter.post('/test-email', test_email);
 
 // ADMIN USERS
 superadminApiRouter.get('/admins', get_admins);

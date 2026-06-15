@@ -1,8 +1,27 @@
+import rateLimit from 'express-rate-limit';
 import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { inputSanitizer } from '../helpers/sanitizer';
 import { sendAdminInvite, ttlMinutes } from '../helpers/sendAdminInvite';
+
+const INVITE_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const INVITE_RATE_LIMIT_MAX = 5;
+
+export const inviteRateLimiter = rateLimit({
+  identifier: 'getAdminInvite',
+  keyGenerator: (req) => {
+    const adminEmail = inputSanitizer.getLowerCaseString(req.body.adminEmail);
+    return adminEmail || '_';
+  },
+  windowMs: INVITE_RATE_LIMIT_WINDOW_MS,
+  limit: INVITE_RATE_LIMIT_MAX,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    message: 'Too many invite requests, please try again later.',
+  },
+});
 
 export const getAdminInvite = async (req: any, res: any): Promise<void> => {
   try {
