@@ -2,6 +2,10 @@ var preventMultipleClicksLock = null;
 var timer = null;
 var csrfTokenPromise = null;
 
+function resetCsrfTokenCache() {
+  csrfTokenPromise = null;
+}
+
 async function getCsrfToken() {
   if (!csrfTokenPromise) {
     csrfTokenPromise = fetch(`${window.location.href.replace('login.html', 'csrf-token')}`, {
@@ -20,12 +24,46 @@ async function getCsrfToken() {
         return body.csrfToken;
       })
       .catch((error) => {
-        csrfTokenPromise = null;
+        resetCsrfTokenCache();
         throw error;
       });
   }
 
   return csrfTokenPromise;
+}
+
+async function isInvalidCsrfTokenResponse(res) {
+  if (res.status !== 403) {
+    return false;
+  }
+
+  try {
+    const body = await res.clone().json();
+    return body?.message === 'Invalid CSRF token';
+  } catch (error) {
+    return false;
+  }
+}
+
+async function sendAdminInvite(adminEmail, csrfToken, allowRetry = true) {
+  const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
+    method: 'POST',
+    body: JSON.stringify({ adminEmail }),
+    cache: 'no-store',
+    mode: 'same-origin',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken,
+    }),
+    keepalive: false,
+  });
+
+  if (allowRetry && (await isInvalidCsrfTokenResponse(res))) {
+    resetCsrfTokenCache();
+    return sendAdminInvite(adminEmail, await getCsrfToken(), false);
+  }
+
+  return res;
 }
 
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -38,17 +76,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     preventMultipleClicksLock = null;
   }, 10000);
   const csrfToken = await getCsrfToken();
-  const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
-    method: 'POST',
-    body: JSON.stringify({ adminEmail }),
-    cache: 'no-store',
-    mode: 'same-origin',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': csrfToken,
-    }),
-    keepalive: false,
-  });
+  const res = await sendAdminInvite(adminEmail, csrfToken);
   const content = await res.text();
   if (!content || !res.ok) {
     window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");

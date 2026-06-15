@@ -5,6 +5,10 @@ import { bankOrResellerServerUrl, baseServerUrl, isDevelopment } from './env';
 const SAFE_METHODS = new Set(['GET', 'HEAD', 'OPTIONS']);
 let csrfTokenPromise;
 
+function resetCsrfTokenCache() {
+  csrfTokenPromise = undefined;
+}
+
 async function getCsrfToken() {
   if (!csrfTokenPromise) {
     csrfTokenPromise = fetch(`${baseServerUrl}/csrf-token`, {
@@ -24,7 +28,7 @@ async function getCsrfToken() {
         return csrfToken;
       })
       .catch((error) => {
-        csrfTokenPromise = undefined;
+        resetCsrfTokenCache();
         throw error;
       });
   }
@@ -32,40 +36,73 @@ async function getCsrfToken() {
   return csrfTokenPromise;
 }
 
+async function isInvalidCsrfTokenResponse(res) {
+  if (res.status !== 403) {
+    return false;
+  }
+
+  try {
+    const body = await res.clone().json();
+    return body?.message === 'Invalid CSRF token';
+  } catch (error) {
+    return false;
+  }
+}
+
 export async function baseUrlFetch(route, method, body, useBankOrReseller) {
   const bodyText = body ? JSON.stringify(body) : undefined;
   const headers = new Headers({
     'Content-Type': 'application/json',
   });
-  if (!SAFE_METHODS.has(method.toUpperCase())) {
-    headers.set('X-CSRF-Token', await getCsrfToken());
-  }
-  let res;
-  try {
-    res = await fetch(`${useBankOrReseller ? bankOrResellerServerUrl : baseServerUrl}${route}`, {
-      method,
-      body: bodyText,
-      cache: 'no-store',
-      mode: isDevelopment ? 'cors' : 'same-origin',
-      headers,
-      keepalive: true,
-      credentials: isDevelopment ? 'include' : 'same-origin',
-    });
-  } catch (e) {
-    toast.error(i18n.t('network_error'));
-    throw e;
-  }
-  if (!res.ok) {
-    toast.error(`${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
-    throw new Error(res.statusText);
-  }
-  try {
-    const content = await res.text();
-    if (!content) return;
-    return JSON.parse(content);
-  } catch (e) {
-    toast.error(i18n.t('unknown_error'));
-    throw e;
+
+  const needsCsrfToken = !SAFE_METHODS.has(method.toUpperCase());
+  let retryAfterCsrfRefresh = false;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    if (needsCsrfToken) {
+      headers.set('X-CSRF-Token', await getCsrfToken());
+    }
+
+    let res;
+    try {
+      res = await fetch(`${useBankOrReseller ? bankOrResellerServerUrl : baseServerUrl}${route}`, {
+        method,
+        body: bodyText,
+        cache: 'no-store',
+        mode: isDevelopment ? 'cors' : 'same-origin',
+        headers,
+        keepalive: true,
+        credentials: isDevelopment ? 'include' : 'same-origin',
+      });
+    } catch (error) {
+      toast.error(i18n.t('network_error'));
+      throw error;
+    }
+
+    if (
+      !res.ok &&
+      !retryAfterCsrfRefresh &&
+      needsCsrfToken &&
+      (await isInvalidCsrfTokenResponse(res))
+    ) {
+      resetCsrfTokenCache();
+      retryAfterCsrfRefresh = true;
+      continue;
+    }
+
+    if (!res.ok) {
+      toast.error(`${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
+      throw new Error(res.statusText);
+    }
+
+    try {
+      const content = await res.text();
+      if (!content) return;
+      return JSON.parse(content);
+    } catch (error) {
+      toast.error(i18n.t('unknown_error'));
+      throw error;
+    }
   }
 }
 
