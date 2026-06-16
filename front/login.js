@@ -80,6 +80,7 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
   const content = await res.text();
   if (!content || !res.ok) {
     window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
+    return;
   }
   const body = JSON.parse(content);
   if (body.success) {
@@ -185,7 +186,7 @@ var UpSignOn = (function () {
     var websiteLinkNode = document.createElement('a');
     websiteLinkNode.innerText = getDownloadText();
     websiteLinkNode.target = '_blank';
-    websiteLinkNode.href = 'https://upsignon.eu';
+    websiteLinkNode.href = 'https://upsignon.eu/downloads';
     buttonContainer.appendChild(websiteLinkNode);
   };
 

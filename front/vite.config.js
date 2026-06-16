@@ -44,13 +44,23 @@ export default defineConfig(({ mode }) => {
     server: {
       host: 'localhost',
       port: 8090,
+      proxy: env.PUBLIC_URL
+        ? {
+            '/csrf-token': env.PUBLIC_URL,
+            '/get_admin_invite': env.PUBLIC_URL,
+            '/trial-request/submit': env.PUBLIC_URL,
+            '/trial-request/confirm-status': env.PUBLIC_URL,
+            '/login': env.PUBLIC_URL,
+            '/manualConnect': env.PUBLIC_URL,
+          }
+        : undefined,
     },
     preview: {
       host: 'localhost',
       port: 8090,
     },
     define: {
-      'PUBLIC_URL': JSON.stringify(env.PUBLIC_URL || ''),
+      PUBLIC_URL: JSON.stringify(env.PUBLIC_URL || ''),
     },
     build: {
       outDir: 'build',
@@ -59,6 +69,8 @@ export default defineConfig(({ mode }) => {
         input: {
           main: 'index.html',
           login: 'login.html',
+          'trial-request': 'trial-request.html',
+          'trial-request-confirm': 'trial-request-confirm.html',
           'no-admin-bank': 'no-admin-bank.html',
         },
       },

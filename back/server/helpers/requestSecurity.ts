@@ -17,6 +17,20 @@ const allowedOrigins = new Set(
     .filter((origin): origin is string => Boolean(origin)),
 );
 
+export const isTrustedOrigin = (originHeader: string, route: string): boolean => {
+  const normalizedOrigin = originHeader.toLowerCase();
+
+  if (allowedOrigins.has(normalizedOrigin)) {
+    return true;
+  }
+
+  if (normalizedOrigin == 'https://upsignon.eu' && route.startsWith('/trial-request')) {
+    return true;
+  }
+
+  return false;
+};
+
 export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunction) => {
   if (SAFE_METHODS.has(req.method.toUpperCase())) {
     return next();
@@ -24,8 +38,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
 
   const originHeader = req.get('origin');
   if (originHeader) {
-    const requestOrigin = originHeader.toLowerCase();
-    if (!allowedOrigins.has(requestOrigin)) {
+    if (!isTrustedOrigin(originHeader, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });
     }
     return next();
@@ -34,7 +47,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
   const refererHeader = req.get('referer');
   if (refererHeader) {
     const refererOrigin = getOriginFromUrl(refererHeader);
-    if (!refererOrigin || !allowedOrigins.has(refererOrigin)) {
+    if (!refererOrigin || !isTrustedOrigin(refererOrigin, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });
     }
   }
