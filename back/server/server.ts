@@ -94,15 +94,17 @@ app.use((req, res, next) => {
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
-app.get('/trial-request', (_req, res) => {
-  res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
-});
+if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
+  app.get('/trial-request', (_req, res) => {
+    res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
+  });
+}
 
 app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 app.get('/csrf-token', sendCsrfToken);
-if (!env.IS_PRODUCTION || env.IS_SAAS) {
+if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
   app.use('/trial-request', trialRequestCorsMiddleware, trialRequestRouter);
 }
 // The login router is intentionally mounted before CSRF checks because it is used by the

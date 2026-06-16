@@ -17,6 +17,10 @@ const allowedOrigins = new Set(
     .filter((origin): origin is string => Boolean(origin)),
 );
 
+export const allowedTrialRequestOriginRegexp = env.IS_STAGING_SAAS
+  ? /^https:\/\/upsignon\.eu$/
+  : /^https:\/\/website-[0-9a-z]*-upsignon\.vercel\.app$/;
+
 export const isTrustedOrigin = (originHeader: string, route: string): boolean => {
   const normalizedOrigin = originHeader.toLowerCase();
 
@@ -24,7 +28,10 @@ export const isTrustedOrigin = (originHeader: string, route: string): boolean =>
     return true;
   }
 
-  if (normalizedOrigin == 'https://upsignon.eu' && route.startsWith('/trial-request')) {
+  if (
+    route.startsWith('/trial-request') &&
+    allowedTrialRequestOriginRegexp.test(normalizedOrigin)
+  ) {
     return true;
   }
 

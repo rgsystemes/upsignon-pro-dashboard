@@ -21,11 +21,14 @@ import {
   releaseConfirmationClaim,
 } from './emailValidation';
 import { csrfProtection } from '../helpers/csrf';
+import { allowedTrialRequestOriginRegexp } from '../helpers/requestSecurity';
 
 export const trialRequestRouter = Router();
 
 export const trialRequestCorsMiddleware = (req: any, res: any, next: any) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://upsignon.eu');
+  if (allowedTrialRequestOriginRegexp.test(req.headers.origin)) {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  }
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS');
   if (req.method === 'OPTIONS') {
