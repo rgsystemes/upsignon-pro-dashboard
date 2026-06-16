@@ -18,8 +18,12 @@ const allowedOrigins = new Set(
 );
 
 export const allowedTrialRequestOriginRegexp = env.IS_STAGING_SAAS
-  ? /^https:\/\/upsignon\.eu$/
-  : /^https:\/\/website-[0-9a-z]*-upsignon\.vercel\.app$/;
+  ? /^https:\/\/website-[a-z0-9-]*-upsignon\.vercel\.app$/
+  : /^https:\/\/upsignon\.eu$/;
+
+export const allowedTrialRequestFrameAncestors = env.IS_STAGING_SAAS
+  ? ['https://*.vercel.app']
+  : ['https://upsignon.eu'];
 
 export const isTrustedOrigin = (originHeader: string, route: string): boolean => {
   const normalizedOrigin = originHeader.toLowerCase();

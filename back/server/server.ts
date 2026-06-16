@@ -18,7 +18,7 @@ import { manualConnect } from './login/manualConnect';
 import { getAdminInvite, inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
-import { enforceTrustedOrigin } from './helpers/requestSecurity';
+import { allowedTrialRequestFrameAncestors, enforceTrustedOrigin } from './helpers/requestSecurity';
 import helmet from 'helmet';
 import { trialRequestCorsMiddleware, trialRequestRouter } from './trialRequest/trialRequestRouter';
 
@@ -95,9 +95,20 @@ app.use((req, res, next) => {
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
-  app.get('/trial-request', (_req, res) => {
-    res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
-  });
+  app.get(
+    '/trial-request',
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      directives: {
+        frameAncestors: allowedTrialRequestFrameAncestors,
+      },
+    }),
+    (_req, res) => {
+      // X-Frame-Options does not support allowlists; use CSP frame-ancestors instead.
+      res.removeHeader('X-Frame-Options');
+      res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
+    },
+  );
 }
 
 app.use(enforceTrustedOrigin);
