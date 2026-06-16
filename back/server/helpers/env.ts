@@ -75,6 +75,9 @@ export default {
   DKIM_KEY_SELECTOR,
   DKIM_PRIVATE_KEY,
   IS_SAAS: (BACKEND_URL || SERVER_URL)?.replace(/\/$/, '').endsWith('.upsignon.eu'),
+  IS_STAGING_SAAS: (BACKEND_URL || SERVER_URL)
+    ?.replace(/\/$/, '')
+    .endsWith('pro-staging.upsignon.eu/admin'),
   HUBSPOT_RG_PORTAL_ID,
   HUBSPOT_RG_API_TOKEN,
   HUBSPOT_RG_FORM_ID,
