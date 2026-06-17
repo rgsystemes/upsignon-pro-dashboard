@@ -1,6 +1,5 @@
 import React from 'react';
-import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
-import { bankId } from '../../helpers/env';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import qrcodeGenerator from 'qrcode-generator';
 import { toast } from 'react-toastify';
@@ -79,15 +78,16 @@ Foreach($u in $usersPaths){
       <div>
         <h2>{i18n.t('setup_link')}</h2>
         <div>{i18n.t('setup_link_is_bank_specific')}</div>
-        <div
+        <button
+          type="button"
+          disabled={isSendingSetupEmail}
+          aria-busy={isSendingSetupEmail}
           className={`button ${isSendingSetupEmail ? 'disabledUI' : ''}`}
           style={{ marginTop: 12, marginBottom: 6, display: 'inline-block' }}
-          onClick={() => {
-            if (!isSendingSetupEmail) this.resendBankSetupEmail();
-          }}
+          onClick={() => this.resendBankSetupEmail()}
         >
           {i18n.t('setup_link_resend_email_button')}
-        </div>
+        </button>
         <div
           style={{
             margin: 20,

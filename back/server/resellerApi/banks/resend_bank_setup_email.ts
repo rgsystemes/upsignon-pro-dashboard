@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { logError } from '../../helpers/logger';
 import { db } from '../../helpers/db';
-import { resendBankSetupEmailToAdmins } from '../../helpers/resendBankSetupEmailToAdmins';
+import { resendBankSetupEmailToMe } from '../../helpers/resendBankSetupEmailToAdmins';
 import { hasResellerOwnership } from '../helpers/securityChecks';
 
 export const resend_bank_setup_email = async (req: any, res: any): Promise<void> => {
@@ -34,7 +34,7 @@ export const resend_bank_setup_email = async (req: any, res: any): Promise<void>
       return;
     }
 
-    await resendBankSetupEmailToAdmins(req, validatedBody.bankId);
+    await resendBankSetupEmailToMe(req, validatedBody.bankId);
     res.status(200).json({});
   } catch (e) {
     logError('reseller_resend_bank_setup_email', e);

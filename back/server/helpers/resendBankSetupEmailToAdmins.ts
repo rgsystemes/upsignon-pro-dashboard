@@ -3,7 +3,7 @@ import env from './env';
 import { db } from './db';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 
-export const resendBankSetupEmailToAdmins = async (req: any, bankId: number): Promise<void> => {
+export const resendBankSetupEmailToMe = async (req: any, bankId: number): Promise<void> => {
   const adminEmail = req.session?.adminEmail;
   if (!adminEmail || typeof adminEmail !== 'string') {
     throw new Error('Missing session admin email');

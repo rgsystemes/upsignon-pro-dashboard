@@ -213,9 +213,13 @@ class ResellerBanks extends React.Component {
                     </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
                     <td>
-                      <div className="action" onClick={() => this.resendBankSetupEmail(bank.id)}>
+                      <button
+                        type="button"
+                        className="action"
+                        onClick={() => this.resendBankSetupEmail(bank.id)}
+                      >
                         {i18n.t('setup_link_resend_email_button')}
-                      </div>
+                      </button>
                       {!isRestrictedSuperadmin && (
                         <div
                           className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
