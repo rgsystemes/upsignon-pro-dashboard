@@ -66,14 +66,14 @@ export type SignedTrialPayload = TrialRequestBody & {
 
 const assertHubspotEnvConfig = (): void => {
   const requiredHubspotEnvVars = [
-    env.HUBSPOT_RG_API_TOKEN,
-    env.HUBSPOT_RG_PORTAL_ID,
-    env.HUBSPOT_RG_FORM_ID,
-    env.HUBSPOT_RG_NEWSLETTER_SUBSCRIPTION_ID,
-    env.HUBSPOT_ZAZA_API_TOKEN,
-    env.HUBSPOT_ZAZA_PORTAL_ID,
-    env.HUBSPOT_ZAZA_FORM_ID,
-    env.HUBSPOT_ZAZA_NEWSLETTER_SUBSCRIPTION_ID,
+    env.HUBSPOT_USO_MSP_API_TOKEN,
+    env.HUBSPOT_USO_MSP_PORTAL_ID,
+    env.HUBSPOT_USO_MSP_FORM_ID,
+    env.HUBSPOT_USO_MSP_NEWSLETTER_SUBSCRIPTION_ID,
+    env.HUBSPOT_USO_DIRECT_API_TOKEN,
+    env.HUBSPOT_USO_DIRECT_PORTAL_ID,
+    env.HUBSPOT_USO_DIRECT_FORM_ID,
+    env.HUBSPOT_USO_DIRECT_NEWSLETTER_SUBSCRIPTION_ID,
   ];
 
   if (requiredHubspotEnvVars.some((value) => !value)) {
@@ -119,16 +119,16 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
   const hubspotConfig =
     payload.activityType === 'enterprise'
       ? {
-          subscriptionId: env.HUBSPOT_ZAZA_NEWSLETTER_SUBSCRIPTION_ID!,
-          portalId: env.HUBSPOT_ZAZA_PORTAL_ID!,
-          formId: env.HUBSPOT_ZAZA_FORM_ID!,
-          apiToken: env.HUBSPOT_ZAZA_API_TOKEN!,
+          subscriptionId: env.HUBSPOT_USO_DIRECT_NEWSLETTER_SUBSCRIPTION_ID!,
+          portalId: env.HUBSPOT_USO_DIRECT_PORTAL_ID!,
+          formId: env.HUBSPOT_USO_DIRECT_FORM_ID!,
+          apiToken: env.HUBSPOT_USO_DIRECT_API_TOKEN!,
         }
       : {
-          subscriptionId: env.HUBSPOT_RG_NEWSLETTER_SUBSCRIPTION_ID!,
-          portalId: env.HUBSPOT_RG_PORTAL_ID!,
-          formId: env.HUBSPOT_RG_FORM_ID!,
-          apiToken: env.HUBSPOT_RG_API_TOKEN!,
+          subscriptionId: env.HUBSPOT_USO_MSP_NEWSLETTER_SUBSCRIPTION_ID!,
+          portalId: env.HUBSPOT_USO_MSP_PORTAL_ID!,
+          formId: env.HUBSPOT_USO_MSP_FORM_ID!,
+          apiToken: env.HUBSPOT_USO_MSP_API_TOKEN!,
         };
 
   const getLegalConsentText = (language: 'fr' | 'en') => {
@@ -247,7 +247,7 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
 //   }
 
 //   const hubspotClient = new hubspot.Client({
-//     accessToken: env.HUBSPOT_RG_API_TOKEN,
+//     accessToken: env.HUBSPOT_USO_MSP_API_TOKEN,
 //   });
 
 //   const contactProperties: Record<string, string> = {
@@ -297,7 +297,7 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
 //   if (payload.marketingConsent) {
 //     try {
 //       await hubspotClient.communicationPreferences.statusApi.subscribe({
-//         subscriptionId: env.HUBSPOT_RG_NEWSLETTER_SUBSCRIPTION_ID!,
+//         subscriptionId: env.HUBSPOT_USO_MSP_NEWSLETTER_SUBSCRIPTION_ID!,
 //         emailAddress: payload.email,
 //         legalBasis: PublicUpdateSubscriptionStatusRequestLegalBasisEnum.ConsentWithNotice,
 //         legalBasisExplanation:
