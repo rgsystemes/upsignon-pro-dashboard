@@ -52,6 +52,7 @@ import { reactivate_user } from './reactivate_user';
 import { get_licences } from './get_licences';
 import { listMSEntraAPIs, reloadMSEntraInstance } from './reload_ms_entra_instance';
 import { get_bank_url } from './get_bank_url';
+import { resend_bank_setup_email } from './resend_bank_setup_email';
 import { get_bank_sso_config } from './sso/get_bank_sso_config';
 import { add_bank_sso_config } from './sso/add_bank_sso_config';
 import { delete_bank_sso_config } from './sso/delete_bank_sso_config';
@@ -77,6 +78,7 @@ apiRouter.use(async (req: any, res: any, next) => {
 });
 
 apiRouter.get('/bank_url', get_bank_url);
+apiRouter.post('/resend-bank-setup-email', resend_bank_setup_email);
 
 // Users
 apiRouter.get('/users', get_users);

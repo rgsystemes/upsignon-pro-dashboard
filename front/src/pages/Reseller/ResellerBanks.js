@@ -6,6 +6,7 @@ import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
 import { Search } from '../../components/Search';
 import { SearchByFields } from '../../helpers/SearchByFields';
+import { toast } from 'react-toastify';
 
 // Props : setIsLoading, banks, fetchBanks
 class ResellerBanks extends React.Component {
@@ -15,7 +16,7 @@ class ResellerBanks extends React.Component {
   };
   newBankNameInputRef = null;
   newAdminEmailInputRef = null;
-  
+
   handleSearch = (value) => {
     this.setState({ search: value });
   };
@@ -64,6 +65,18 @@ class ResellerBanks extends React.Component {
       this.props.setIsLoading(true);
       await bankUrlFetch(`/api/delete-bank/${id}`, 'POST', null);
       await this.props.fetchBanks();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.props.setIsLoading(false);
+    }
+  };
+
+  resendBankSetupEmail = async (bankId) => {
+    try {
+      this.props.setIsLoading(true);
+      await bankUrlFetch('/api/resend-bank-setup-email', 'POST', { bankId });
+      toast.success(i18n.t('setup_link_resend_success'));
     } catch (e) {
       console.error(e);
     } finally {
@@ -169,7 +182,7 @@ class ResellerBanks extends React.Component {
               </th>
               <th>{i18n.t('sasettings_nb_users')}</th>
               <th>{i18n.t('sasettings_bank_created_at')}</th>
-              {!isRestrictedSuperadmin && <th>{i18n.t('actions')}</th>}
+              <th>{i18n.t('actions')}</th>
             </tr>
           </thead>
           <tbody>
@@ -199,22 +212,29 @@ class ResellerBanks extends React.Component {
                       {bank.nb_users}
                     </td>
                     <td>{new Date(bank.created_at).toLocaleDateString()}</td>
-                    {!isRestrictedSuperadmin && (
-                      <td>
+                    <td>
+                      <button
+                        type="button"
+                        className="action"
+                        onClick={() => this.resendBankSetupEmail(bank.id)}
+                      >
+                        {i18n.t('setup_link_resend_email_button')}
+                      </button>
+                      {!isRestrictedSuperadmin && (
                         <div
                           className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.setState({ bankToDeleteId: bank.id })}
                         >
                           {i18n.t('delete')}
                         </div>
-                      </td>
-                    )}
+                      )}
+                    </td>
                   </tr>
                 );
               })
             ) : (
               <tr>
-                <td colSpan={!isRestrictedSuperadmin ? 6 : 5} style={{ textAlign: 'center', color: '#888' }}>
+                <td colSpan={6} style={{ textAlign: 'center', color: '#888' }}>
                   {i18n.t('no_banks_found') || 'Aucune banque trouvée'}
                 </td>
               </tr>
@@ -225,7 +245,7 @@ class ResellerBanks extends React.Component {
               <td></td>
               <td>{filteredBanks.reduce((r, b) => r + parseInt(b.nb_users), 0)}</td>
               <td></td>
-              {!isRestrictedSuperadmin && <td></td>}
+              <td></td>
             </tr>
           </tbody>
         </table>

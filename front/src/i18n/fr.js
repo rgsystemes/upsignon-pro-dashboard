@@ -270,6 +270,8 @@ const translations = {
   pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
   setup_link_is_bank_specific: 'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
+  setup_link_resend_email_button: "M'envoyer le mail de configuration",
+  setup_link_resend_success: 'Mail de configuration envoyé à votre adresse.',
   pro_server_url: 'URL de votre serveur UpSignOn PRO',
   link_to_communicate: 'Lien à communiquer',
   preconfig_title: 'Préconfiguration du lien par stratégie de groupe.',
