@@ -17,7 +17,7 @@ import { disconnect } from './helpers/disconnect';
 import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
 import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
-import { getAdminInvite } from './login/get_admin_invite';
+import { sendAdminInviteUnauthenticated } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
@@ -106,7 +106,7 @@ app.get('/no-admin-bank.html', (req, res) => {
 });
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
-app.post('/get_admin_invite', getAdminInvite);
+app.post('/send_admin_invite_if_exists', sendAdminInviteUnauthenticated);
 
 // CHECK SESSION VALIDITY
 app.use((req, res, next) => {

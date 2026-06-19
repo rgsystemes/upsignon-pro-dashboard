@@ -58,7 +58,7 @@ class BankAdmins extends React.Component {
   sendAdminInvite = async (adminEmail) => {
     try {
       this.props.setIsLoading(true);
-      const { success } = await baseUrlFetch('/get_admin_invite', 'POST', { adminEmail });
+      const { success } = await bankUrlFetch('/api/get_admin_invite', 'POST', { adminEmail });
       if (success) {
         toast.success(i18n.t('settings_admin_invite_sent'));
       } else {
