@@ -185,7 +185,7 @@ var UpSignOn = (function () {
     var websiteLinkNode = document.createElement('a');
     websiteLinkNode.innerText = getDownloadText();
     websiteLinkNode.target = '_blank';
-    websiteLinkNode.href = 'https://upsignon.eu';
+    websiteLinkNode.href = 'https://upsignon.eu/downloads';
     buttonContainer.appendChild(websiteLinkNode);
   };
 
