@@ -116,8 +116,8 @@ loginRouter.post('/connect', async (req: any, res: any) => {
     if (!isOk) {
       await db.query(
         `UPDATE admins SET failed_attempts = COALESCE(failed_attempts, 0) + 1,
-         lockout_until = CASE WHEN COALESCE(failed_attempts, 0) >= $2 
-           THEN NOW() + INTERVAL '$3 minutes' ELSE lockout_until END
+         lockout_until = CASE WHEN COALESCE(failed_attempts, 0) + 1 >= $2 
+           THEN NOW() + ($3 * INTERVAL '1 minute') ELSE lockout_until END
          WHERE id=$1`,
         [id, LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS, LOGIN_ROUTER_CONNECT_LOCKOUT_DURATION_MIN],
       );
@@ -133,7 +133,8 @@ loginRouter.post('/connect', async (req: any, res: any) => {
         'UPDATE admins SET failed_attempts=0, lockout_until=null, token=$1, token_expires_at=$2 WHERE id=$3',
         [connectionToken, expiresAt, id],
       );
-    } catch {
+    } catch (e) {
+      logError('/connect', e);
       return res.status(400).end();
     }
     let redirectionUri;
