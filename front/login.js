@@ -77,16 +77,12 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
   }, 10000);
   const csrfToken = await getCsrfToken();
   const res = await sendAdminInvite(adminEmail, csrfToken);
-  const content = await res.text();
-  if (!content || !res.ok) {
-    window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
-    return;
-  }
-  const body = JSON.parse(content);
-  if (body.success) {
-    window.alert('SUCCÈS ! vous allez recevoir un email.');
+  if (res.status === 200) {
+    window.alert(
+      "Si vous avez saisi une adresse email autorisée, vous allez recevoir un email d'invitation dans quelques instants.",
+    );
   } else {
-    window.alert("ÉCHEC ! une erreur est survenue. Cet email n'est peut-être pas autorisé.");
+    window.alert('ÉCHEC ! une erreur est survenue.');
   }
 });
 
