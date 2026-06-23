@@ -9,6 +9,7 @@ import { get_licences } from '../api/get_licences';
 import { licenceAssign } from '../helpers/licence_assign';
 import { licenceSummary } from '../helpers/licence-summary';
 import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
+import { resend_bank_setup_email } from './banks/resend_bank_setup_email';
 
 export const resellerApiRouter = express.Router();
 
@@ -16,6 +17,7 @@ export const resellerApiRouter = express.Router();
 resellerApiRouter.post('/insert-bank', insert_bank);
 resellerApiRouter.post('/update-bank', update_bank);
 resellerApiRouter.post('/delete-bank/:id', delete_bank);
+resellerApiRouter.post('/resend-bank-setup-email', resend_bank_setup_email);
 
 // ADMINS
 resellerApiRouter.get('/reseller-admins', admins);

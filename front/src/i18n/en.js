@@ -263,6 +263,8 @@ const translations = {
   link_to_downloads: 'Application download links',
   setup_link: 'Application setup link',
   setup_link_is_bank_specific: 'Notice this link is specific to each bank of vaults.',
+  setup_link_resend_email_button: 'Send setup email to me',
+  setup_link_resend_success: 'Setup email sent to your address.',
   pro_server: 'UpSignOn PRO server',
   pro_server_url: 'URL of your UpSignOn PRO server',
   link_to_communicate: 'Link to communicate',

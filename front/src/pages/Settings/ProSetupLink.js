@@ -1,8 +1,8 @@
 import React from 'react';
-import { baseUrlFetch, bankUrlFetch } from '../../helpers/urlFetch';
-import { bankId } from '../../helpers/env';
+import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import qrcodeGenerator from 'qrcode-generator';
+import { toast } from 'react-toastify';
 
 export class ProSetupLink extends React.Component {
   base64Img = null;
@@ -12,6 +12,7 @@ export class ProSetupLink extends React.Component {
 
   state = {
     bankUrl: null,
+    isSendingSetupEmail: false,
   };
   fetchSetupUrlComponents = async () => {
     try {
@@ -44,6 +45,18 @@ export class ProSetupLink extends React.Component {
     this.fetchSetupUrlComponents();
   }
 
+  resendBankSetupEmail = async () => {
+    try {
+      this.setState({ isSendingSetupEmail: true });
+      await bankUrlFetch('/api/resend-bank-setup-email', 'POST');
+      toast.success(i18n.t('setup_link_resend_success'));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.setState({ isSendingSetupEmail: false });
+    }
+  };
+
   getScript = () => `## RUN AS ADMIN !
 $cUsersPath = "C:\Users"
 $usersPaths = (Get-ChildItem -Path $cUsersPath -Directory -ErrorAction SilentlyContinue).FullName
@@ -59,11 +72,22 @@ Foreach($u in $usersPaths){
 }`;
 
   render() {
+    const { isSendingSetupEmail } = this.state;
     if (!this.proSetupLink) return null;
     return (
       <div>
         <h2>{i18n.t('setup_link')}</h2>
         <div>{i18n.t('setup_link_is_bank_specific')}</div>
+        <button
+          type="button"
+          disabled={isSendingSetupEmail}
+          aria-busy={isSendingSetupEmail}
+          className={`button ${isSendingSetupEmail ? 'disabledUI' : ''}`}
+          style={{ marginTop: 12, marginBottom: 6, display: 'inline-block' }}
+          onClick={() => this.resendBankSetupEmail()}
+        >
+          {i18n.t('setup_link_resend_email_button')}
+        </button>
         <div
           style={{
             margin: 20,
