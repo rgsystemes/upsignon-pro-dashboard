@@ -97,8 +97,11 @@ loginRouter.get('/button-config', async (req: any, res: any) => {
   }
 });
 
+// The user can make 5 failed attempts within 15 minutes before being locked out.
+// When locked out, the user must wait 15 minutes after the first failed attempt before being able to try again.
 const LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS = 5;
-const LOGIN_ROUTER_CONNECT_LOCKOUT_DURATION_MIN = 15;
+const LOGIN_ROUTER_CONNECT_ATTEMPT_WINDOW_DURATION_MIN = 15;
+
 loginRouter.post('/connect', async (req: any, res: any) => {
   try {
     const password = req.body.password;
@@ -107,9 +110,19 @@ loginRouter.post('/connect', async (req: any, res: any) => {
     if (!id) return res.status(401).end();
     if (!password) return res.status(401).end();
 
-    // Check for account lockout
-    const lockoutCheck = await db.query('SELECT lockout_until FROM admins WHERE id=$1', [id]);
-    if (lockoutCheck.rows[0]?.lockout_until > new Date()) {
+    // Reset stale counters once lockout has expired (or if counter is stale without a lockout date).
+    await db.query(
+      `UPDATE admins
+       SET failed_attempts=0, lockout_until=null
+       WHERE
+         id=$1
+         AND (lockout_until IS NULL OR lockout_until <= NOW())`,
+      [id],
+    );
+
+    // Check for account lockout using database time to avoid app/db clock skew.
+    const lockoutCheck = await db.query('SELECT failed_attempts FROM admins WHERE id=$1', [id]);
+    if (lockoutCheck.rows[0]?.failed_attempts >= LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS) {
       return res.status(429).json({ error: 'Account temporarily locked' });
     }
 
@@ -117,10 +130,9 @@ loginRouter.post('/connect', async (req: any, res: any) => {
     if (!isOk) {
       await db.query(
         `UPDATE admins SET failed_attempts = COALESCE(failed_attempts, 0) + 1,
-         lockout_until = CASE WHEN COALESCE(failed_attempts, 0) + 1 >= $2 
-           THEN NOW() + ($3 * INTERVAL '1 minute') ELSE lockout_until END
+         lockout_until = COALESCE(lockout_until, NOW() + ($2 * INTERVAL '1 minute'))
          WHERE id=$1`,
-        [id, LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS, LOGIN_ROUTER_CONNECT_LOCKOUT_DURATION_MIN],
+        [id, LOGIN_ROUTER_CONNECT_ATTEMPT_WINDOW_DURATION_MIN],
       );
       return res.status(401).end();
     }
