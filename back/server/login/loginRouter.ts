@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { db } from '../helpers/db';
 import { v4 as uuidv4 } from 'uuid';
 import env from '../helpers/env';
+import { rotateCsrfToken } from '../helpers/csrf';
 import { logError } from '../helpers/logger';
 import { redirectToDefaultPath } from '../helpers/redirectToDefaultPath';
 import { recomputeSessionAuthorizationsForAdminById } from '../helpers/updateSessionAuthorizations';
@@ -228,6 +229,7 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
         logError('/redirection/ - session regeneration failed', err);
         return res.status(500).send('Session error');
       }
+      rotateCsrfToken(req);
       await recomputeSessionAuthorizationsForAdminById(userId, req);
       redirectToDefaultPath(req, res);
     });

@@ -5,28 +5,30 @@
   "private": true,
   "dependencies": {
     "qrcode-generator": "^2.0.4",
-    "react": "^19.2.4",
+    "react": "^19.2.6",
     "react-datepicker": "^9.1.0",
-    "react-dom": "^19.2.4",
-    "react-toastify": "^11.0.5",
-    "react-tooltip": "^5.30.0",
+    "react-dom": "^19.2.6",
+    "react-is": "^19.2.6",
+    "react-toastify": "^11.1.0",
+    "react-tooltip": "^6.0.5",
     "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-datepicker": "^7.0.0",
-    "eslint": "^10.1.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^10.4.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "postcss-normalize": "^13.0.1",
-    "prettier": "^3.8.1",
-    "react-scripts": "^5.0.1"
+    "prettier": "^3.8.3",
+    "vite": "^7.1.10"
   },
   "scripts": {
-    "start": "NODE_ENV=development PORT=8090 react-scripts start",
-    "wstart": "set \"NODE_ENV=development\" && set \"PORT=8090\" && react-scripts start",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "wstart": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "browserslist": {

@@ -8,7 +8,7 @@ import { delete_admin } from './admins/delete_admin';
 import { get_licences } from '../api/get_licences';
 import { licenceAssign } from '../helpers/licence_assign';
 import { licenceSummary } from '../helpers/licence-summary';
-import { sendAdminInviteAuthenticated } from '../login/get_admin_invite';
+import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
 
 export const resellerApiRouter = express.Router();
 
@@ -21,7 +21,11 @@ resellerApiRouter.post('/delete-bank/:id', delete_bank);
 resellerApiRouter.get('/reseller-admins', admins);
 resellerApiRouter.post('/insert-reseller-admin', insert_admin);
 resellerApiRouter.post('/delete-reseller-admin/:adminId', delete_admin);
-resellerApiRouter.post('/get_admin_invite', sendAdminInviteAuthenticated);
+resellerApiRouter.post(
+  '/send_admin_invite_if_exists',
+  inviteRateLimiter,
+  sendAdminInviteAuthenticated,
+);
 
 // LICENCES
 resellerApiRouter.get('/licences', (req, res) => get_licences(req, res, false));

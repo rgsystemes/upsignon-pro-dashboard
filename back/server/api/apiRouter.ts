@@ -60,7 +60,7 @@ import { shamirCreateConfig } from './shamir/shamir_create_config';
 import { getShamirConfigs } from './shamir/shamir_configs';
 import { cancelPendingConfig } from './shamir/shamir_cancel_pending_config';
 import { shamirRequests } from './shamir/shamir_requests';
-import { sendAdminInviteAuthenticated } from '../login/get_admin_invite';
+import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
 
 export const apiRouter = express.Router();
 
@@ -163,7 +163,7 @@ apiRouter.post('/copy_urls_from_bank', copy_urls_from_bank);
 apiRouter.post('/delete-admin/:id', delete_bank_admin);
 apiRouter.post('/insert-admin', insert_bank_admin);
 apiRouter.get('/bank-admins', get_bank_admins);
-apiRouter.post('/get_admin_invite', sendAdminInviteAuthenticated);
+apiRouter.post('/send_admin_invite_if_exists', inviteRateLimiter, sendAdminInviteAuthenticated);
 
 // Settings
 apiRouter.get('/bank-settings', get_bank_settings);

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import path from 'path';
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 import express from 'express';
 import { startServer } from './helpers/serverProcess';
-import { logInfo } from './helpers/logger';
+import { logInfo, sanitizeUrlForLogs } from './helpers/logger';
 import { apiRouter } from './api/apiRouter';
 import env from './helpers/env';
 import expressSession from 'express-session';
@@ -16,12 +15,14 @@ import { get_server_url } from './get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
-import { replacePublicUrlInFront } from './helpers/replacePublicUrlInFront';
 import { sendAdminInviteUnauthenticated } from './login/get_admin_invite';
+import { inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
+import { csrfProtection, sendCsrfToken } from './helpers/csrf';
+import { enforceTrustedOrigin } from './helpers/requestSecurity';
+import helmet from 'helmet';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
-replacePublicUrlInFront(frontBuildDir);
 
 const app = express();
 app.use((req, res, next) => {
@@ -33,7 +34,7 @@ app.use((req, res, next) => {
 });
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
-app.disable('x-powered-by');
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -63,7 +64,8 @@ if (!env.IS_PRODUCTION) {
   app.use(async (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', env.FRONTEND_URL!);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');
     if (req.method === 'OPTIONS') {
       return res.sendStatus(204);
     }
@@ -77,6 +79,7 @@ if (!env.IS_PRODUCTION) {
     } catch (e) {
       console.error(e);
       res.sendStatus(444).end();
+      return;
     }
   });
 }
@@ -85,28 +88,21 @@ if (!env.IS_PRODUCTION) {
 app.use((req, res, next) => {
   // @ts-ignore
   const adminEmail = req.session?.adminEmail;
-  logInfo(adminEmail || 'unconnected user', req.method, req.url);
+  logInfo(adminEmail || 'unconnected user', req.method, sanitizeUrlForLogs(req));
   next();
 });
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
 
-app.get('/login.html', (req, res) => {
-  res.status(200).sendFile('login.html', {
-    root: path.resolve(frontBuildDir),
-    dotfiles: 'deny',
-  });
-});
-app.get('/no-admin-bank.html', (req, res) => {
-  res.status(200).sendFile('no-admin-bank.html', {
-    root: path.resolve(frontBuildDir),
-    dotfiles: 'deny',
-  });
-});
+app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
-app.post('/send_admin_invite_if_exists', sendAdminInviteUnauthenticated);
+app.get('/csrf-token', sendCsrfToken);
+// The login router is intentionally mounted before CSRF checks because it is used by the
+// external UpSignOn authentication flow before a dashboard session exists.
+app.use(csrfProtection);
+app.post('/send_admin_invite_if_exists', inviteRateLimiter, sendAdminInviteUnauthenticated);
 
 // CHECK SESSION VALIDITY
 app.use((req, res, next) => {
