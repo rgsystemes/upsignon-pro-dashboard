@@ -161,7 +161,7 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
         communications: payload.marketingConsent
           ? [
               {
-                value: true,
+                value: payload.marketingConsent,
                 subscriptionTypeId: hubspotConfig.subscriptionId,
                 text: getMarketingConsentText(payload.language),
               },
