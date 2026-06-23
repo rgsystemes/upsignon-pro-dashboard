@@ -3,16 +3,95 @@ import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { inputSanitizer } from '../helpers/sanitizer';
 import { sendAdminInvite, ttlMinutes } from '../helpers/sendAdminInvite';
+import { Request, Response } from 'express';
+import {
+  hasAdminEmailInBank,
+  hasAdminEmailInReseller,
+  hasResellerOwnership,
+} from '../resellerApi/helpers/securityChecks';
 
-export const getAdminInvite = async (req: any, res: any): Promise<void> => {
+export const sendAdminInviteAuthenticated = async (req: any, res: any): Promise<void> => {
+  return handleAdminInvite(req, res, true);
+};
+export const sendAdminInviteUnauthenticated = async (req: any, res: any): Promise<void> => {
+  // Always return the same response to prevent enumeration
+  // and do it before processing the request to prevent timing attacks
+  res.status(200).json({
+    message: 'If an account exists with this email, an invite has been sent.',
+  });
+  return handleAdminInvite(req, res, false);
+};
+
+const handleAdminInvite = async (
+  req: Request,
+  res: Response,
+  isAuthenticated: boolean,
+): Promise<void> => {
   try {
     const adminEmail = inputSanitizer.getLowerCaseString(req.body.adminEmail);
-    if (!adminEmail) return res.status(400).end();
+    if (!adminEmail) {
+      if (isAuthenticated) {
+        res.status(400).json({ success: false, message: 'Missing adminEmail' });
+      }
+      return;
+    }
+
+    if (
+      // @ts-ignore
+      req.session.adminRole !== 'superadmin' &&
+      isAuthenticated
+    ) {
+      // @ts-ignore
+      if (req.proxyParamsResellerId) {
+        const isOwner = await hasResellerOwnership(
+          req,
+          // @ts-ignore
+          req.proxyParamsResellerId,
+        );
+        if (!isOwner) {
+          res.sendStatus(401);
+          return;
+        }
+
+        const isAdminInReseller = await hasAdminEmailInReseller(
+          adminEmail,
+          // @ts-ignore
+          req.proxyParamsResellerId,
+        );
+        if (!isAdminInReseller) {
+          res.sendStatus(401);
+          return;
+        }
+      } else if (
+        // @ts-ignore
+        req.proxyParamsBankId
+      ) {
+        // @ts-ignore
+        if (!req.session.banks?.includes(req.proxyParamsBankId)) {
+          res.sendStatus(401);
+          return;
+        }
+
+        const isAdminInBank = await hasAdminEmailInBank(
+          adminEmail,
+          // @ts-ignore
+          req.proxyParamsBankId,
+        );
+        if (!isAdminInBank) {
+          res.sendStatus(401);
+          return;
+        }
+      } else {
+        res.sendStatus(401);
+        return;
+      }
+    }
+
     const getRes = await db.query('SELECT id, token, token_expires_at FROM admins WHERE email=$1', [
       adminEmail,
     ]);
 
-    // Process invite if admin exists (but don't reveal this in response)
+    // Process invite if admin exists
     if (getRes.rowCount && getRes.rowCount > 0) {
       let admRes = getRes.rows[0];
       let token, tokenExpiresAt;
@@ -36,15 +115,18 @@ export const getAdminInvite = async (req: any, res: any): Promise<void> => {
       sendAdminInvite(adminEmail, admRes.id, token, tokenExpiresAt, req.headers['accept-language']);
     }
 
-    // Always return the same response to prevent enumeration
-    return res.status(200).json({
-      message: 'If an account exists with this email, an invite has been sent.',
-    });
+    if (isAuthenticated) {
+      res.status(200).json({
+        success: true,
+      });
+    }
   } catch (e) {
-    logError('getAdminInvite', e);
-    // Same response on error to prevent timing attacks
-    res.status(200).json({
-      message: 'If an account exists with this email, an invite has been sent.',
-    });
+    logError('handleAdminInvite', e);
+    if (isAuthenticated) {
+      res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
+    }
   }
 };
