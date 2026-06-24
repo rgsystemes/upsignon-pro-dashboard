@@ -15,7 +15,8 @@ import { get_server_url } from './get_server_url';
 import { disconnect } from './helpers/disconnect';
 import { recomputeSessionAuthorizationsForAdminByEmail } from './helpers/updateSessionAuthorizations';
 import { manualConnect } from './login/manualConnect';
-import { getAdminInvite, inviteRateLimiter } from './login/get_admin_invite';
+import { sendAdminInviteUnauthenticated } from './login/get_admin_invite';
+import { inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
 import { enforceTrustedOrigin } from './helpers/requestSecurity';
@@ -101,7 +102,7 @@ app.get('/csrf-token', sendCsrfToken);
 // The login router is intentionally mounted before CSRF checks because it is used by the
 // external UpSignOn authentication flow before a dashboard session exists.
 app.use(csrfProtection);
-app.post('/get_admin_invite', inviteRateLimiter, getAdminInvite);
+app.post('/send_admin_invite_if_exists', inviteRateLimiter, sendAdminInviteUnauthenticated);
 
 // CHECK SESSION VALIDITY
 app.use((req, res, next) => {

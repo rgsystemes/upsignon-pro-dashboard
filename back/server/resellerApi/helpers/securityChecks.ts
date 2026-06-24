@@ -45,3 +45,27 @@ export const hasResellerOwnership = async (req: Request, resellerId: string): Pr
   );
   return checkRes.rows.length > 0;
 };
+
+export const hasAdminEmailInReseller = async (
+  adminEmail: string,
+  resellerId: string,
+): Promise<boolean> => {
+  const checkRes = await db.query(
+    `SELECT 1
+    FROM admins
+    WHERE admins.email=$1 AND admins.reseller_id=$2`,
+    [adminEmail, resellerId],
+  );
+  return checkRes.rows.length > 0;
+};
+
+export const hasAdminEmailInBank = async (adminEmail: string, bankId: number): Promise<boolean> => {
+  const checkRes = await db.query(
+    `SELECT 1
+    FROM admins
+    INNER JOIN admin_banks ON admin_banks.admin_id=admins.id
+    WHERE admins.email=$1 AND admin_banks.bank_id=$2`,
+    [adminEmail, bankId],
+  );
+  return checkRes.rows.length > 0;
+};

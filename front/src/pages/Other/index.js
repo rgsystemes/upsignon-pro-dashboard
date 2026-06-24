@@ -76,8 +76,9 @@ class Other extends React.Component {
       }
       return;
     }
+    let resPrecheck;
     try {
-      const resPrecheck = await bankUrlFetch('/api/send-email-precheck', 'POST', {
+      resPrecheck = await bankUrlFetch('/api/send-email-precheck', 'POST', {
         extractorDuplicateSelect: this.state.extractorDuplicateSelect,
         extractorWeakSelect: this.state.extractorWeakSelect,
         extractorMediumSelect: this.state.extractorMediumSelect,

@@ -45,7 +45,6 @@ import { send_email, send_email_precheck } from './send_email';
 import { update_user_setting } from './update_user_setting';
 import { extract_emails_msi_install } from './extract_emails_msi_install';
 import { getRedirectionUrl } from './get_redirection_url';
-import { setRedirectionUrl } from './set_redirection_url';
 import { get_bank_entra_config } from './get_bank_entra_config';
 import { test_ms_entra } from './test_ms_entra';
 import { reactivate_user } from './reactivate_user';
@@ -62,6 +61,7 @@ import { shamirCreateConfig } from './shamir/shamir_create_config';
 import { getShamirConfigs } from './shamir/shamir_configs';
 import { cancelPendingConfig } from './shamir/shamir_cancel_pending_config';
 import { shamirRequests } from './shamir/shamir_requests';
+import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
 
 export const apiRouter = express.Router();
 
@@ -165,6 +165,7 @@ apiRouter.post('/copy_urls_from_bank', copy_urls_from_bank);
 apiRouter.post('/delete-admin/:id', delete_bank_admin);
 apiRouter.post('/insert-admin', insert_bank_admin);
 apiRouter.get('/bank-admins', get_bank_admins);
+apiRouter.post('/send_admin_invite_if_exists', inviteRateLimiter, sendAdminInviteAuthenticated);
 
 // Settings
 apiRouter.get('/bank-settings', get_bank_settings);
@@ -172,7 +173,6 @@ apiRouter.post('/bank-settings-update', update_bank);
 
 // SERVER REDIRECTION
 apiRouter.post('/redirection_url', getRedirectionUrl);
-apiRouter.post('/set_redirection_url', setRedirectionUrl);
 
 // Microsoft Entra
 apiRouter.get('/bank-entra-config', get_bank_entra_config);

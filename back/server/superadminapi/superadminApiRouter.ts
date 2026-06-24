@@ -35,6 +35,7 @@ import { update_admin_reseller } from './update_admin_reseller';
 import { licenceAssign } from '../helpers/licence_assign';
 import { startPullLicences } from './start_pull_licences';
 import { licenceSummary } from '../helpers/licence-summary';
+import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
 
 export const superadminApiRouter = express.Router();
 
@@ -54,6 +55,11 @@ superadminApiRouter.post('/delete-admin/:id', delete_admin);
 superadminApiRouter.post('/update-admin-bank', update_admin_bank);
 superadminApiRouter.post('/update-admin-reseller', update_admin_reseller);
 superadminApiRouter.post('/update-admin-role', update_admin_role);
+superadminApiRouter.post(
+  '/send_admin_invite_if_exists',
+  inviteRateLimiter,
+  sendAdminInviteAuthenticated,
+);
 
 // BANKS
 superadminApiRouter.get('/banks', get_banks);
