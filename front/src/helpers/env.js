@@ -1,10 +1,7 @@
 const isDevelopment = import.meta.env.DEV;
 
-const configuredPublicUrl = import.meta.env.PUBLIC_URL;
-const runtimePublicUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
-let baseFrontUrl = isDevelopment ? 'http://localhost:8090' : configuredPublicUrl || runtimePublicUrl;
-let baseServerUrl = isDevelopment ? 'http://localhost:3001' : configuredPublicUrl || runtimePublicUrl;
-const publicBasePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+let baseFrontUrl = isDevelopment ? 'http://localhost:8090' : PUBLIC_URL;
+let baseServerUrl = isDevelopment ? 'http://localhost:3001' : PUBLIC_URL;
 
 // remove trailing /
 baseFrontUrl = baseFrontUrl.replace(/\/$/, '');
@@ -37,6 +34,5 @@ export {
   baseServerUrl,
   isSaasServer,
   resellerId,
-  publicBasePath,
   isDevelopment,
 };

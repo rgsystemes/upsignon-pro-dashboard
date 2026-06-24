@@ -20,7 +20,7 @@ function toBasePath(publicUrl) {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const base = toBasePath(env.PUBLIC_URL).replace(/\/$/, '');
+  const base = toBasePath(env.PUBLIC_URL).replace(/\/$/, '').replace(/^\./, '');
 
   return {
     plugins: [
@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
       port: 8090,
     },
     define: {
-      'PUBLIC_URL': JSON.stringify(env.PUBLIC_URL || ''),
+      PUBLIC_URL: JSON.stringify(env.PUBLIC_URL || ''),
     },
     build: {
       outDir: 'build',

@@ -10,7 +10,7 @@ import { BankChooser } from './BankChooser';
 function Menu(props) {
   const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = packageJson.version;
-  
+
   return (
     <nav>
       <BankChooser
@@ -51,10 +51,7 @@ function Menu(props) {
           </div>
         </div>
         <div className="logo">
-          <img
-            src={`${publicBasePath}/upsignon-by-septeo-vertical.svg`}
-            alt="UpSignOn by Septeo logo"
-          />
+          <img src="upsignon-by-septeo-vertical.svg" alt="UpSignOn by Septeo logo" />
           <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
         </div>
       </div>
