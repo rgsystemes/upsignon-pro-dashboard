@@ -1,8 +1,7 @@
 #!/bin/bash
 cd front
 ~/.npm-global/bin/yarn install
-./buildFront.sh
-
+~/.npm-global/bin/yarn vite build
 
 cd ../back
 ~/.npm-global/bin/yarn install

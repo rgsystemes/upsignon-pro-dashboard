@@ -714,7 +714,7 @@ const AutolockDelaySetting = (props) => {
           className="autolock-setting-select"
         >
           {/* important to avoid visual incoherence between the default here and the default in the app if this setting is never changed */}
-          <option disabled value={-1} disabled={isRestrictedSuperadmin}></option>
+          <option value={-1} disabled={isRestrictedSuperadmin}></option>
           {settingConf.options.map((op) => {
             return (
               <option
