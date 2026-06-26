@@ -15,7 +15,7 @@ export const update_admin_role = async (req: any, res: any): Promise<void> => {
     const validatedBody = Joi.attempt(
       req.body,
       Joi.object({
-        adminId: Joi.number().required(),
+        adminId: Joi.string().required(),
         adminRole: Joi.string()
           .valid(...ALLOWED_ADMIN_ROLES)
           .required(),
