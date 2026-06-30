@@ -58,6 +58,8 @@ const handleAdminInvite = async (
     if (
       // @ts-ignore
       req.session.adminRole !== 'superadmin' &&
+      // @ts-ignore
+      req.session.adminRole !== 'restricted_superadmin' &&
       isAuthenticated
     ) {
       // @ts-ignore
