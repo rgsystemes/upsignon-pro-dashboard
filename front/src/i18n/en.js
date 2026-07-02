@@ -306,6 +306,10 @@ const translations = {
   sasettings_new_bank_form_is_testing: '30 days trial',
   sasettings_new_bank_form_sales_email: 'Sales referent email',
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
+  sasettings_new_bank_form_admin_email_invalid:
+    'Administrator email must be a valid email address.',
+  sasettings_new_bank_form_sales_email_invalid:
+    'Sales referent email must be a valid email address.',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
   sasettings_new_bank_form_bank_name_too_long_or_short:
     'Bank name length must be between 2 and 50 characters.',

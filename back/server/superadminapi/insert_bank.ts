@@ -16,10 +16,10 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
         name: Joi.string()
           .required()
           .pattern(/^.{2,50}$/),
-        adminEmail: Joi.string().email().allow(null, ''),
+        adminEmail: Joi.string().trim().email().allow(null, ''),
         isTrial: Joi.boolean(),
-        salesEmail: Joi.string().email().allow(null, ''),
-        resellerId: Joi.string().allow(null),
+        salesEmail: Joi.string().trim().email().allow(null, ''),
+        resellerId: Joi.string().trim().allow(null),
       }),
     );
     await configureBankWithAdminEmailAndSendMail(req, res, {

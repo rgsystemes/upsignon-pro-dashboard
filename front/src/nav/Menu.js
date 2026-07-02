@@ -3,7 +3,7 @@ import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
 import packageJson from '../../package.json';
-import { bankFrontUrl, baseFrontUrl, publicBasePath } from '../helpers/env';
+import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
 
 // PROPS pages, banks, resellers, isSuperadmin, isSuperadminPage
