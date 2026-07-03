@@ -60,7 +60,9 @@ export const extract_database = async (
     let csvContent = '';
     if (dbRes.rowCount && dbRes.rowCount > 0) {
       csvContent += Object.keys(dbRes.rows[0]).join(';') + '\n';
-      csvContent += dbRes.rows.map((r) => Object.values(r).join(';')).join('\n');
+      csvContent += dbRes.rows
+        .map((r) => Object.values(r).map(sanitizeCsvValue).join(';'))
+        .join('\n');
     }
     res.header('Content-Type', 'text/csv');
     const d = new Date().toISOString().split('T')[0];
@@ -70,4 +72,21 @@ export const extract_database = async (
     logError('extract_database', e);
     res.status(400).end();
   }
+};
+
+const sanitizeCsvValue = (value: any): string => {
+  if (value == null) return '';
+  const str = String(value);
+
+  // If starts with potential formula characters, prefix with single quote
+  if (/^[=+\-@\t\r]/.test(str)) {
+    return "'" + str;
+  }
+
+  // Escape quotes and wrap in quotes if contains semicolon or newline
+  if (str.includes(';') || str.includes('\n') || str.includes('"')) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+
+  return str;
 };

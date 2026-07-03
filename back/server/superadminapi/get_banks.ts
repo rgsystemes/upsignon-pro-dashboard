@@ -37,7 +37,7 @@ const countAvailableLicences = async (bankId: number) => {
     FROM internal_licences AS il
     INNER JOIN external_licences AS el ON il.external_licences_id=el.ext_id
     WHERE il.bank_id=$1
-    AND ((el.is_monthly=true AND el.to_be_renewed != false) OR (el.valid_from <= current_timestamp(0) AND current_timestamp(0) < el.valid_until))
+    AND (el.valid_from <= current_timestamp(0) AND ((el.is_monthly=true AND el.to_be_renewed != false) OR current_timestamp(0) < el.valid_until))
     `,
     [bankId],
   );
@@ -46,7 +46,7 @@ const countAvailableLicences = async (bankId: number) => {
     el.nb_licences
     FROM external_licences AS el
     WHERE el.bank_id=$1
-    AND ((el.is_monthly=true AND el.to_be_renewed != false) OR (el.valid_from <= current_timestamp(0) AND current_timestamp(0) < el.valid_until))
+    AND (el.valid_from <= current_timestamp(0) AND ((el.is_monthly=true AND el.to_be_renewed != false) OR current_timestamp(0) < el.valid_until))
     `,
     [bankId],
   );

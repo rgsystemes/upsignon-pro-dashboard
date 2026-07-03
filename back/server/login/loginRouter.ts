@@ -28,9 +28,9 @@ const buttonConfigs = {
 };
 
 /* HELPERS */
-
+const BCRYPT_COST_FACTOR = 12;
 const hashPassword = async (password: string): Promise<string> => {
-  return await bcrypt.hash(password, 10);
+  return await bcrypt.hash(password, BCRYPT_COST_FACTOR);
 };
 
 const passwordIsOk = async (password: string, passwordHash: string): Promise<boolean> => {
@@ -39,6 +39,18 @@ const passwordIsOk = async (password: string, passwordHash: string): Promise<boo
 
 const isTokenExpired = (expired_at: Date) => {
   return expired_at.getTime() < new Date().getTime();
+};
+
+const migratePasswordHashingIfNeeded = async (
+  userId: string,
+  password: string,
+  existingHash: string,
+) => {
+  const rounds = bcrypt.getRounds(existingHash);
+  if (rounds < BCRYPT_COST_FACTOR) {
+    const newHash = await hashPassword(password);
+    await db.query('UPDATE admins SET password_hash=$1 WHERE id=$2', [newHash, userId]);
+  }
 };
 
 const checkPassword = async (userId: string, password: string): Promise<boolean> => {
@@ -50,6 +62,9 @@ const checkPassword = async (userId: string, password: string): Promise<boolean>
     } catch {}
     if (!dbRes || dbRes.rowCount === 0) return false;
     const isOk: boolean = await passwordIsOk(password, dbRes.rows[0].password_hash);
+    if (isOk) {
+      await migratePasswordHashingIfNeeded(userId, password, dbRes.rows[0].password_hash);
+    }
     return isOk;
   } catch {
     return false;
@@ -82,6 +97,11 @@ loginRouter.get('/button-config', async (req: any, res: any) => {
   }
 });
 
+// The user can make 5 failed attempts within 15 minutes before being locked out.
+// When locked out, the user must wait 15 minutes after the first failed attempt before being able to try again.
+const LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS = 5;
+const LOGIN_ROUTER_CONNECT_ATTEMPT_WINDOW_DURATION_MIN = 15;
+
 loginRouter.post('/connect', async (req: any, res: any) => {
   try {
     const password = req.body.password;
@@ -90,20 +110,44 @@ loginRouter.post('/connect', async (req: any, res: any) => {
     if (!id) return res.status(401).end();
     if (!password) return res.status(401).end();
 
+    // Reset stale counters once lockout has expired (or if counter is stale without a lockout date).
+    await db.query(
+      `UPDATE admins
+       SET failed_attempts=0, lockout_until=null
+       WHERE
+         id=$1
+         AND (lockout_until IS NULL OR lockout_until <= NOW())`,
+      [id],
+    );
+
+    // Check for account lockout using database time to avoid app/db clock skew.
+    const lockoutCheck = await db.query('SELECT failed_attempts FROM admins WHERE id=$1', [id]);
+    if (lockoutCheck.rows[0]?.failed_attempts >= LOGIN_ROUTER_CONNECT_MAX_ATTEMPTS) {
+      return res.status(429).json({ error: 'Account temporarily locked' });
+    }
+
     const isOk = await checkPassword(id, password);
-    if (!isOk) return res.status(401).end();
+    if (!isOk) {
+      await db.query(
+        `UPDATE admins SET failed_attempts = COALESCE(failed_attempts, 0) + 1,
+         lockout_until = COALESCE(lockout_until, NOW() + ($2 * INTERVAL '1 minute'))
+         WHERE id=$1`,
+        [id, LOGIN_ROUTER_CONNECT_ATTEMPT_WINDOW_DURATION_MIN],
+      );
+      return res.status(401).end();
+    }
 
     const connectionToken = uuidv4();
     const expiresAt = new Date();
     const ttl = 30000; // 30 seconds
     expiresAt.setTime(expiresAt.getTime() + ttl);
     try {
-      await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
-        connectionToken,
-        expiresAt,
-        id,
-      ]);
-    } catch {
+      await db.query(
+        'UPDATE admins SET failed_attempts=0, lockout_until=null, token=$1, token_expires_at=$2 WHERE id=$3',
+        [connectionToken, expiresAt, id],
+      );
+    } catch (e) {
+      logError('/connect', e);
       return res.status(400).end();
     }
     let redirectionUri;

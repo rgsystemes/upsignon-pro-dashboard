@@ -46,17 +46,20 @@ async function isInvalidCsrfTokenResponse(res) {
 }
 
 async function sendAdminInvite(adminEmail, csrfToken, allowRetry = true) {
-  const res = await fetch(`${window.location.href.replace('login.html', 'get_admin_invite')}`, {
-    method: 'POST',
-    body: JSON.stringify({ adminEmail }),
-    cache: 'no-store',
-    mode: 'same-origin',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': csrfToken,
-    }),
-    keepalive: false,
-  });
+  const res = await fetch(
+    `${window.location.href.replace('login.html', 'send_admin_invite_if_exists')}`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ adminEmail }),
+      cache: 'no-store',
+      mode: 'same-origin',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken,
+      }),
+      keepalive: false,
+    },
+  );
 
   if (allowRetry && (await isInvalidCsrfTokenResponse(res))) {
     resetCsrfTokenCache();

@@ -126,12 +126,8 @@ const translations = {
     'Voulez-vous supprimer cette demande de réinitialisation de mot de passe ?',
   password_reset_request_grant_warning:
     "Assurez-vous que la requête a bien été faite par l'utilisateur lui-même.\n\nAccorder ?",
-  settings_server_redirection: 'DANGER : Redirection',
-  settings_server_redirection_explanation:
-    "Si vous souhaitez migrer vers un autre serveur (revenir en SAAS ou passer en auto-hébergement), cette option peut être utilisée pour simplifier la migration de vos utilisateurs après transfert de la base de données. Contactez-nous avant d'utiliser cette option.",
-  settings_server_redirection_new_url_label: 'Rediriger cette banque vers',
-  settings_server_redirection_confirm:
-    'Êtes-vous sûr ? Cette action interrompra le service pour cette banque',
+  settings_server_redirection: 'ATTENTION : Redirection !',
+  settings_server_redirection_new_url_label: 'Cette banque est redirigée vers',
   settings_openid_config:
     'Single Sign On (optionnel) - enrôlement et mot de passe oublié - app v7.13.0 et plus',
   settings_openid_config_pitch:
@@ -226,7 +222,7 @@ const translations = {
   extract_emails: 'Récupérer les emails',
   extract_emails_msi:
     "Récupérer les utilisateurs ayant la version msi de l'application Windows (à partir d'UpSignOn 7.5.0)",
-  mail_writer: 'Envoyer un email',
+  mail_writer: 'Envoyer un email (max 100 destinataires autorisés)',
   mail_writer_to_selection: 'Utiliser la liste de destinataires de la sélection ci-dessus.',
   mail_writer_to_all: "Envoyer à tous les détenteurs d'un coffre-fort.",
   mail_writer_subject_placeholder: 'Objet',
@@ -270,6 +266,8 @@ const translations = {
   pro_server: 'Serveur UpSignOn PRO',
   setup_link: "Lien de configuration de l'application",
   setup_link_is_bank_specific: 'Notez que ce lien est spécifique à chaque banque de coffres-forts.',
+  setup_link_resend_email_button: "M'envoyer le mail de configuration",
+  setup_link_resend_success: 'Mail de configuration envoyé à votre adresse.',
   pro_server_url: 'URL de votre serveur UpSignOn PRO',
   link_to_communicate: 'Lien à communiquer',
   preconfig_title: 'Préconfiguration du lien par stratégie de groupe.',
@@ -310,6 +308,10 @@ const translations = {
   sasettings_new_bank_form_is_testing: 'Test 30 jours',
   sasettings_new_bank_form_sales_email: 'Email du référent commercial',
   sasettings_new_bank_form_sales_email_placeholder: 'Vous par défaut',
+  sasettings_new_bank_form_admin_email_invalid:
+    "L'email de l'administrateur doit être une adresse email valide.",
+  sasettings_new_bank_form_sales_email_invalid:
+    "L'email du référent commercial doit être une adresse email valide.",
   sasettings_new_bank_form_success: 'Banque créée et configurée, email envoyé.',
   sasettings_new_bank_form_bank_name_too_long_or_short:
     'Le nom de la banque doit faire entre 2 et 50 caractères.',

@@ -3,14 +3,14 @@ import './Menu.css';
 import { i18n } from '../i18n/i18n';
 import { baseUrlFetch } from '../helpers/urlFetch';
 import packageJson from '../../package.json';
-import { bankFrontUrl, baseFrontUrl, publicBasePath } from '../helpers/env';
+import { bankFrontUrl, baseFrontUrl } from '../helpers/env';
 import { BankChooser } from './BankChooser';
 
 // PROPS pages, banks, resellers, isSuperadmin, isSuperadminPage
 function Menu(props) {
   const { pages, banks, resellers, isSuperadmin, isSuperadminPage } = props;
   const dashboardVersion = packageJson.version;
-  
+
   return (
     <nav>
       <BankChooser
@@ -51,10 +51,7 @@ function Menu(props) {
           </div>
         </div>
         <div className="logo">
-          <img
-            src={`${publicBasePath}/upsignon-by-septeo-vertical.svg`}
-            alt="UpSignOn by Septeo logo"
-          />
+          <img src="upsignon-by-septeo-vertical.svg" alt="UpSignOn by Septeo logo" />
           <div style={{ marginTop: 10 }}>{dashboardVersion}</div>
         </div>
       </div>

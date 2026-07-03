@@ -2,6 +2,37 @@ import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 
+const MAX_RECIPIENTS_PER_REQUEST = 100;
+const MAX_EMAILS_PER_HOUR = 500;
+
+const filterManualEmailList = async (req: any, isSuperadminPage: boolean): Promise<string[]> => {
+  if (typeof req.body.emailList !== 'string') return [];
+
+  const requestedEmails = req.body.emailList
+    .split(';')
+    .map((e: string) => e.trim().toLowerCase())
+    .filter((e: string) => e.includes('@'));
+
+  const dedupedEmails = Array.from(new Set(requestedEmails));
+  if (dedupedEmails.length === 0) return [];
+
+  const allowedEmailsQuery = isSuperadminPage
+    ? `SELECT DISTINCT email
+       FROM users
+       WHERE lower(email) = ANY($1::text[])`
+    : `SELECT DISTINCT email
+       FROM users
+       WHERE lower(email) = ANY($1::text[])
+         AND bank_id=$2`;
+
+  const allowedEmailsRes = await db.query(
+    allowedEmailsQuery,
+    isSuperadminPage ? [dedupedEmails] : [dedupedEmails, req.proxyParamsBankId],
+  );
+
+  return allowedEmailsRes.rows.map((u) => u.email);
+};
+
 const getSelectedEmails = async (req: any, isSuperadminPage: boolean): Promise<string[]> => {
   const extractorDuplicateSelect =
     typeof req.body.extractorDuplicateSelect === 'boolean'
@@ -145,23 +176,55 @@ export const send_email_precheck = async (
   }
 };
 
+// Track email counts per admin
+const emailCounts: Map<string, { count: number; resetTime: number }> = new Map();
+
 export const send_email = async (req: any, res: any, isSuperadminPage: boolean): Promise<void> => {
   try {
     if (req.session.adminRole === 'restricted_superadmin') {
       return res.status(401).end();
     }
+
+    const adminId = req.session.adminId;
+
+    // Check hourly rate limit
+    const now = Date.now();
+    const adminEmailCount = emailCounts.get(adminId) || { count: 0, resetTime: now + 3600000 };
+    if (now > adminEmailCount.resetTime) {
+      adminEmailCount.count = 0;
+      adminEmailCount.resetTime = now + 3600000;
+    }
+
     const mailContent = typeof req.body.mailContent === 'string' ? req.body.mailContent : null;
     const mailSubject = typeof req.body.mailSubject === 'string' ? req.body.mailSubject : null;
 
     if (!mailContent) return res.status(400).end();
 
-    let uniqueEmails;
+    let uniqueEmails: string[];
     if (typeof req.body.emailList === 'string') {
-      uniqueEmails = req.body.emailList.split(';').map((e: string) => e.trim()) as string[];
+      uniqueEmails = await filterManualEmailList(req, isSuperadminPage);
     } else {
       uniqueEmails = await getSelectedEmails(req, isSuperadminPage);
     }
 
+    // Check limits
+    if (uniqueEmails.length > MAX_RECIPIENTS_PER_REQUEST) {
+      return res
+        .status(400)
+        .json({ error: `Maximum ${MAX_RECIPIENTS_PER_REQUEST} recipients per request` });
+    }
+
+    if (adminEmailCount.count + uniqueEmails.length > MAX_EMAILS_PER_HOUR) {
+      return res.status(429).json({ error: 'Hourly email limit exceeded' });
+    }
+
+    // Log the email action for audit
+    console.log(`Admin ${adminId} sending ${uniqueEmails.length} emails`);
+
+    adminEmailCount.count += uniqueEmails.length;
+    emailCounts.set(adminId, adminEmailCount);
+
+    // Send emails
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
     await Promise.all(

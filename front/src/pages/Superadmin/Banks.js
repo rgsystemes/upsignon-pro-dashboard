@@ -35,16 +35,32 @@ class Banks extends React.Component {
     try {
       this.props.setIsLoading(true);
       const newBankName = this.newBankNameInputRef.value;
-      const newAdminEmail = this.newAdminEmailInputRef.value;
+      const newAdminEmail = this.newAdminEmailInputRef.value?.trim();
       const isTrial = isSaasServer && this.isTestingCheckboxRef.checked;
-      const salesEmail = this.salesEmailRef.value;
+      const salesEmail = this.salesEmailRef.value?.trim();
       const resellerId = this.state.selectedResellerIdForNewBank || null;
+      const emailRegex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (!newBankName || newBankName.length < 2 || newBankName.length > 50) {
         this.newBankNameInputRef.style.borderColor = 'red';
         toast.error(i18n.t('sasettings_new_bank_form_bank_name_too_long_or_short'));
         return;
       } else {
         this.newBankNameInputRef.style.borderColor = null;
+      }
+      if (newAdminEmail && !newAdminEmail.toLowerCase().match(emailRegex)) {
+        this.newAdminEmailInputRef.style.borderColor = 'red';
+        toast.error(i18n.t('sasettings_new_bank_form_admin_email_invalid'));
+        return;
+      } else {
+        this.newAdminEmailInputRef.style.borderColor = null;
+      }
+      if (salesEmail && !salesEmail.toLowerCase().match(emailRegex)) {
+        this.salesEmailRef.style.borderColor = 'red';
+        toast.error(i18n.t('sasettings_new_bank_form_sales_email_invalid'));
+        return;
+      } else {
+        this.salesEmailRef.style.borderColor = null;
       }
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
@@ -315,6 +331,7 @@ class Banks extends React.Component {
                   this.newAdminEmailInputRef = r;
                 }}
                 placeholder={i18n.t('sasettings_new_bank_form_admin_email')}
+                type="email"
               />
             </div>
           </div>
@@ -327,6 +344,7 @@ class Banks extends React.Component {
               }}
               placeholder={i18n.t('sasettings_new_bank_form_sales_email_placeholder')}
               defaultValue={localStorage.getItem('newBankSalesEmail')}
+              type="email"
             />
           </div>
 

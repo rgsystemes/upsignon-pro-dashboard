@@ -48,7 +48,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
   }
 
   const originHeader = req.get('origin');
-  if (originHeader) {
+  if (originHeader && originHeader !== 'null') {
     if (!isTrustedOrigin(originHeader, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });
     }
@@ -56,7 +56,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
   }
 
   const refererHeader = req.get('referer');
-  if (refererHeader) {
+  if (refererHeader && refererHeader !== 'null') {
     const refererOrigin = getOriginFromUrl(refererHeader);
     if (!refererOrigin || !isTrustedOrigin(refererOrigin, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });

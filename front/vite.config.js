@@ -20,7 +20,7 @@ function toBasePath(publicUrl) {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const base = toBasePath(env.PUBLIC_URL).replace(/\/$/, '');
+  const base = toBasePath(env.PUBLIC_URL).replace(/\/$/, '').replace(/^\./, '');
 
   return {
     plugins: [

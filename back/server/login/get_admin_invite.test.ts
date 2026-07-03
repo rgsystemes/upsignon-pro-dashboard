@@ -5,7 +5,7 @@ import express from 'express';
 import { inviteRateLimiter } from './get_admin_invite';
 
 const makeInviteRequest = async (url: string, adminEmail: string) => {
-  return await fetch(`${url}/get_admin_invite`, {
+  return await fetch(`${url}/send_admin_invite_if_exists`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -17,7 +17,7 @@ const makeInviteRequest = async (url: string, adminEmail: string) => {
 test('inviteRateLimiter blocks the 6th request in the configured window', async () => {
   const app = express();
   app.use(express.json());
-  app.post('/get_admin_invite', inviteRateLimiter, (_req, res) => {
+  app.post('/send_admin_invite_if_exists', inviteRateLimiter, (_req, res) => {
     return res.status(200).json({ success: true });
   });
 

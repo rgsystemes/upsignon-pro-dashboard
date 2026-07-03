@@ -126,12 +126,8 @@ const translations = {
   password_reset_request_delete_warning: 'Do you wish to delete this password reset request?',
   password_reset_request_grant_warning:
     'Please make sure the request was made by the user himself.\n\nGrant?',
-  settings_server_redirection: 'DANGER: Redirection',
-  settings_server_redirection_explanation:
-    "If you wish to migrate to another server (go back to SAAS or go to self-hosting), this option can be used to simplify your users' migration after the transfer of the database. Contact us before using this option.",
-  settings_server_redirection_new_url_label: 'Redirect this bank to',
-  settings_server_redirection_confirm:
-    'Are you sure? This action will interrupt service for this bank.',
+  settings_server_redirection: 'ATTENTION: Redirection!',
+  settings_server_redirection_new_url_label: 'This bank is being redirected to',
   settings_openid_config:
     'Single Sign On (optional) - enrollement and forgotten password - app v7.13.0 and next',
   settings_openid_config_pitch:
@@ -225,7 +221,7 @@ const translations = {
   extract_emails: 'Extract emails',
   extract_emails_msi:
     'Extract vaults having the msi version of the Windows app (since UpSignOn 7.5.0)',
-  mail_writer: 'Sending an email',
+  mail_writer: 'Sending an email (max 100 recipients allowed)',
   mail_writer_to_selection: 'Use recipients from above selection.',
   mail_writer_to_all: 'Send to all vault holders.',
   mail_writer_subject_placeholder: 'Subject',
@@ -267,6 +263,8 @@ const translations = {
   link_to_downloads: 'Application download links',
   setup_link: 'Application setup link',
   setup_link_is_bank_specific: 'Notice this link is specific to each bank of vaults.',
+  setup_link_resend_email_button: 'Send setup email to me',
+  setup_link_resend_success: 'Setup email sent to your address.',
   pro_server: 'UpSignOn PRO server',
   pro_server_url: 'URL of your UpSignOn PRO server',
   link_to_communicate: 'Link to communicate',
@@ -308,6 +306,10 @@ const translations = {
   sasettings_new_bank_form_is_testing: '30 days trial',
   sasettings_new_bank_form_sales_email: 'Sales referent email',
   sasettings_new_bank_form_sales_email_placeholder: 'You by default',
+  sasettings_new_bank_form_admin_email_invalid:
+    'Administrator email must be a valid email address.',
+  sasettings_new_bank_form_sales_email_invalid:
+    'Sales referent email must be a valid email address.',
   sasettings_new_bank_form_success: 'Bank created and configured, email sent.',
   sasettings_new_bank_form_bank_name_too_long_or_short:
     'Bank name length must be between 2 and 50 characters.',

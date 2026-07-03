@@ -9,7 +9,7 @@ export const sendAdminInvite = async (
   userId: string,
   token: string,
   tokenExpiresAt: Date,
-  acceptLanguage: string,
+  acceptLanguage: string | undefined,
 ): Promise<void> => {
   try {
     const emailConfig = await getEmailConfig();
