@@ -485,7 +485,7 @@ form.addEventListener('submit', async (event) => {
   };
 
   try {
-    const response = await fetch('/trial-request/submit', {
+    const response = await fetch(`${PUBLIC_URL}/trial-request/submit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
