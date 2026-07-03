@@ -121,7 +121,7 @@ const resetCsrfTokenCache = () => {
 
 const getCsrfToken = async () => {
   if (!csrfTokenPromise) {
-    csrfTokenPromise = fetch('/csrf-token', {
+    csrfTokenPromise = fetch(`${PUBLIC_URL}/csrf-token`, {
       method: 'GET',
       cache: 'no-store',
       credentials: 'same-origin',
@@ -205,7 +205,7 @@ const confirmTrialRequest = async (language, token) => {
     let response;
     for (let attempt = 0; attempt < 2; attempt += 1) {
       const csrfToken = await getCsrfToken();
-      response = await fetch('/trial-request/confirm-status', {
+      response = await fetch(`${PUBLIC_URL}/trial-request/confirm-status`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
