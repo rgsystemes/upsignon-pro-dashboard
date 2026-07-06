@@ -97,7 +97,7 @@ app.use((req, res, next) => {
 app.use('/', express.static(frontBuildDir));
 if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
   app.get(
-    '/trial-request',
+    ['/trial-request', '/trial-request.html'],
     helmet.contentSecurityPolicy({
       useDefaults: true,
       directives: {
@@ -110,6 +110,9 @@ if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
       res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
     },
   );
+  app.get(['/trial-request-confirm', '/trial-request-confirm.html'], (_req, res) => {
+    res.sendFile(path.join(frontBuildDir, 'trial-request-confirm.html'));
+  });
 }
 
 app.use(enforceTrustedOrigin);
