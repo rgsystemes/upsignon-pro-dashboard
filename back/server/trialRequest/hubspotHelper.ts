@@ -83,34 +83,41 @@ const assertHubspotEnvConfig = (): void => {
 
 const buildHubspotFormFields = (
   payload: SignedTrialPayload,
-): Array<{ name: string; value: string; objectTypeId: '0-1' }> => {
+): Array<{ name: string; value: string }> => {
   const fields: Array<{ name: string; value: string }> = [
     { name: 'email', value: payload.email },
     { name: 'firstname', value: payload.firstname },
     { name: 'lastname', value: payload.lastname },
     { name: 'phone', value: payload.phone },
     { name: 'company', value: payload.company },
-    { name: 'zip', value: payload.zip },
-    { name: 'marketing_assignment_picklist', value: 'SIT - UpSignOn' },
-    { name: 'langue_principale', value: payload.language === 'fr' ? 'Francais' : 'Anglais' },
+    {
+      name: 'langue_principale',
+      value: payload.language === 'fr' ? 'Francais' : 'Anglais',
+    },
   ];
 
   if (payload.activityType === 'enterprise') {
-    fields.push({
-      name: 'secteur_d_activite__it_solutions_',
-      value: DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector],
-    });
-    fields.push({
-      name: 'nombre_de_salaries__hr_solutions_',
-      value: COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount],
-    });
+    fields.push(
+      { name: 'zip', value: payload.zip },
+      {
+        name: 'secteur_d_activite__it_solutions_',
+        value: DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector],
+      },
+      {
+        name: 'nombre_de_salaries__hr_solutions_',
+        value: COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount],
+      },
+      { name: 'marketing_assignment_picklist', value: 'SIT - UpSignOn' },
+    );
+  } else {
+    fields.push(
+      { name: '0-2/zip', value: payload.zip },
+      { name: 'business', value: 'MSP | Managed Service Provider' },
+      { name: '0-2/business', value: 'MSP | Managed Service Provider' },
+    );
   }
 
-  return fields.map((field) => ({
-    objectTypeId: '0-1',
-    name: field.name,
-    value: field.value,
-  }));
+  return fields;
 };
 
 export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promise<void> => {
@@ -196,6 +203,13 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
         clearTimeout(timeoutId);
 
         if (!response.ok) {
+          let errorBody = '';
+          try {
+            errorBody = await response.text();
+          } catch {
+            // Ignore if we can't parse the body
+          }
+
           // Retry on 5xx errors or 429 (rate limit), but not on 4xx client errors
           if ((response.status >= 500 || response.status === 429) && attempt < retries) {
             const delayMs = Math.min(1000 * Math.pow(2, attempt), 5000); // Exponential backoff
@@ -203,7 +217,22 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
             continue;
           }
 
-          throw new Error(`HubSpot forms submission failed with status ${response.status}`);
+          console.error('HubSpot submission failed:', {
+            status: response.status,
+            statusText: response.statusText,
+            errorBody,
+            portalId: hubspotConfig.portalId,
+            formId: hubspotConfig.formId,
+            fieldCount: formPayload.fields.length,
+            sentFields: formPayload.fields.map((f) => ({
+              name: f.name,
+              valueLength: f.value.length,
+            })),
+          });
+
+          throw new Error(
+            `HubSpot forms submission failed with status ${response.status}: ${errorBody}`,
+          );
         }
 
         const responseData = await response.json();
