@@ -179,12 +179,11 @@ export const createTrialBank = async (args: {
   );
 
   if (resellerId) {
-    await db.query(
-      'INSERT INTO admin_resellers (admin_id, reseller_id) VALUES ($1, $2) ON CONFLICT (admin_id, reseller_id) DO NOTHING',
-      [adminId, resellerId],
-    );
-  }
-  {
+    await db.query('UPDATE admins SET reseller_id=$1 WHERE id=$2 and reseller_id IS NULL', [
+      resellerId,
+      adminId,
+    ]);
+  } else {
     await db.query(
       'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
       [adminId, bankInsertRes.rows[0].id],

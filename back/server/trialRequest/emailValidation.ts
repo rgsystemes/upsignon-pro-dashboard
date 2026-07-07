@@ -10,9 +10,8 @@ export const ensureConfirmationTable = async (): Promise<void> => {
         `
           CREATE TABLE IF NOT EXISTS ${CONFIRMATION_TABLE_NAME} (
             token_hash VARCHAR PRIMARY KEY,
-            status VARCHAR NOT NULL CHECK (status IN ('processing', 'completed')),
             created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            isProcessing BOOLEAN NOT NULL DEFAULT FALSE
           )
         `,
       )
@@ -25,11 +24,11 @@ export const ensureConfirmationTable = async (): Promise<void> => {
   await ensureConfirmationTablePromise;
 };
 
-export const claimConfirmationToken = async (tokenHash: string): Promise<boolean> => {
+export const activateConfirmationToken = async (tokenHash: string): Promise<boolean> => {
   const insertResult = await db.query(
     `
-      INSERT INTO ${CONFIRMATION_TABLE_NAME} (token_hash, status)
-      VALUES ($1, 'processing')
+      INSERT INTO ${CONFIRMATION_TABLE_NAME} (token_hash)
+      VALUES ($1)
       ON CONFLICT DO NOTHING
       RETURNING token_hash
     `,
@@ -38,22 +37,35 @@ export const claimConfirmationToken = async (tokenHash: string): Promise<boolean
   return (insertResult.rowCount || 0) > 0;
 };
 
-export const markConfirmationCompleted = async (tokenHash: string): Promise<void> => {
+export const checkConfirmationClaim = async (tokenHash: string): Promise<boolean> => {
+  const result = await db.query(
+    `
+      UPDATE ${CONFIRMATION_TABLE_NAME}
+      SET isProcessing = TRUE
+      WHERE token_hash = $1 AND created_at >= NOW() - INTERVAL '2 days' AND isProcessing = FALSE
+      RETURNING token_hash
+    `,
+    [tokenHash],
+  );
+  return (result.rowCount || 0) > 0;
+};
+
+export const releaseLockOnConfirmationClaim = async (tokenHash: string): Promise<void> => {
   await db.query(
     `
       UPDATE ${CONFIRMATION_TABLE_NAME}
-      SET status = 'completed', updated_at = NOW()
+      SET isProcessing = FALSE
       WHERE token_hash = $1
     `,
     [tokenHash],
   );
 };
 
-export const releaseConfirmationClaim = async (tokenHash: string): Promise<void> => {
+export const releaseConfirmationClaimAndCleanup = async (tokenHash: string): Promise<void> => {
   await db.query(
     `
       DELETE FROM ${CONFIRMATION_TABLE_NAME}
-      WHERE token_hash = $1 AND status = 'processing'
+      WHERE token_hash = $1 OR created_at < NOW() - INTERVAL '2 days'
     `,
     [tokenHash],
   );
