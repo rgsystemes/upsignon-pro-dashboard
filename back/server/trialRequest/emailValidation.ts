@@ -11,7 +11,7 @@ export const ensureConfirmationTable = async (): Promise<void> => {
           CREATE TABLE IF NOT EXISTS ${CONFIRMATION_TABLE_NAME} (
             token_hash VARCHAR PRIMARY KEY,
             created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-            isProcessing BOOLEAN NOT NULL DEFAULT FALSE
+            is_processing BOOLEAN NOT NULL DEFAULT FALSE
           )
         `,
       )
@@ -41,8 +41,8 @@ export const checkConfirmationClaim = async (tokenHash: string): Promise<boolean
   const result = await db.query(
     `
       UPDATE ${CONFIRMATION_TABLE_NAME}
-      SET isProcessing = TRUE
-      WHERE token_hash = $1 AND created_at >= NOW() - INTERVAL '2 days' AND isProcessing = FALSE
+      SET is_processing = TRUE
+      WHERE token_hash = $1 AND created_at >= NOW() - INTERVAL '2 days' AND is_processing = FALSE
       RETURNING token_hash
     `,
     [tokenHash],
@@ -54,7 +54,7 @@ export const releaseLockOnConfirmationClaim = async (tokenHash: string): Promise
   await db.query(
     `
       UPDATE ${CONFIRMATION_TABLE_NAME}
-      SET isProcessing = FALSE
+      SET is_processing = FALSE
       WHERE token_hash = $1
     `,
     [tokenHash],
