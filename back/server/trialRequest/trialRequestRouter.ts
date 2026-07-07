@@ -322,9 +322,9 @@ const confirmRequest = async ({
 
     await submitHubspotTrialForm(payload);
     await createTrialBank({
-      bankName: payload.company.toUpperCase(),
+      bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
       adminEmail: payload.email,
-      resellerName: payload.activityType === 'msp' ? `${payload.company} (interne)` : null,
+      resellerName: payload.activityType === 'msp' ? payload.company : null,
       lang: requestedLanguage,
     });
 
