@@ -102,6 +102,7 @@ if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
       useDefaults: true,
       directives: {
         frameAncestors: allowedTrialRequestFrameAncestors,
+        scriptSrc: ["'self'", 'https://js.hs-scripts.com', 'https://js-eu1.hs-scripts.com'],
       },
     }),
     (_req, res) => {
