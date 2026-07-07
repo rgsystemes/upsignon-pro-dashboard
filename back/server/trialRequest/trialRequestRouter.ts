@@ -15,10 +15,11 @@ import {
 } from './hubspotHelper';
 import { db } from '../helpers/db';
 import {
-  claimConfirmationToken,
+  activateConfirmationToken,
+  checkConfirmationClaim,
   ensureConfirmationTable,
-  markConfirmationCompleted,
-  releaseConfirmationClaim,
+  releaseConfirmationClaimAndCleanup,
+  releaseLockOnConfirmationClaim,
 } from './emailValidation';
 import { csrfProtection } from '../helpers/csrf';
 import { allowedTrialRequestOriginRegexp } from '../helpers/requestSecurity';
@@ -275,6 +276,10 @@ trialRequestRouter.post('/submit', async (req, res) => {
 
     const signedToken = signPayload(payload);
 
+    await ensureConfirmationTable();
+    let tokenHash: string = hashToken(signedToken);
+    await activateConfirmationToken(tokenHash);
+
     await sendTrialValidationEmail({
       recipient: payload.email,
       language: payload.language,
@@ -299,7 +304,7 @@ const confirmRequest = async ({
   requestedLanguage: 'fr' | 'en';
 }): Promise<TrialConfirmResponse> => {
   let tokenHash: string | null = null;
-  let tokenWasClaimed = false;
+  let tokenChecked = false;
 
   try {
     const payload = verifySignedPayload(token);
@@ -309,9 +314,9 @@ const confirmRequest = async ({
 
     await ensureConfirmationTable();
     tokenHash = hashToken(token);
-    tokenWasClaimed = await claimConfirmationToken(tokenHash);
+    tokenChecked = await checkConfirmationClaim(tokenHash);
 
-    if (!tokenWasClaimed) {
+    if (!tokenChecked) {
       return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
     }
 
@@ -323,14 +328,25 @@ const confirmRequest = async ({
       lang: requestedLanguage,
     });
 
-    await markConfirmationCompleted(tokenHash);
+    try {
+      await releaseConfirmationClaimAndCleanup(tokenHash);
+    } catch (releaseError) {
+      logError(
+        'trialRequestRouter POST /confirm-status - releaseConfirmationClaimAndCleanup failed',
+        releaseError,
+      );
+      // let the lock in place so no retry can occur
+    }
     return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage);
   } catch (error) {
-    if (tokenWasClaimed && tokenHash) {
+    if (tokenHash) {
       try {
-        await releaseConfirmationClaim(tokenHash);
-      } catch (cleanupError) {
-        logError('trialRequestRouter POST /confirm-status cleanup', cleanupError);
+        await releaseLockOnConfirmationClaim(tokenHash);
+      } catch (releaseError) {
+        logError(
+          'trialRequestRouter POST /confirm-status - releaseLockOnConfirmationClaim failed',
+          releaseError,
+        );
       }
     }
     logError('trialRequestRouter POST /confirm-status', error);
