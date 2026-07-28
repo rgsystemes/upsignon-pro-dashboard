@@ -14,7 +14,7 @@ import { ShamirTab } from './shamir/ShamirTab';
 // Props setIsLoading, isSuperAdmin, otherBanks
 class Settings extends React.Component {
   state = {
-    activeTab: 'setup', // 'setup', 'options', 'admins', 'permissions', 'urls', 'shamir'
+    activeTab: 'setup', // 'setup', 'options', 'admins', 'sso', 'emails_slo', 'urls', 'shamir'
   };
 
   setActiveTab = (tabName) => {
@@ -54,10 +54,16 @@ class Settings extends React.Component {
             {i18n.t('settings_tab_admins')}
           </button>
           <button
-            className={`tab-button ${activeTab === 'permissions' ? 'active' : ''}`}
-            onClick={() => this.setActiveTab('permissions')}
+            className={`tab-button ${activeTab === 'sso' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('sso')}
           >
-            {i18n.t('settings_tab_permissions')}
+            {i18n.t('settings_tab_sso')}
+          </button>
+          <button
+            className={`tab-button ${activeTab === 'emails_slo' ? 'active' : ''}`}
+            onClick={() => this.setActiveTab('emails_slo')}
+          >
+            {i18n.t('settings_tab_emails_slo')}
           </button>
           <button
             className={`tab-button ${activeTab === 'urls' ? 'active' : ''}`}
@@ -81,9 +87,14 @@ class Settings extends React.Component {
           {activeTab === 'admins' && <BankAdmins setIsLoading={this.props.setIsLoading} />}
           {activeTab === 'shamir' && <ShamirTab setIsLoading={this.props.setIsLoading} />}
 
-          {activeTab === 'permissions' && (
+          {activeTab === 'sso' && (
             <div>
               <OpenidConfiguration setIsLoading={this.props.setIsLoading} />
+            </div>
+          )}
+
+          {activeTab === 'emails_slo' && (
+            <div>
               <MicrosoftEntraConfig setIsLoading={this.props.setIsLoading} />
               <AllowedEmails setIsLoading={this.props.setIsLoading} />
             </div>
