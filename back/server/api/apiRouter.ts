@@ -172,7 +172,7 @@ apiRouter.get('/bank-settings', get_bank_settings);
 apiRouter.post('/bank-settings-update', update_bank);
 
 // SERVER REDIRECTION
-apiRouter.post('/redirection_url', getRedirectionUrl);
+apiRouter.get('/redirection_url', getRedirectionUrl);
 
 // Microsoft Entra
 apiRouter.get('/bank-entra-config', get_bank_entra_config);
