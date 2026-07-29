@@ -198,9 +198,6 @@ export class OpenidConfiguration extends React.Component {
         )}
         <h2>{i18n.t('settings_openid_config')}</h2>
         <p>{i18n.t('settings_openid_config_pitch')}</p>
-        <p>
-          <strong></strong>
-        </p>
         <div
           style={{
             background: '#f5f5f5',
