@@ -1,5 +1,6 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
+import Joi from 'joi';
 
 export const update_bank = async (req: any, res: any): Promise<void> => {
   try {
@@ -36,6 +37,21 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
 
       await db.query('UPDATE banks SET ms_entra_config=$1 WHERE id=$2', [
         req.body.msEntraConfig,
+        req.proxyParamsBankId,
+      ]);
+    }
+    if (req.body.msEntraVaultsPasswordlessAuth !== undefined) {
+      if (req.session.adminRole === 'restricted_superadmin') {
+        return res.status(401).end();
+      }
+      try {
+        Joi.assert(req.body.msEntraVaultsPasswordlessAuth, Joi.boolean().required());
+      } catch (e) {
+        console.error(e);
+        return res.status(400).end();
+      }
+      await db.query('UPDATE banks SET ms_entra_vaults_use_passwordless_auth=$1 WHERE id=$2', [
+        req.body.msEntraVaultsPasswordlessAuth,
         req.proxyParamsBankId,
       ]);
     }
