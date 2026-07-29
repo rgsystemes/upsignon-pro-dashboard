@@ -126,7 +126,7 @@ export class OpenidConfiguration extends React.Component {
     const hasValueConfigured = this.state.openidConfig != null;
     if (hasValueConfigured) {
       this.setState({ confirmDisableSSOPending: true }, () =>
-        document.getElementById('disable-sso-confirm-dialog').showModal(),
+        document.getElementById('disable-sso-confirm-dialog')?.showModal(),
       );
     } else {
       this.setState({ openidConfig: null, choice: 'none' });
@@ -134,7 +134,7 @@ export class OpenidConfiguration extends React.Component {
   };
 
   _closeDisableSSODialog = () => {
-    document.getElementById('disable-sso-confirm-dialog').close();
+    document.getElementById('disable-sso-confirm-dialog')?.close();
     this.setState({ confirmDisableSSOPending: false });
   };
 
