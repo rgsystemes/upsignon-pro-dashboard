@@ -12,7 +12,7 @@ class AllowedEmails extends React.Component {
     editingEmailId: null,
     updatedPattern: null,
     newEmailPasswordless: false,
-    confirmPending: null, // { warning: string|null, message: string, onConfirm: function }
+    confirmPending: null, // { willEnable: boolean, onConfirm: function }
   };
   newInputRef = null;
 
@@ -92,7 +92,7 @@ class AllowedEmails extends React.Component {
   };
 
   _closeConfirmDialog = () => {
-    document.getElementById('passwordless-confirm-dialog').close();
+    document.getElementById('passwordless-confirm-dialog')?.close();
     this.setState({ confirmPending: null });
   };
 

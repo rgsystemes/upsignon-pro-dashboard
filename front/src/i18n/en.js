@@ -18,6 +18,8 @@ const translations = {
   pagination_pages: 'pages',
   validate: 'Validate',
   cancel: 'Cancel',
+  activate: 'Activer',
+  deactivate: 'Désactiver',
   request_error: 'Server request error. You may need to reconnect.',
   network_error: 'Network error',
   unknown_error: 'Unknown error',
