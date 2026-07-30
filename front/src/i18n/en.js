@@ -199,7 +199,7 @@ const translations = {
     'Are you sure you want to remove the access of this administrator to this bank of vaults?',
   settings_bank_settings: 'Options',
   settings_bank_settings_toggle_all_settings: 'Show/hide all settings',
-  settings_bank_settings_toggle_bank_settings: 'SHow/hide',
+  settings_bank_settings_toggle_bank_settings: 'Show/hide',
   shared_devices_explanation:
     'This is the list of devices where at least two users have authorized their PRO vault.',
   shared_devices_uid: 'Device unique id',
