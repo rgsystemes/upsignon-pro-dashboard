@@ -2,6 +2,7 @@ import React from 'react';
 import { bankUrlFetch } from '../../helpers/urlFetch';
 import { i18n } from '../../i18n/i18n';
 import { isRestrictedSuperadmin } from '../../helpers/isRestrictedSuperadmin';
+import { MsEntraPasswordlessCheckbox } from './MsEntraPasswordlessCheckbox';
 
 export class MicrosoftEntraConfig extends React.Component {
   state = {
@@ -90,6 +91,7 @@ export class MicrosoftEntraConfig extends React.Component {
   };
 
   render() {
+    const { ssoEnabled } = this.props;
     return (
       <div style={{ marginTop: 20 }}>
         <h2>{i18n.t('bank_setting_microsoft_entra_title')}</h2>
@@ -302,6 +304,15 @@ export class MicrosoftEntraConfig extends React.Component {
                     .join(', ')}
               </span>
             </div>
+          </div>
+        )}
+
+        {ssoEnabled && (
+          <div style={{ marginTop: 20, paddingTop: 20, borderTop: '1px solid grey' }}>
+            <MsEntraPasswordlessCheckbox
+              shamirConfigured={this.props.shamirConfigured}
+              setIsLoading={this.props.setIsLoading}
+            />
           </div>
         )}
       </div>
