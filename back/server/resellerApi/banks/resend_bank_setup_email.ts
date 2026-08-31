@@ -1,8 +1,7 @@
 import Joi from 'joi';
 import { logError } from '../../helpers/logger';
-import { db } from '../../helpers/db';
 import { resendBankSetupEmailToMe } from '../../helpers/resendBankSetupEmailToAdmins';
-import { hasResellerOwnership } from '../helpers/securityChecks';
+import { bankBelongsToReseller, hasResellerOwnership } from '../helpers/securityChecks';
 
 export const resend_bank_setup_email = async (req: any, res: any): Promise<void> => {
   try {
@@ -25,12 +24,9 @@ export const resend_bank_setup_email = async (req: any, res: any): Promise<void>
       }
     }
 
-    const bankRes = await db.query('SELECT id FROM banks WHERE id=$1 AND reseller_id=$2', [
-      validatedBody.bankId,
-      resellerId,
-    ]);
-    if (bankRes.rowCount === 0) {
-      res.status(404).json({ error: 'Bank not found for this reseller' });
+    const bankInScope = await bankBelongsToReseller(validatedBody.bankId, resellerId);
+    if (!bankInScope) {
+      res.status(401).json({ error: 'Bank not found for this reseller' });
       return;
     }
 
