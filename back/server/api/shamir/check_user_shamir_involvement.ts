@@ -24,8 +24,8 @@ export const check_user_shamir_involvement = async (req: any, res: any): Promise
       FROM shamir_holders AS sh
       INNER JOIN shamir_configs AS sc ON sc.id = sh.shamir_config_id
       INNER JOIN banks AS b ON b.id = sc.bank_id
-      WHERE sh.vault_id = $1`,
-      [userId],
+      WHERE sh.vault_id = $1 AND sc.bank_id = $2`,
+      [userId, req.proxyParamsBankId],
     );
 
     // Check each active config where user is a shareholder
