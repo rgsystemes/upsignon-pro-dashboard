@@ -23,8 +23,16 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
       }
     }
 
+    const existing = await db.query('SELECT reseller_id FROM admins WHERE email=$1', [
+      validatedBody.email,
+    ]);
+    if (existing.rows.length > 0 && existing.rows[0].reseller_id !== resellerId) {
+      res.status(409).json({ error: "Cet e-mail est déjà utilisé par un admin d'un autre groupe" });
+      return;
+    }
+
     await db.query(
-      "INSERT INTO admins (id, email, admin_role, reseller_id) VALUES (gen_random_uuid(),$1,'admin', $2) ON CONFLICT (email) DO UPDATE SET reseller_id=EXCLUDED.reseller_id",
+      "INSERT INTO admins (id, email, admin_role, reseller_id) VALUES (gen_random_uuid(),$1,'admin', $2) ON CONFLICT (email) DO NOTHING",
       [validatedBody.email, resellerId],
     );
     res.status(200).end();
