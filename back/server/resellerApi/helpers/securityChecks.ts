@@ -46,6 +46,17 @@ export const hasResellerOwnership = async (req: Request, resellerId: string): Pr
   return checkRes.rows.length > 0;
 };
 
+export const bankBelongsToReseller = async (
+  bankId: number,
+  resellerId: string,
+): Promise<boolean> => {
+  const checkRes = await db.query('SELECT 1 FROM banks WHERE id=$1 AND reseller_id=$2', [
+    bankId,
+    resellerId,
+  ]);
+  return checkRes.rows.length > 0;
+};
+
 export const hasAdminEmailInReseller = async (
   adminEmail: string,
   resellerId: string,
