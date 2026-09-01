@@ -66,6 +66,10 @@ class Banks extends React.Component {
         toast.error(i18n.t('sasettings_bank_test_group_forbidden'));
         return;
       }
+      if (resellerId && isRestrictedSuperadmin) {
+        toast.error(i18n.t('sasettings_bank_reseller_forbidden_restricted'));
+        return;
+      }
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
       }
