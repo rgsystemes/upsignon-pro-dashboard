@@ -166,7 +166,7 @@ export class OpenidConfiguration extends React.Component {
   submitCustomConfig = async (configUrl, clientId) => {
     // Only delete the bank SSO config when the full config is available to prevent issues
     // with misconfigured SSO leading users to go back to password auth.
-    await this.deleteBankSSOConfig(this.state.openidConfig.id);
+    if (this.state.openidConfig) await this.deleteBankSSOConfig(this.state.openidConfig.id);
     await this.addBankSSOConfig('custom', configUrl, clientId);
   };
 
