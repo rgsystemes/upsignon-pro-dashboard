@@ -29,18 +29,6 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     base,
-    esbuild: {
-      loader: 'jsx',
-      include: /src\/.*\.js$/,
-      exclude: [],
-    },
-    optimizeDeps: {
-      esbuildOptions: {
-        loader: {
-          '.js': 'jsx',
-        },
-      },
-    },
     server: {
       host: 'localhost',
       port: 8090,
@@ -55,7 +43,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
       emptyOutDir: true,
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           main: 'index.html',
           login: 'login.html',
