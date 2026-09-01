@@ -113,6 +113,9 @@ export class MicrosoftEntraConfig extends React.Component {
                   <li>
                     Microsoft Graph &gt; Autorisations d'application &gt; GroupMember.Read.All
                   </li>
+                  <li>
+                    Microsoft Graph &gt; Autorisations d'application &gt; Application.Read.All
+                  </li>
                 </ul>
               </li>
               <li>{i18n.t('bank_setting_microsoft_entra_tuto_step3')}</li>
