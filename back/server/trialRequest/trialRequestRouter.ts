@@ -40,7 +40,6 @@ export const trialRequestCorsMiddleware = (req: any, res: any, next: any) => {
 const TRIAL_REQUEST_TOKEN_TTL_MS = 1000 * 60 * 60 * 24;
 const TRIAL_REQUEST_ERROR_CODES = {
   INVALID_EMAIL_DOMAIN: 'INVALID_EMAIL_DOMAIN',
-  ACCOUNT_ALREADY_EXISTS: 'ACCOUNT_ALREADY_EXISTS',
   SUBMIT_FAILED: 'TRIAL_REQUEST_SUBMIT_FAILED',
 } as const;
 
@@ -218,6 +217,36 @@ const sendTrialValidationEmail = async ({
   });
 };
 
+// Sent instead of the trial confirmation email when the requested address already has an
+// account, so that the /submit response never reveals whether an account exists (account
+// enumeration).
+const sendAccountAlreadyExistsEmail = async ({
+  recipient,
+  language,
+}: {
+  recipient: string;
+  language: 'fr' | 'en';
+}) => {
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+  const loginLink = `${env.FRONTEND_URL}/login.html`;
+  const { html, text, subject } = await buildEmail({
+    templateName: 'trialAccountAlreadyExists',
+    locales: getBestLanguage(language),
+    args: {
+      loginLink,
+    },
+  });
+
+  await transporter.sendMail({
+    from: emailConfig.EMAIL_SENDING_ADDRESS,
+    to: recipient,
+    subject,
+    text,
+    html,
+  });
+};
+
 trialRequestRouter.post('/submit', async (req, res) => {
   try {
     const validatedBody = Joi.attempt(
@@ -256,14 +285,17 @@ trialRequestRouter.post('/submit', async (req, res) => {
       });
     }
 
+    // The API response never reveals whether an account already exists for this email
+    // (account enumeration). Instead, the branch below only changes which email gets sent.
     const alreadyHasTrial = await db.query(`SELECT 1 FROM admins WHERE email = lower($1)`, [
       validatedBody.email,
     ]);
     if (alreadyHasTrial.rowCount && alreadyHasTrial.rowCount > 0) {
-      return res.status(400).json({
-        ok: false,
-        code: TRIAL_REQUEST_ERROR_CODES.ACCOUNT_ALREADY_EXISTS,
+      await sendAccountAlreadyExistsEmail({
+        recipient: validatedBody.email,
+        language: validatedBody.language,
       });
+      return res.status(200).json({ ok: true });
     }
 
     const now = Date.now();
@@ -349,7 +381,7 @@ const confirmRequest = async ({
         );
       }
     }
-    logError('trialRequestRouter POST /confirm-status', error);
+    logError('trialRequestRouter POST /confirm-status', 'ERROR:', error);
     return buildConfirmResponse(TRIAL_CONFIRM_CODES.CONFIRM_UNEXPECTED_ERROR, requestedLanguage);
   }
 };
@@ -371,7 +403,8 @@ trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
     });
 
     return res.status(status).json({ ok: success, code });
-  } catch {
+  } catch (error) {
+    logError('/confirm-status', 'ERROR:', error);
     const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
     const response = buildConfirmResponse(
       TRIAL_CONFIRM_CODES.INVALID_CONFIRM_LINK,

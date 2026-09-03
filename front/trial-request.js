@@ -102,7 +102,6 @@ const UI_TEXTS = {
     serverErrors: {
       INVALID_EMAIL_DOMAIN:
         "Veuillez utiliser une adresse email valide provenant de votre entreprise ou d'un fournisseur personnel.",
-      ACCOUNT_ALREADY_EXISTS: 'Un compte existe déjà pour cette adresse email.',
       TRIAL_REQUEST_SUBMIT_FAILED:
         "Impossible d'envoyer la demande pour le moment. Merci de réessayer dans quelques instants.",
     },
@@ -190,7 +189,6 @@ const UI_TEXTS = {
     serverErrors: {
       INVALID_EMAIL_DOMAIN:
         'Please use a valid email address from your company or a personal email provider.',
-      ACCOUNT_ALREADY_EXISTS: 'An account already exists for this email address.',
       TRIAL_REQUEST_SUBMIT_FAILED:
         'Unable to submit your request right now. Please try again in a few moments.',
     },
