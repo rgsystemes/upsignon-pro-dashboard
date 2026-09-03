@@ -5,31 +5,31 @@
   "private": true,
   "dependencies": {
     "qrcode-generator": "^2.0.4",
-    "react": "^19.2.6",
+    "react": "^19.2.8",
     "react-datepicker": "^9.1.0",
-    "react-dom": "^19.2.6",
-    "react-is": "^19.2.6",
+    "react-dom": "^19.2.8",
+    "react-is": "^19.2.8",
     "react-toastify": "^11.1.0",
-    "react-tooltip": "^6.0.5",
-    "recharts": "^3.8.1"
+    "react-tooltip": "^6.0.8",
+    "recharts": "^3.10.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-datepicker": "^7.0.0",
-    "@vitejs/plugin-react": "^5.1.0",
-    "eslint": "^10.4.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-prettier": "^5.5.6",
     "postcss-normalize": "^13.0.1",
-    "prettier": "^3.8.3",
-    "vite": "^7.1.10"
+    "prettier": "^3.9.6",
+    "vite": "^8.2.2"
   },
   "scripts": {
     "start": "vite",
     "wstart": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet --fix"
+    "lint": "eslint './src/**/*.{js,jsx,ts,tsx}' --quiet --fix"
   },
   "browserslist": {
     "production": [
