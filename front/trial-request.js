@@ -526,7 +526,7 @@ const sendHeight = () => {
     const height = document.body.offsetHeight;
     if (sentHeight !== height) {
       // keep the "+50" to avoid scrollbars appearing in case of minor miscalculations
-      window.parent.postMessage({ frameHeight: height + 50 }, '*');
+      window.parent.postMessage({ frameHeight: height }, '*');
       sentHeight = height;
     }
   }
