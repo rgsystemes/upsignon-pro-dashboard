@@ -5,7 +5,7 @@ import { buildEmail, getBestLanguage } from 'upsignon-mail';
 import env from '../helpers/env';
 import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
 import { logError } from '../helpers/logger';
-import { createTrialBank } from '../helpers/configureBankWithAdminEmail';
+import { finalizeTrialBank, reserveTrialAdmin } from '../helpers/configureBankWithAdminEmail';
 import {
   COMPANY_SIZE_HUBSPOT_MAPPING,
   DIRECT_ACTIVITY_HUBSPOT_MAPPING,
@@ -18,6 +18,8 @@ import {
   activateConfirmationToken,
   checkConfirmationClaim,
   ensureConfirmationTable,
+  markAdminReserved,
+  markHubspotSubmitted,
   releaseConfirmationClaimAndCleanup,
   releaseLockOnConfirmationClaim,
 } from './emailValidation';
@@ -40,7 +42,6 @@ export const trialRequestCorsMiddleware = (req: any, res: any, next: any) => {
 const TRIAL_REQUEST_TOKEN_TTL_MS = 1000 * 60 * 60 * 24;
 const TRIAL_REQUEST_ERROR_CODES = {
   INVALID_EMAIL_DOMAIN: 'INVALID_EMAIL_DOMAIN',
-  ACCOUNT_ALREADY_EXISTS: 'ACCOUNT_ALREADY_EXISTS',
   SUBMIT_FAILED: 'TRIAL_REQUEST_SUBMIT_FAILED',
 } as const;
 
@@ -218,6 +219,36 @@ const sendTrialValidationEmail = async ({
   });
 };
 
+// Sent instead of the trial confirmation email when the requested address already has an
+// account, so that the /submit response never reveals whether an account exists (account
+// enumeration).
+const sendAccountAlreadyExistsEmail = async ({
+  recipient,
+  language,
+}: {
+  recipient: string;
+  language: 'fr' | 'en';
+}) => {
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+  const loginLink = `${env.FRONTEND_URL}/login.html`;
+  const { html, text, subject } = await buildEmail({
+    templateName: 'trialAccountAlreadyExists',
+    locales: getBestLanguage(language),
+    args: {
+      loginLink,
+    },
+  });
+
+  await transporter.sendMail({
+    from: emailConfig.EMAIL_SENDING_ADDRESS,
+    to: recipient,
+    subject,
+    text,
+    html,
+  });
+};
+
 trialRequestRouter.post('/submit', async (req, res) => {
   try {
     const validatedBody = Joi.attempt(
@@ -256,14 +287,28 @@ trialRequestRouter.post('/submit', async (req, res) => {
       });
     }
 
-    const alreadyHasTrial = await db.query(`SELECT 1 FROM admins WHERE email = lower($1)`, [
-      validatedBody.email,
-    ]);
+    // The API response never reveals whether an account already exists for this email
+    // (account enumeration). Instead, the branch below only changes which email gets sent.
+    //
+    // An admins row alone isn't enough to call this "already has an account": reserveTrialAdmin
+    // creates that row before HubSpot/bank creation run, so a request that failed partway through
+    // (e.g. bank creation errored) leaves a reserved-but-incomplete admin behind. Only count it as
+    // an existing account once it's actually usable (linked to a bank or a reseller) - otherwise
+    // fall through and send a fresh validation link so the signup can be retried.
+    const alreadyHasTrial = await db.query(
+      `
+        SELECT 1 FROM admins a
+        LEFT JOIN admin_banks ab ON ab.admin_id = a.id
+        WHERE a.email = lower($1) AND (ab.admin_id IS NOT NULL OR a.reseller_id IS NOT NULL)
+      `,
+      [validatedBody.email],
+    );
     if (alreadyHasTrial.rowCount && alreadyHasTrial.rowCount > 0) {
-      return res.status(400).json({
-        ok: false,
-        code: TRIAL_REQUEST_ERROR_CODES.ACCOUNT_ALREADY_EXISTS,
+      await sendAccountAlreadyExistsEmail({
+        recipient: validatedBody.email,
+        language: validatedBody.language,
       });
+      return res.status(200).json({ ok: true });
     }
 
     const now = Date.now();
@@ -278,7 +323,12 @@ trialRequestRouter.post('/submit', async (req, res) => {
 
     await ensureConfirmationTable();
     let tokenHash: string = hashToken(signedToken);
-    await activateConfirmationToken(tokenHash);
+    const activated = await activateConfirmationToken(tokenHash, payload.email);
+    if (!activated) {
+      // A confirmation for this email is currently being processed (bank creation in progress) -
+      // do not issue a second link, and do not reveal that to the caller.
+      return res.status(200).json({ ok: true });
+    }
 
     await sendTrialValidationEmail({
       recipient: payload.email,
@@ -304,7 +354,6 @@ const confirmRequest = async ({
   requestedLanguage: 'fr' | 'en';
 }): Promise<TrialConfirmResponse> => {
   let tokenHash: string | null = null;
-  let tokenChecked = false;
 
   try {
     const payload = verifySignedPayload(token);
@@ -314,14 +363,43 @@ const confirmRequest = async ({
 
     await ensureConfirmationTable();
     tokenHash = hashToken(token);
-    tokenChecked = await checkConfirmationClaim(tokenHash);
+    const claim = await checkConfirmationClaim(tokenHash);
 
-    if (!tokenChecked) {
+    if (!claim) {
       return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
     }
 
-    await submitHubspotTrialForm(payload);
-    await createTrialBank({
+    // Reserve the admin row (unique on email) before doing anything else. This is what protects
+    // against the same email being confirmed twice at once (e.g. the trial request was submitted
+    // from two different browsers, producing two valid tokens): only the confirmation that wins
+    // this reservation may go on to notify HubSpot and create the bank. If this token already
+    // reserved it on a previous attempt (a real retry after a later failure), reuse that id
+    // instead of trying to reserve again, which would otherwise look like a race with itself.
+    let adminId = claim.adminId;
+    if (!adminId) {
+      adminId = await reserveTrialAdmin(payload.email);
+      if (!adminId) {
+        try {
+          await releaseConfirmationClaimAndCleanup(tokenHash);
+        } catch (releaseError) {
+          logError(
+            'trialRequestRouter POST /confirm-status - releaseConfirmationClaimAndCleanup failed after lost admin reservation race',
+            releaseError,
+          );
+        }
+        return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
+      }
+      await markAdminReserved(tokenHash, adminId);
+    }
+
+    // Only submit to HubSpot once per token: if a previous attempt got this far but then
+    // failed further down (e.g. bank creation), retrying must not create a duplicate lead.
+    if (!claim.hubspotSubmitted) {
+      await submitHubspotTrialForm(payload);
+      await markHubspotSubmitted(tokenHash);
+    }
+    await finalizeTrialBank({
+      adminId,
       bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
       adminEmail: payload.email,
       resellerName: payload.activityType === 'msp' ? payload.company : null,
@@ -349,7 +427,7 @@ const confirmRequest = async ({
         );
       }
     }
-    logError('trialRequestRouter POST /confirm-status', error);
+    logError('trialRequestRouter POST /confirm-status', 'ERROR:', error);
     return buildConfirmResponse(TRIAL_CONFIRM_CODES.CONFIRM_UNEXPECTED_ERROR, requestedLanguage);
   }
 };
@@ -371,7 +449,8 @@ trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
     });
 
     return res.status(status).json({ ok: success, code });
-  } catch {
+  } catch (error) {
+    logError('/confirm-status', 'ERROR:', error);
     const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
     const response = buildConfirmResponse(
       TRIAL_CONFIRM_CODES.INVALID_CONFIRM_LINK,
