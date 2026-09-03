@@ -289,9 +289,20 @@ trialRequestRouter.post('/submit', async (req, res) => {
 
     // The API response never reveals whether an account already exists for this email
     // (account enumeration). Instead, the branch below only changes which email gets sent.
-    const alreadyHasTrial = await db.query(`SELECT 1 FROM admins WHERE email = lower($1)`, [
-      validatedBody.email,
-    ]);
+    //
+    // An admins row alone isn't enough to call this "already has an account": reserveTrialAdmin
+    // creates that row before HubSpot/bank creation run, so a request that failed partway through
+    // (e.g. bank creation errored) leaves a reserved-but-incomplete admin behind. Only count it as
+    // an existing account once it's actually usable (linked to a bank or a reseller) - otherwise
+    // fall through and send a fresh validation link so the signup can be retried.
+    const alreadyHasTrial = await db.query(
+      `
+        SELECT 1 FROM admins a
+        LEFT JOIN admin_banks ab ON ab.admin_id = a.id
+        WHERE a.email = lower($1) AND (ab.admin_id IS NOT NULL OR a.reseller_id IS NOT NULL)
+      `,
+      [validatedBody.email],
+    );
     if (alreadyHasTrial.rowCount && alreadyHasTrial.rowCount > 0) {
       await sendAccountAlreadyExistsEmail({
         recipient: validatedBody.email,
