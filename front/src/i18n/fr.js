@@ -343,6 +343,10 @@ const translations = {
   sasettings_bank_expired_since: 'Expiré depuis $days jour$s',
   sasettings_bank_days_remaining: '$days jour$s',
   sasettings_bank_reseller: 'Groupe de banques',
+  sasettings_bank_test_group_forbidden:
+    'Une banque de test ne peut pas appartenir à un groupe de banques.',
+  sasettings_bank_reseller_forbidden_restricted:
+    'Un superadmin restreint ne peut pas créer une banque dans un groupe de banques.',
   sasettings_bank_sales_rep: 'Commercial',
   sasettings_bank_sales_rep_must_be_email: 'Le commercial doit être une adresse email.',
   sasettings_bank_open: 'Voir',

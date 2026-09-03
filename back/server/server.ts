@@ -19,8 +19,9 @@ import { sendAdminInviteUnauthenticated } from './login/get_admin_invite';
 import { inviteRateLimiter } from './login/get_admin_invite';
 import { resellerApiRouter } from './resellerApi/resellerApiRouter';
 import { csrfProtection, sendCsrfToken } from './helpers/csrf';
-import { enforceTrustedOrigin } from './helpers/requestSecurity';
+import { allowedTrialRequestFrameAncestors, enforceTrustedOrigin } from './helpers/requestSecurity';
 import helmet from 'helmet';
+import { trialRequestCorsMiddleware, trialRequestRouter } from './trialRequest/trialRequestRouter';
 
 const frontBuildDir = path.join(__dirname, '../../front/build');
 
@@ -94,11 +95,34 @@ app.use((req, res, next) => {
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
 app.use('/', express.static(frontBuildDir));
+if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
+  app.get(
+    ['/trial-request', '/trial-request.html'],
+    helmet.contentSecurityPolicy({
+      useDefaults: true,
+      directives: {
+        frameAncestors: allowedTrialRequestFrameAncestors,
+        scriptSrc: ["'self'", 'https://js.hs-scripts.com', 'https://js-eu1.hs-scripts.com'],
+      },
+    }),
+    (_req, res) => {
+      // X-Frame-Options does not support allowlists; use CSP frame-ancestors instead.
+      res.removeHeader('X-Frame-Options');
+      res.sendFile(path.join(frontBuildDir, 'trial-request.html'));
+    },
+  );
+  app.get(['/trial-request-confirm', '/trial-request-confirm.html'], (_req, res) => {
+    res.sendFile(path.join(frontBuildDir, 'trial-request-confirm.html'));
+  });
+}
 
 app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
 app.use('/login/', loginRouter);
 app.get('/csrf-token', sendCsrfToken);
+if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
+  app.use('/trial-request', trialRequestCorsMiddleware, trialRequestRouter);
+}
 // The login router is intentionally mounted before CSRF checks because it is used by the
 // external UpSignOn authentication flow before a dashboard session exists.
 app.use(csrfProtection);

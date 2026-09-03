@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import { logError } from '../../helpers/logger';
-import { hasResellerOwnership } from '../helpers/securityChecks';
+import { bankBelongsToReseller, hasResellerOwnership } from '../helpers/securityChecks';
 import { updateBank } from '../../helpers/updateBank';
 
 export const update_bank = async (req: any, res: any): Promise<void> => {
@@ -22,6 +22,12 @@ export const update_bank = async (req: any, res: any): Promise<void> => {
     ) {
       const isOwner = await hasResellerOwnership(req, resellerId);
       if (!isOwner && req.session.adminRole !== 'restricted_superadmin') {
+        res.sendStatus(401);
+        return;
+      }
+
+      const bankInScope = await bankBelongsToReseller(validatedBody.id, resellerId);
+      if (!bankInScope) {
         res.sendStatus(401);
         return;
       }

@@ -17,6 +17,31 @@ const allowedOrigins = new Set(
     .filter((origin): origin is string => Boolean(origin)),
 );
 
+export const allowedTrialRequestOriginRegexp = env.IS_STAGING_SAAS
+  ? /^https:\/\/website-[a-z0-9-]*-upsignon\.vercel\.app$/
+  : /^https:\/\/upsignon\.eu$/;
+
+export const allowedTrialRequestFrameAncestors = env.IS_STAGING_SAAS
+  ? ['https://*.vercel.app']
+  : ['https://upsignon.eu'];
+
+export const isTrustedOrigin = (originHeader: string, route: string): boolean => {
+  const normalizedOrigin = originHeader.toLowerCase();
+
+  if (allowedOrigins.has(normalizedOrigin)) {
+    return true;
+  }
+
+  if (
+    route.startsWith('/trial-request') &&
+    allowedTrialRequestOriginRegexp.test(normalizedOrigin)
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunction) => {
   if (SAFE_METHODS.has(req.method.toUpperCase())) {
     return next();
@@ -24,8 +49,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
 
   const originHeader = req.get('origin');
   if (originHeader && originHeader !== 'null') {
-    const requestOrigin = originHeader.toLowerCase();
-    if (!allowedOrigins.has(requestOrigin)) {
+    if (!isTrustedOrigin(originHeader, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });
     }
     return next();
@@ -34,7 +58,7 @@ export const enforceTrustedOrigin = (req: Request, res: Response, next: NextFunc
   const refererHeader = req.get('referer');
   if (refererHeader && refererHeader !== 'null') {
     const refererOrigin = getOriginFromUrl(refererHeader);
-    if (!refererOrigin || !allowedOrigins.has(refererOrigin)) {
+    if (!refererOrigin || !isTrustedOrigin(refererOrigin, req.path)) {
       return res.status(403).json({ message: 'Untrusted request origin' });
     }
   }
