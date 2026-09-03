@@ -140,20 +140,31 @@ export const configureBankWithAdminEmailAndSendMail = async (
   res.status(200).end();
 };
 
-export const createTrialBank = async (args: {
+// Atomically reserves the admins row for a trial signup. This is the only step that is safe to
+// race on the email address (admins.email is unique), so it must run before submitHubspotTrialForm:
+// if two confirmations for the same email (e.g. the same trial request opened in two browsers)
+// run concurrently, only one of them may reserve the admin and go on to notify HubSpot / create
+// the bank; the other must find out right away, before causing any side effect.
+// Returns null if an admin already exists for this email (someone else's reservation won).
+export const reserveTrialAdmin = async (email: string): Promise<string | null> => {
+  const insertedAdminRes = await db.query(
+    `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') ON CONFLICT (email) DO NOTHING RETURNING id`,
+    [email],
+  );
+  if (insertedAdminRes.rowCount === 0) {
+    return null;
+  }
+  return insertedAdminRes.rows[0].id;
+};
+
+export const finalizeTrialBank = async (args: {
+  adminId: string;
   bankName: string;
   adminEmail: string;
   resellerName: string | null;
   lang: 'fr' | 'en';
 }): Promise<void> => {
-  const insertedAdminRes = await db.query(
-    `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') ON CONFLICT (email) DO NOTHING RETURNING id`,
-    [args.adminEmail],
-  );
-  if (insertedAdminRes.rowCount === 0) {
-    throw new Error(`Admin with email ${args.adminEmail} already exists`);
-  }
-  const adminId = insertedAdminRes.rows[0].id;
+  const adminId = args.adminId;
 
   let expDate = new Date();
   expDate.setDate(expDate.getDate() + 30);
