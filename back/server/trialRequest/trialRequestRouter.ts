@@ -18,6 +18,7 @@ import {
   activateConfirmationToken,
   checkConfirmationClaim,
   ensureConfirmationTable,
+  markHubspotSubmitted,
   releaseConfirmationClaimAndCleanup,
   releaseLockOnConfirmationClaim,
 } from './emailValidation';
@@ -336,7 +337,6 @@ const confirmRequest = async ({
   requestedLanguage: 'fr' | 'en';
 }): Promise<TrialConfirmResponse> => {
   let tokenHash: string | null = null;
-  let tokenChecked = false;
 
   try {
     const payload = verifySignedPayload(token);
@@ -346,13 +346,18 @@ const confirmRequest = async ({
 
     await ensureConfirmationTable();
     tokenHash = hashToken(token);
-    tokenChecked = await checkConfirmationClaim(tokenHash);
+    const claim = await checkConfirmationClaim(tokenHash);
 
-    if (!tokenChecked) {
+    if (!claim) {
       return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
     }
 
-    await submitHubspotTrialForm(payload);
+    // Only submit to HubSpot once per token: if a previous attempt got this far but then
+    // failed further down (e.g. bank creation), retrying must not create a duplicate lead.
+    if (!claim.hubspotSubmitted) {
+      await submitHubspotTrialForm(payload);
+      await markHubspotSubmitted(tokenHash);
+    }
     await createTrialBank({
       bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
       adminEmail: payload.email,
