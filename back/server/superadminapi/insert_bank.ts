@@ -22,6 +22,10 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
         resellerId: Joi.string().trim().allow(null),
       }),
     );
+    if (validatedBody.resellerId && req.session.adminRole !== 'superadmin') {
+      res.status(401).json({ error: 'Not allowed for restricted superadmin' });
+      return;
+    }
     await configureBankWithAdminEmailAndSendMail(req, res, {
       ...validatedBody,
       salesEmail: validatedBody.salesEmail || validatedBody.adminEmail,
