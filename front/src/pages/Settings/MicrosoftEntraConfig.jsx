@@ -169,6 +169,8 @@ export class MicrosoftEntraConfig extends React.Component {
             {i18n.t('bank_setting_microsoft_entra_app_resource_id_label')}
           </label>
           <br />
+          <span>⚠️⚠️ {i18n.t('bank_setting_microsoft_entra_app_resource_id_warning')}</span>
+          <br />
           <input
             id="appResourceId"
             name="appResourceId"
@@ -219,6 +221,7 @@ export class MicrosoftEntraConfig extends React.Component {
           />
         </form>
         <div style={{ marginTop: 20 }}>{i18n.t('bank_setting_microsoft_entra_testing')}</div>
+        <div>⚠️⚠️ {i18n.t('bank_setting_microsoft_entra_test_warning')}</div>
         <form
           className={isRestrictedSuperadmin ? 'disabledUI' : null}
           onSubmit={this.testConfigWithEmail}

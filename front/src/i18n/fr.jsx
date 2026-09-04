@@ -391,7 +391,7 @@ const translations = {
   bank_setting_microsoft_entra_pitch:
     "UpSignOn peut interroger votre graphe Microsoft Entra ID pour vérifier l'autorisation d'un utilisateur, récupérer les utilisateurs partis, et (bientôt) obtenir les groupes de l'utilisateur pour le partage en équipe.",
   bank_setting_microsoft_entra_tuto:
-    'Pour utiliser cette fonctionnalité, suivez les étapes ci-dessous :',
+    'Pour utiliser cette fonctionnalité, suivez précisément les étapes ci-dessous :',
   bank_setting_microsoft_entra_tuto_step1:
     "Dans 'Inscriptions d'applications', cliquez sur 'Nouvelle Inscription', choisissez un nom ('UpSignOn' pour le reste de cette documentation), choisissez l'option locataire unique, puis validez.",
   bank_setting_microsoft_entra_tuto_step2:
@@ -406,11 +406,15 @@ const translations = {
     "ID d\'application (Application d'entreprise > UpSignOn > Vue d'ensemble)",
   bank_setting_microsoft_entra_app_resource_id_label:
     "ID d\'objet (Application d'entreprise > UpSignOn > Vue d'ensemble)",
+  bank_setting_microsoft_entra_app_resource_id_warning:
+    "À ne pas confondre avec l'id d'objet de l'inscription d'application ! ",
   bank_setting_microsoft_entra_client_secret_label:
     "Secret client (Inscriptions d'application > UpSignOn > Certificats & secrets)",
   bank_setting_microsoft_entra_apply_config: 'Appliquer la configuration',
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions mises-à-jour',
   bank_setting_microsoft_entra_testing: 'Tester',
+  bank_setting_microsoft_entra_test_warning:
+    "Tous les tests doivent passer. Sinon, votre configuration n'est pas correcte.",
   bank_setting_microsoft_entra_test_start: 'Lancer le test',
   bank_setting_microsoft_entra_test_user_id: 'Id utilisateur MS Entra:',
   bank_setting_microsoft_entra_test_all_users: 'Utilisateurs UpSignOn:',

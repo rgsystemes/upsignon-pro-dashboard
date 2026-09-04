@@ -378,7 +378,7 @@ const translations = {
   bank_setting_microsoft_entra_title: 'Microsoft Entra ID configuration (optional)',
   bank_setting_microsoft_entra_pitch:
     "UpSignOn can request your Microsoft Entra ID graph to check user authorization, get user departures, and (soon) get the user's groups for team sharing.",
-  bank_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below:',
+  bank_setting_microsoft_entra_tuto: 'To use this feature, follow the steps below precisely:',
   bank_setting_microsoft_entra_tuto_step1:
     "In 'App registrations', click on 'New registration', choose a name ('UpSignOn' for the rest of this documentation), choose the single tenant option, then submit.",
   bank_setting_microsoft_entra_tuto_step2:
@@ -391,12 +391,16 @@ const translations = {
   bank_setting_microsoft_entra_client_id_label:
     'Application ID (Enterprise applications > UpSignOn > Overview)',
   bank_setting_microsoft_entra_app_resource_id_label:
-    "ID d\'objet (Enterprise applications > UpSignOn > Overview)",
+    'Object ID (Enterprise applications > UpSignOn > Overview)',
+  bank_setting_microsoft_entra_app_resource_id_warning:
+    "Not to be confused with the application registration's object ID!",
   bank_setting_microsoft_entra_client_secret_label:
-    'Client secret client (App registrations > UpSignOn > Certificates & secrets)',
+    'Client secret (App registrations > UpSignOn > Certificates & secrets)',
   bank_setting_microsoft_entra_apply_config: 'Apply configuration',
   bank_setting_microsoft_entra_permissions_reloaded: 'Permissions reloaded',
   bank_setting_microsoft_entra_testing: 'Test',
+  bank_setting_microsoft_entra_test_warning:
+    'All tests must pass. Otherwise, your configuration is not correct.',
   bank_setting_microsoft_entra_test_start: 'Start test',
   bank_setting_microsoft_entra_test_user_id: 'MS user id:',
   bank_setting_microsoft_entra_test_all_users: 'UpSignOn users:',
