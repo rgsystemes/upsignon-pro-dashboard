@@ -5,16 +5,26 @@ import { hasResellerOwnership } from '../helpers/securityChecks';
 
 export const delete_admin = async (req: any, res: any): Promise<void> => {
   try {
+    let deletionRes;
     if (req.session.adminRole !== 'superadmin') {
       const isOwner = await hasResellerOwnership(req, req.proxyParamsResellerId);
       if (!isOwner) {
         res.sendStatus(401);
         return;
       }
+      deletionRes = await db.query(
+        `DELETE FROM admins WHERE id=$1 AND reseller_id=$2 AND admin_role='admin' RETURNING email`,
+        [req.params.adminId, req.proxyParamsResellerId],
+      );
+    } else {
+      deletionRes = await db.query(`DELETE FROM admins WHERE id=$1 RETURNING email`, [
+        req.params.adminId,
+      ]);
     }
-    const deletionRes = await db.query(`DELETE FROM admins WHERE id=$1 RETURNING email`, [
-      req.params.adminId,
-    ]);
+    if (deletionRes.rows.length === 0) {
+      res.sendStatus(404);
+      return;
+    }
     // DISCONNECT
     deletionRes.rows.forEach(async (a) => {
       await deleteSession(a.email);
