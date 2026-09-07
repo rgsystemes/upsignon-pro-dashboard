@@ -10,8 +10,22 @@ import { licenceAssign } from '../helpers/licence_assign';
 import { licenceSummary } from '../helpers/licence-summary';
 import { inviteRateLimiter, sendAdminInviteAuthenticated } from '../login/get_admin_invite';
 import { resend_bank_setup_email } from './banks/resend_bank_setup_email';
+import { hasResellerOwnership } from './helpers/securityChecks';
 
 export const resellerApiRouter = express.Router();
+
+resellerApiRouter.use(async (req: any, res: any, next) => {
+  const resellerId = req.proxyParamsResellerId;
+  if (
+    req.session.adminRole !== 'superadmin' &&
+    req.session.adminRole !== 'restricted_superadmin' &&
+    !(await hasResellerOwnership(req, resellerId))
+  ) {
+    console.error('Unauthorized for reseller ' + resellerId);
+    return res.status(401).end();
+  }
+  next();
+});
 
 // BANKS
 resellerApiRouter.post('/insert-bank', insert_bank);

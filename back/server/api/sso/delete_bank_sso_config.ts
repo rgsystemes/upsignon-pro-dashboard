@@ -13,7 +13,13 @@ export const delete_bank_sso_config = async (req: any, res: any): Promise<void> 
         configId: Joi.number().required(),
       }),
     );
-    await db.query(`DELETE FROM bank_sso_config WHERE id=$1`, [safeBody.configId]);
+    const deleteRes = await db.query(`DELETE FROM bank_sso_config WHERE id=$1 AND bank_id=$2`, [
+      safeBody.configId,
+      req.proxyParamsBankId,
+    ]);
+    if (deleteRes.rowCount === 0) {
+      return res.status(404).end();
+    }
     return res.status(200).end();
   } catch (e) {
     logError('delete_bank_sso_config', e);
