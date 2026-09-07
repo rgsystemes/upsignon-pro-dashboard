@@ -62,6 +62,14 @@ class Banks extends React.Component {
       } else {
         this.salesEmailRef.style.borderColor = null;
       }
+      if (isTrial && resellerId) {
+        toast.error(i18n.t('sasettings_bank_test_group_forbidden'));
+        return;
+      }
+      if (resellerId && isRestrictedSuperadmin) {
+        toast.error(i18n.t('sasettings_bank_reseller_forbidden_restricted'));
+        return;
+      }
       if (salesEmail) {
         localStorage.setItem('newBankSalesEmail', salesEmail);
       }
@@ -99,6 +107,11 @@ class Banks extends React.Component {
     }
   };
   updateResellerId = async (bankId, resellerId) => {
+    const bank = this.props.banks.find((b) => b.id === bankId);
+    if (resellerId && bank?.settings?.IS_TESTING) {
+      toast.error(i18n.t('sasettings_bank_test_group_forbidden'));
+      return;
+    }
     try {
       this.props.setIsLoading(true);
       await bankUrlFetch('/api/update-bank', 'POST', {
@@ -113,6 +126,11 @@ class Banks extends React.Component {
     }
   };
   toggleBankSetting = async (bankId, newSettings) => {
+    const bank = this.props.banks.find((b) => b.id === bankId);
+    if (newSettings.IS_TESTING && bank?.reseller_id) {
+      toast.error(i18n.t('sasettings_bank_test_group_forbidden'));
+      return;
+    }
     try {
       this.props.setIsLoading(true);
       await bankUrlFetch('/api/update-bank', 'POST', {
@@ -300,6 +318,7 @@ class Banks extends React.Component {
                 id="isTestingCheckbox"
                 type="checkbox"
                 defaultChecked
+                disabled={!!this.state.selectedResellerIdForNewBank}
                 ref={(r) => {
                   this.isTestingCheckboxRef = r;
                 }}
@@ -311,7 +330,12 @@ class Banks extends React.Component {
               <label htmlFor="resellerName">{i18n.t('sasettings_bank_reseller')}</label>
               <ResellerSelector
                 value={this.state.selectedResellerIdForNewBank}
-                onChange={(value) => this.setState({ selectedResellerIdForNewBank: value })}
+                onChange={(value) => {
+                  if (value && this.isTestingCheckboxRef) {
+                    this.isTestingCheckboxRef.checked = false;
+                  }
+                  this.setState({ selectedResellerIdForNewBank: value });
+                }}
                 placeholder={i18n.t('sasettings_select_reseller')}
                 resellers={this.state.resellers}
               />

@@ -29,16 +29,21 @@ export const cancelPendingConfig = async (req: Request, res: Response): Promise<
       `SELECT id, name, creator_email, is_active, support_email, created_at FROM shamir_configs WHERE bank_id=$1 ORDER BY created_at DESC`,
       [bankId],
     );
-    if (allConfigsRes.rows.length > 0) {
-      const latestConfig = allConfigsRes.rows[0];
-      if (latestConfig.id !== configId || latestConfig.is_active) {
-        res.status(400).end();
-        return;
-      }
+    if (allConfigsRes.rows.length === 0) {
+      res.status(400).end();
+      return;
+    }
+    const latestConfig = allConfigsRes.rows[0];
+    if (latestConfig.id !== configId || latestConfig.is_active) {
+      res.status(400).end();
+      return;
     }
     // compute shareholder emails before deleting the config
     const shareholders = await getShareholdersEmailsForConfig(configId);
-    await db.query('DELETE FROM shamir_configs WHERE id=$1 AND is_active=false', [configId]);
+    await db.query('DELETE FROM shamir_configs WHERE id=$1 AND bank_id=$2 AND is_active=false', [
+      configId,
+      bankId,
+    ]);
 
     // Send email notification
     const bankRes = await db.query('SELECT name FROM banks WHERE id = $1', [bankId]);
