@@ -37,10 +37,6 @@ const passwordIsOk = async (password: string, passwordHash: string): Promise<boo
   return await bcrypt.compare(password, passwordHash);
 };
 
-const isTokenExpired = (expired_at: Date) => {
-  return expired_at.getTime() < new Date().getTime();
-};
-
 const migratePasswordHashingIfNeeded = async (
   userId: string,
   password: string,
@@ -192,13 +188,13 @@ loginRouter.post('/export-account', async (req: any, res: any) => {
       userData = [{ type: 'email', key: 'email1', value: { address: login, isValidated: true } }];
     } else {
       const currentRes = await db.query(
-        'SELECT id, email, token_expires_at FROM admins WHERE token=$1',
+        `UPDATE admins SET token=null, token_expires_at=null
+         WHERE token=$1 AND token_expires_at > now()
+         RETURNING id, email`,
         [connectionToken],
       );
       if (!currentRes || currentRes.rowCount === 0) return res.status(401).end();
-      if (isTokenExpired(currentRes.rows[0].token_expires_at)) return res.status(401).end();
       adminId = currentRes.rows[0].id;
-      await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1', [adminId]);
       userData = [
         {
           type: 'email',
@@ -224,16 +220,13 @@ loginRouter.get('/redirection/', async (req: any, res: any) => {
     let dbRes;
     try {
       dbRes = await db.query(
-        'SELECT email, token_expires_at FROM admins WHERE id=$1 AND token=$2',
+        `UPDATE admins SET token=null, token_expires_at=null
+         WHERE id=$1 AND token=$2 AND token_expires_at > now()
+         RETURNING email`,
         [userId, connectionToken],
       );
     } catch {}
     if (!dbRes || dbRes.rowCount !== 1) return res.status(401).send('CONNECTION ERROR');
-    if (isTokenExpired(dbRes.rows[0].token_expires_at)) {
-      return res.status(401).send('CONNECTION ERROR');
-    }
-
-    await db.query('UPDATE admins SET token=null, token_expires_at=null WHERE id=$1 ', [userId]);
 
     // Regenerate session ID after successful authentication to prevent session fixation
     req.session.regenerate(async (err?: any) => {
