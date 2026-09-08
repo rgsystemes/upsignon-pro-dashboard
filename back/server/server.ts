@@ -34,7 +34,17 @@ app.use((req, res, next) => {
 });
 // Set express trust-proxy so that secure sessions cookies can work
 app.set('trust proxy', 1);
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        // The login page uses a hidden iframe to trigger the upsignon:// deep link.
+        frameSrc: ["'self'", 'upsignon:'],
+      },
+    },
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
