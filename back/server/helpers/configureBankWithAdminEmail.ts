@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
+import { v4 } from 'uuid';
 import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
+import { buildAdminImportLink, ttlMinutes } from './sendAdminInvite';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 type BankSettings = {
@@ -192,32 +194,15 @@ const resolveTrialResellerName = async (
   return { resellerName: `${resellerName} (${domain})`, alreadyExists: false };
 };
 
-const sendTrialResellerAlreadyExistsEmail = async ({
-  recipient,
-  companyName,
-  lang,
-}: {
-  recipient: string;
-  companyName: string;
-  lang: 'fr' | 'en';
-}): Promise<void> => {
-  const emailContent = await buildEmail({
-    templateName: 'trialResellerAlreadyExists',
-    locales: getBestLanguage(lang),
-    args: { companyName },
-  });
-
-  const emailConfig = await getEmailConfig();
-  const transporter = getMailTransporter(emailConfig, { debug: false });
-
-  await transporter.sendMail({
-    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
-    to: recipient,
-    subject: emailContent.subject,
-    text: emailContent.text,
-    html: emailContent.html,
-  });
-};
+export type FinalizeTrialBankResult =
+  | {
+      status: 'CREATED';
+      activationUrl: string;
+      consoleUrl: string;
+      trialEnd: Date;
+      userEmail: string;
+    }
+  | { status: 'RESELLER_NAME_CONFLICT' };
 
 export const finalizeTrialBank = async (args: {
   adminId: string;
@@ -225,19 +210,14 @@ export const finalizeTrialBank = async (args: {
   adminEmail: string;
   resellerName: string | null;
   lang: 'fr' | 'en';
-}): Promise<void> => {
+}): Promise<FinalizeTrialBankResult> => {
   const adminId = args.adminId;
 
   let resellerName = args.resellerName;
   if (resellerName) {
     const resolved = await resolveTrialResellerName(resellerName, args.adminEmail);
     if (resolved.alreadyExists) {
-      await sendTrialResellerAlreadyExistsEmail({
-        recipient: args.adminEmail,
-        companyName: resellerName,
-        lang: args.lang,
-      });
-      return;
+      return { status: 'RESELLER_NAME_CONFLICT' };
     }
     resellerName = resolved.resellerName;
   }
@@ -298,6 +278,16 @@ export const finalizeTrialBank = async (args: {
   const bankLink = `${url}/${insertedBank.public_id}`;
   const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
 
+  const adminImportToken = v4();
+  const adminImportTokenExpiresAt = new Date();
+  adminImportTokenExpiresAt.setTime(adminImportTokenExpiresAt.getTime() + ttlMinutes * 60 * 1000);
+  await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
+    adminImportToken,
+    adminImportTokenExpiresAt,
+    adminId,
+  ]);
+  const consoleUrl = buildAdminImportLink(adminId, adminImportToken);
+
   const emailContent = await buildEmail({
     templateName: 'trialWelcome',
     locales: getBestLanguage(args.lang),
@@ -320,4 +310,12 @@ export const finalizeTrialBank = async (args: {
   });
 
   forceProStatusUpdate();
+
+  return {
+    status: 'CREATED',
+    activationUrl: bankLink,
+    consoleUrl,
+    trialEnd: expDate,
+    userEmail: args.adminEmail,
+  };
 };

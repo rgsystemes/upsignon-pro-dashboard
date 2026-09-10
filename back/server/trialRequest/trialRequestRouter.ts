@@ -50,6 +50,7 @@ const TRIAL_CONFIRM_CODES = {
   EXPIRED_CONFIRM_LINK: 'EXPIRED_CONFIRM_LINK',
   TRIAL_ALREADY_CONFIRMED: 'TRIAL_ALREADY_CONFIRMED',
   TRIAL_CREATED: 'TRIAL_CREATED',
+  TRIAL_RESELLER_NAME_CONFLICT: 'TRIAL_RESELLER_NAME_CONFLICT',
   CONFIRM_UNEXPECTED_ERROR: 'CONFIRM_UNEXPECTED_ERROR',
 } as const;
 
@@ -59,6 +60,10 @@ type TrialConfirmResponse = {
   code: TrialConfirmCode;
   status: 200 | 400 | 500;
   success: boolean;
+  activationUrl?: string;
+  consoleUrl?: string;
+  trialEnd?: Date;
+  userEmail?: string;
 };
 
 const TRIAL_CONFIRM_TRANSLATIONS: Record<
@@ -82,6 +87,10 @@ const TRIAL_CONFIRM_TRANSLATIONS: Record<
       status: 200,
       success: true,
     },
+    TRIAL_RESELLER_NAME_CONFLICT: {
+      status: 200,
+      success: true,
+    },
     CONFIRM_UNEXPECTED_ERROR: {
       status: 500,
       success: false,
@@ -101,6 +110,10 @@ const TRIAL_CONFIRM_TRANSLATIONS: Record<
       success: true,
     },
     TRIAL_CREATED: {
+      status: 200,
+      success: true,
+    },
+    TRIAL_RESELLER_NAME_CONFLICT: {
       status: 200,
       success: true,
     },
@@ -398,7 +411,7 @@ const confirmRequest = async ({
       await submitHubspotTrialForm(payload);
       await markHubspotSubmitted(tokenHash);
     }
-    await finalizeTrialBank({
+    const trialBank = await finalizeTrialBank({
       adminId,
       bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
       adminEmail: payload.email,
@@ -415,7 +428,20 @@ const confirmRequest = async ({
       );
       // let the lock in place so no retry can occur
     }
-    return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage);
+
+    if (trialBank.status === 'RESELLER_NAME_CONFLICT') {
+      return buildConfirmResponse(
+        TRIAL_CONFIRM_CODES.TRIAL_RESELLER_NAME_CONFLICT,
+        requestedLanguage,
+      );
+    }
+    return {
+      ...buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage),
+      activationUrl: trialBank.activationUrl,
+      consoleUrl: trialBank.consoleUrl,
+      trialEnd: trialBank.trialEnd,
+      userEmail: trialBank.userEmail,
+    };
   } catch (error) {
     if (tokenHash) {
       try {
@@ -443,12 +469,15 @@ trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
       }),
     ) as { token: string; lang?: 'fr' | 'en' };
 
-    const { status, success, code } = await confirmRequest({
-      token: safeBody.token,
-      requestedLanguage,
-    });
+    const { status, success, code, activationUrl, consoleUrl, trialEnd, userEmail } =
+      await confirmRequest({
+        token: safeBody.token,
+        requestedLanguage,
+      });
 
-    return res.status(status).json({ ok: success, code });
+    return res
+      .status(status)
+      .json({ ok: success, code, activationUrl, consoleUrl, trialEnd, userEmail });
   } catch (error) {
     logError('/confirm-status', 'ERROR:', error);
     const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';

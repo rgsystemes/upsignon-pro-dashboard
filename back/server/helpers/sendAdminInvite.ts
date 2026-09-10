@@ -4,6 +4,13 @@ import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const ttlMinutes = 20;
+
+export const buildAdminImportLink = (userId: string, token: string): string => {
+  const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
+  const encodedToken = encodeURIComponent(token);
+  return `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}&userId=${userId}`;
+};
+
 export const sendAdminInvite = async (
   email: string,
   userId: string,
@@ -15,9 +22,7 @@ export const sendAdminInvite = async (
     const emailConfig = await getEmailConfig();
     const transporter = getMailTransporter(emailConfig, { debug: false });
 
-    const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
-    const encodedToken = encodeURIComponent(token);
-    const link = `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}&userId=${userId}`;
+    const link = buildAdminImportLink(userId, token);
 
     const { text, html, subject } = await buildEmail({
       templateName: 'proAdminInvitation',
