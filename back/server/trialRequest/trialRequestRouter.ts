@@ -414,9 +414,11 @@ const confirmRequest = async ({
     }
     const trialBank = await finalizeTrialBank({
       adminId,
-      bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
+      bankName: `${payload.company.trim().toUpperCase()} ${
+        payload.activityType === 'msp' ? '(interne)' : ''
+      }`.trim(),
       adminEmail: payload.email,
-      resellerName: payload.activityType === 'msp' ? payload.company : null,
+      resellerName: payload.activityType === 'msp' ? payload.company.trim() : null,
       lang: requestedLanguage,
     });
 
