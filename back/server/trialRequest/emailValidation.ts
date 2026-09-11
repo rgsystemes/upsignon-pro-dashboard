@@ -15,6 +15,11 @@ export const ensureConfirmationTable = async (): Promise<void> => {
           )
         `,
       )
+      .then(() =>
+        db.query(
+          `ALTER TABLE ${CONFIRMATION_TABLE_NAME} ADD COLUMN IF NOT EXISTS hubspot_submitted BOOLEAN NOT NULL DEFAULT FALSE`,
+        ),
+      )
       .then(() => undefined)
       .catch((error) => {
         ensureConfirmationTablePromise = null;
@@ -37,17 +42,36 @@ export const activateConfirmationToken = async (tokenHash: string): Promise<bool
   return (insertResult.rowCount || 0) > 0;
 };
 
-export const checkConfirmationClaim = async (tokenHash: string): Promise<boolean> => {
+// Returns null if the claim could not be acquired (already processing, already confirmed and
+// cleaned up, or expired). Otherwise returns whether HubSpot was already notified for this token
+// on a previous attempt, so callers can avoid submitting a duplicate lead on retry.
+export const checkConfirmationClaim = async (
+  tokenHash: string,
+): Promise<{ hubspotSubmitted: boolean } | null> => {
   const result = await db.query(
     `
       UPDATE ${CONFIRMATION_TABLE_NAME}
       SET is_processing = TRUE
       WHERE token_hash = $1 AND created_at >= NOW() - INTERVAL '2 days' AND is_processing = FALSE
-      RETURNING token_hash
+      RETURNING hubspot_submitted
     `,
     [tokenHash],
   );
-  return (result.rowCount || 0) > 0;
+  if (!result.rowCount) {
+    return null;
+  }
+  return { hubspotSubmitted: result.rows[0].hubspot_submitted === true };
+};
+
+export const markHubspotSubmitted = async (tokenHash: string): Promise<void> => {
+  await db.query(
+    `
+      UPDATE ${CONFIRMATION_TABLE_NAME}
+      SET hubspot_submitted = TRUE
+      WHERE token_hash = $1
+    `,
+    [tokenHash],
+  );
 };
 
 export const releaseLockOnConfirmationClaim = async (tokenHash: string): Promise<void> => {
