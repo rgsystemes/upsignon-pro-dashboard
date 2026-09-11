@@ -163,6 +163,62 @@ export const reserveTrialAdmin = async (email: string): Promise<string | null> =
   return insertedAdminRes.rows[0].id;
 };
 
+// Two resellers must never share the same name. When a trial requests a reseller name that
+// already exists, we cannot simply reject it (that would let anyone probe which company names
+// already have an UpSignOn reseller - an oracle). Instead: if the requester's email domain
+// matches an admin already attached to that reseller, we treat this as the same organization
+// trying to re-signup and just notify them instead of creating anything. Otherwise, this is a
+// different organization that happens to share a name, so we disambiguate by suffixing the new
+// reseller's name with the requester's domain.
+const resolveTrialResellerName = async (
+  resellerName: string,
+  adminEmail: string,
+): Promise<{ resellerName: string; alreadyExists: boolean }> => {
+  const existingResellerRes = await db.query('SELECT id FROM resellers WHERE name=$1', [
+    resellerName,
+  ]);
+  if (existingResellerRes.rowCount === 0) {
+    return { resellerName, alreadyExists: false };
+  }
+  const existingResellerId = existingResellerRes.rows[0].id;
+  const domain = adminEmail.split('@')[1].trim().toLowerCase();
+  const domainMatchRes = await db.query(
+    `SELECT 1 FROM admins WHERE reseller_id=$1 AND lower(split_part(email, '@', 2))=$2 LIMIT 1`,
+    [existingResellerId, domain],
+  );
+  if (domainMatchRes.rowCount && domainMatchRes.rowCount > 0) {
+    return { resellerName, alreadyExists: true };
+  }
+  return { resellerName: `${resellerName} (${domain})`, alreadyExists: false };
+};
+
+const sendTrialResellerAlreadyExistsEmail = async ({
+  recipient,
+  companyName,
+  lang,
+}: {
+  recipient: string;
+  companyName: string;
+  lang: 'fr' | 'en';
+}): Promise<void> => {
+  const emailContent = await buildEmail({
+    templateName: 'trialResellerAlreadyExists',
+    locales: getBestLanguage(lang),
+    args: { companyName },
+  });
+
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+
+  await transporter.sendMail({
+    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+    to: recipient,
+    subject: emailContent.subject,
+    text: emailContent.text,
+    html: emailContent.html,
+  });
+};
+
 export const finalizeTrialBank = async (args: {
   adminId: string;
   bankName: string;
@@ -171,6 +227,20 @@ export const finalizeTrialBank = async (args: {
   lang: 'fr' | 'en';
 }): Promise<void> => {
   const adminId = args.adminId;
+
+  let resellerName = args.resellerName;
+  if (resellerName) {
+    const resolved = await resolveTrialResellerName(resellerName, args.adminEmail);
+    if (resolved.alreadyExists) {
+      await sendTrialResellerAlreadyExistsEmail({
+        recipient: args.adminEmail,
+        companyName: resellerName,
+        lang: args.lang,
+      });
+      return;
+    }
+    resellerName = resolved.resellerName;
+  }
 
   let expDate = new Date();
   expDate.setDate(expDate.getDate() + 30);
@@ -183,10 +253,10 @@ export const finalizeTrialBank = async (args: {
     TESTING_EXPIRATION_DATE: expDate,
   };
   let resellerId = null;
-  if (args.resellerName) {
+  if (resellerName) {
     const resellerInsertRes = await db.query(
       'INSERT INTO resellers (name) VALUES ($1) RETURNING id',
-      [args.resellerName],
+      [resellerName],
     );
     resellerId = resellerInsertRes.rows[0].id;
   }
