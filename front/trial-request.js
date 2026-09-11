@@ -41,7 +41,7 @@ const UI_TEXTS = {
     activityAriaLabel: "Type d'activité",
     mspButton: 'MSP, Revendeur, Infogérance',
     enterpriseButton: 'Entreprise privée ou publique',
-    languageLabel: 'Langue',
+    languageLabel: 'Langue*',
     languageOptions: {
       fr: 'Français',
       en: 'Anglais',
@@ -129,7 +129,7 @@ const UI_TEXTS = {
     activityAriaLabel: 'Activity type',
     mspButton: 'MSP, Reseller, Managed Services',
     enterpriseButton: 'Private or public organization',
-    languageLabel: 'Language',
+    languageLabel: 'Language*',
     languageOptions: {
       fr: 'French',
       en: 'English',
@@ -270,8 +270,8 @@ const applyStaticTranslations = () => {
   enterpriseBtn.textContent = t.enterpriseButton;
 
   labels.languageSelect.textContent = t.languageLabel;
-  languageSelect.options[0].textContent = t.languageOptions.fr;
-  languageSelect.options[1].textContent = t.languageOptions.en;
+  languageSelect.querySelector('option[value="fr"]').textContent = t.languageOptions.fr;
+  languageSelect.querySelector('option[value="en"]').textContent = t.languageOptions.en;
   languageSelect.value = currentLanguage;
 
   labels.firstname.textContent = t.labels.firstname;
@@ -359,9 +359,16 @@ const setFieldError = (fieldName, message) => {
 };
 
 const clearAllErrors = () => {
-  ['firstname', 'lastname', 'email', 'phone', 'company', 'zip', 'businessSector'].forEach(
-    clearFieldError,
-  );
+  [
+    'language',
+    'firstname',
+    'lastname',
+    'email',
+    'phone',
+    'company',
+    'zip',
+    'businessSector',
+  ].forEach(clearFieldError);
   privacyConsentError.textContent = '';
   privacyConsentError.previousElementSibling?.classList.remove('error');
 };
@@ -371,7 +378,7 @@ const validateForm = () => {
   const t = UI_TEXTS[currentLanguage].errors;
   let hasError = false;
 
-  const requiredFields = ['firstname', 'lastname', 'email', 'phone', 'company', 'zip'];
+  const requiredFields = ['language', 'firstname', 'lastname', 'email', 'phone', 'company', 'zip'];
   requiredFields.forEach((fieldName) => {
     const value = form.elements[fieldName].value.trim();
     if (!value) {
@@ -437,8 +444,7 @@ mspBtn.addEventListener('click', () => setActivity('msp'));
 enterpriseBtn.addEventListener('click', () => setActivity('enterprise'));
 
 languageSelect.addEventListener('change', (event) => {
-  const nextLanguage = event.target.value === 'en' ? 'en' : 'fr';
-  currentLanguage = nextLanguage;
+  currentLanguage = event.target.value === 'en' ? 'en' : 'fr';
   applyStaticTranslations();
   setActivity(currentActivity);
 });
