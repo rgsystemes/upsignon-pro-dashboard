@@ -217,6 +217,20 @@ export const finalizeTrialBank = async (args: {
   if (resellerName) {
     const resolved = await resolveTrialResellerName(resellerName, args.adminEmail);
     if (resolved.alreadyExists) {
+      // adminId was reserved (admins.email is unique) before this conflict was detected, and
+      // nothing has linked it to a bank or reseller yet. Left as-is, it would become an orphaned
+      // admin that permanently blocks this email from ever reserving a new admin row on a later
+      // retry (e.g. a different company name with no conflict), wrongly surfacing as
+      // TRIAL_ALREADY_CONFIRMED. Only delete it if it is still actually orphaned - a retry that
+      // reuses an adminId already linked from an earlier partial success must not be touched.
+      await db.query(
+        `
+          DELETE FROM admins
+          WHERE id = $1 AND reseller_id IS NULL
+            AND NOT EXISTS (SELECT 1 FROM admin_banks WHERE admin_id = $1)
+        `,
+        [adminId],
+      );
       return { status: 'RESELLER_NAME_CONFLICT' };
     }
     resellerName = resolved.resellerName;
