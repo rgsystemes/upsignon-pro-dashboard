@@ -1,9 +1,10 @@
 {
   "name": "upsignon-pro-dashboard-back",
-  "version": "2.13.0",
+  "version": "2.13.1",
   "licence": "none",
   "private": true,
   "dependencies": {
+    "@hubspot/api-client": "^13.4.0",
     "@types/mime": "4.0.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
@@ -16,7 +17,7 @@
     "nodemailer": "^9.1.0",
     "path": "^0.12.7",
     "pg": "^8.23.0",
-    "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail#v1.0.9",
+    "upsignon-mail": "git+https://github.com/rgsystemes/upsignon-mail#v1.0.11",
     "upsignon-ms-entra": "git+https://github.com/rgsystemes/upsignon-ms-entra.git#v1.0.4",
     "uuid": "^14.0.2"
   },

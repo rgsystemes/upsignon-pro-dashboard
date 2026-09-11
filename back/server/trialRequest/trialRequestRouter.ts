@@ -1,0 +1,461 @@
+import { Router } from 'express';
+import Joi from 'joi';
+import { createHash, createHmac, timingSafeEqual } from 'crypto';
+import { buildEmail, getBestLanguage } from 'upsignon-mail';
+import env from '../helpers/env';
+import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { logError } from '../helpers/logger';
+import { finalizeTrialBank, reserveTrialAdmin } from '../helpers/configureBankWithAdminEmail';
+import {
+  COMPANY_SIZE_HUBSPOT_MAPPING,
+  DIRECT_ACTIVITY_HUBSPOT_MAPPING,
+  SignedTrialPayload,
+  submitHubspotTrialForm,
+  TrialRequestBody,
+} from './hubspotHelper';
+import { db } from '../helpers/db';
+import {
+  activateConfirmationToken,
+  checkConfirmationClaim,
+  ensureConfirmationTable,
+  markAdminReserved,
+  markHubspotSubmitted,
+  releaseConfirmationClaimAndCleanup,
+  releaseLockOnConfirmationClaim,
+} from './emailValidation';
+import { csrfProtection } from '../helpers/csrf';
+import { allowedTrialRequestOriginRegexp } from '../helpers/requestSecurity';
+
+export const trialRequestRouter = Router();
+
+export const trialRequestCorsMiddleware = (req: any, res: any, next: any) => {
+  if (allowedTrialRequestOriginRegexp.test(req.headers.origin)) {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+  }
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-CSRF-Token');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,POST,OPTIONS');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+};
+const TRIAL_REQUEST_TOKEN_TTL_MS = 1000 * 60 * 60 * 24;
+const TRIAL_REQUEST_ERROR_CODES = {
+  INVALID_EMAIL_DOMAIN: 'INVALID_EMAIL_DOMAIN',
+  SUBMIT_FAILED: 'TRIAL_REQUEST_SUBMIT_FAILED',
+} as const;
+
+const TRIAL_CONFIRM_CODES = {
+  INVALID_CONFIRM_LINK: 'INVALID_CONFIRM_LINK',
+  EXPIRED_CONFIRM_LINK: 'EXPIRED_CONFIRM_LINK',
+  TRIAL_ALREADY_CONFIRMED: 'TRIAL_ALREADY_CONFIRMED',
+  TRIAL_CREATED: 'TRIAL_CREATED',
+  CONFIRM_UNEXPECTED_ERROR: 'CONFIRM_UNEXPECTED_ERROR',
+} as const;
+
+type TrialConfirmCode = (typeof TRIAL_CONFIRM_CODES)[keyof typeof TRIAL_CONFIRM_CODES];
+
+type TrialConfirmResponse = {
+  code: TrialConfirmCode;
+  status: 200 | 400 | 500;
+  success: boolean;
+};
+
+const TRIAL_CONFIRM_TRANSLATIONS: Record<
+  'fr' | 'en',
+  Record<TrialConfirmCode, { status: 200 | 400 | 500; success: boolean }>
+> = {
+  fr: {
+    INVALID_CONFIRM_LINK: {
+      status: 400,
+      success: false,
+    },
+    EXPIRED_CONFIRM_LINK: {
+      status: 400,
+      success: false,
+    },
+    TRIAL_ALREADY_CONFIRMED: {
+      status: 200,
+      success: true,
+    },
+    TRIAL_CREATED: {
+      status: 200,
+      success: true,
+    },
+    CONFIRM_UNEXPECTED_ERROR: {
+      status: 500,
+      success: false,
+    },
+  },
+  en: {
+    INVALID_CONFIRM_LINK: {
+      status: 400,
+      success: false,
+    },
+    EXPIRED_CONFIRM_LINK: {
+      status: 400,
+      success: false,
+    },
+    TRIAL_ALREADY_CONFIRMED: {
+      status: 200,
+      success: true,
+    },
+    TRIAL_CREATED: {
+      status: 200,
+      success: true,
+    },
+    CONFIRM_UNEXPECTED_ERROR: {
+      status: 500,
+      success: false,
+    },
+  },
+};
+
+const buildConfirmResponse = (
+  code: TrialConfirmCode,
+  language: 'fr' | 'en',
+): TrialConfirmResponse => {
+  const translated = TRIAL_CONFIRM_TRANSLATIONS[language][code];
+  return {
+    code,
+    status: translated.status,
+    success: translated.success,
+  };
+};
+
+// List of common disposable email domains to reject
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  'mailinator.com',
+  'temp-mail.org',
+  '10minutemail.com',
+  'tempmail.com',
+  'throwaway.email',
+  'guerrillamail.com',
+  'yopmail.com',
+  'maildrop.cc',
+  'mailnesia.com',
+  'trashmail.com',
+  'fakeinbox.com',
+  'min.email',
+  'maildrop.cc',
+  'spam4.me',
+  'sharklasers.com',
+]);
+
+const getSigningSecret = (): string => {
+  if (!env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET is required to sign trial request tokens');
+  }
+  return env.SESSION_SECRET;
+};
+
+const signPayload = (payload: SignedTrialPayload): string => {
+  const tokenPayload = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const signature = createHmac('sha256', getSigningSecret())
+    .update(tokenPayload)
+    .digest('base64url');
+  return `${tokenPayload}.${signature}`;
+};
+
+const verifySignedPayload = (token: string): SignedTrialPayload | null => {
+  try {
+    const [tokenPayload, signature] = token.split('.');
+    if (!tokenPayload || !signature) {
+      return null;
+    }
+
+    const expectedSignature = createHmac('sha256', getSigningSecret())
+      .update(tokenPayload)
+      .digest('base64url');
+
+    const signatureIsValid = timingSafeEqual(
+      Buffer.from(signature, 'utf8'),
+      Buffer.from(expectedSignature, 'utf8'),
+    );
+
+    if (!signatureIsValid) {
+      return null;
+    }
+
+    const payload = JSON.parse(Buffer.from(tokenPayload, 'base64url').toString('utf8'));
+    if (!payload?.expiresAt || Date.now() > payload.expiresAt) {
+      return null;
+    }
+
+    return payload as SignedTrialPayload;
+  } catch {
+    return null;
+  }
+};
+
+const hashToken = (token: string): string => createHash('sha256').update(token).digest('hex');
+
+const sendTrialValidationEmail = async ({
+  recipient,
+  language,
+  token,
+}: {
+  recipient: string;
+  language: 'fr' | 'en';
+  token: string;
+}) => {
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+  const emailValidationLink = `${env.FRONTEND_URL}/trial-request-confirm?token=${encodeURIComponent(token)}&lang=${language}`;
+  const { html, text, subject } = await buildEmail({
+    templateName: 'trialEmailValidation',
+    locales: getBestLanguage(language),
+    args: {
+      emailValidationLink,
+    },
+  });
+
+  await transporter.sendMail({
+    from: emailConfig.EMAIL_SENDING_ADDRESS,
+    to: recipient,
+    subject,
+    text,
+    html,
+  });
+};
+
+// Sent instead of the trial confirmation email when the requested address already has an
+// account, so that the /submit response never reveals whether an account exists (account
+// enumeration).
+const sendAccountAlreadyExistsEmail = async ({
+  recipient,
+  language,
+}: {
+  recipient: string;
+  language: 'fr' | 'en';
+}) => {
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+  const loginLink = `${env.FRONTEND_URL}/login.html`;
+  const { html, text, subject } = await buildEmail({
+    templateName: 'trialAccountAlreadyExists',
+    locales: getBestLanguage(language),
+    args: {
+      loginLink,
+    },
+  });
+
+  await transporter.sendMail({
+    from: emailConfig.EMAIL_SENDING_ADDRESS,
+    to: recipient,
+    subject,
+    text,
+    html,
+  });
+};
+
+trialRequestRouter.post('/submit', async (req, res) => {
+  try {
+    const validatedBody = Joi.attempt(
+      req.body,
+      Joi.object({
+        language: Joi.string().valid('fr', 'en').required(),
+        activityType: Joi.string().valid('msp', 'enterprise').required(),
+        firstname: Joi.string().trim().min(1).max(120).required(),
+        lastname: Joi.string().trim().min(1).max(120).required(),
+        email: Joi.string().trim().lowercase().email().required(),
+        phone: Joi.string().trim().min(1).max(120).required(),
+        company: Joi.string().trim().min(2).max(120).required(),
+        zip: Joi.string().trim().min(1).max(32).required(),
+        businessSector: Joi.when('activityType', {
+          is: 'enterprise',
+          then: Joi.string()
+            .valid(...Object.keys(DIRECT_ACTIVITY_HUBSPOT_MAPPING))
+            .required(),
+          otherwise: Joi.string().allow('', null),
+        }),
+        employeeCount: Joi.string()
+          .valid(...Object.keys(COMPANY_SIZE_HUBSPOT_MAPPING))
+          .allow('', null),
+        marketingConsent: Joi.boolean().required(),
+        privacyConsent: Joi.boolean().valid(true).required(),
+        hutk: Joi.string().allow('', null),
+      }),
+    ) as TrialRequestBody;
+
+    // Check for disposable email domains
+    const emailDomain = validatedBody.email.split('@')[1];
+    if (emailDomain && DISPOSABLE_EMAIL_DOMAINS.has(emailDomain)) {
+      return res.status(400).json({
+        ok: false,
+        code: TRIAL_REQUEST_ERROR_CODES.INVALID_EMAIL_DOMAIN,
+      });
+    }
+
+    // The API response never reveals whether an account already exists for this email
+    // (account enumeration). Instead, the branch below only changes which email gets sent.
+    //
+    // An admins row alone isn't enough to call this "already has an account": reserveTrialAdmin
+    // creates that row before HubSpot/bank creation run, so a request that failed partway through
+    // (e.g. bank creation errored) leaves a reserved-but-incomplete admin behind. Only count it as
+    // an existing account once it's actually usable (linked to a bank or a reseller) - otherwise
+    // fall through and send a fresh validation link so the signup can be retried.
+    const alreadyHasTrial = await db.query(
+      `
+        SELECT 1 FROM admins a
+        LEFT JOIN admin_banks ab ON ab.admin_id = a.id
+        WHERE a.email = lower($1) AND (ab.admin_id IS NOT NULL OR a.reseller_id IS NOT NULL)
+      `,
+      [validatedBody.email],
+    );
+    if (alreadyHasTrial.rowCount && alreadyHasTrial.rowCount > 0) {
+      await sendAccountAlreadyExistsEmail({
+        recipient: validatedBody.email,
+        language: validatedBody.language,
+      });
+      return res.status(200).json({ ok: true });
+    }
+
+    const now = Date.now();
+    const payload: SignedTrialPayload = {
+      ...validatedBody,
+      issuedAt: now,
+      expiresAt: now + TRIAL_REQUEST_TOKEN_TTL_MS,
+      ipAddress: req.ip,
+    };
+
+    const signedToken = signPayload(payload);
+
+    await ensureConfirmationTable();
+    let tokenHash: string = hashToken(signedToken);
+    const activated = await activateConfirmationToken(tokenHash, payload.email);
+    if (!activated) {
+      // A confirmation for this email is currently being processed (bank creation in progress) -
+      // do not issue a second link, and do not reveal that to the caller.
+      return res.status(200).json({ ok: true });
+    }
+
+    await sendTrialValidationEmail({
+      recipient: payload.email,
+      language: payload.language,
+      token: signedToken,
+    });
+
+    return res.status(200).json({ ok: true });
+  } catch (error) {
+    logError('trialRequestRouter POST /submit', error);
+    return res.status(400).json({
+      ok: false,
+      code: TRIAL_REQUEST_ERROR_CODES.SUBMIT_FAILED,
+    });
+  }
+});
+
+const confirmRequest = async ({
+  token,
+  requestedLanguage,
+}: {
+  token: string;
+  requestedLanguage: 'fr' | 'en';
+}): Promise<TrialConfirmResponse> => {
+  let tokenHash: string | null = null;
+
+  try {
+    const payload = verifySignedPayload(token);
+    if (!payload) {
+      return buildConfirmResponse(TRIAL_CONFIRM_CODES.EXPIRED_CONFIRM_LINK, requestedLanguage);
+    }
+
+    await ensureConfirmationTable();
+    tokenHash = hashToken(token);
+    const claim = await checkConfirmationClaim(tokenHash);
+
+    if (!claim) {
+      return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
+    }
+
+    // Reserve the admin row (unique on email) before doing anything else. This is what protects
+    // against the same email being confirmed twice at once (e.g. the trial request was submitted
+    // from two different browsers, producing two valid tokens): only the confirmation that wins
+    // this reservation may go on to notify HubSpot and create the bank. If this token already
+    // reserved it on a previous attempt (a real retry after a later failure), reuse that id
+    // instead of trying to reserve again, which would otherwise look like a race with itself.
+    let adminId = claim.adminId;
+    if (!adminId) {
+      adminId = await reserveTrialAdmin(payload.email);
+      if (!adminId) {
+        try {
+          await releaseConfirmationClaimAndCleanup(tokenHash);
+        } catch (releaseError) {
+          logError(
+            'trialRequestRouter POST /confirm-status - releaseConfirmationClaimAndCleanup failed after lost admin reservation race',
+            releaseError,
+          );
+        }
+        return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_ALREADY_CONFIRMED, requestedLanguage);
+      }
+      await markAdminReserved(tokenHash, adminId);
+    }
+
+    // Only submit to HubSpot once per token: if a previous attempt got this far but then
+    // failed further down (e.g. bank creation), retrying must not create a duplicate lead.
+    if (!claim.hubspotSubmitted) {
+      await submitHubspotTrialForm(payload);
+      await markHubspotSubmitted(tokenHash);
+    }
+    await finalizeTrialBank({
+      adminId,
+      bankName: `${payload.company.toUpperCase()} ${payload.activityType === 'msp' ? '(interne)' : ''}`,
+      adminEmail: payload.email,
+      resellerName: payload.activityType === 'msp' ? payload.company : null,
+      lang: requestedLanguage,
+    });
+
+    try {
+      await releaseConfirmationClaimAndCleanup(tokenHash);
+    } catch (releaseError) {
+      logError(
+        'trialRequestRouter POST /confirm-status - releaseConfirmationClaimAndCleanup failed',
+        releaseError,
+      );
+      // let the lock in place so no retry can occur
+    }
+    return buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage);
+  } catch (error) {
+    if (tokenHash) {
+      try {
+        await releaseLockOnConfirmationClaim(tokenHash);
+      } catch (releaseError) {
+        logError(
+          'trialRequestRouter POST /confirm-status - releaseLockOnConfirmationClaim failed',
+          releaseError,
+        );
+      }
+    }
+    logError('trialRequestRouter POST /confirm-status', 'ERROR:', error);
+    return buildConfirmResponse(TRIAL_CONFIRM_CODES.CONFIRM_UNEXPECTED_ERROR, requestedLanguage);
+  }
+};
+
+trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
+  try {
+    const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
+    const safeBody = Joi.attempt(
+      req.body,
+      Joi.object({
+        token: Joi.string().trim().required(),
+        lang: Joi.string().valid('fr', 'en').optional(),
+      }),
+    ) as { token: string; lang?: 'fr' | 'en' };
+
+    const { status, success, code } = await confirmRequest({
+      token: safeBody.token,
+      requestedLanguage,
+    });
+
+    return res.status(status).json({ ok: success, code });
+  } catch (error) {
+    logError('/confirm-status', 'ERROR:', error);
+    const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
+    const response = buildConfirmResponse(
+      TRIAL_CONFIRM_CODES.INVALID_CONFIRM_LINK,
+      requestedLanguage,
+    );
+    return res.status(response.status).json({ ok: response.success, code: response.code });
+  }
+});
