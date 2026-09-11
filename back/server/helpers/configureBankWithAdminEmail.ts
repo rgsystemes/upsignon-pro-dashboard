@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import { v4 } from 'uuid';
 import { db } from './db';
 import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
-import { buildAdminImportLink, ttlMinutes } from './sendAdminInvite';
+import { buildAdminImportLink, generateAdminImportToken } from './sendAdminInvite';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 type BankSettings = {
@@ -199,6 +198,7 @@ export type FinalizeTrialBankResult =
       status: 'CREATED';
       activationUrl: string;
       consoleUrl: string;
+      consoleUrlExpiresAt: Date;
       trialEnd: Date;
       userEmail: string;
     }
@@ -278,14 +278,8 @@ export const finalizeTrialBank = async (args: {
   const bankLink = `${url}/${insertedBank.public_id}`;
   const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
 
-  const adminImportToken = v4();
-  const adminImportTokenExpiresAt = new Date();
-  adminImportTokenExpiresAt.setTime(adminImportTokenExpiresAt.getTime() + ttlMinutes * 60 * 1000);
-  await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
-    adminImportToken,
-    adminImportTokenExpiresAt,
-    adminId,
-  ]);
+  const { token: adminImportToken, tokenExpiresAt: adminImportTokenExpiresAt } =
+    await generateAdminImportToken(adminId);
   const consoleUrl = buildAdminImportLink(adminId, adminImportToken);
 
   const emailContent = await buildEmail({
@@ -315,6 +309,7 @@ export const finalizeTrialBank = async (args: {
     status: 'CREATED',
     activationUrl: bankLink,
     consoleUrl,
+    consoleUrlExpiresAt: adminImportTokenExpiresAt,
     trialEnd: expDate,
     userEmail: args.adminEmail,
   };

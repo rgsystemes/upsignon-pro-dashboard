@@ -332,6 +332,19 @@
         color: #0b544a;
       }
 
+      .btn-outline.is-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+
+      .success-console-timer {
+        margin: 8px 0 0 34px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #8d929d;
+      }
+
       .success-console-hint {
         margin: 10px 0 0 34px;
         font-size: 12px;
@@ -495,7 +508,8 @@
 
         .success-step-text,
         .success-step-actions,
-        .success-console-hint {
+        .success-console-hint,
+        .success-console-timer {
           margin-left: 0;
         }
 
@@ -623,8 +637,8 @@
               <h2 id="successStep2Title">Accédez à la console d'administration</h2>
             </div>
             <p id="successStep2Text" class="success-step-text">
-              Gérez vos utilisateurs, vos politiques de sécurité et vos partages. Connectez-vous
-              avec l'adresse email que vous venez de valider.
+              Gérez vos utilisateurs et vos politiques de sécurité. Cliquez ici pour importer vos
+              accès administratifs dans votre coffre-fort.
             </p>
             <a
               id="successConsoleLink"
@@ -651,7 +665,8 @@
                 ></path>
               </svg>
             </a>
-            <p id="successConsoleExpiredHint" class="success-console-hint">
+            <p id="successConsoleTimer" class="success-console-timer" role="status" hidden></p>
+            <p id="successConsoleExpiredHint" class="success-console-hint" hidden>
               <span id="successConsoleExpiredHintText"></span>
               <a id="successConsoleLoginPageLink" href="#" target="_blank" rel="noreferrer">
                 <span id="successConsoleLoginPageLinkText"></span>
@@ -704,12 +719,12 @@
             <path d="M3.5 6.5l8.5 6 8.5-6"></path>
           </svg>
           <div>
-            <span id="successFooterNote1"
-              >Un email récapitulatif vous a aussi été envoyé, à titre de sauvegarde.</span
-            >
-            <strong id="successFooterNote2"
-              >Si vous suivez les étapes ici, rien à refaire depuis votre boîte mail.</strong
-            >
+            <span id="successFooterNote1">
+              Un email récapitulatif vous a aussi été envoyé, à titre de sauvegarde.
+            </span>
+            <strong id="successFooterNote2">
+              Si vous suivez les étapes ici, rien à refaire depuis votre boîte mail.
+            </strong>
           </div>
         </div>
         <div class="success-footer-links">

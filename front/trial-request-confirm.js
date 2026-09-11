@@ -22,6 +22,8 @@ const successStep2TitleNode = document.getElementById('successStep2Title');
 const successStep2TextNode = document.getElementById('successStep2Text');
 const successConsoleLinkNode = document.getElementById('successConsoleLink');
 const successConsoleLabelNode = document.getElementById('successConsoleLabel');
+const successConsoleTimerNode = document.getElementById('successConsoleTimer');
+const successConsoleExpiredHintNode = document.getElementById('successConsoleExpiredHint');
 const successConsoleExpiredHintTextNode = document.getElementById('successConsoleExpiredHintText');
 const successConsoleLoginPageLinkNode = document.getElementById('successConsoleLoginPageLink');
 const successConsoleLoginPageLinkTextNode = document.getElementById(
@@ -101,7 +103,8 @@ const UI_TEXTS = {
       step2Text:
         'Gérez vos utilisateurs et vos politiques de sécurité. Cliquez ici pour importer vos accès administratifs dans votre coffre-fort.',
       consoleLabel: 'Accéder à la console',
-      consoleExpiredHintPrefix: 'Si ce lien a expiré, vous pouvez le régénérer depuis la page',
+      consoleTimerText: (mmss) => `Ce lien expire dans ${mmss}`,
+      consoleExpiredHintPrefix: 'Ce lien a expiré, vous pouvez le régénérer depuis la page',
       qrLabel: 'Activation mobile',
       qrHint: 'Scannez ce QR code depuis votre téléphone pour activer votre banque.',
       footerNote1: 'Un email récapitulatif vous a aussi été envoyé, à titre de sauvegarde.',
@@ -163,7 +166,8 @@ const UI_TEXTS = {
       step2Text:
         'Manage your users and security policies. Click here to import your admin access into your vault.',
       consoleLabel: 'Access the console',
-      consoleExpiredHintPrefix: 'If this link has expired, you can regenerate it from the page',
+      consoleTimerText: (mmss) => `This link expires in ${mmss}`,
+      consoleExpiredHintPrefix: 'This link has expired, you can regenerate it from the page',
       qrLabel: 'Mobile activation',
       qrHint: 'Scan this QR code from your phone to activate your bank.',
       footerNote1: 'A summary email has also been sent to you, as a backup.',
@@ -281,7 +285,62 @@ const drawQrCode = (imgNode, url) => {
   }
 };
 
-const applySuccessState = ({ language, activationUrl, consoleUrl, trialEnd, userEmail }) => {
+let consoleLinkCountdownIntervalId = null;
+
+const formatCountdownMmSs = (remainingMs) => {
+  const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+};
+
+const disableConsoleLink = (successTexts) => {
+  successConsoleLinkNode.classList.add('is-disabled');
+  successConsoleLinkNode.removeAttribute('href');
+  successConsoleLinkNode.setAttribute('aria-disabled', 'true');
+  successConsoleTimerNode.hidden = true;
+  successConsoleExpiredHintTextNode.textContent = successTexts.consoleExpiredHintPrefix;
+  successConsoleExpiredHintNode.hidden = false;
+};
+
+const startConsoleLinkCountdown = (successTexts, consoleUrlExpiresAt) => {
+  if (consoleLinkCountdownIntervalId) {
+    clearInterval(consoleLinkCountdownIntervalId);
+    consoleLinkCountdownIntervalId = null;
+  }
+
+  const expiresAtMs = new Date(consoleUrlExpiresAt).getTime();
+  if (!consoleUrlExpiresAt || Number.isNaN(expiresAtMs)) {
+    successConsoleTimerNode.hidden = true;
+    return;
+  }
+
+  const tick = () => {
+    const remainingMs = expiresAtMs - Date.now();
+    if (remainingMs <= 0) {
+      clearInterval(consoleLinkCountdownIntervalId);
+      consoleLinkCountdownIntervalId = null;
+      disableConsoleLink(successTexts);
+      return;
+    }
+    successConsoleTimerNode.hidden = false;
+    successConsoleTimerNode.textContent = successTexts.consoleTimerText(
+      formatCountdownMmSs(remainingMs),
+    );
+  };
+
+  tick();
+  consoleLinkCountdownIntervalId = setInterval(tick, 1000);
+};
+
+const applySuccessState = ({
+  language,
+  activationUrl,
+  consoleUrl,
+  consoleUrlExpiresAt,
+  trialEnd,
+  userEmail,
+}) => {
   const texts = UI_TEXTS[language];
   const successTexts = texts.success;
 
@@ -324,11 +383,14 @@ const applySuccessState = ({ language, activationUrl, consoleUrl, trialEnd, user
 
   successStep2TitleNode.textContent = successTexts.step2Title;
   successStep2TextNode.textContent = successTexts.step2Text;
+  successConsoleLinkNode.classList.remove('is-disabled');
+  successConsoleLinkNode.removeAttribute('aria-disabled');
   successConsoleLinkNode.href = consoleUrl;
   successConsoleLabelNode.textContent = successTexts.consoleLabel;
+  successConsoleExpiredHintNode.hidden = true;
+  startConsoleLinkCountdown(successTexts, consoleUrlExpiresAt);
 
   const loginPageUrl = `${PUBLIC_URL}/login.html`;
-  successConsoleExpiredHintTextNode.textContent = successTexts.consoleExpiredHintPrefix;
   successConsoleLoginPageLinkNode.href = loginPageUrl;
   successConsoleLoginPageLinkTextNode.textContent = loginPageUrl;
 
@@ -433,6 +495,7 @@ const confirmTrialRequest = async (language, token) => {
         language,
         activationUrl: responseBody.activationUrl,
         consoleUrl: responseBody.consoleUrl,
+        consoleUrlExpiresAt: responseBody.consoleUrlExpiresAt,
         trialEnd: responseBody.trialEnd,
         userEmail: responseBody.userEmail,
       });

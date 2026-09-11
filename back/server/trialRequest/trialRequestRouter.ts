@@ -62,6 +62,7 @@ type TrialConfirmResponse = {
   success: boolean;
   activationUrl?: string;
   consoleUrl?: string;
+  consoleUrlExpiresAt?: Date;
   trialEnd?: Date;
   userEmail?: string;
 };
@@ -439,6 +440,7 @@ const confirmRequest = async ({
       ...buildConfirmResponse(TRIAL_CONFIRM_CODES.TRIAL_CREATED, requestedLanguage),
       activationUrl: trialBank.activationUrl,
       consoleUrl: trialBank.consoleUrl,
+      consoleUrlExpiresAt: trialBank.consoleUrlExpiresAt,
       trialEnd: trialBank.trialEnd,
       userEmail: trialBank.userEmail,
     };
@@ -469,15 +471,29 @@ trialRequestRouter.post('/confirm-status', csrfProtection, async (req, res) => {
       }),
     ) as { token: string; lang?: 'fr' | 'en' };
 
-    const { status, success, code, activationUrl, consoleUrl, trialEnd, userEmail } =
-      await confirmRequest({
-        token: safeBody.token,
-        requestedLanguage,
-      });
+    const {
+      status,
+      success,
+      code,
+      activationUrl,
+      consoleUrl,
+      consoleUrlExpiresAt,
+      trialEnd,
+      userEmail,
+    } = await confirmRequest({
+      token: safeBody.token,
+      requestedLanguage,
+    });
 
-    return res
-      .status(status)
-      .json({ ok: success, code, activationUrl, consoleUrl, trialEnd, userEmail });
+    return res.status(status).json({
+      ok: success,
+      code,
+      activationUrl,
+      consoleUrl,
+      consoleUrlExpiresAt,
+      trialEnd,
+      userEmail,
+    });
   } catch (error) {
     logError('/confirm-status', 'ERROR:', error);
     const requestedLanguage = req.body?.lang === 'en' ? 'en' : 'fr';
