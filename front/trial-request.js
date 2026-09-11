@@ -94,8 +94,9 @@ const UI_TEXTS = {
     ],
     submitButton: 'Envoyer',
     sendingStatus: 'Envoi en cours...',
+    successHeading: "Merci ! Votre demande d'essai a été initiée",
     successStatus:
-      'Demande reçue. Vérifiez votre boîte email pour valider votre adresse et finaliser la création de la banque test.',
+      "Vérifiez votre boîte mail pour confirmer votre adresse email et poursuivre l'activation de votre essai.",
     showFormButton: 'Revenir au formulaire',
     errorStatus:
       "Impossible d'envoyer la demande pour le moment. Merci de réessayer dans quelques instants.",
@@ -182,8 +183,9 @@ const UI_TEXTS = {
     ],
     submitButton: 'Submit',
     sendingStatus: 'Sending...',
+    successHeading: 'Thank you! Your trial request has been initiated',
     successStatus:
-      'Request received. Please check your email inbox to validate your email address and complete the test vault creation.',
+      'Please check your email inbox to confirm your email address and continue activating your trial.',
     showFormButton: 'Back to the form',
     errorStatus: 'Unable to submit your request right now. Please try again in a few moments.',
     serverErrors: {
@@ -263,7 +265,7 @@ const applyStaticTranslations = () => {
   const t = UI_TEXTS[currentLanguage];
   document.documentElement.lang = currentLanguage;
   document.title = t.pageTitle;
-  headingNode.textContent = t.heading;
+  headingNode.textContent = isSuccessState ? t.successHeading : t.heading;
   subtitleNode.textContent = t.subtitle;
   activityGroup.setAttribute('aria-label', t.activityAriaLabel);
   mspBtn.textContent = t.mspButton;
@@ -301,12 +303,14 @@ const setStatus = (message, isError = false) => {
 const showSuccessPanel = () => {
   isSuccessState = true;
   trialRequestContent.style.display = 'none';
+  headingNode.textContent = UI_TEXTS[currentLanguage].successHeading;
   successMessageNode.textContent = UI_TEXTS[currentLanguage].successStatus;
   successPanel.style.display = 'block';
 };
 
 const hideSuccessPanel = () => {
   isSuccessState = false;
+  headingNode.textContent = UI_TEXTS[currentLanguage].heading;
   successPanel.style.display = 'none';
   trialRequestContent.style.display = 'block';
   setActivity(currentActivity);
