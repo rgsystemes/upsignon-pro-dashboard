@@ -75,7 +75,7 @@ const UI_TEXTS = {
       TRIAL_ALREADY_CONFIRMED: {
         title: 'Demande déjà validée',
         message:
-          "Cette demande d'essai a déjà été validée. Si besoin, consultez vos emails pour retrouver les informations d'accès.",
+          "Cette demande d'essai a déjà été validée. Si besoin, consultez vos emails pour retrouver les informations d'accès, ou contactez-nous à help@rgsystem.com.",
       },
       TRIAL_RESELLER_NAME_CONFLICT: {
         title: 'Un environnement existe déjà',
@@ -139,7 +139,7 @@ const UI_TEXTS = {
       TRIAL_ALREADY_CONFIRMED: {
         title: 'Request already confirmed',
         message:
-          'This trial request has already been confirmed. Please check your emails for access details.',
+          'This trial request has already been confirmed. Please check your emails for access details, or contact us at help@rgsystem.com.',
       },
       TRIAL_RESELLER_NAME_CONFLICT: {
         title: 'An environment already exists',
