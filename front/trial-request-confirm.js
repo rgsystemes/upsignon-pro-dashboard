@@ -113,6 +113,22 @@ const getToken = () => {
   return token ? token.trim() : '';
 };
 
+// PUBLIC_URL (the API host) may differ from this page's own origin, e.g. in local
+// dev where the front is served on :8090 and the backend on :3001. `credentials:
+// 'same-origin'` silently drops/ignores the session cookie in that case, which
+// makes the CSRF handshake fail every time. Switch to 'include'/'cors' whenever
+// the two origins actually differ.
+const getPublicOrigin = () => {
+  try {
+    return new URL(PUBLIC_URL, window.location.href).origin;
+  } catch {
+    return window.location.origin;
+  }
+};
+const IS_CROSS_ORIGIN = getPublicOrigin() !== window.location.origin;
+const FETCH_MODE = IS_CROSS_ORIGIN ? 'cors' : 'same-origin';
+const FETCH_CREDENTIALS = IS_CROSS_ORIGIN ? 'include' : 'same-origin';
+
 let csrfTokenPromise = null;
 
 const resetCsrfTokenCache = () => {
@@ -124,7 +140,8 @@ const getCsrfToken = async () => {
     csrfTokenPromise = fetch(`${PUBLIC_URL}/csrf-token`, {
       method: 'GET',
       cache: 'no-store',
-      credentials: 'same-origin',
+      mode: FETCH_MODE,
+      credentials: FETCH_CREDENTIALS,
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -213,7 +230,8 @@ const confirmTrialRequest = async (language, token) => {
           'X-CSRF-Token': csrfToken,
         },
         body: JSON.stringify({ token, lang: language }),
-        credentials: 'same-origin',
+        mode: FETCH_MODE,
+        credentials: FETCH_CREDENTIALS,
       });
 
       if (attempt === 0 && (await isInvalidCsrfTokenResponse(response))) {
