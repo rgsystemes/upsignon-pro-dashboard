@@ -27,6 +27,12 @@ export const configureBankWithAdminEmailAndSendMail = async (
   const sessionAdminEmail: string = req.session?.adminEmail;
   const salesEmail = validatedBody.salesEmail; // Important ! do not add a fallback. Otherwise the reseller's admin could be set as the Septeo sales and receive trial emails.
 
+  if (validatedBody.isTrial && validatedBody.resellerId) {
+    // A test bank must never belong to a bank group (reseller).
+    res.status(400).end();
+    return;
+  }
+
   let newBankSettings: BankSettings = {
     SALES_REP: salesEmail,
   };

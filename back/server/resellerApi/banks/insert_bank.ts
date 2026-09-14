@@ -19,10 +19,11 @@ export const insert_bank = async (req: any, res: any): Promise<void> => {
     );
 
     const resellerId = req.proxyParamsResellerId;
-    if (
-      req.session.adminRole !== 'superadmin' &&
-      req.session.adminRole !== 'restricted_superadmin'
-    ) {
+    if (req.session.adminRole === 'restricted_superadmin') {
+      res.sendStatus(401);
+      return;
+    }
+    if (req.session.adminRole !== 'superadmin') {
       const isOwner = await hasResellerOwnership(req, resellerId);
       if (!isOwner) {
         res.sendStatus(401);
