@@ -4,6 +4,7 @@ import env from './env';
 import { getEmailConfig, getMailTransporter } from './mailTransporter';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
+import { buildAdminImportLink, generateAdminImportToken } from './sendAdminInvite';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 type BankSettings = {
@@ -144,4 +145,186 @@ export const configureBankWithAdminEmailAndSendMail = async (
   forceProStatusUpdate();
 
   res.status(200).end();
+};
+
+// Atomically reserves the admins row for a trial signup. This is the only step that is safe to
+// race on the email address (admins.email is unique), so it must run before submitHubspotTrialForm:
+// if two confirmations for the same email (e.g. the same trial request opened in two browsers)
+// run concurrently, only one of them may reserve the admin and go on to notify HubSpot / create
+// the bank; the other must find out right away, before causing any side effect.
+// Returns null if an admin already exists for this email (someone else's reservation won).
+export const reserveTrialAdmin = async (email: string): Promise<string | null> => {
+  const insertedAdminRes = await db.query(
+    `INSERT INTO admins (id, email, admin_role) VALUES (gen_random_uuid(), lower($1), 'admin') ON CONFLICT (email) DO NOTHING RETURNING id`,
+    [email],
+  );
+  if (insertedAdminRes.rowCount === 0) {
+    return null;
+  }
+  return insertedAdminRes.rows[0].id;
+};
+
+// Two resellers must never share the same name. When a trial requests a reseller name that
+// already exists, we cannot simply reject it (that would let anyone probe which company names
+// already have an UpSignOn reseller - an oracle). Instead: if the requester's email domain
+// matches an admin already attached to that reseller, we treat this as the same organization
+// trying to re-signup and just notify them instead of creating anything. Otherwise, this is a
+// different organization that happens to share a name, so we disambiguate by suffixing the new
+// reseller's name with the requester's domain.
+const resolveTrialResellerName = async (
+  resellerName: string,
+  adminEmail: string,
+): Promise<{ resellerName: string; alreadyExists: boolean }> => {
+  const existingResellerRes = await db.query('SELECT id FROM resellers WHERE name=$1', [
+    resellerName,
+  ]);
+  if (existingResellerRes.rowCount === 0) {
+    return { resellerName, alreadyExists: false };
+  }
+  const existingResellerId = existingResellerRes.rows[0].id;
+  const domain = adminEmail.split('@')[1].trim().toLowerCase();
+  const domainMatchRes = await db.query(
+    `SELECT 1 FROM admins WHERE reseller_id=$1 AND lower(split_part(email, '@', 2))=$2 LIMIT 1`,
+    [existingResellerId, domain],
+  );
+  if (domainMatchRes.rowCount && domainMatchRes.rowCount > 0) {
+    return { resellerName, alreadyExists: true };
+  }
+  return { resellerName: `${resellerName} (${domain})`, alreadyExists: false };
+};
+
+export type FinalizeTrialBankResult =
+  | {
+      status: 'CREATED';
+      activationUrl: string;
+      consoleUrl: string;
+      consoleUrlExpiresAt: Date;
+      trialEnd: Date;
+      userEmail: string;
+    }
+  | { status: 'RESELLER_NAME_CONFLICT' };
+
+export const finalizeTrialBank = async (args: {
+  adminId: string;
+  bankName: string;
+  adminEmail: string;
+  resellerName: string | null;
+  lang: 'fr' | 'en';
+}): Promise<FinalizeTrialBankResult> => {
+  const adminId = args.adminId;
+
+  let resellerName = args.resellerName;
+  if (resellerName) {
+    const resolved = await resolveTrialResellerName(resellerName, args.adminEmail);
+    if (resolved.alreadyExists) {
+      // adminId was reserved (admins.email is unique) before this conflict was detected, and
+      // nothing has linked it to a bank or reseller yet. Left as-is, it would become an orphaned
+      // admin that permanently blocks this email from ever reserving a new admin row on a later
+      // retry (e.g. a different company name with no conflict), wrongly surfacing as
+      // TRIAL_ALREADY_CONFIRMED. Only delete it if it is still actually orphaned - a retry that
+      // reuses an adminId already linked from an earlier partial success must not be touched.
+      await db.query(
+        `
+          DELETE FROM admins
+          WHERE id = $1 AND reseller_id IS NULL
+            AND NOT EXISTS (SELECT 1 FROM admin_banks WHERE admin_id = $1)
+        `,
+        [adminId],
+      );
+      return { status: 'RESELLER_NAME_CONFLICT' };
+    }
+    resellerName = resolved.resellerName;
+  }
+
+  let expDate = new Date();
+  expDate.setDate(expDate.getDate() + 30);
+  expDate.setMilliseconds(0);
+  expDate.setSeconds(0);
+  expDate.setMinutes(0);
+  expDate.setHours(0);
+  let newBankSettings = {
+    IS_TESTING: true,
+    TESTING_EXPIRATION_DATE: expDate,
+  };
+  let resellerId = null;
+  if (resellerName) {
+    const resellerInsertRes = await db.query(
+      'INSERT INTO resellers (name) VALUES ($1) RETURNING id',
+      [resellerName],
+    );
+    resellerId = resellerInsertRes.rows[0].id;
+  }
+  const bankInsertRes = await db.query(
+    'INSERT INTO banks (name, settings, reseller_id) VALUES ($1, $2, $3) RETURNING id, public_id',
+    [args.bankName, newBankSettings, resellerId],
+  );
+
+  if (resellerId) {
+    await db.query('UPDATE admins SET reseller_id=$1 WHERE id=$2 and reseller_id IS NULL', [
+      resellerId,
+      adminId,
+    ]);
+  } else {
+    await db.query(
+      'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
+      [adminId, bankInsertRes.rows[0].id],
+    );
+  }
+
+  const insertedBank = bankInsertRes.rows[0];
+  // add allowed emails
+  const emailPattern = '*@' + args.adminEmail.split('@')[1].trim().toLowerCase();
+  await db.query('INSERT INTO allowed_emails (pattern, bank_id) VALUES (lower($1), $2)', [
+    emailPattern,
+    insertedBank.id,
+  ]);
+
+  /////////////////////
+  // SEND EMAIL
+  /////////////////////
+  const settingsRes = await db.query(
+    "SELECT value FROM settings WHERE key='PRO_SERVER_URL_CONFIG'",
+  );
+  if (settingsRes.rowCount === 0) {
+    throw new Error('PRO_SERVER_URL_CONFIG setting is missing');
+  }
+  const { url } = settingsRes.rows[0].value;
+  const bankLink = `${url}/${insertedBank.public_id}`;
+  const adminLoginPage = `${env.FRONTEND_URL}/login.html`;
+
+  const { token: adminImportToken, tokenExpiresAt: adminImportTokenExpiresAt } =
+    await generateAdminImportToken(adminId);
+  const consoleUrl = buildAdminImportLink(adminId, adminImportToken);
+
+  const emailContent = await buildEmail({
+    templateName: 'trialWelcome',
+    locales: getBestLanguage(args.lang),
+    args: {
+      activationLink: bankLink,
+      consoleLink: adminLoginPage,
+      trialEndDate: expDate!,
+    },
+  });
+
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+
+  transporter.sendMail({
+    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+    to: args.adminEmail,
+    subject: emailContent.subject,
+    text: emailContent.text,
+    html: emailContent.html,
+  });
+
+  forceProStatusUpdate();
+
+  return {
+    status: 'CREATED',
+    activationUrl: bankLink,
+    consoleUrl,
+    consoleUrlExpiresAt: adminImportTokenExpiresAt,
+    trialEnd: expDate,
+    userEmail: args.adminEmail,
+  };
 };

@@ -138,7 +138,7 @@ class ResellerBanks extends React.Component {
       <div>
         <h2>{i18n.t('sasettings_banks')}</h2>
         <p>{i18n.t('sasettings_banks_explanation')}</p>
-        <div className="newBankForm">
+        <div className={`newBankForm ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}>
           <div className="newBankFormTitle">{i18n.t('sasettings_new_bank_form_title')}</div>
           <div className="newBankInputContainer">
             <label htmlFor="bankNameInput">{i18n.t('sasettings_new_bank_form_bank_name')}*</label>

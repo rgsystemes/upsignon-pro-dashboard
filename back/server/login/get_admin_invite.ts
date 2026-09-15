@@ -1,9 +1,8 @@
 import rateLimit from 'express-rate-limit';
-import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
 import { inputSanitizer } from '../helpers/sanitizer';
-import { sendAdminInvite, ttlMinutes } from '../helpers/sendAdminInvite';
+import { generateAdminImportToken, sendAdminInvite } from '../helpers/sendAdminInvite';
 import { Request, Response } from 'express';
 import {
   hasAdminEmailInBank,
@@ -121,14 +120,7 @@ const handleAdminInvite = async (
         !admRes.token_expires_at ||
         admRes.token_expires_at.getTime() < Date.now()
       ) {
-        token = v4();
-        tokenExpiresAt = new Date();
-        const ttl = ttlMinutes * 60 * 1000;
-        tokenExpiresAt.setTime(tokenExpiresAt.getTime() + ttl);
-        await db.query(
-          'UPDATE admins SET token=$1, token_expires_at=$2 WHERE email=$3 RETURNING id',
-          [token, tokenExpiresAt, adminEmail],
-        );
+        ({ token, tokenExpiresAt } = await generateAdminImportToken(admRes.id));
       } else {
         token = admRes.token;
         tokenExpiresAt = admRes.token_expires_at;
