@@ -297,7 +297,7 @@ const applyStaticTranslations = () => {
 
 const setStatus = (message, isError = false) => {
   statusNode.textContent = message;
-  statusNode.style.color = isError ? '#9f1d1d' : '#54617d';
+  statusNode.style.color = isError ? '#e53e3e' : '#8288a1';
 };
 
 const showSuccessPanel = () => {
