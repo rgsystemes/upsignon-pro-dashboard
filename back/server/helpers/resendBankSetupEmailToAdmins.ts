@@ -1,7 +1,7 @@
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 import env from './env';
 import { db } from './db';
-import { getEmailConfig, getMailTransporter } from './mailTransporter';
+import { sendMail } from './mailTransporter';
 
 export const resendBankSetupEmailToMe = async (req: any, bankId: number): Promise<void> => {
   const adminEmail = req.session?.adminEmail;
@@ -39,8 +39,6 @@ export const resendBankSetupEmailToMe = async (req: any, bankId: number): Promis
     trialEndDate.setHours(0);
   }
 
-  const emailConfig = await getEmailConfig();
-  const transporter = getMailTransporter(emailConfig, { debug: false });
   const locales = getBestLanguage(req.headers['accept-language']);
 
   const { subject, text, html } = isTrial
@@ -63,8 +61,7 @@ export const resendBankSetupEmailToMe = async (req: any, bankId: number): Promis
         },
       });
 
-  await transporter.sendMail({
-    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+  await sendMail({
     to: adminEmail,
     subject,
     text,

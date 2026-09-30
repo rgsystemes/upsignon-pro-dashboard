@@ -1,9 +1,32 @@
+import { v4 } from 'uuid';
+import { db } from './db';
 import env from './env';
 import { logError } from './logger';
-import { getEmailConfig, getMailTransporter } from './mailTransporter';
+import { sendMail } from './mailTransporter';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const ttlMinutes = 20;
+
+export const buildAdminImportLink = (userId: string, token: string): string => {
+  const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
+  const encodedToken = encodeURIComponent(token);
+  return `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}&userId=${userId}`;
+};
+
+export const generateAdminImportToken = async (
+  adminId: string,
+): Promise<{ token: string; tokenExpiresAt: Date }> => {
+  const token = v4();
+  const tokenExpiresAt = new Date();
+  tokenExpiresAt.setTime(tokenExpiresAt.getTime() + ttlMinutes * 60 * 1000);
+  await db.query('UPDATE admins SET token=$1, token_expires_at=$2 WHERE id=$3', [
+    token,
+    tokenExpiresAt,
+    adminId,
+  ]);
+  return { token, tokenExpiresAt };
+};
+
 export const sendAdminInvite = async (
   email: string,
   userId: string,
@@ -12,12 +35,7 @@ export const sendAdminInvite = async (
   acceptLanguage: string | undefined,
 ): Promise<void> => {
   try {
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
-
-    const baseUrl = encodeURIComponent(env.BACKEND_URL + '/login');
-    const encodedToken = encodeURIComponent(token);
-    const link = `${env.BACKEND_URL}/login.html?url=${baseUrl}&buttonId=signin&connectionToken=${encodedToken}&userId=${userId}`;
+    const link = buildAdminImportLink(userId, token);
 
     const { text, html, subject } = await buildEmail({
       templateName: 'proAdminInvitation',
@@ -29,8 +47,7 @@ export const sendAdminInvite = async (
       },
     });
 
-    await transporter.sendMail({
-      from: emailConfig.EMAIL_SENDING_ADDRESS,
+    await sendMail({
       to: email,
       subject,
       text,

@@ -1,6 +1,8 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { SendMailOptions } from 'nodemailer';
+import { Address } from 'nodemailer/lib/mailer';
 import { db } from './db';
 import env from './env';
+import { inputSanitizer } from './sanitizer';
 
 type EmailConfig = {
   EMAIL_HOST?: string;
@@ -84,3 +86,44 @@ export const getMailTransporter = (
   const transporter = nodemailer.createTransport(transportOptions);
   return transporter;
 };
+
+export type MailOptions = Omit<SendMailOptions, 'from'>;
+
+const SENDER_DISPLAY_NAME = 'UpSignOn';
+
+type Recipients = string | Address | (string | Address)[] | undefined;
+
+// prevent HTML injections
+const sanitizeRecipients = (recipients: Recipients): Recipients => {
+  if (Array.isArray(recipients)) {
+    return recipients.map((r) => sanitizeRecipients(r) as string | Address);
+  }
+  if (typeof recipients === 'string') {
+    return inputSanitizer.cleanForHTMLInjections(recipients);
+  }
+  if (recipients) {
+    return { ...recipients, address: inputSanitizer.cleanForHTMLInjections(recipients.address) };
+  }
+  return recipients;
+};
+
+// Sends several emails through a single transporter.
+export const sendMails = async (mails: MailOptions[]): Promise<void> => {
+  const emailConfig = await getEmailConfig();
+  const transporter = getMailTransporter(emailConfig, { debug: false });
+  const from = `"${SENDER_DISPLAY_NAME}" <${emailConfig.EMAIL_SENDING_ADDRESS}>`;
+  await Promise.all(
+    mails.map((mail) =>
+      transporter.sendMail({
+        ...mail,
+        from,
+        to: sanitizeRecipients(mail.to),
+        cc: sanitizeRecipients(mail.cc),
+        bcc: sanitizeRecipients(mail.bcc),
+        replyTo: sanitizeRecipients(mail.replyTo),
+      }),
+    ),
+  );
+};
+
+export const sendMail = (mail: MailOptions): Promise<void> => sendMails([mail]);

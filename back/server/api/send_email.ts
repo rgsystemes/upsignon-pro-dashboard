@@ -1,6 +1,6 @@
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
-import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { sendMails } from '../helpers/mailTransporter';
 
 const MAX_RECIPIENTS_PER_REQUEST = 100;
 const MAX_EMAILS_PER_HOUR = 500;
@@ -225,17 +225,12 @@ export const send_email = async (req: any, res: any, isSuperadminPage: boolean):
     emailCounts.set(adminId, adminEmailCount);
 
     // Send emails
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
-    await Promise.all(
-      uniqueEmails.map(async (email) => {
-        await transporter.sendMail({
-          from: emailConfig.EMAIL_SENDING_ADDRESS,
-          to: email,
-          subject: mailSubject,
-          text: mailContent,
-        });
-      }),
+    await sendMails(
+      uniqueEmails.map((email) => ({
+        to: email,
+        subject: mailSubject,
+        text: mailContent,
+      })),
     );
     res.status(200).send({ n: uniqueEmails.length });
   } catch (e) {
