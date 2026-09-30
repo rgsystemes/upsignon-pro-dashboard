@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 import { db } from './db';
 import env from './env';
 import { logError } from './logger';
-import { getEmailConfig, getMailTransporter } from './mailTransporter';
+import { sendMail } from './mailTransporter';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const ttlMinutes = 20;
@@ -35,9 +35,6 @@ export const sendAdminInvite = async (
   acceptLanguage: string | undefined,
 ): Promise<void> => {
   try {
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
-
     const link = buildAdminImportLink(userId, token);
 
     const { text, html, subject } = await buildEmail({
@@ -50,8 +47,7 @@ export const sendAdminInvite = async (
       },
     });
 
-    await transporter.sendMail({
-      from: emailConfig.EMAIL_SENDING_ADDRESS,
+    await sendMail({
       to: email,
       subject,
       text,

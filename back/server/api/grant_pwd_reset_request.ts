@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
-import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { sendMail } from '../helpers/mailTransporter';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 
 export const grant_pwd_reset_request = async (
@@ -39,9 +39,6 @@ export const grant_pwd_reset_request = async (
     const emailAddress = userReq.rows[0].email;
     const deviceName = userReq.rows[0].device_name;
 
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
-
     const { html, text, subject } = await buildEmail({
       templateName: 'resetPassword',
       locales: getBestLanguage(req.headers['accept-language']),
@@ -52,8 +49,7 @@ export const grant_pwd_reset_request = async (
       },
     });
 
-    await transporter.sendMail({
-      from: emailConfig.EMAIL_SENDING_ADDRESS,
+    await sendMail({
       to: emailAddress,
       subject,
       text,

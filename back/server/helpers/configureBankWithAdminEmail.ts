@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { db } from './db';
 import env from './env';
-import { getEmailConfig, getMailTransporter } from './mailTransporter';
+import { sendMail } from './mailTransporter';
+import { logError } from './logger';
 import { forceProStatusUpdate } from './forceProStatusUpdate';
 import { recomputeSessionAuthorizationsForAdminsByResellerId } from './updateSessionAuthorizations';
 import { buildAdminImportLink, generateAdminImportToken } from './sendAdminInvite';
@@ -127,19 +128,16 @@ export const configureBankWithAdminEmailAndSendMail = async (
           },
         });
 
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
     const useCc = salesEmail !== sessionAdminEmail && !!salesEmail;
 
-    transporter.sendMail({
-      from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+    sendMail({
       to: validatedBody.adminEmail,
       cc: useCc ? [salesEmail!] : undefined,
       replyTo: salesEmail ?? undefined,
       subject: emailContent.subject,
       text: emailContent.text,
       html: emailContent.html,
-    });
+    }).catch((e) => logError('configureBankWithAdminEmailAndSendMail sendMail', e));
   }
 
   forceProStatusUpdate();
@@ -306,16 +304,12 @@ export const finalizeTrialBank = async (args: {
     },
   });
 
-  const emailConfig = await getEmailConfig();
-  const transporter = getMailTransporter(emailConfig, { debug: false });
-
-  transporter.sendMail({
-    from: `"UpSignOn" <${emailConfig.EMAIL_SENDING_ADDRESS}>`,
+  sendMail({
     to: args.adminEmail,
     subject: emailContent.subject,
     text: emailContent.text,
     html: emailContent.html,
-  });
+  }).catch((e) => logError('finalizeTrialBank sendMail', e));
 
   forceProStatusUpdate();
 

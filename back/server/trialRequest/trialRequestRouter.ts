@@ -3,7 +3,7 @@ import Joi from 'joi';
 import { createHash, createHmac, timingSafeEqual } from 'crypto';
 import { buildEmail, getBestLanguage } from 'upsignon-mail';
 import env from '../helpers/env';
-import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { sendMail } from '../helpers/mailTransporter';
 import { logError } from '../helpers/logger';
 import { finalizeTrialBank, reserveTrialAdmin } from '../helpers/configureBankWithAdminEmail';
 import {
@@ -213,8 +213,6 @@ const sendTrialValidationEmail = async ({
   language: 'fr' | 'en';
   token: string;
 }) => {
-  const emailConfig = await getEmailConfig();
-  const transporter = getMailTransporter(emailConfig, { debug: false });
   const emailValidationLink = `${env.FRONTEND_URL}/trial-request-confirm?token=${encodeURIComponent(token)}&lang=${language}`;
   const { html, text, subject } = await buildEmail({
     templateName: 'trialEmailValidation',
@@ -224,8 +222,7 @@ const sendTrialValidationEmail = async ({
     },
   });
 
-  await transporter.sendMail({
-    from: emailConfig.EMAIL_SENDING_ADDRESS,
+  await sendMail({
     to: recipient,
     subject,
     text,
@@ -243,8 +240,6 @@ const sendAccountAlreadyExistsEmail = async ({
   recipient: string;
   language: 'fr' | 'en';
 }) => {
-  const emailConfig = await getEmailConfig();
-  const transporter = getMailTransporter(emailConfig, { debug: false });
   const loginLink = `${env.FRONTEND_URL}/login.html`;
   const { html, text, subject } = await buildEmail({
     templateName: 'trialAccountAlreadyExists',
@@ -254,8 +249,7 @@ const sendAccountAlreadyExistsEmail = async ({
     },
   });
 
-  await transporter.sendMail({
-    from: emailConfig.EMAIL_SENDING_ADDRESS,
+  await sendMail({
     to: recipient,
     subject,
     text,

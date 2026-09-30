@@ -1,6 +1,5 @@
-import { inputSanitizer } from '../helpers/sanitizer';
 import { logError } from '../helpers/logger';
-import { getEmailConfig, getMailTransporter } from '../helpers/mailTransporter';
+import { sendMail } from '../helpers/mailTransporter';
 
 export const test_email = async (req: any, res: any): Promise<void> => {
   try {
@@ -11,15 +10,8 @@ export const test_email = async (req: any, res: any): Promise<void> => {
     const userEmail = req.body?.email;
     if (!userEmail) return res.status(400).end();
 
-    const emailConfig = await getEmailConfig();
-    const transporter = getMailTransporter(emailConfig, { debug: false });
-
-    // prevent HTML injections
-    const safeEmailAddress = inputSanitizer.cleanForHTMLInjections(userEmail);
-
-    await transporter.sendMail({
-      from: emailConfig.EMAIL_SENDING_ADDRESS,
-      to: safeEmailAddress,
+    await sendMail({
+      to: userEmail,
       subject: 'Test',
       text: `Bonjour,\nL'envoi de mail depuis votre serveur UpSignOn PRO fonctionne correctement :)`,
     });
