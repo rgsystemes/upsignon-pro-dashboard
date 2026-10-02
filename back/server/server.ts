@@ -104,7 +104,8 @@ app.use((req, res, next) => {
 });
 
 // PUBLIC ROUTES WITH NO SESSION NEEDED
-app.use('/', express.static(frontBuildDir));
+// The trial-request routes must be registered before express.static, otherwise the static
+// middleware serves trial-request.html with the default CSP (frame-ancestors 'self').
 if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
   app.get(
     ['/trial-request', '/trial-request.html'],
@@ -125,6 +126,7 @@ if (!env.IS_PRODUCTION || env.IS_SAAS || env.IS_STAGING_SAAS) {
     res.sendFile(path.join(frontBuildDir, 'trial-request-confirm.html'));
   });
 }
+app.use('/', express.static(frontBuildDir));
 
 app.use(enforceTrustedOrigin);
 app.get('/manualConnect', manualConnect);
