@@ -75,12 +75,12 @@ const UI_TEXTS = {
       TRIAL_ALREADY_CONFIRMED: {
         title: 'Demande déjà validée',
         message:
-          "Cette demande d'essai a déjà été validée. Si besoin, consultez vos emails pour retrouver les informations d'accès, ou contactez-nous à help@rgsystem.com.",
+          "Cette demande d'essai a déjà été validée. Si besoin, consultez vos emails pour retrouver les informations d'accès, ou contactez-nous à help-itsolutions@septeo.com.",
       },
       TRIAL_RESELLER_NAME_CONFLICT: {
         title: 'Un environnement existe déjà',
         message:
-          "Votre organisation dispose déjà d'un environnement UpSignOn. Aucun nouvel essai n'a été créé. Si vous pensez qu'il s'agit d'une erreur ou souhaitez obtenir un accès, contactez-nous à help@rgsystem.com.",
+          "Votre organisation dispose déjà d'un environnement UpSignOn. Aucun nouvel essai n'a été créé. Si vous pensez qu'il s'agit d'une erreur ou souhaitez obtenir un accès, contactez-nous à help-itsolutions@septeo.com.",
       },
       CONFIRM_UNEXPECTED_ERROR: {
         title: 'Erreur inattendue',
@@ -139,12 +139,12 @@ const UI_TEXTS = {
       TRIAL_ALREADY_CONFIRMED: {
         title: 'Request already confirmed',
         message:
-          'This trial request has already been confirmed. Please check your emails for access details, or contact us at help@rgsystem.com.',
+          'This trial request has already been confirmed. Please check your emails for access details, or contact us at help-itsolutions@septeo.com.',
       },
       TRIAL_RESELLER_NAME_CONFLICT: {
         title: 'An environment already exists',
         message:
-          'Your organization already has an UpSignOn environment. No new trial was created. If you think this is a mistake or would like access, contact us at help@rgsystem.com.',
+          'Your organization already has an UpSignOn environment. No new trial was created. If you think this is a mistake or would like access, contact us at help-itsolutions@septeo.com.',
       },
       CONFIRM_UNEXPECTED_ERROR: {
         title: 'Unexpected error',

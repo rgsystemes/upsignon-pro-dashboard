@@ -13,8 +13,8 @@ class Overview extends React.Component {
         <h2>{i18n.t('useful_links')}</h2>
         <p>
           {i18n.t('suggestion')}{' '}
-          <a href="mailto:help@rgsystem.com">
-            help@rgsystem.com
+          <a href="mailto:help-itsolutions@septeo.com">
+            help-itsolutions@septeo.com
           </a>
         </p>
         <ul className="highlighter">
