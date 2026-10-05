@@ -260,22 +260,6 @@ export class MicrosoftEntraConfig extends React.Component {
             </div>
             <div
               style={{
-                backgroundColor: this.state.testResult.allUpSignOnUsers.value ? 'green' : 'red',
-                padding: 5,
-                color: 'white',
-                margin: '5px 0',
-              }}
-            >
-              <span style={{ marginRight: 5 }}>
-                {i18n.t('bank_setting_microsoft_entra_test_all_users')}
-              </span>
-              <span>
-                {this.state.testResult.allUpSignOnUsers.error ||
-                  this.state.testResult.allUpSignOnUsers.value.map((u) => <div key={u}>{u}</div>)}
-              </span>
-            </div>
-            <div
-              style={{
                 backgroundColor: this.state.testResult.isAuthorized.value ? 'green' : 'red',
                 padding: 5,
                 color: 'white',
@@ -306,6 +290,22 @@ export class MicrosoftEntraConfig extends React.Component {
                   this.state.testResult.userGroups.value
                     .map((g) => g.displayName || g.id)
                     .join(', ')}
+              </span>
+            </div>
+            <div
+              style={{
+                backgroundColor: this.state.testResult.allUpSignOnUsers.value ? 'green' : 'red',
+                padding: 5,
+                color: 'white',
+                margin: '5px 0',
+              }}
+            >
+              <span style={{ marginRight: 5 }}>
+                {i18n.t('bank_setting_microsoft_entra_test_all_users')}
+              </span>
+              <span>
+                {this.state.testResult.allUpSignOnUsers.error ||
+                  this.state.testResult.allUpSignOnUsers.value.map((u) => <div key={u}>{u}</div>)}
               </span>
             </div>
           </div>
