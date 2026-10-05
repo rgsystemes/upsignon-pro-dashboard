@@ -20,4 +20,4 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: token ${{ secrets.RGSUPVDEV_TOKEN }}" \
             https://api.github.com/repos/rgsystemes/kb/actions/workflows/reset-unstable-github-helper.yml/dispatches \
-            -d '{"ref":"master","inputs":{"repository":"${{ github.event.repository.name }}"}}'
+            -d '{"ref":"master","inputs":{"repository":"${{ github.event.repository.name }}","baseRef":"master"}}'
