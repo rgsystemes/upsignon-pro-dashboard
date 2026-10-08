@@ -2,6 +2,7 @@
 import { v4 } from 'uuid';
 import { db } from '../helpers/db';
 import { logError } from '../helpers/logger';
+import { updateSessionAddBank } from '../helpers/sessionStore';
 
 export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
   try {
@@ -13,7 +14,7 @@ export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
 
     const bankId = req.proxyParamsBankId;
 
-    const selectRes = await db.query('SELECT id FROM admins WHERE email=$1', [email]);
+    const selectRes = await db.query('SELECT id FROM admins WHERE email=lower($1)', [email]);
     var id = '';
     if (selectRes.rows.length === 0) {
       // Send new invitation
@@ -31,6 +32,7 @@ export const insert_bank_admin = async (req: any, res: any): Promise<void> => {
       'INSERT INTO admin_banks (admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
       [id, bankId],
     );
+    await updateSessionAddBank(email.toLowerCase(), Number(bankId));
     res.status(200).end();
   } catch (e) {
     logError('insert_bank_admin', e);

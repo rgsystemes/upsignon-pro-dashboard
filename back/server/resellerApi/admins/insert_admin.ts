@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { logError } from '../../helpers/logger';
 import { hasResellerOwnership } from '../helpers/securityChecks';
 import { db } from '../../helpers/db';
+import { recomputeSessionAuthorizationsForAdminById } from '../../helpers/updateSessionAuthorizations';
 
 export const insert_admin = async (req: any, res: any): Promise<void> => {
   try {
@@ -23,11 +24,28 @@ export const insert_admin = async (req: any, res: any): Promise<void> => {
       }
     }
 
-    const existing = await db.query('SELECT reseller_id FROM admins WHERE email=$1', [
+    const existing = await db.query('SELECT id, reseller_id FROM admins WHERE email=$1', [
       validatedBody.email,
     ]);
-    if (existing.rows.length > 0 && existing.rows[0].reseller_id !== resellerId) {
-      res.status(409).json({ error: "Cet e-mail est déjà utilisé par un admin d'un autre groupe" });
+    if (existing.rows.length > 0) {
+      const existingAdmin = existing.rows[0];
+      if (existingAdmin.reseller_id === resellerId) {
+        res.status(200).end();
+        return;
+      }
+      if (existingAdmin.reseller_id) {
+        res
+          .status(409)
+          .json({ error: "Cet e-mail est déjà utilisé par un admin d'un autre groupe" });
+        return;
+      }
+      // l'admin existe mais n'est rattaché à aucun groupe : on le rattache
+      await db.query('UPDATE admins SET reseller_id=$2 WHERE id=$1', [
+        existingAdmin.id,
+        resellerId,
+      ]);
+      await recomputeSessionAuthorizationsForAdminById(existingAdmin.id);
+      res.status(200).end();
       return;
     }
 

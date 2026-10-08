@@ -91,7 +91,14 @@ export async function baseUrlFetch(route, method, body, useBankOrReseller) {
     }
 
     if (!res.ok) {
-      toast.error(`${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
+      let serverError;
+      try {
+        const errorBody = await res.clone().json();
+        if (typeof errorBody?.error === 'string') serverError = errorBody.error;
+      } catch (error) {
+        // no JSON body, fall back to the generic message
+      }
+      toast.error(serverError || `${i18n.t('request_error')} - ${res.status} - ${res.statusText}`);
       throw new Error(res.statusText);
     }
 

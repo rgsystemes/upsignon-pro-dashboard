@@ -12,10 +12,10 @@ export const update_admin_bank = async (req: any, res: any): Promise<void> => {
 
     const targetAdmin = await db.query('SELECT email FROM admins WHERE id=$1', [req.body.adminId]);
     if (req.body.willBelongToBank) {
-      await db.query('INSERT INTO admin_banks(admin_id, bank_id) VALUES ($1,$2)', [
-        req.body.adminId,
-        req.body.bankId,
-      ]);
+      await db.query(
+        'INSERT INTO admin_banks(admin_id, bank_id) VALUES ($1,$2) ON CONFLICT (admin_id, bank_id) DO NOTHING',
+        [req.body.adminId, req.body.bankId],
+      );
       await updateSessionAddBank(targetAdmin.rows[0].email, req.body.bankId);
     } else {
       await db.query('DELETE FROM admin_banks WHERE admin_id=$1 AND bank_id=$2', [
