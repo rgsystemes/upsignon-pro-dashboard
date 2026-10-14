@@ -144,7 +144,7 @@ app.post('/send_admin_invite_if_exists', inviteRateLimiter, sendAdminInviteUnaut
 app.use((req, res, next) => {
   const isLoginRoute = req.url.startsWith('/login');
   // @ts-ignore
-  if (!req.session.adminEmail && !isLoginRoute) {
+  if (!req.session?.adminEmail && !isLoginRoute) {
     if (req.method !== 'GET') {
       res.status(401).end();
     } else {
