@@ -18,7 +18,7 @@ const allowedOrigins = new Set(
 );
 
 export const allowedTrialRequestOriginRegexp = env.IS_STAGING_SAAS
-  ? /^https:\/\/website-[a-z0-9-]*-upsignon\.vercel\.app$/
+  ? /^https:\/\/website-[a-z0-9-]*\.vercel\.app$/
   : /^https:\/\/upsignon\.eu$/;
 
 export const allowedTrialRequestFrameAncestors = env.IS_STAGING_SAAS
