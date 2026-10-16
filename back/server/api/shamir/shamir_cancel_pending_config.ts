@@ -39,11 +39,15 @@ export const cancelPendingConfig = async (req: Request, res: Response): Promise<
       return;
     }
     // compute shareholder emails before deleting the config
-    const shareholders = await getShareholdersEmailsForConfig(configId);
-    await db.query('DELETE FROM shamir_configs WHERE id=$1 AND bank_id=$2 AND is_active=false', [
-      configId,
-      bankId,
-    ]);
+    const shareholders = await getShareholdersEmailsForConfig(configId, bankId);
+    const deleteRes = await db.query(
+      'DELETE FROM shamir_configs WHERE id=$1 AND bank_id=$2 AND is_active=false',
+      [configId, bankId],
+    );
+    if (deleteRes.rowCount === 0) {
+      res.status(400).end();
+      return;
+    }
 
     // Send email notification
     const bankRes = await db.query('SELECT name FROM banks WHERE id = $1', [bankId]);

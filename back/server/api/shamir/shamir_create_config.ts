@@ -124,7 +124,7 @@ export const shamirCreateConfig = async (req: Request, res: Response): Promise<v
     // Send email notification
     if (previousConfigsRes.rows.length >= 1) {
       const prevConf = previousConfigsRes.rows[0];
-      const prevShareholders = await getShareholdersEmailsForConfig(prevConf.id);
+      const prevShareholders = await getShareholdersEmailsForConfig(prevConf.id, bankId);
       const acceptLanguage = req.headers['accept-language'];
       await sendShamirConfigChangeAwaitingApprovalToTrustedPersonsCCAdmins({
         trustedPersonEmails: prevShareholders,
