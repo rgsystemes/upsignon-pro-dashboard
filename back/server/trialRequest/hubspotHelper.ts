@@ -81,62 +81,184 @@ const assertHubspotEnvConfig = (): void => {
   }
 };
 
-const buildHubspotFormFields = (
+// MSP flow only: the whole contact is created/updated through the HubSpot form.
+const buildHubspotMspFormFields = (
   payload: SignedTrialPayload,
-): Array<{ name: string; value: string }> => {
-  const fields: Array<{ name: string; value: string }> = [
-    { name: 'email', value: payload.email },
-    { name: 'firstname', value: payload.firstname },
-    { name: 'lastname', value: payload.lastname },
-    { name: 'phone', value: payload.phone },
-    { name: 'company', value: payload.company },
-    {
-      name: 'langue_principale',
-      value: payload.language === 'fr' ? 'Francais' : 'Anglais',
-    },
-  ];
+): Array<{ name: string; value: string }> => [
+  { name: 'email', value: payload.email },
+  { name: 'firstname', value: payload.firstname },
+  { name: 'lastname', value: payload.lastname },
+  { name: 'phone', value: payload.phone },
+  { name: 'company', value: payload.company },
+  {
+    name: 'langue_principale',
+    value: payload.language === 'fr' ? 'Francais' : 'Anglais',
+  },
+  { name: '0-2/zip', value: payload.zip },
+  { name: 'business', value: 'MSP | Managed Service Provider' },
+  { name: '0-2/business', value: 'MSP | Managed Service Provider' },
+];
 
-  if (payload.activityType === 'enterprise') {
-    fields.push(
-      { name: 'zip', value: payload.zip },
-      {
-        name: 'secteur_d_activite__it_solutions_',
-        value: DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector],
+const HUBSPOT_TIMEOUT_MS = 10000;
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+class HubspotHttpError extends Error {
+  constructor(
+    public status: number,
+    public body: string,
+    context: string,
+  ) {
+    super(`HubSpot ${context} failed with status ${status}: ${body}`);
+  }
+}
+
+// Calls HubSpot with a timeout, retrying on network errors, 5xx and 429.
+// Any other non-2xx response throws a HubspotHttpError.
+const hubspotRequest = async (
+  context: string,
+  url: string,
+  apiToken: string,
+  method: 'POST' | 'PATCH',
+  body: unknown,
+  retries = 2,
+): Promise<void> => {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), HUBSPOT_TIMEOUT_MS);
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiToken}`,
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+      if (response.ok) return;
+
+      const errorBody = await response.text().catch(() => '');
+      if ((response.status >= 500 || response.status === 429) && attempt < retries) {
+        await sleep(Math.min(1000 * Math.pow(2, attempt), 5000));
+        continue;
+      }
+      throw new HubspotHttpError(response.status, errorBody, context);
+    } catch (error) {
+      if (error instanceof HubspotHttpError || attempt === retries) throw error;
+      // network error or timeout
+      await sleep(Math.min(1000 * Math.pow(2, attempt), 5000));
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+};
+
+// Direct (non MSP) flow:
+// 1. submit a HubSpot form with only the email, which creates the contact if needed
+// 2. patch the contact with all the submitted information
+// 3. update the marketing communication preferences
+const submitHubspotDirectFlow = async (payload: SignedTrialPayload): Promise<void> => {
+  if (payload.activityType !== 'enterprise') return;
+
+  const portalId = encodeURIComponent(env.HUBSPOT_USO_DIRECT_PORTAL_ID!);
+  const formId = encodeURIComponent(env.HUBSPOT_USO_DIRECT_FORM_ID!);
+  const apiToken = env.HUBSPOT_USO_DIRECT_API_TOKEN!;
+
+  await hubspotRequest(
+    'direct form submission',
+    `https://api.hsforms.com/submissions/v3/integration/secure/submit/${portalId}/${formId}`,
+    apiToken,
+    'POST',
+    {
+      fields: [{ objectType: 'CONTACT', name: 'email', value: payload.email }],
+      submittedAt: payload.issuedAt,
+      context: {
+        hutk: payload.hutk || undefined,
+        ipAddress: payload.ipAddress || undefined,
+        pageName: 'UpSignOn Trial Request',
+        pageUri: `${env.FRONTEND_URL}/trial-request`,
       },
-      {
-        name: 'nombre_de_salaries__hr_solutions_',
-        value: COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount],
-      },
-      { name: 'marketing_assignment_picklist', value: 'SIT - UpSignOn' },
-    );
-  } else {
-    fields.push(
-      { name: '0-2/zip', value: payload.zip },
-      { name: 'business', value: 'MSP | Managed Service Provider' },
-      { name: '0-2/business', value: 'MSP | Managed Service Provider' },
-    );
+    },
+  );
+
+  const contactBody = {
+    properties: {
+      firstname: payload.firstname,
+      lastname: payload.lastname,
+      phone: payload.phone,
+      company: payload.company,
+      zip: payload.zip,
+      langue_principale: payload.language === 'fr' ? 'Francais' : 'Anglais',
+      secteur_d_activite__it_solutions_: DIRECT_ACTIVITY_HUBSPOT_MAPPING[payload.businessSector],
+      nombre_de_salaries__hr_solutions_: COMPANY_SIZE_HUBSPOT_MAPPING[payload.employeeCount],
+      marketing_assignment_picklist: 'SIT - UpSignOn',
+      hs_legal_basis: 'Freely given consent from contact',
+    },
+  };
+  // The contact created by the form can take a few seconds to become available: retry on 404.
+  const patchRetries = 5;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await hubspotRequest(
+        'contact update',
+        `https://api.hubapi.com/crm/v3/objects/contacts/${encodeURIComponent(
+          payload.email,
+        )}?idProperty=email`,
+        apiToken,
+        'PATCH',
+        contactBody,
+      );
+      break;
+    } catch (error) {
+      if (error instanceof HubspotHttpError && error.status === 404 && attempt < patchRetries) {
+        await sleep(Math.min(1000 * Math.pow(2, attempt), 5000));
+        continue;
+      }
+      throw error;
+    }
   }
 
-  return fields;
+  if (payload.marketingConsent) {
+    try {
+      await hubspotRequest(
+        'newsletter subscription',
+        'https://api.hubapi.com/communication-preferences/v3/subscribe',
+        apiToken,
+        'POST',
+        {
+          emailAddress: payload.email,
+          subscriptionId: env.HUBSPOT_USO_DIRECT_NEWSLETTER_SUBSCRIPTION_ID!,
+          legalBasis: 'CONSENT_WITH_NOTICE',
+          legalBasisExplanation:
+            'The user consented to receive the newsletter when signing up for a trial on the UpSignOn website.',
+        },
+      );
+    } catch (error) {
+      if (
+        error instanceof HubspotHttpError &&
+        error.body.includes('is already subscribed to subscription')
+      ) {
+        return;
+      }
+      throw error;
+    }
+  }
 };
 
 export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promise<void> => {
   assertHubspotEnvConfig();
 
-  const hubspotConfig =
-    payload.activityType === 'enterprise'
-      ? {
-          subscriptionId: env.HUBSPOT_USO_DIRECT_NEWSLETTER_SUBSCRIPTION_ID!,
-          portalId: env.HUBSPOT_USO_DIRECT_PORTAL_ID!,
-          formId: env.HUBSPOT_USO_DIRECT_FORM_ID!,
-          apiToken: env.HUBSPOT_USO_DIRECT_API_TOKEN!,
-        }
-      : {
-          subscriptionId: env.HUBSPOT_USO_MSP_NEWSLETTER_SUBSCRIPTION_ID!,
-          portalId: env.HUBSPOT_USO_MSP_PORTAL_ID!,
-          formId: env.HUBSPOT_USO_MSP_FORM_ID!,
-          apiToken: env.HUBSPOT_USO_MSP_API_TOKEN!,
-        };
+  if (payload.activityType === 'enterprise') {
+    await submitHubspotDirectFlow(payload);
+    return;
+  }
+
+  const hubspotConfig = {
+    subscriptionId: env.HUBSPOT_USO_MSP_NEWSLETTER_SUBSCRIPTION_ID!,
+    portalId: env.HUBSPOT_USO_MSP_PORTAL_ID!,
+    formId: env.HUBSPOT_USO_MSP_FORM_ID!,
+    apiToken: env.HUBSPOT_USO_MSP_API_TOKEN!,
+  };
 
   const getLegalConsentText = (language: 'fr' | 'en') => {
     if (language === 'en') {
@@ -153,7 +275,7 @@ export const submitHubspotTrialForm = async (payload: SignedTrialPayload): Promi
   };
 
   const formPayload = {
-    fields: buildHubspotFormFields(payload),
+    fields: buildHubspotMspFormFields(payload),
     submittedAt: payload.issuedAt,
     context: {
       hutk: payload.hutk || undefined,
