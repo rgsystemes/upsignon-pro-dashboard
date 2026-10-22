@@ -194,6 +194,7 @@ class App extends React.Component {
           resellerId={resellerId}
           banks={this.state.banks.filter((b) => b.reseller_id === resellerId)}
           refetchBanks={this.refetchBanks}
+          isSuperadmin={this.state.isSuperadminOrRestricted}
         />
       );
       currentPage = 'reseller';

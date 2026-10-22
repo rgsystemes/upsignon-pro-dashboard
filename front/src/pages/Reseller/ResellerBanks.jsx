@@ -8,7 +8,7 @@ import { Search } from '../../components/Search';
 import { SearchByFields } from '../../helpers/SearchByFields';
 import { toast } from 'react-toastify';
 
-// Props : setIsLoading, banks, fetchBanks
+// Props : setIsLoading, banks, fetchBanks, isSuperadmin
 class ResellerBanks extends React.Component {
   state = {
     bankToDeleteId: null,
@@ -229,7 +229,7 @@ class ResellerBanks extends React.Component {
                       >
                         {i18n.t('setup_link_resend_email_button')}
                       </button>
-                      {!isRestrictedSuperadmin && (
+                      {this.props.isSuperadmin && !isRestrictedSuperadmin && (
                         <div
                           className={`action ${isRestrictedSuperadmin ? 'disabledUI' : ''}`}
                           onClick={() => this.setState({ bankToDeleteId: bank.id })}
