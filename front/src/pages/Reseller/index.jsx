@@ -5,7 +5,7 @@ import { ResellerBanks } from './ResellerBanks';
 import { ResellerAdmins } from './ResellerAdmins';
 import { LicenceTable } from '../../helpers/LicenceTable';
 
-// Props setIsLoading, updateMenuBanks
+// Props setIsLoading, updateMenuBanks, isSuperadmin
 class Reseller extends React.Component {
   state = {
     activeTab: 'banks', // 'banks', 'admins'
@@ -45,6 +45,7 @@ class Reseller extends React.Component {
               banks={this.props.banks}
               resellerId={this.props.resellerId}
               fetchBanks={this.props.refetchBanks}
+              isSuperadmin={this.props.isSuperadmin}
             />
           )}
 
