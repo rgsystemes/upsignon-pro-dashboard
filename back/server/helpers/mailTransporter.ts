@@ -1,5 +1,7 @@
-import nodemailer, { SendMailOptions } from 'nodemailer';
+import nodemailer, { SendMailOptions, Transporter } from 'nodemailer';
 import { Address } from 'nodemailer/lib/mailer';
+import SendmailTransport from 'nodemailer/lib/sendmail-transport';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { db } from './db';
 import env from './env';
 import { inputSanitizer } from './sanitizer';
@@ -21,17 +23,17 @@ export const getEmailConfig = async (): Promise<EmailConfig> => {
     if (emailConfReq.rowCount !== 1) {
       throw new Error('missing email config');
     }
-    const emailConfig = emailConfReq.rows[0].value;
+    const emailConfig: Partial<Omit<EmailConfig, 'EMAIL_PORT'>> & { EMAIL_PORT?: string | number } =
+      emailConfReq.rows[0].value;
     return {
       ...emailConfig,
-      EMAIL_SENDING_ADDRESS: emailConfig.EMAIL_SENDING_ADDRESS || emailConfig.EMAIL_USER,
-      EMAIL_PORT: Number.parseInt(emailConfig.EMAIL_PORT) || '587',
+      EMAIL_SENDING_ADDRESS: emailConfig.EMAIL_SENDING_ADDRESS || emailConfig.EMAIL_USER || '',
+      EMAIL_PORT: Number.parseInt(String(emailConfig.EMAIL_PORT)) || 587,
       EMAIL_ALLOW_INVALID_CERTIFICATE: emailConfig.EMAIL_ALLOW_INVALID_CERTIFICATE === true,
     };
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getMailTransporter = (
   emailConfig: EmailConfig,
   options: {
@@ -39,72 +41,76 @@ export const getMailTransporter = (
     logger?: boolean;
     connectionTimeout?: number;
   },
-) => {
-  let transportOptions: any;
+): Transporter => {
   if (!!env.USE_POSTFIX) {
-    transportOptions = {
+    const sendmailOptions: SendmailTransport.Options = {
       sendmail: true,
       newline: 'unix',
       path: '/usr/sbin/sendmail',
     };
     if (env.DKIM_PRIVATE_KEY) {
-      transportOptions.secure = true;
-      transportOptions.dkim = {
+      sendmailOptions.dkim = {
         domainName: env.SENDING_MAIL.split('@')[1],
         privateKey: env.DKIM_PRIVATE_KEY,
         keySelector: env.DKIM_KEY_SELECTOR,
       };
     }
-  } else {
-    transportOptions = {
-      host: emailConfig.EMAIL_HOST,
-      port: emailConfig.EMAIL_PORT,
-      secure: emailConfig.EMAIL_PORT === 465,
-      tls: {},
-      ...options,
-    };
-    if (emailConfig.EMAIL_PASS) {
-      // @ts-ignore
-      transportOptions.auth = {
-        user: emailConfig.EMAIL_USER,
-        pass: emailConfig.EMAIL_PASS,
-      };
-    }
-    if (options.debug) {
-      transportOptions.tls = {
-        ...transportOptions.tls,
-        enableTrace: true,
-      };
-    }
-    if (emailConfig.EMAIL_ALLOW_INVALID_CERTIFICATE) {
-      transportOptions.tls = {
-        ...transportOptions.tls,
-        rejectUnauthorized: false,
-      };
-    }
+    return nodemailer.createTransport(sendmailOptions);
   }
-  const transporter = nodemailer.createTransport(transportOptions);
-  return transporter;
+  const smtpOptions: SMTPTransport.Options = {
+    host: emailConfig.EMAIL_HOST,
+    port: emailConfig.EMAIL_PORT,
+    secure: emailConfig.EMAIL_PORT === 465,
+    tls: {},
+    ...options,
+  };
+  if (emailConfig.EMAIL_PASS) {
+    smtpOptions.auth = {
+      user: emailConfig.EMAIL_USER,
+      pass: emailConfig.EMAIL_PASS,
+    };
+  }
+  if (options.debug) {
+    smtpOptions.tls = {
+      ...smtpOptions.tls,
+      enableTrace: true,
+    };
+  }
+  if (emailConfig.EMAIL_ALLOW_INVALID_CERTIFICATE) {
+    smtpOptions.tls = {
+      ...smtpOptions.tls,
+      rejectUnauthorized: false,
+    };
+  }
+  return nodemailer.createTransport(smtpOptions);
 };
 
 export type MailOptions = Omit<SendMailOptions, 'from'>;
 
 const SENDER_DISPLAY_NAME = 'UpSignOn';
 
-type Recipients = string | Address | (string | Address)[] | undefined;
+type Recipients = SendMailOptions['to'];
+type SingleRecipient = string | Address;
 
 // prevent HTML injections
+const sanitizeRecipient = (recipient: SingleRecipient): SingleRecipient => {
+  if (typeof recipient === 'string') {
+    return inputSanitizer.cleanForHTMLInjections(recipient);
+  }
+  return {
+    ...recipient,
+    address: recipient.address && inputSanitizer.cleanForHTMLInjections(recipient.address),
+  };
+};
+
 const sanitizeRecipients = (recipients: Recipients): Recipients => {
+  if (!recipients) {
+    return recipients;
+  }
   if (Array.isArray(recipients)) {
-    return recipients.map((r) => sanitizeRecipients(r) as string | Address);
+    return recipients.map((r) => sanitizeRecipient(r as SingleRecipient));
   }
-  if (typeof recipients === 'string') {
-    return inputSanitizer.cleanForHTMLInjections(recipients);
-  }
-  if (recipients) {
-    return { ...recipients, address: inputSanitizer.cleanForHTMLInjections(recipients.address) };
-  }
-  return recipients;
+  return sanitizeRecipient(recipients as SingleRecipient);
 };
 
 // Sends several emails through a single transporter.
