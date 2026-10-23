@@ -9,6 +9,7 @@ export type SessionData = {
   adminId: string;
   adminRole: AdminRoles;
   banks: number[];
+  resellerId: string | null;
 };
 export const recomputeSessionAuthorizationsForAdminByEmail = async (
   email: string,
@@ -90,6 +91,8 @@ export const recomputeSessionAuthorizationsForAdminById = async (
       req.session.adminRole = adminRole;
       // @ts-ignore
       req.session.banks = bankIds;
+      // @ts-ignore
+      req.session.resellerId = resellerId;
       // NB, do not do 'req.session =', this breaks the system
     } else {
       const sessionRes = await db.query(
@@ -103,6 +106,7 @@ export const recomputeSessionAuthorizationsForAdminById = async (
           adminId,
           adminRole,
           banks: bankIds,
+          resellerId,
         };
         await db.query(`UPDATE admin_sessions SET session_data = $1 WHERE session_id = $2`, [
           newSession,
