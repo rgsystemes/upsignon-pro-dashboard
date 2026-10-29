@@ -18,6 +18,24 @@ function toBasePath(publicUrl) {
   return normalized;
 }
 
+// Les variables HubSpot sont optionnelles (absentes chez les clients auto-hébergés) :
+// on retire les balises <script> dont la variable n'est pas définie, avant que Vite
+// ne tente (et ne se plaigne) de remplacer %VAR% dans le HTML.
+function removeUnsetEnvScripts(env) {
+  return {
+    name: 'remove-unset-env-scripts',
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        return html.replace(
+          /[ \t]*<script\b[^>]*\bsrc="%(VITE_[A-Z0-9_]+)%"[^>]*>\s*<\/script>\s*?\n?/g,
+          (match, name) => (env[name] ? match : ''),
+        );
+      },
+    },
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const base = toBasePath(env.PUBLIC_URL).replace(/\/$/, '').replace(/^\./, '');
@@ -27,6 +45,7 @@ export default defineConfig(({ mode }) => {
       react({
         include: /\.[jt]sx?$/,
       }),
+      removeUnsetEnvScripts(env),
     ],
     base,
     server: {
