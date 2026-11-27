@@ -373,14 +373,14 @@ const translations = {
   sasettings_disable_reset_pwd_manual_admin_check:
     "Désactiver la validation manuelle d'un administrateur pour les demandes de réinitialisation de mot de passe",
   sasettings_disable_offline_desktop:
-    'Par défaut, désactiver le mode hors-ligne sur MacOS, Windows, Linux',
+    'Par défaut, désactiver le mode hors-ligne sur MacOS, Windows, Linux, web',
   sasettings_disable_offline_mobile: 'Par défaut, désactiver le mode hors-ligne sur iOS, Android',
   sasettings_max_autolock_delay_desktop:
-    'Délai de verrouillage automatique MAXIMUM sur MacOS, Windows, Linux',
+    'Délai de verrouillage automatique MAXIMUM sur MacOS, Windows, Linux, web',
   sasettings_max_autolock_delay_mobile:
     'Délai de verrouillage automatique MAXIMUM sur iOS, Android',
   sasettings_default_autolock_delay_desktop:
-    'Délai de verrouillage automatique par DÉFAUT sur MacOS, Windows, Linux',
+    'Délai de verrouillage automatique par DÉFAUT sur MacOS, Windows, Linux, web',
   sasettings_default_autolock_delay_mobile:
     'Délai de verrouillage automatique par DÉFAUT sur iOS, Android',
   sasettings_allow_csv_export: "Par défaut, autoriser l'export CSV",
@@ -394,6 +394,8 @@ const translations = {
   user_allow_android: 'Android',
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
+  sasettings_allow_web: "Par défaut, autoriser l'application web",
+  user_allow_web: 'Application web',
   sasettings_require_admin_check_for_second_device:
     "Exiger une validation manuelle d'un administrateur pour l'ajout de plus d'un appareil",
   sasettings_prevent_update_popup:

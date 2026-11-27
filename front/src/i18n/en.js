@@ -369,11 +369,11 @@ const translations = {
   sasettings_disable_reset_pwd_manual_admin_check:
     'Deactivate manual admin check for password reset requests',
   sasettings_disable_offline_desktop:
-    'By default, disable the offline mode on MacOS, Windows, Linux',
+    'By default, disable the offline mode on MacOS, Windows, Linux, web',
   sasettings_disable_offline_mobile: 'By default, disable the offline mode on iOS, Android',
-  sasettings_max_autolock_delay_desktop: 'MAXIMUM autolock delay on MacOS, Windows, Linux',
+  sasettings_max_autolock_delay_desktop: 'MAXIMUM autolock delay on MacOS, Windows, Linux, web',
   sasettings_max_autolock_delay_mobile: 'MAXIMUM autolock delay on iOS, Android',
-  sasettings_default_autolock_delay_desktop: 'DEFAULT autolock delay on MacOS, Windows, Linux',
+  sasettings_default_autolock_delay_desktop: 'DEFAULT autolock delay on MacOS, Windows, Linux, web',
   sasettings_default_autolock_delay_mobile: 'DEFAULT autolock delay on iOS, Android',
   sasettings_allow_csv_export: 'By default, allow CSV exports',
   sasettings_allow_windows: 'By default, allow Windows',
@@ -386,6 +386,8 @@ const translations = {
   user_allow_android: 'Android',
   user_allow_macos: 'macOS',
   user_allow_linux: 'Linux',
+  sasettings_allow_web: 'By default, allow the web app',
+  user_allow_web: 'Web app',
   sasettings_require_admin_check_for_second_device:
     'Require a manual administrator validation to add more than one device',
   sasettings_prevent_update_popup: 'Prevent the display of the update popup in the app.',
